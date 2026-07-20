@@ -40,7 +40,7 @@ function scaleIngredients(
   base: number,
   target: number,
 ): RecipeIngredient[] {
-  const factor = target / base;
+  const factor = target / (base > 0 ? base : 1);
   return ingredients.map((ingredient) => ({
     ...ingredient,
     quantity: ingredient.quantity === null ? null : Math.round(ingredient.quantity * factor * 100) / 100,
@@ -271,7 +271,7 @@ export default function RecipeDetailScreen() {
       .then((data) => {
         if (active) {
           setRecipe(data);
-          if (data) setServings(data.servings);
+          if (data) setServings(data.servings > 0 ? data.servings : 1);
         }
       })
       .catch(() => {
