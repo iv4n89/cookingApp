@@ -31,7 +31,20 @@ function sourceLabel(recipe: Recipe): string {
 }
 
 function quantityLine(ingredient: RecipeIngredient): string {
-  return [ingredient.quantity, ingredient.unit].filter((v) => v !== null && v !== '').join(' ');
+  const quantity = ingredient.quantity !== null ? String(Math.round(ingredient.quantity * 100) / 100) : null;
+  return [quantity, ingredient.unit].filter((v) => v !== null && v !== '').join(' ');
+}
+
+function scaleIngredients(
+  ingredients: RecipeIngredient[],
+  base: number,
+  target: number,
+): RecipeIngredient[] {
+  const factor = target / (base > 0 ? base : 1);
+  return ingredients.map((ingredient) => ({
+    ...ingredient,
+    quantity: ingredient.quantity === null ? null : Math.round(ingredient.quantity * factor * 100) / 100,
+  }));
 }
 
 function stepDuration(seconds: number | null): string | null {
@@ -69,7 +82,7 @@ function Hero({ recipe }: { recipe: Recipe }) {
   );
 }
 
-function MetaRow({ recipe }: { recipe: Recipe }) {
+function MetaRow({ recipe, servings }: { recipe: Recipe; servings: number }) {
   const total = recipe.prep_time_min + recipe.cook_time_min;
   return (
     <View className="flex-row flex-wrap items-center gap-gutter">
@@ -80,14 +93,53 @@ function MetaRow({ recipe }: { recipe: Recipe }) {
       <View className="flex-row items-center gap-stack-sm">
         <MaterialIcons name="restaurant" size={18} color={colors['on-surface-variant']} />
         <Text className="font-mono-medium text-label-md text-on-surface-variant">
-          {recipe.servings} RACIONES
+          {servings} RACIONES
         </Text>
       </View>
     </View>
   );
 }
 
-function Ingredients({ recipe }: { recipe: Recipe }) {
+const MAX_SERVINGS = 20;
+
+function ServingsStepper({
+  servings,
+  onChange,
+}: {
+  servings: number;
+  onChange: (next: number) => void;
+}) {
+  return (
+    <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
+      <Text className="font-sans-semibold text-body-md text-on-surface">Raciones</Text>
+      <View className="flex-row items-center gap-gutter">
+        <Pressable
+          onPress={() => onChange(Math.max(1, servings - 1))}
+          disabled={servings <= 1}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Menos raciones"
+          className={servings <= 1 ? 'opacity-40' : ''}>
+          <MaterialIcons name="remove-circle-outline" size={28} color={colors.primary} />
+        </Pressable>
+        <Text className="w-8 text-center font-mono-medium text-headline-sm text-on-surface">
+          {servings}
+        </Text>
+        <Pressable
+          onPress={() => onChange(Math.min(MAX_SERVINGS, servings + 1))}
+          disabled={servings >= MAX_SERVINGS}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Más raciones"
+          className={servings >= MAX_SERVINGS ? 'opacity-40' : ''}>
+          <MaterialIcons name="add-circle-outline" size={28} color={colors.primary} />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function Ingredients({ ingredients }: { ingredients: RecipeIngredient[] }) {
   const { session } = useSession();
   const [added, setAdded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -98,7 +150,7 @@ function Ingredients({ recipe }: { recipe: Recipe }) {
     setSubmitting(true);
     setFailed(false);
     try {
-      await addIngredientsToShopping(session.user.id, recipe.ingredients);
+      await addIngredientsToShopping(session.user.id, ingredients);
       setAdded(true);
     } catch {
       setFailed(true);
@@ -114,11 +166,11 @@ function Ingredients({ recipe }: { recipe: Recipe }) {
           Ingredientes
         </Text>
         <Text className="font-mono text-label-sm text-on-surface-variant">
-          {recipe.ingredients.length} ITEMS
+          {ingredients.length} ITEMS
         </Text>
       </View>
       <View className="mb-stack-lg gap-stack-md">
-        {recipe.ingredients.map((ingredient, i) => (
+        {ingredients.map((ingredient, i) => (
           <View
             key={`${ingredient.name}-${i}`}
             className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
@@ -183,9 +235,9 @@ function StepItem({ step, index }: { step: RecipeStep; index: number }) {
   );
 }
 
-function Stats({ recipe }: { recipe: Recipe }) {
+function Stats({ recipe, servings }: { recipe: Recipe; servings: number }) {
   const tiles = [
-    { label: 'RACIONES', value: String(recipe.servings) },
+    { label: 'RACIONES', value: String(servings) },
     { label: 'PREP', value: `${recipe.prep_time_min} MIN` },
     { label: 'COCCIÓN', value: `${recipe.cook_time_min} MIN` },
     { label: 'CALORÍAS', value: recipe.calories ? `${recipe.calories}` : '—' },
@@ -209,6 +261,7 @@ export default function RecipeDetailScreen() {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
+  const [servings, setServings] = useState(1);
 
   const load = useCallback(() => {
     let active = true;
@@ -216,7 +269,10 @@ export default function RecipeDetailScreen() {
     setFailed(false);
     getRecipe(id)
       .then((data) => {
-        if (active) setRecipe(data);
+        if (active) {
+          setRecipe(data);
+          if (data) setServings(data.servings > 0 ? data.servings : 1);
+        }
       })
       .catch(() => {
         if (active) setFailed(true);
@@ -238,13 +294,15 @@ export default function RecipeDetailScreen() {
     setCooking(true);
     // Descuento best-effort: si falla, igual dejamos cocinar.
     try {
-      await cookRecipe(recipe.id, recipe.servings);
+      await cookRecipe(recipe.id, servings);
     } catch {
       // se ignora; el usuario puede ajustar la despensa a mano
     }
     setCooking(false);
     router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
   }
+
+  const scaledIngredients = recipe ? scaleIngredients(recipe.ingredients, recipe.servings, servings) : [];
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
@@ -277,7 +335,7 @@ export default function RecipeDetailScreen() {
               <View className="gap-section-gap border border-outline-variant bg-surface-container-lowest p-stack-lg">
                 <View className="gap-stack-md border-b border-outline-variant pb-stack-lg">
                   <Text className="font-sans-bold text-display-lg text-primary">{recipe.title}</Text>
-                  <MetaRow recipe={recipe} />
+                  <MetaRow recipe={recipe} servings={servings} />
                 </View>
 
                 {recipe.description ? (
@@ -286,7 +344,9 @@ export default function RecipeDetailScreen() {
                   </Text>
                 ) : null}
 
-                <Ingredients recipe={recipe} />
+                <ServingsStepper servings={servings} onChange={setServings} />
+
+                <Ingredients key={servings} ingredients={scaledIngredients} />
 
                 <View>
                   <Text className="mb-stack-md font-sans-semibold text-headline-sm uppercase tracking-wider text-primary">
@@ -299,7 +359,7 @@ export default function RecipeDetailScreen() {
                   </View>
                 </View>
 
-                <Stats recipe={recipe} />
+                <Stats recipe={recipe} servings={servings} />
               </View>
             </View>
           </ScrollView>
