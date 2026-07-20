@@ -1,115 +1,105 @@
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { supabase } from '@/lib/supabase';
+import { signInWithProvider, type OAuthProvider } from '@/lib/oauth';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-type Mode = 'signin' | 'signup';
+type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
 
-function Field({
-  label,
-  value,
-  onChangeText,
-  secure,
-  keyboardType,
-}: {
+interface Provider {
+  id: OAuthProvider;
   label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  secure?: boolean;
-  keyboardType?: 'email-address' | 'default';
+  icon: IconName;
+  enabled: boolean;
+}
+
+// Google activo; Facebook y Apple quedan listos para habilitar al configurarlos.
+const PROVIDERS: Provider[] = [
+  { id: 'google', label: 'Continuar con Google', icon: 'google', enabled: true },
+  { id: 'facebook', label: 'Continuar con Facebook', icon: 'facebook', enabled: false },
+  { id: 'apple', label: 'Continuar con Apple', icon: 'apple', enabled: false },
+];
+
+function ProviderButton({
+  provider,
+  busy,
+  disabled,
+  onPress,
+}: {
+  provider: Provider;
+  busy: boolean;
+  disabled: boolean;
+  onPress: () => void;
 }) {
+  const inactive = !provider.enabled;
   return (
-    <View className="gap-stack-sm">
-      <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-        {label}
-      </Text>
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        secureTextEntry={secure}
-        keyboardType={keyboardType}
-        autoCapitalize="none"
-        autoCorrect={false}
-        placeholderTextColor={colors['outline-variant']}
-        className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
-      />
-    </View>
+    <Pressable
+      onPress={onPress}
+      disabled={disabled || inactive}
+      className={`flex-row items-center gap-stack-md rounded-lg border border-outline bg-surface-container-lowest px-gutter py-gutter ${
+        disabled || inactive ? 'opacity-50' : ''
+      }`}>
+      {busy ? (
+        <ActivityIndicator color={colors.primary} />
+      ) : (
+        <MaterialCommunityIcons name={provider.icon} size={22} color={colors['on-surface']} />
+      )}
+      <Text className="flex-1 font-sans-medium text-body-lg text-on-surface">{provider.label}</Text>
+      {inactive ? (
+        <Text className="font-mono text-label-sm text-on-surface-variant">PRONTO</Text>
+      ) : null}
+    </Pressable>
   );
 }
 
 export default function LoginScreen() {
-  const [mode, setMode] = useState<Mode>('signin');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [pending, setPending] = useState<OAuthProvider | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
 
-  const isSignIn = mode === 'signin';
-
-  async function submit() {
-    setLoading(true);
+  async function signIn(provider: OAuthProvider) {
+    if (pending) return;
+    setPending(provider);
     setError(null);
-    setNotice(null);
-    if (isSignIn) {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) setError(error.message);
-    } else {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) setError(error.message);
-      else if (!data.session) setNotice('Cuenta creada. Revisa tu email para confirmarla.');
+    try {
+      await signInWithProvider(provider);
+    } catch {
+      setError('No se pudo iniciar sesión. Inténtalo de nuevo.');
+    } finally {
+      setPending(null);
     }
-    setLoading(false);
   }
 
   return (
     <SafeAreaView className="flex-1 bg-background">
       <View className="flex-1 justify-center gap-section-gap px-container-padding">
-        <View className="items-center gap-stack-sm">
+        <View className="items-center gap-stack-md">
           <Text className="font-sans-bold text-headline-md text-primary">COCINA INTELIGENTE</Text>
           <Text className="text-center font-sans text-body-md text-on-surface-variant">
-            {isSignIn ? 'Entra para cocinar con tu despensa.' : 'Crea tu cuenta y empieza a cocinar.'}
+            Entra con tu cuenta para cocinar con tu despensa.
           </Text>
         </View>
 
-        <View className="gap-stack-lg">
-          <Field label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" />
-          <Field label="Contraseña" value={password} onChangeText={setPassword} secure />
+        <View className="gap-stack-md">
+          {PROVIDERS.map((provider) => (
+            <ProviderButton
+              key={provider.id}
+              provider={provider}
+              busy={pending === provider.id}
+              disabled={pending !== null}
+              onPress={() => signIn(provider.id)}
+            />
+          ))}
 
-          {error ? (
-            <Text className="font-sans text-body-md text-error">{error}</Text>
-          ) : null}
-          {notice ? (
-            <Text className="font-sans text-body-md text-primary">{notice}</Text>
-          ) : null}
-
-          <Pressable
-            onPress={submit}
-            disabled={loading || !email || !password}
-            className={`items-center rounded-lg bg-primary py-gutter ${
-              loading || !email || !password ? 'opacity-50' : ''
-            }`}>
-            <Text className="font-mono-medium uppercase tracking-widest text-label-md text-on-primary">
-              {loading ? 'Un momento…' : isSignIn ? 'Iniciar sesión' : 'Crear cuenta'}
-            </Text>
-          </Pressable>
+          {error ? <Text className="font-sans text-body-md text-error">{error}</Text> : null}
         </View>
 
-        <Pressable
-          onPress={() => {
-            setMode(isSignIn ? 'signup' : 'signin');
-            setError(null);
-            setNotice(null);
-          }}
-          className="items-center">
-          <Text className="font-mono text-label-md text-on-surface-variant">
-            {isSignIn ? '¿No tienes cuenta? Crear una' : '¿Ya tienes cuenta? Inicia sesión'}
-          </Text>
-        </Pressable>
+        <Text className="text-center font-mono text-label-sm text-on-surface-variant">
+          Sin contraseñas. Usamos tu cuenta para entrar.
+        </Text>
       </View>
     </SafeAreaView>
   );
