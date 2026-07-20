@@ -56,6 +56,8 @@ export interface GeneratedRecipe {
   cook_time_min: number;
   calories?: number;
   tags: string[];
+  allergens?: string[];
+  diet?: string[];
   ingredients: { name: string; quantity?: string; unit?: string }[];
   steps: { instruction: string; timer_seconds?: number }[];
 }
@@ -70,6 +72,8 @@ const RECIPE_SCHEMA = {
     cook_time_min: { type: 'INTEGER' },
     calories: { type: 'INTEGER' },
     tags: { type: 'ARRAY', items: { type: 'STRING' } },
+    allergens: { type: 'ARRAY', items: { type: 'STRING' } },
+    diet: { type: 'ARRAY', items: { type: 'STRING' } },
     ingredients: {
       type: 'ARRAY',
       items: {
@@ -101,6 +105,8 @@ const RECIPE_SCHEMA = {
     'prep_time_min',
     'cook_time_min',
     'tags',
+    'allergens',
+    'diet',
     'ingredients',
     'steps',
   ],
@@ -120,7 +126,11 @@ export async function generateRecipe(
     grounding +
     prefs +
     ` Usa cantidades concretas, pasos claros y numerados, tiempos y calorías aproximadas, y etiquetas útiles` +
-    ` (dieta, dificultad). Añade timer_seconds solo en los pasos que requieran un tiempo de espera o cocción.`;
+    ` (dieta, dificultad). Añade timer_seconds solo en los pasos que requieran un tiempo de espera o cocción.` +
+    ` Clasifica la receta con precisión: en "allergens" incluye SOLO las claves de esta lista que la receta` +
+    ` contenga realmente: gluten, crustaceans, molluscs, egg, fish, peanut, soy, milk, nuts, celery, mustard,` +
+    ` sesame, pork, alcohol (deja la lista vacía si no contiene ninguno). En "diet" incluye "vegetarian" si es` +
+    ` vegetariana y "vegan" si es vegana (una receta vegana es también vegetariana: incluye ambas).`;
 
   const res = await fetchWithTimeout(
     `${BASE}/models/${GEN_MODEL}:generateContent`,

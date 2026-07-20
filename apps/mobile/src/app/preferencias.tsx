@@ -202,6 +202,13 @@ export default function PreferenciasScreen() {
               />
             ))}
 
+            <View className="flex-row items-start gap-stack-md rounded-lg border border-outline-variant bg-surface-container-low p-gutter">
+              <MaterialIcons name="info-outline" size={18} color={colors['on-surface-variant']} />
+              <Text className="flex-1 font-sans text-body-md text-on-surface-variant">
+                Usamos esto para adaptar tus recetas, pero no sustituye el consejo de un profesional médico o dietético.
+              </Text>
+            </View>
+
             <View className="gap-stack-md">
               <Text className="font-sans-bold text-headline-sm text-on-surface">Comentarios</Text>
               <Text className="font-sans text-body-md text-on-surface-variant">
