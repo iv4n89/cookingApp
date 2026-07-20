@@ -1,7 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -18,11 +17,10 @@ export interface RecipeCardData {
   tags: string[];
 }
 
+// Placeholder de "sugerencias" en Home (aún sin datos reales); no navega.
 export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
   return (
-    <Pressable
-      onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id } })}
-      className="bg-card border border-card-border rounded-xl overflow-hidden">
+    <View className="bg-card border border-card-border rounded-xl overflow-hidden">
       <View className="h-56 w-full">
         <Image
           source={recipe.image}
@@ -61,6 +59,6 @@ export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
           ))}
         </View>
       </View>
-    </Pressable>
+    </View>
   );
 }

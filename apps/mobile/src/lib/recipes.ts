@@ -42,7 +42,8 @@ export async function askRecipe(query: string): Promise<{ recipe: Recipe | null;
 }
 
 export async function getRecipe(id: string): Promise<Recipe | null> {
-  const { data } = await supabase.from('recipes').select(COLUMNS).eq('id', id).maybeSingle();
+  const { data, error } = await supabase.from('recipes').select(COLUMNS).eq('id', id).maybeSingle();
+  if (error) throw error;
   return (data as Recipe | null) ?? null;
 }
 

@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -89,14 +89,20 @@ function MetaRow({ recipe }: { recipe: Recipe }) {
 function Ingredients({ recipe }: { recipe: Recipe }) {
   const { session } = useSession();
   const [added, setAdded] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   async function addAll() {
-    if (added || !session) return;
+    if (added || submitting || !session) return;
+    setSubmitting(true);
+    setFailed(false);
     try {
       await addIngredientsToShopping(session.user.id, recipe.ingredients);
       setAdded(true);
     } catch {
-      // silencioso; el usuario puede reintentar
+      setFailed(true);
+    } finally {
+      setSubmitting(false);
     }
   }
 
@@ -125,19 +131,28 @@ function Ingredients({ recipe }: { recipe: Recipe }) {
           </View>
         ))}
       </View>
+      {failed ? (
+        <Text className="mb-stack-md font-sans text-body-md text-error">
+          No se pudo añadir a la compra. Inténtalo de nuevo.
+        </Text>
+      ) : null}
       <Pressable
         onPress={addAll}
-        disabled={added}
+        disabled={added || submitting}
         className={`flex-row items-center justify-center gap-stack-md bg-primary py-gutter ${
-          added ? 'opacity-60' : ''
+          added || submitting ? 'opacity-60' : ''
         }`}>
-        <MaterialIcons
-          name={added ? 'check' : 'add-shopping-cart'}
-          size={18}
-          color={colors['on-primary']}
-        />
+        {submitting ? (
+          <ActivityIndicator color={colors['on-primary']} />
+        ) : (
+          <MaterialIcons
+            name={added ? 'check' : 'add-shopping-cart'}
+            size={18}
+            color={colors['on-primary']}
+          />
+        )}
         <Text className="font-mono-medium text-label-md text-on-primary">
-          {added ? 'AÑADIDO A LA COMPRA' : 'AÑADIR A LA COMPRA'}
+          {added ? 'AÑADIDO A LA COMPRA' : submitting ? 'AÑADIENDO…' : 'AÑADIR A LA COMPRA'}
         </Text>
       </Pressable>
     </View>
@@ -192,12 +207,18 @@ export default function RecipeDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
+  const load = useCallback(() => {
     let active = true;
+    setLoading(true);
+    setFailed(false);
     getRecipe(id)
       .then((data) => {
         if (active) setRecipe(data);
+      })
+      .catch(() => {
+        if (active) setFailed(true);
       })
       .finally(() => {
         if (active) setLoading(false);
@@ -207,12 +228,24 @@ export default function RecipeDetailScreen() {
     };
   }, [id]);
 
+  useEffect(() => load(), [load]);
+
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <TopBar />
 
       {loading ? (
         <ActivityIndicator color={colors.primary} className="mt-section-gap" />
+      ) : failed ? (
+        <View className="mt-section-gap items-center gap-stack-md px-container-padding">
+          <MaterialIcons name="error-outline" size={40} color={colors['outline-variant']} />
+          <Text className="text-center font-sans text-body-md text-on-surface-variant">
+            No se pudo cargar la receta.
+          </Text>
+          <Pressable onPress={load} className="rounded-lg border border-primary px-gutter py-stack-md">
+            <Text className="font-mono-medium text-label-md text-primary">Reintentar</Text>
+          </Pressable>
+        </View>
       ) : !recipe ? (
         <View className="mt-section-gap items-center gap-stack-md px-container-padding">
           <MaterialIcons name="search-off" size={40} color={colors['outline-variant']} />
