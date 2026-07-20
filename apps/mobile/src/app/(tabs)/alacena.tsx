@@ -162,13 +162,15 @@ export default function AlacenaScreen() {
 
           {loading ? (
             <ActivityIndicator color={colors.primary} className="mt-section-gap" />
-          ) : error ? null : items.length === 0 ? (
-            <View className="mt-section-gap items-center gap-stack-md">
-              <MaterialIcons name="kitchen" size={40} color={colors['outline-variant']} />
-              <Text className="text-center font-sans text-body-md text-on-surface-variant">
-                Tu alacena está vacía. Añade tu primer ingrediente con el botón +.
-              </Text>
-            </View>
+          ) : items.length === 0 ? (
+            error ? null : (
+              <View className="mt-section-gap items-center gap-stack-md">
+                <MaterialIcons name="kitchen" size={40} color={colors['outline-variant']} />
+                <Text className="text-center font-sans text-body-md text-on-surface-variant">
+                  Tu alacena está vacía. Añade tu primer ingrediente con el botón +.
+                </Text>
+              </View>
+            )
           ) : visible.length === 0 ? (
             <Text className="mt-section-gap text-center font-sans text-body-md text-on-surface-variant">
               Sin resultados.

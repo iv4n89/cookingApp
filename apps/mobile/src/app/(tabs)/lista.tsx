@@ -74,13 +74,15 @@ export default function ListaScreen() {
 
         {loading ? (
           <ActivityIndicator color={colors.primary} className="mt-section-gap" />
-        ) : error ? null : items.length === 0 ? (
-          <View className="mt-section-gap items-center gap-stack-md">
-            <MaterialIcons name="shopping-basket" size={40} color={colors['outline-variant']} />
-            <Text className="text-center font-sans text-body-md text-on-surface-variant">
-              Tu lista está vacía. Añade lo que necesites comprar.
-            </Text>
-          </View>
+        ) : items.length === 0 ? (
+          error ? null : (
+            <View className="mt-section-gap items-center gap-stack-md">
+              <MaterialIcons name="shopping-basket" size={40} color={colors['outline-variant']} />
+              <Text className="text-center font-sans text-body-md text-on-surface-variant">
+                Tu lista está vacía. Añade lo que necesites comprar.
+              </Text>
+            </View>
+          )
         ) : (
           <View className="gap-base">
             {items.map((item) => (
