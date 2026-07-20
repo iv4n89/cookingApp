@@ -1,4 +1,7 @@
+import { fetchWithTimeout } from './http.ts';
+
 const TAVILY_URL = 'https://api.tavily.com/search';
+const TAVILY_TIMEOUT_MS = 10000;
 
 export interface WebResult {
   title: string;
@@ -14,23 +17,28 @@ export async function searchWeb(query: string): Promise<WebResult[]> {
   if (!key) return [];
 
   try {
-    const res = await fetch(TAVILY_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        query: `receta ${query}`,
-        max_results: 3,
-        search_depth: 'basic',
-        topic: 'general',
-      }),
-    });
+    const res = await fetchWithTimeout(
+      TAVILY_URL,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
+        body: JSON.stringify({
+          query: `receta ${query}`,
+          max_results: 3,
+          search_depth: 'basic',
+          topic: 'general',
+        }),
+      },
+      TAVILY_TIMEOUT_MS,
+    );
     if (!res.ok) return [];
     const data = await res.json();
     const results: WebResult[] = Array.isArray(data?.results) ? data.results : [];
     return results
       .filter((r) => r?.url && r?.title)
       .map((r) => ({ title: r.title, url: r.url, content: r.content ?? '' }));
-  } catch {
+  } catch (e) {
+    console.error('searchWeb (Tavily) falló, se genera sin atribución:', e);
     return [];
   }
 }

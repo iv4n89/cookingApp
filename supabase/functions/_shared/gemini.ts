@@ -1,5 +1,9 @@
+import { fetchWithTimeout } from './http.ts';
+
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const EMBED_MODEL = 'gemini-embedding-001';
+const EMBED_TIMEOUT_MS = 15000;
+const GEN_TIMEOUT_MS = 30000;
 // Alias "-latest": apunta siempre al flash-lite vigente (evita deprecaciones).
 const GEN_MODEL = 'gemini-flash-lite-latest';
 
@@ -20,15 +24,19 @@ function normalize(values: number[]): number[] {
 }
 
 export async function embedText(text: string, taskType: EmbedTask): Promise<number[]> {
-  const res = await fetch(`${BASE}/models/${EMBED_MODEL}:embedContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
-    body: JSON.stringify({
-      taskType,
-      content: { parts: [{ text }] },
-      output_dimensionality: EMBED_DIM,
-    }),
-  });
+  const res = await fetchWithTimeout(
+    `${BASE}/models/${EMBED_MODEL}:embedContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
+      body: JSON.stringify({
+        taskType,
+        content: { parts: [{ text }] },
+        output_dimensionality: EMBED_DIM,
+      }),
+    },
+    EMBED_TIMEOUT_MS,
+  );
   if (!res.ok) {
     throw new Error(`Gemini embed ${res.status}: ${await res.text()}`);
   }
@@ -108,17 +116,21 @@ export async function generateRecipe(query: string, context?: string): Promise<G
     ` Usa cantidades concretas, pasos claros y numerados, tiempos y calorías aproximadas, y etiquetas útiles` +
     ` (dieta, dificultad). Añade timer_seconds solo en los pasos que requieran un tiempo de espera o cocción.`;
 
-  const res = await fetch(`${BASE}/models/${GEN_MODEL}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: 'application/json',
-        responseSchema: RECIPE_SCHEMA,
-      },
-    }),
-  });
+  const res = await fetchWithTimeout(
+    `${BASE}/models/${GEN_MODEL}:generateContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: RECIPE_SCHEMA,
+        },
+      }),
+    },
+    GEN_TIMEOUT_MS,
+  );
   if (!res.ok) {
     throw new Error(`Gemini generate ${res.status}: ${await res.text()}`);
   }
