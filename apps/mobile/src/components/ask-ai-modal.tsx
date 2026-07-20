@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useState } from 'react';
-import { Modal, Pressable, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Modal, Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
@@ -14,20 +14,33 @@ export function AskAiModal({
 }: {
   visible: boolean;
   onClose: () => void;
-  onSubmit: (question: string) => void;
+  onSubmit: (question: string) => void | Promise<void>;
 }) {
   const [text, setText] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function close() {
+    if (loading) return;
     setText('');
+    setError(null);
     onClose();
   }
 
-  function submit() {
+  async function submit() {
     const question = text.trim();
-    if (!question) return;
-    onSubmit(question);
-    close();
+    if (!question || loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await onSubmit(question);
+      setText('');
+      onClose();
+    } catch {
+      setError('No se pudo obtener la receta. Inténtalo de nuevo.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -61,18 +74,33 @@ export function AskAiModal({
                 className="min-h-[140px] font-sans text-body-lg text-on-surface"
               />
 
+              {error ? (
+                <Text className="font-sans text-body-md text-error">{error}</Text>
+              ) : null}
+
               <Pressable
                 onPress={submit}
-                disabled={!text.trim()}
+                disabled={!text.trim() || loading}
                 accessibilityRole="button"
                 accessibilityLabel="Enviar pregunta"
                 className={`flex-row items-center justify-center gap-stack-md rounded-lg bg-primary py-gutter ${
-                  !text.trim() ? 'opacity-50' : ''
+                  !text.trim() || loading ? 'opacity-50' : ''
                 }`}>
-                <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
-                  Preguntar
-                </Text>
-                <MaterialIcons name="arrow-forward" size={18} color={colors['on-primary']} />
+                {loading ? (
+                  <>
+                    <ActivityIndicator color={colors['on-primary']} />
+                    <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
+                      Cocinando tu receta…
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
+                      Preguntar
+                    </Text>
+                    <MaterialIcons name="arrow-forward" size={18} color={colors['on-primary']} />
+                  </>
+                )}
               </Pressable>
             </Pressable>
           </SafeAreaView>
