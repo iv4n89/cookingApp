@@ -47,16 +47,22 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const isSignIn = mode === 'signin';
 
   async function submit() {
     setLoading(true);
     setError(null);
-    const { error } = isSignIn
-      ? await supabase.auth.signInWithPassword({ email, password })
-      : await supabase.auth.signUp({ email, password });
-    if (error) setError(error.message);
+    setNotice(null);
+    if (isSignIn) {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) setError(error.message);
+    } else {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) setError(error.message);
+      else if (!data.session) setNotice('Cuenta creada. Revisa tu email para confirmarla.');
+    }
     setLoading(false);
   }
 
@@ -77,6 +83,9 @@ export default function LoginScreen() {
           {error ? (
             <Text className="font-sans text-body-md text-error">{error}</Text>
           ) : null}
+          {notice ? (
+            <Text className="font-sans text-body-md text-primary">{notice}</Text>
+          ) : null}
 
           <Pressable
             onPress={submit}
@@ -94,6 +103,7 @@ export default function LoginScreen() {
           onPress={() => {
             setMode(isSignIn ? 'signup' : 'signin');
             setError(null);
+            setNotice(null);
           }}
           className="items-center">
           <Text className="font-mono text-label-md text-on-surface-variant">
