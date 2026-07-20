@@ -53,12 +53,16 @@ export function IngredientPicker({
     if (visible && items.length === 0) listIngredients().then(setItems).catch(() => {});
   }, [visible, items.length]);
 
-  function close() {
-    setQuery('');
-    setExpanded(new Set());
+  function back() {
     setSelected(null);
     setQuantity('');
     setUnit('');
+  }
+
+  function close() {
+    setQuery('');
+    setExpanded(new Set());
+    back();
     onClose();
   }
 
@@ -108,7 +112,7 @@ export function IngredientPicker({
         {selected ? (
           <View className="flex-1 gap-stack-lg px-container-padding pt-stack-lg">
             <View className="flex-row items-center gap-gutter">
-              <Pressable onPress={() => setSelected(null)} hitSlop={8} accessibilityLabel="Volver">
+              <Pressable onPress={back} hitSlop={8} accessibilityLabel="Volver">
                 <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
               </Pressable>
               <Text className="font-sans-bold text-headline-sm text-primary">Cantidad</Text>
