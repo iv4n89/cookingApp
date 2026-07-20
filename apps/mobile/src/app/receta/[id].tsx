@@ -1,137 +1,111 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useSession } from '@/lib/auth';
+import {
+  addIngredientsToShopping,
+  getRecipe,
+  type Recipe,
+  type RecipeIngredient,
+  type RecipeStep,
+} from '@/lib/recipes';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-const HERO =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuAI-hIZ5G7IwRE1SzBmcAmNIA-easet294yLYuWuNPzwqJ2lmmmUFjH-mIYS5kMCLA8RPFIk6vFRz_UOxvTVa1rE1pqlTbkAmIbrbtJM2dnuHR3BJxWsORT4E7jzz5bsYXrxMBXmNPG9veBLYVartMKlx1zjOOtNuAKDUPjiDvGe-Bw-NbKIVrVjMurIoM6smCIFYfV60N3LsmE5BcPrRB_LHaIsv5gubVWKAHveMRegzq4ZI084SU5Bxyntv9vwFg6dT2xYDCVw7m2';
+function sourceLabel(recipe: Recipe): string {
+  if (recipe.source === 'generated') return 'GENERADO POR IA';
+  if (recipe.source_url) {
+    try {
+      return new URL(recipe.source_url).hostname.replace(/^www\./, '').toUpperCase();
+    } catch {
+      return 'WEB';
+    }
+  }
+  return 'WEB';
+}
 
-const INGREDIENTS = [
-  { name: 'Arroz arborio', inPantry: true },
-  { name: 'Setas silvestres (rebozuelo)', inPantry: false },
-  { name: 'Chalotas', inPantry: true },
-  { name: 'Tomillo fresco', inPantry: false },
-  { name: 'Caldo de verduras', inPantry: true },
-  { name: 'Aceite de trufa', inPantry: false },
-];
+function quantityLine(ingredient: RecipeIngredient): string {
+  return [ingredient.quantity, ingredient.unit].filter((v) => v !== null && v !== '').join(' ');
+}
 
-const STEPS = [
-  {
-    title: 'Prepara la base',
-    text: 'Pica finamente las chalotas y sofríelas en una sartén de fondo grueso con un chorrito de aceite de oliva hasta que estén translúcidas y aromáticas.',
-  },
-  {
-    title: 'Tuesta el grano',
-    text: 'Añade el arroz arborio. Tuéstalo 2 minutos removiendo sin parar hasta que los bordes queden translúcidos y el centro siga blanco.',
-  },
-  {
-    title: 'Integración lenta',
-    text: 'Ve añadiendo caldo de verduras caliente cazo a cazo. Espera a que el líquido casi se absorba antes de añadir el siguiente.',
-  },
-  {
-    title: 'Infusión de setas',
-    text: 'A mitad del proceso, incorpora las setas salteadas y el tomillo fresco para que los sabores se fundan.',
-  },
-];
-
-const MACROS = [
-  { label: 'CALORÍAS', value: '420 KCAL' },
-  { label: 'PROTEÍNA', value: '12 G' },
-  { label: 'GRASAS', value: '18 G' },
-  { label: 'CARBOS', value: '54 G' },
-];
+function stepDuration(seconds: number | null): string | null {
+  if (!seconds || seconds <= 0) return null;
+  const mins = Math.round(seconds / 60);
+  return mins >= 1 ? `${mins} min` : `${seconds}s`;
+}
 
 function TopBar() {
   return (
-    <View className="flex-row items-center justify-between border-b border-outline-variant bg-background px-container-padding py-stack-md">
-      <View className="flex-1 flex-row items-center gap-gutter">
-        <Pressable onPress={() => router.back()} hitSlop={8}>
-          <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
-        </Pressable>
-        <Text className="font-sans-bold text-headline-sm text-primary">COCINA INTELIGENTE</Text>
-      </View>
-      <Pressable hitSlop={8}>
-        <MaterialIcons name="search" size={24} color={colors.primary} />
+    <View className="flex-row items-center gap-gutter border-b border-outline-variant bg-background px-container-padding py-stack-md">
+      <Pressable onPress={() => router.back()} hitSlop={8} accessibilityRole="button" accessibilityLabel="Volver">
+        <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
       </Pressable>
+      <Text className="font-sans-bold text-headline-sm text-primary">COCINA INTELIGENTE</Text>
     </View>
   );
 }
 
-function Hero() {
+function Hero({ recipe }: { recipe: Recipe }) {
   return (
-    <View className="relative aspect-[3/2] w-full bg-surface-container">
-      <Image source={HERO} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+    <View className="relative aspect-[3/2] w-full items-center justify-center bg-surface-container">
+      {recipe.image_url ? (
+        <Image source={recipe.image_url} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+      ) : (
+        <MaterialIcons name="restaurant-menu" size={48} color={colors['outline-variant']} />
+      )}
       <View className="absolute bottom-6 right-6 flex-row items-center gap-stack-md border border-outline-variant bg-secondary-container px-stack-md py-stack-sm">
         <Text className="font-mono text-label-sm text-on-secondary-container">FUENTE:</Text>
         <Text className="font-mono-medium text-label-sm text-on-secondary-container">
-          GENERADO POR IA
+          {sourceLabel(recipe)}
         </Text>
       </View>
     </View>
   );
 }
 
-function MetaRow() {
+function MetaRow({ recipe }: { recipe: Recipe }) {
+  const total = recipe.prep_time_min + recipe.cook_time_min;
   return (
     <View className="flex-row flex-wrap items-center gap-gutter">
       <View className="flex-row items-center gap-stack-sm">
         <MaterialIcons name="schedule" size={18} color={colors['on-surface-variant']} />
-        <Text className="font-mono-medium text-label-md text-on-surface-variant">45 MIN</Text>
+        <Text className="font-mono-medium text-label-md text-on-surface-variant">{total} MIN</Text>
       </View>
       <View className="flex-row items-center gap-stack-sm">
         <MaterialIcons name="restaurant" size={18} color={colors['on-surface-variant']} />
-        <Text className="font-mono-medium text-label-md text-on-surface-variant">2 RACIONES</Text>
-      </View>
-      <View className="flex-row items-center gap-stack-sm border border-outline-variant bg-tertiary-fixed px-stack-md py-stack-sm">
-        <MaterialIcons name="bolt" size={16} color={colors.tertiary} />
-        <Text className="font-mono text-label-sm uppercase text-tertiary">Encaja con tus macros</Text>
+        <Text className="font-mono-medium text-label-md text-on-surface-variant">
+          {recipe.servings} RACIONES
+        </Text>
       </View>
     </View>
   );
 }
 
-function IngredientRow({ name, inPantry }: { name: string; inPantry: boolean }) {
-  return (
-    <View
-      className={`flex-row items-center justify-between border border-outline-variant p-stack-md ${
-        inPantry ? 'bg-surface' : 'bg-secondary-container'
-      }`}>
-      <View className="flex-1 flex-row items-center gap-stack-md">
-        <View className={`h-2 w-2 rounded-full ${inPantry ? 'bg-primary' : 'bg-secondary'}`} />
-        <Text className="flex-1 font-sans text-body-md text-on-surface">{name}</Text>
-      </View>
-      <Text
-        className={`font-mono text-label-sm uppercase ${
-          inPantry ? 'text-primary' : 'text-on-secondary-fixed-variant'
-        }`}>
-        {inPantry ? 'En la despensa' : 'Comprar'}
-      </Text>
-    </View>
-  );
-}
+function Ingredients({ recipe }: { recipe: Recipe }) {
+  const { session } = useSession();
+  const [added, setAdded] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [failed, setFailed] = useState(false);
 
-function StepItem({ index, title, text }: { index: number; title: string; text: string }) {
-  const number = String(index + 1).padStart(2, '0');
-  return (
-    <View className="flex-row gap-gutter">
-      <Text
-        className="font-sans-semibold text-primary opacity-[0.15]"
-        style={{ fontSize: 40, lineHeight: 40 }}>
-        {number}
-      </Text>
-      <View className="flex-1">
-        <Text className="mb-stack-sm font-sans-semibold text-headline-sm text-primary">{title}</Text>
-        <Text className="font-sans text-body-md leading-relaxed text-on-surface-variant">{text}</Text>
-      </View>
-    </View>
-  );
-}
+  async function addAll() {
+    if (added || submitting || !session) return;
+    setSubmitting(true);
+    setFailed(false);
+    try {
+      await addIngredientsToShopping(session.user.id, recipe.ingredients);
+      setAdded(true);
+    } catch {
+      setFailed(true);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
-function Ingredients() {
   return (
     <View>
       <View className="mb-stack-md flex-row items-center justify-between">
@@ -139,48 +113,90 @@ function Ingredients() {
           Ingredientes
         </Text>
         <Text className="font-mono text-label-sm text-on-surface-variant">
-          {INGREDIENTS.length} ITEMS
+          {recipe.ingredients.length} ITEMS
         </Text>
       </View>
       <View className="mb-stack-lg gap-stack-md">
-        {INGREDIENTS.map((ingredient) => (
-          <IngredientRow key={ingredient.name} {...ingredient} />
+        {recipe.ingredients.map((ingredient, i) => (
+          <View
+            key={`${ingredient.name}-${i}`}
+            className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
+            <View className="flex-1 flex-row items-center gap-stack-md">
+              <View className="h-2 w-2 rounded-full bg-primary" />
+              <Text className="flex-1 font-sans text-body-md text-on-surface">{ingredient.name}</Text>
+            </View>
+            <Text className="font-mono text-label-sm text-on-surface-variant">
+              {quantityLine(ingredient)}
+            </Text>
+          </View>
         ))}
       </View>
-      <Pressable className="flex-row items-center justify-center gap-stack-md bg-primary py-gutter">
-        <MaterialIcons name="add-shopping-cart" size={18} color={colors['on-primary']} />
-        <Text className="font-mono-medium text-label-md text-on-primary">AÑADIR LO QUE FALTA</Text>
+      {failed ? (
+        <Text className="mb-stack-md font-sans text-body-md text-error">
+          No se pudo añadir a la compra. Inténtalo de nuevo.
+        </Text>
+      ) : null}
+      <Pressable
+        onPress={addAll}
+        disabled={added || submitting}
+        className={`flex-row items-center justify-center gap-stack-md bg-primary py-gutter ${
+          added || submitting ? 'opacity-60' : ''
+        }`}>
+        {submitting ? (
+          <ActivityIndicator color={colors['on-primary']} />
+        ) : (
+          <MaterialIcons
+            name={added ? 'check' : 'add-shopping-cart'}
+            size={18}
+            color={colors['on-primary']}
+          />
+        )}
+        <Text className="font-mono-medium text-label-md text-on-primary">
+          {added ? 'AÑADIDO A LA COMPRA' : submitting ? 'AÑADIENDO…' : 'AÑADIR A LA COMPRA'}
+        </Text>
       </Pressable>
     </View>
   );
 }
 
-function Preparation() {
+function StepItem({ step, index }: { step: RecipeStep; index: number }) {
+  const number = String(index + 1).padStart(2, '0');
+  const duration = stepDuration(step.timerSeconds);
   return (
-    <View>
-      <Text className="mb-stack-md font-sans-semibold text-headline-sm uppercase tracking-wider text-primary">
-        Preparación
+    <View className="flex-row gap-gutter">
+      <Text className="font-sans-semibold text-primary opacity-[0.15]" style={{ fontSize: 40, lineHeight: 40 }}>
+        {number}
       </Text>
-      <View className="gap-section-gap">
-        {STEPS.map((step, i) => (
-          <StepItem key={step.title} index={i} title={step.title} text={step.text} />
-        ))}
+      <View className="flex-1">
+        <Text className="font-sans text-body-md leading-relaxed text-on-surface-variant">
+          {step.instruction}
+        </Text>
+        {duration ? (
+          <View className="mt-stack-sm flex-row items-center gap-stack-sm">
+            <MaterialIcons name="timer" size={16} color={colors.secondary} />
+            <Text className="font-mono-medium text-label-sm text-secondary">{duration}</Text>
+          </View>
+        ) : null}
       </View>
     </View>
   );
 }
 
-function MacrosGrid() {
+function Stats({ recipe }: { recipe: Recipe }) {
+  const tiles = [
+    { label: 'RACIONES', value: String(recipe.servings) },
+    { label: 'PREP', value: `${recipe.prep_time_min} MIN` },
+    { label: 'COCCIÓN', value: `${recipe.cook_time_min} MIN` },
+    { label: 'CALORÍAS', value: recipe.calories ? `${recipe.calories}` : '—' },
+  ];
   return (
     <View className="flex-row flex-wrap gap-gutter border-t border-outline-variant pt-stack-lg">
-      {MACROS.map((macro) => (
+      {tiles.map((tile) => (
         <View
-          key={macro.label}
+          key={tile.label}
           className="flex-1 basis-[45%] items-center border border-outline-variant bg-surface p-gutter">
-          <Text className="mb-stack-sm font-mono text-label-sm text-on-surface-variant">
-            {macro.label}
-          </Text>
-          <Text className="font-sans-semibold text-headline-sm text-primary">{macro.value}</Text>
+          <Text className="mb-stack-sm font-mono text-label-sm text-on-surface-variant">{tile.label}</Text>
+          <Text className="font-sans-semibold text-headline-sm text-primary">{tile.value}</Text>
         </View>
       ))}
     </View>
@@ -189,45 +205,101 @@ function MacrosGrid() {
 
 export default function RecipeDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
+
+  const load = useCallback(() => {
+    let active = true;
+    setLoading(true);
+    setFailed(false);
+    getRecipe(id)
+      .then((data) => {
+        if (active) setRecipe(data);
+      })
+      .catch(() => {
+        if (active) setFailed(true);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
+  useEffect(() => load(), [load]);
+
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <TopBar />
-      <View className="flex-1">
-        <ScrollView className="flex-1" contentContainerClassName="pb-40">
-          <Hero />
-          <View className="-mt-8 px-container-padding">
-            <View className="gap-section-gap border border-outline-variant bg-surface-container-lowest p-stack-lg">
-              <View className="gap-stack-md border-b border-outline-variant pb-stack-lg">
-                <Text className="font-sans-bold text-display-lg text-primary">
-                  Risotto de setas silvestres y esencia de trufa
-                </Text>
-                <MetaRow />
-              </View>
 
-              <Text className="font-sans text-body-lg leading-relaxed text-on-surface-variant">
-                Un risotto terroso y sofisticado que resalta el umami de las setas silvestres de
-                temporada. Se termina con un toque de esencia de trufa para una experiencia de alta
-                cocina en tu propia casa.
-              </Text>
-
-              <Ingredients />
-              <Preparation />
-              <MacrosGrid />
-            </View>
-          </View>
-        </ScrollView>
-
-        <View className="absolute bottom-8 right-container-padding">
-          <Pressable
-            onPress={() => router.push({ pathname: '/cocinar/[id]', params: { id } })}
-            className="flex-row items-center gap-stack-md bg-primary px-stack-lg py-gutter">
-            <MaterialIcons name="play-arrow" size={22} color={colors['on-primary']} />
-            <Text className="font-mono-medium text-label-md tracking-widest text-on-primary">
-              EMPEZAR A COCINAR
-            </Text>
+      {loading ? (
+        <ActivityIndicator color={colors.primary} className="mt-section-gap" />
+      ) : failed ? (
+        <View className="mt-section-gap items-center gap-stack-md px-container-padding">
+          <MaterialIcons name="error-outline" size={40} color={colors['outline-variant']} />
+          <Text className="text-center font-sans text-body-md text-on-surface-variant">
+            No se pudo cargar la receta.
+          </Text>
+          <Pressable onPress={load} className="rounded-lg border border-primary px-gutter py-stack-md">
+            <Text className="font-mono-medium text-label-md text-primary">Reintentar</Text>
           </Pressable>
         </View>
-      </View>
+      ) : !recipe ? (
+        <View className="mt-section-gap items-center gap-stack-md px-container-padding">
+          <MaterialIcons name="search-off" size={40} color={colors['outline-variant']} />
+          <Text className="text-center font-sans text-body-md text-on-surface-variant">
+            No se encontró la receta.
+          </Text>
+        </View>
+      ) : (
+        <View className="flex-1">
+          <ScrollView className="flex-1" contentContainerClassName="pb-40">
+            <Hero recipe={recipe} />
+            <View className="-mt-8 px-container-padding">
+              <View className="gap-section-gap border border-outline-variant bg-surface-container-lowest p-stack-lg">
+                <View className="gap-stack-md border-b border-outline-variant pb-stack-lg">
+                  <Text className="font-sans-bold text-display-lg text-primary">{recipe.title}</Text>
+                  <MetaRow recipe={recipe} />
+                </View>
+
+                {recipe.description ? (
+                  <Text className="font-sans text-body-lg leading-relaxed text-on-surface-variant">
+                    {recipe.description}
+                  </Text>
+                ) : null}
+
+                <Ingredients recipe={recipe} />
+
+                <View>
+                  <Text className="mb-stack-md font-sans-semibold text-headline-sm uppercase tracking-wider text-primary">
+                    Preparación
+                  </Text>
+                  <View className="gap-section-gap">
+                    {recipe.steps.map((step, i) => (
+                      <StepItem key={i} step={step} index={i} />
+                    ))}
+                  </View>
+                </View>
+
+                <Stats recipe={recipe} />
+              </View>
+            </View>
+          </ScrollView>
+
+          <View className="absolute bottom-8 right-container-padding">
+            <Pressable
+              onPress={() => router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } })}
+              className="flex-row items-center gap-stack-md bg-primary px-stack-lg py-gutter">
+              <MaterialIcons name="play-arrow" size={22} color={colors['on-primary']} />
+              <Text className="font-mono-medium text-label-md tracking-widest text-on-primary">
+                EMPEZAR A COCINAR
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 }

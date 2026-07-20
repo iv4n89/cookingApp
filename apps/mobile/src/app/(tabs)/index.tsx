@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppHeader } from '@/components/app-header';
 import { AskAiModal } from '@/components/ask-ai-modal';
 import { RecipeCard, type RecipeCardData } from '@/components/recipe-card';
+import { askRecipe } from '@/lib/recipes';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -179,7 +180,10 @@ export default function InicioScreen() {
       <AskAiModal
         visible={askVisible}
         onClose={() => setAskVisible(false)}
-        onSubmit={() => {}}
+        onSubmit={async (question) => {
+          const { recipe } = await askRecipe(question);
+          if (recipe) router.push({ pathname: '/receta/[id]', params: { id: recipe.id } });
+        }}
       />
     </SafeAreaView>
   );
