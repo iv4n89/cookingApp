@@ -44,19 +44,19 @@ const RECIPES: RecipeCardData[] = [
 
 function SearchBar() {
   return (
-    <View className="relative justify-center">
-      <View className="absolute left-4 z-10">
-        <MaterialIcons name="chat-bubble-outline" size={22} color={colors.primary} />
-      </View>
+    <View className="flex-row items-center gap-stack-md rounded-xl border border-outline-variant bg-surface-container-lowest px-gutter py-stack-md">
+      <MaterialIcons name="chat-bubble-outline" size={22} color={colors.primary} />
       <TextInput
-        className="h-16 border-b-2 border-outline bg-surface-container-lowest pl-14 pr-28 font-sans text-body-lg text-on-surface"
-        placeholder="Pregunta a la IA: ¿qué hago con la col y el bacon que me sobran?"
+        className="flex-1 font-sans text-body-lg text-on-surface"
+        placeholder="Pregunta a la IA…"
         placeholderTextColor={colors['on-surface-variant']}
-        multiline={false}
+        multiline
       />
-      <Pressable className="absolute right-4 flex-row items-center gap-stack-sm bg-primary px-stack-lg py-stack-md">
-        <Text className="font-mono-medium text-label-md text-on-primary">PREGUNTAR</Text>
-        <MaterialIcons name="arrow-forward" size={16} color={colors['on-primary']} />
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Preguntar a la IA"
+        className="h-10 w-10 items-center justify-center rounded-full bg-primary">
+        <MaterialIcons name="arrow-forward" size={20} color={colors['on-primary']} />
       </Pressable>
     </View>
   );
@@ -158,7 +158,7 @@ export default function InicioScreen() {
         <SearchBar />
 
         <View>
-          <SectionHeader title="Tu alacena" action="VER TODO" />
+          <SectionHeader title="Tu despensa" action="VER TODO" />
           <View className="gap-gutter">
             <CriticalStockCard />
             <ExpiringCard />
@@ -167,7 +167,7 @@ export default function InicioScreen() {
         </View>
 
         <View>
-          <SectionHeader title="Para tu alacena" action="VER MÁS" />
+          <SectionHeader title="Para tu despensa" action="VER MÁS" />
           <View className="gap-gutter">
             {RECIPES.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />

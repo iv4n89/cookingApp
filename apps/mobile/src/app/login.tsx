@@ -72,7 +72,7 @@ export default function LoginScreen() {
         <View className="items-center gap-stack-sm">
           <Text className="font-sans-bold text-headline-md text-primary">COCINA INTELIGENTE</Text>
           <Text className="text-center font-sans text-body-md text-on-surface-variant">
-            {isSignIn ? 'Entra para cocinar con tu alacena.' : 'Crea tu cuenta y empieza a cocinar.'}
+            {isSignIn ? 'Entra para cocinar con tu despensa.' : 'Crea tu cuenta y empieza a cocinar.'}
           </Text>
         </View>
 

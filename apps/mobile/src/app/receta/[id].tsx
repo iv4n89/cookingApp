@@ -108,7 +108,7 @@ function IngredientRow({ name, inPantry }: { name: string; inPantry: boolean }) 
         className={`font-mono text-label-sm uppercase ${
           inPantry ? 'text-primary' : 'text-on-secondary-fixed-variant'
         }`}>
-        {inPantry ? 'En la alacena' : 'Comprar'}
+        {inPantry ? 'En la despensa' : 'Comprar'}
       </Text>
     </View>
   );

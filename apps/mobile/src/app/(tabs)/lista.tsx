@@ -96,7 +96,7 @@ export default function ListaScreen() {
             <View className="flex-row items-start gap-gutter">
               <MaterialIcons name="info" size={22} color={colors['on-primary']} />
               <Text className="flex-1 font-sans text-body-md text-on-primary opacity-90">
-                Marca lo comprado para quitarlo de la lista. Más adelante se añadirá a tu alacena
+                Marca lo comprado para quitarlo de la lista. Más adelante se añadirá a tu despensa
                 automáticamente.
               </Text>
             </View>

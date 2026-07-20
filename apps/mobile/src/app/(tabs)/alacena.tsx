@@ -139,7 +139,7 @@ export default function AlacenaScreen() {
           className="flex-1"
           contentContainerClassName="px-container-padding pt-stack-lg pb-section-gap gap-stack-lg">
           <View className="gap-stack-md">
-            <Text className="font-sans-bold text-display-lg text-primary">Mi Alacena</Text>
+            <Text className="font-sans-bold text-display-lg text-primary">Mi Despensa</Text>
             <Text className="font-sans text-body-lg text-on-surface-variant">
               Organiza tus ingredientes y controla el inventario con precisión.
             </Text>
@@ -167,7 +167,7 @@ export default function AlacenaScreen() {
               <View className="mt-section-gap items-center gap-stack-md">
                 <MaterialIcons name="kitchen" size={40} color={colors['outline-variant']} />
                 <Text className="text-center font-sans text-body-md text-on-surface-variant">
-                  Tu alacena está vacía. Añade tu primer ingrediente con el botón +.
+                  Tu despensa está vacía. Añade tu primer ingrediente con el botón +.
                 </Text>
               </View>
             )
@@ -212,7 +212,7 @@ export default function AlacenaScreen() {
 
       <AddItemModal
         visible={modalVisible}
-        title="Añadir a la alacena"
+        title="Añadir a la despensa"
         withCategory
         onClose={() => setModalVisible(false)}
         onSubmit={add}
