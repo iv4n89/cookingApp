@@ -16,6 +16,14 @@ export function normalize(text: string): string {
     .trim();
 }
 
+const IMAGE_BUCKET = 'ingredient-images';
+
+// image_url guarda la clave del objeto en el bucket; la resolvemos a URL pública.
+function resolveImageUrl(key: string | null): string | null {
+  if (!key) return null;
+  return supabase.storage.from(IMAGE_BUCKET).getPublicUrl(key).data.publicUrl;
+}
+
 export async function listIngredients(): Promise<CatalogIngredient[]> {
   const { data, error } = await supabase
     .from('ingredients')
@@ -23,5 +31,8 @@ export async function listIngredients(): Promise<CatalogIngredient[]> {
     .order('category')
     .order('name');
   if (error) throw error;
-  return (data as CatalogIngredient[]) ?? [];
+  return (data ?? []).map((row) => ({
+    ...(row as CatalogIngredient),
+    image_url: resolveImageUrl((row as CatalogIngredient).image_url),
+  }));
 }
