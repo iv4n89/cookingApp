@@ -1,8 +1,12 @@
 import { embedText, generateRecipe } from './gemini.ts';
 import { excludedAllergens, requiredDiet } from './preferences.ts';
+import { generateRecipeImage } from './recipe-image.ts';
 import { recipeFromGenerated, saveRecipe } from './recipes.ts';
 import { searchWeb } from './tavily.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// Global del edge runtime de Supabase para trabajo en segundo plano tras responder.
+declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
 
 // Umbral de similitud coseno para reutilizar una receta existente (gemini-embedding-001, 768).
 export const MATCH_THRESHOLD = 0.65;
@@ -100,6 +104,16 @@ export async function resolveRecipe(
 
   const generated = await generateRecipe(query, context || undefined, prefs ? buildPrefText(prefs) : undefined);
   const saved = await saveRecipe(supabase, recipeFromGenerated(generated, sourceUrl));
+
+  // Imagen de la receta en segundo plano: no bloquea la respuesta y se guarda para el futuro.
+  const savedId = saved?.id;
+  const savedTitle = saved?.title;
+  if (typeof savedId === 'string' && typeof savedTitle === 'string') {
+    const task = generateRecipeImage(supabase, savedId, savedTitle).catch((e) =>
+      console.error('recipe image:', e),
+    );
+    if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime?.waitUntil) EdgeRuntime.waitUntil(task);
+  }
 
   if (userId) {
     try {
