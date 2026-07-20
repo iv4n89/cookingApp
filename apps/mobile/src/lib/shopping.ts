@@ -15,6 +15,7 @@ export interface NewShoppingItem {
   name: string;
   quantity: number | null;
   unit: string | null;
+  ingredient_id: string | null;
 }
 
 const COLUMNS = 'id, name, quantity, unit, checked';

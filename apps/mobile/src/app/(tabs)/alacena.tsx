@@ -3,9 +3,9 @@ import { useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AddItemModal } from '@/components/add-item-modal';
 import { AppHeader } from '@/components/app-header';
 import { ErrorBanner } from '@/components/error-banner';
+import { IngredientPicker } from '@/components/ingredient-picker';
 import { usePantry, type PantryItem } from '@/lib/pantry';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
@@ -210,12 +210,18 @@ export default function AlacenaScreen() {
         </Pressable>
       </View>
 
-      <AddItemModal
+      <IngredientPicker
         visible={modalVisible}
-        title="Añadir a la despensa"
-        withCategory
         onClose={() => setModalVisible(false)}
-        onSubmit={add}
+        onAdd={(item) =>
+          add({
+            ingredient_id: item.ingredientId,
+            name: item.name,
+            category: item.category,
+            quantity: item.quantity,
+            unit: item.unit,
+          })
+        }
       />
     </SafeAreaView>
   );

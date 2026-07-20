@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AddItemModal } from '@/components/add-item-modal';
 import { AppHeader } from '@/components/app-header';
 import { Checkbox } from '@/components/checkbox';
 import { ErrorBanner } from '@/components/error-banner';
+import { IngredientPicker } from '@/components/ingredient-picker';
 import { useShoppingList, type ShoppingItem } from '@/lib/shopping';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
@@ -111,11 +111,17 @@ export default function ListaScreen() {
         ) : null}
       </ScrollView>
 
-      <AddItemModal
+      <IngredientPicker
         visible={modalVisible}
-        title="Añadir a la compra"
         onClose={() => setModalVisible(false)}
-        onSubmit={({ name, quantity, unit }) => add({ name, quantity, unit })}
+        onAdd={(item) =>
+          add({
+            ingredient_id: item.ingredientId,
+            name: item.name,
+            quantity: item.quantity,
+            unit: item.unit,
+          })
+        }
       />
     </SafeAreaView>
   );

@@ -16,6 +16,7 @@ export interface NewPantryItem {
   quantity: number | null;
   unit: string | null;
   category: string | null;
+  ingredient_id: string | null;
 }
 
 const COLUMNS = 'id, name, quantity, unit, category';
