@@ -2,9 +2,16 @@ import { getUserId, isAuthenticatedUser } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
 import { embedText, generateRecipe } from '../_shared/gemini.ts';
+import { excludedAllergens, requiredDiet } from '../_shared/preferences.ts';
 import { recipeFromGenerated, saveRecipe } from '../_shared/recipes.ts';
 import { searchWeb } from '../_shared/tavily.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+interface UserPrefs {
+  food_prefs: string[];
+  special_needs: string[];
+  notes: string;
+}
 
 // Umbral de similitud coseno para reutilizar una receta existente.
 // Calibrado con embeddings de gemini-embedding-001 (768, normalizados): las
@@ -28,30 +35,33 @@ async function generationsInWindow(supabase: SupabaseClient, userId: string): Pr
   return count ?? 0;
 }
 
-// Directivas de personalización a partir de las preferencias del usuario.
-async function userPreferences(
-  supabase: SupabaseClient,
-  userId: string,
-): Promise<string | undefined> {
+async function getUserPrefs(supabase: SupabaseClient, userId: string): Promise<UserPrefs | null> {
   const { data } = await supabase
     .from('user_preferences')
     .select('food_prefs, special_needs, notes')
     .eq('user_id', userId)
     .maybeSingle();
-  if (!data) return undefined;
+  if (!data) return null;
+  return {
+    food_prefs: data.food_prefs ?? [],
+    special_needs: data.special_needs ?? [],
+    notes: data.notes ?? '',
+  };
+}
 
+// Directivas de personalización para la generación a partir de las preferencias.
+function buildPrefText(prefs: UserPrefs): string | undefined {
   const parts: string[] = [];
-  if (data.food_prefs?.length) {
-    parts.push(`Preferencias de comida del usuario (tenlas en cuenta): ${data.food_prefs.join(', ')}.`);
+  if (prefs.food_prefs.length) {
+    parts.push(`Preferencias de comida del usuario (tenlas en cuenta): ${prefs.food_prefs.join(', ')}.`);
   }
-  if (data.special_needs?.length) {
+  if (prefs.special_needs.length) {
     parts.push(
-      `IMPRESCINDIBLE respetar estas necesidades del usuario; evita por completo esos ingredientes y sus derivados: ${data.special_needs.join(', ')}.`,
+      `IMPRESCINDIBLE respetar estas necesidades del usuario; evita por completo esos ingredientes y sus derivados: ${prefs.special_needs.join(', ')}.`,
     );
   }
-  const notes = (data.notes ?? '').trim().slice(0, 500);
+  const notes = prefs.notes.trim().slice(0, 500);
   if (notes) parts.push(`Notas del usuario: ${notes}`);
-
   return parts.length ? parts.join(' ') : undefined;
 }
 
@@ -71,13 +81,22 @@ Deno.serve(async (req) => {
 
   try {
     const supabase = serviceClient();
+    const userId = getUserId(req);
 
-    // 1) Buscar una receta parecida ya guardada.
+    // Preferencias del usuario: filtran la caché (necesidades = exclusión dura) y
+    // personalizan la generación.
+    const prefs = userId ? await getUserPrefs(supabase, userId) : null;
+    const exclude_allergens = prefs ? excludedAllergens(prefs.special_needs) : [];
+    const require_diet = prefs ? requiredDiet(prefs.food_prefs) : [];
+
+    // 1) Buscar una receta parecida ya guardada que respete preferencias/necesidades.
     const embedding = await embedText(text, 'RETRIEVAL_QUERY');
     const { data, error } = await supabase.rpc('match_recipes', {
       query_embedding: embedding,
       match_threshold: MATCH_THRESHOLD,
       match_count: 1,
+      exclude_allergens,
+      require_diet,
     });
     if (error) throw error;
 
@@ -85,7 +104,6 @@ Deno.serve(async (req) => {
     if (match) return json({ recipe: match, origin: 'db' });
 
     // 2) Sin match: generar es costoso (LLM + web), así que se limita por usuario.
-    const userId = getUserId(req);
     if (userId && (await generationsInWindow(supabase, userId)) >= MAX_GENERATIONS_PER_WINDOW) {
       return json({ error: 'Has creado muchas recetas nuevas en poco tiempo. Prueba más tarde.' }, 429);
     }
@@ -98,7 +116,7 @@ Deno.serve(async (req) => {
       .slice(0, 4000);
     const sourceUrl = results[0]?.url ?? null;
 
-    const preferences = userId ? await userPreferences(supabase, userId) : undefined;
+    const preferences = prefs ? buildPrefText(prefs) : undefined;
     const generated = await generateRecipe(text, context || undefined, preferences);
     const saved = await saveRecipe(supabase, recipeFromGenerated(generated, sourceUrl));
 

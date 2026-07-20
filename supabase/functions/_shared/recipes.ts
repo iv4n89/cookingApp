@@ -1,6 +1,7 @@
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 import { embedText, type GeneratedRecipe } from './gemini.ts';
+import { ALLERGEN_KEYS, DIET_KEYS, sanitizeKeys } from './preferences.ts';
 
 export interface RecipeData {
   title: string;
@@ -13,6 +14,8 @@ export interface RecipeData {
   cook_time_min?: number;
   calories?: number | null;
   tags?: string[];
+  allergens?: string[] | null;
+  diet?: string[] | null;
   ingredients?: { name: string }[];
   steps?: unknown[];
 }
@@ -48,6 +51,8 @@ export function recipeFromGenerated(g: GeneratedRecipe, sourceUrl?: string | nul
     cook_time_min: g.cook_time_min,
     calories: g.calories ?? null,
     tags: g.tags ?? [],
+    allergens: sanitizeKeys(g.allergens, ALLERGEN_KEYS),
+    diet: sanitizeKeys(g.diet, DIET_KEYS),
     ingredients: g.ingredients.map((i) => ({
       name: i.name,
       quantity: parseQuantity(i.quantity),
@@ -123,6 +128,8 @@ export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
       cook_time_min: recipe.cook_time_min ?? 0,
       calories: recipe.calories ?? null,
       tags: recipe.tags ?? [],
+      allergens: recipe.allergens ?? null,
+      diet: recipe.diet ?? null,
       ingredients,
       steps: recipe.steps ?? [],
       embedding,
