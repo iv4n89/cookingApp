@@ -1,6 +1,6 @@
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-import { embedText } from './gemini.ts';
+import { embedText, type GeneratedRecipe } from './gemini.ts';
 
 export interface RecipeData {
   title: string;
@@ -26,6 +26,39 @@ function embeddingText(recipe: RecipeData): string {
   return [recipe.title, recipe.description ?? '', (recipe.tags ?? []).join(', '), ingredients]
     .filter(Boolean)
     .join('\n');
+}
+
+function parseQuantity(value?: string): number | null {
+  if (!value) return null;
+  const n = Number(value.replace(',', '.').trim());
+  return Number.isFinite(n) ? n : null;
+}
+
+// Normaliza la receta de Gemini a la forma de dominio (packages/shared/types.ts):
+// Ingredient {name, quantity, unit, substitutions} y RecipeStep {order, instruction, timerSeconds}.
+export function recipeFromGenerated(g: GeneratedRecipe): RecipeData {
+  return {
+    title: g.title,
+    description: g.description,
+    source: 'generated',
+    servings: g.servings,
+    prep_time_min: g.prep_time_min,
+    cook_time_min: g.cook_time_min,
+    calories: g.calories ?? null,
+    tags: g.tags ?? [],
+    ingredients: g.ingredients.map((i) => ({
+      name: i.name,
+      quantity: parseQuantity(i.quantity),
+      unit: i.unit?.trim() || null,
+      substitutions: [],
+    })),
+    steps: g.steps.map((s, index) => ({
+      order: index + 1,
+      instruction: s.instruction,
+      timerSeconds:
+        typeof s.timer_seconds === 'number' && s.timer_seconds > 0 ? s.timer_seconds : null,
+    })),
+  };
 }
 
 export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
