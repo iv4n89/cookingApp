@@ -1,7 +1,8 @@
 import { isAuthenticatedUser } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
-import { embedText } from '../_shared/gemini.ts';
+import { embedText, generateRecipe } from '../_shared/gemini.ts';
+import { saveRecipe } from '../_shared/recipes.ts';
 
 // Umbral de similitud coseno para reutilizar una receta existente.
 // Calibrado con embeddings de gemini-embedding-001 (768, normalizados): las
@@ -17,11 +18,13 @@ Deno.serve(async (req) => {
   if (typeof query !== 'string' || !query.trim()) {
     return json({ error: 'Falta el campo "query".' }, 400);
   }
+  const text = query.trim();
 
   try {
-    const embedding = await embedText(query.trim(), 'RETRIEVAL_QUERY');
-
     const supabase = serviceClient();
+
+    // 1) Buscar una receta parecida ya guardada.
+    const embedding = await embedText(text, 'RETRIEVAL_QUERY');
     const { data, error } = await supabase.rpc('match_recipes', {
       query_embedding: embedding,
       match_threshold: MATCH_THRESHOLD,
@@ -29,8 +32,13 @@ Deno.serve(async (req) => {
     });
     if (error) throw error;
 
-    const recipe = data?.[0] ?? null;
-    return json({ recipe, origin: recipe ? 'db' : 'none' });
+    const match = data?.[0];
+    if (match) return json({ recipe: match, origin: 'db' });
+
+    // 2) Si no hay match, generar con Gemini y guardar para reutilizar.
+    const generated = await generateRecipe(text);
+    const saved = await saveRecipe(supabase, { ...generated, source: 'generated' });
+    return json({ recipe: saved, origin: 'generated' });
   } catch (e) {
     console.error('search-recipe:', e);
     return json({ error: 'No se pudo procesar la búsqueda.' }, 500);
