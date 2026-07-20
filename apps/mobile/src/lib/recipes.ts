@@ -72,6 +72,7 @@ export async function addIngredientsToShopping(userId: string, ingredients: Reci
     name: item.name,
     quantity: item.quantity,
     unit: item.unit,
+    ingredient_id: item.ingredient_id ?? null,
   }));
   const { error } = await supabase.from('shopping_list_items').insert(rows);
   if (error) throw error;
