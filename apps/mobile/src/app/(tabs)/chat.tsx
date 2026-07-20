@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import {
@@ -71,58 +72,54 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   const total = recipe.prep_time_min + recipe.cook_time_min;
   const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
   return (
-    <View className="w-full max-w-[92%] gap-gutter rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low p-stack-lg">
-      <View className="self-start bg-primary px-stack-md py-stack-sm">
-        <Text className="font-mono text-label-sm text-on-primary">RECETA</Text>
+    <View className="w-full max-w-[92%] gap-gutter overflow-hidden rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low">
+      <View className="aspect-[3/2] w-full items-center justify-center bg-surface-container">
+        {recipe.image_url ? (
+          <Image source={recipe.image_url} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+        ) : (
+          <MaterialIcons name="restaurant-menu" size={36} color={colors['outline-variant']} />
+        )}
       </View>
-      <Text className="font-sans-semibold text-headline-sm text-on-surface">{recipe.title}</Text>
-      {recipe.description ? (
-        <Text className="font-sans text-body-md text-on-surface-variant">{recipe.description}</Text>
-      ) : null}
-      {total > 0 ? (
-        <View className="flex-row flex-wrap gap-gutter">
-          <MetaChip icon="schedule" text={`${total} MIN`} />
+
+      <View className="gap-gutter p-stack-lg pt-0">
+        <View className="self-start bg-primary px-stack-md py-stack-sm">
+          <Text className="font-mono text-label-sm text-on-primary">RECETA</Text>
         </View>
-      ) : null}
-
-      <ServingsStepper servings={servings} onChange={setServings} />
-
-      <View className="gap-stack-md border-t border-outline-variant pt-gutter">
-        <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-          Ingredientes
-        </Text>
-        {scaled.map((ing, i) => (
-          <View key={i} className="flex-row items-start gap-stack-md">
-            <View className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
-            <Text className="flex-1 font-sans text-body-md text-on-surface">
-              {[formatQuantity(ing.quantity), ing.unit, ing.name].filter((v) => v !== '' && v !== null).join(' ')}
-            </Text>
+        <Text className="font-sans-semibold text-headline-sm text-on-surface">{recipe.title}</Text>
+        {recipe.description ? (
+          <Text className="font-sans text-body-md text-on-surface-variant">{recipe.description}</Text>
+        ) : null}
+        {total > 0 ? (
+          <View className="flex-row flex-wrap gap-gutter">
+            <MetaChip icon="schedule" text={`${total} MIN`} />
           </View>
-        ))}
-      </View>
+        ) : null}
 
-      <View className="gap-stack-md border-t border-outline-variant pt-gutter">
-        <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-          Pasos
-        </Text>
-        {recipe.steps.map((s, i) => (
-          <View key={i} className="flex-row gap-stack-md">
-            <Text className="font-sans-semibold text-body-md text-primary">{i + 1}.</Text>
-            <Text className="flex-1 font-sans text-body-md leading-relaxed text-on-surface-variant">
-              {s.instruction}
-            </Text>
-          </View>
-        ))}
-      </View>
+        <ServingsStepper servings={servings} onChange={setServings} />
 
-      <Pressable
-        onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id, servings } })}
-        className="flex-row items-center justify-center gap-stack-md bg-primary py-gutter">
-        <MaterialIcons name="play-arrow" size={20} color={colors['on-primary']} />
-        <Text className="font-mono-medium uppercase tracking-widest text-label-md text-on-primary">
-          Comenzar a cocinar
-        </Text>
-      </Pressable>
+        <View className="gap-stack-md border-t border-outline-variant pt-gutter">
+          <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+            Ingredientes
+          </Text>
+          {scaled.map((ing, i) => (
+            <View key={i} className="flex-row items-start gap-stack-md">
+              <View className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
+              <Text className="flex-1 font-sans text-body-md text-on-surface">
+                {[formatQuantity(ing.quantity), ing.unit, ing.name].filter((v) => v !== '' && v !== null).join(' ')}
+              </Text>
+            </View>
+          ))}
+        </View>
+
+        <Pressable
+          onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id, servings } })}
+          className="flex-row items-center justify-center gap-stack-md bg-primary py-gutter">
+          <MaterialIcons name="play-arrow" size={20} color={colors['on-primary']} />
+          <Text className="font-mono-medium uppercase tracking-widest text-label-md text-on-primary">
+            Comenzar a cocinar
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
