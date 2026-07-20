@@ -22,7 +22,7 @@ const BENEFITS: { icon: IconName; title: string; text: string; tag: string }[] =
   },
   {
     icon: 'kitchen',
-    title: 'Alacena ilimitada',
+    title: 'Despensa ilimitada',
     text: 'No pierdas la pista de ningún ingrediente. Alertas de caducidad y sugerencias de reposición en tiempo real.',
     tag: 'MARIDAJE SENSORIAL',
   },

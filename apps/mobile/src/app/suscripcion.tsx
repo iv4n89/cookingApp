@@ -135,7 +135,7 @@ export default function ManageSubscriptionScreen() {
             </Text>
           </Pressable>
           <Text className="max-w-xs text-center font-mono text-[11px] leading-relaxed text-on-tertiary-container">
-            Si cancelas, perderás el acceso a los análisis de alacena con IA al final del ciclo de
+            Si cancelas, perderás el acceso a los análisis de despensa con IA al final del ciclo de
             facturación actual.
           </Text>
         </View>

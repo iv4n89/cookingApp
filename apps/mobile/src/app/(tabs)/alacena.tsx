@@ -1,78 +1,39 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { AddItemModal } from '@/components/add-item-modal';
 import { AppHeader } from '@/components/app-header';
-import { Checkbox } from '@/components/checkbox';
+import { ErrorBanner } from '@/components/error-banner';
+import { usePantry, type PantryItem } from '@/lib/pantry';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-type IconName = keyof typeof MaterialIcons.glyphMap;
+const UNCATEGORIZED = 'Otros';
 
-type Row =
-  | { kind: 'item'; id: string; name: string; detail: string; qty: number; lowStock?: boolean }
-  | { kind: 'stocked'; id: string; name: string; detail: string }
-  | { kind: 'restock'; id: string; name: string; detail: string }
-  | { kind: 'suggestion'; id: string; title: string; text: string };
-
-interface Category {
-  id: string;
-  icon: IconName;
-  name: string;
-  count: string;
-  rows: Row[];
+function isLowStock(item: PantryItem) {
+  return item.quantity !== null && item.quantity <= 1;
 }
 
-const CATEGORIES: Category[] = [
-  {
-    id: 'verduras',
-    icon: 'eco',
-    name: 'Verduras',
-    count: '12',
-    rows: [
-      { kind: 'item', id: 'spinach', name: 'Espinacas baby ecológicas', detail: '250 g • Cad: 3 días', qty: 1, lowStock: true },
-      { kind: 'item', id: 'cherry', name: 'Tomates cherry', detail: '2 paquetes • De la huerta', qty: 2 },
-      { kind: 'item', id: 'pepper', name: 'Pimientos rojos', detail: '3 unidades • Frescos', qty: 3 },
-    ],
-  },
-  {
-    id: 'proteinas',
-    icon: 'set-meal',
-    name: 'Proteínas',
-    count: '5',
-    rows: [
-      { kind: 'item', id: 'salmon', name: 'Salmón atlántico', detail: '2 filetes • Congelado', qty: 2 },
-      { kind: 'restock', id: 'chicken', name: 'Pechuga de pollo', detail: '0 g • Reponer' },
-      { kind: 'item', id: 'eggs', name: 'Huevos morenos L', detail: '6 unidades • Ecológicos', qty: 6, lowStock: true },
-    ],
-  },
-  {
-    id: 'especias',
-    icon: 'grain',
-    name: 'Especias y cereales',
-    count: '24',
-    rows: [
-      { kind: 'stocked', id: 'salt', name: 'Sal Maldon', detail: 'Caja llena • Despensa' },
-      { kind: 'item', id: 'rice', name: 'Arroz basmati', detail: '1,5 kg • Grano largo', qty: 1 },
-      { kind: 'suggestion', id: 'paprika', title: 'Sugerencia', text: 'Añade pimentón ahumado para el salmón' },
-    ],
-  },
-];
+function detailLine(item: PantryItem) {
+  const parts = [item.quantity, item.unit].filter((value) => value !== null && value !== '');
+  return parts.length ? parts.join(' ') : '—';
+}
 
-function Stepper({ value }: { value: number }) {
-  const [qty, setQty] = useState(value);
+function Stepper({ item, onChange }: { item: PantryItem; onChange: (next: number) => void }) {
+  const value = item.quantity ?? 0;
   return (
     <View className="flex-row items-center gap-stack-md">
       <Pressable
-        onPress={() => setQty((q) => Math.max(0, q - 1))}
+        onPress={() => onChange(Math.max(0, value - 1))}
         className="h-8 w-8 items-center justify-center rounded-full border border-outline-variant">
         <MaterialIcons name="remove" size={16} color={colors['on-surface']} />
       </Pressable>
-      <Text className="w-4 text-center font-mono-medium text-label-md text-on-surface">{qty}</Text>
+      <Text className="w-6 text-center font-mono-medium text-label-md text-on-surface">{value}</Text>
       <Pressable
-        onPress={() => setQty((q) => q + 1)}
+        onPress={() => onChange(value + 1)}
         className="h-8 w-8 items-center justify-center rounded-full border border-outline-variant">
         <MaterialIcons name="add" size={16} color={colors['on-surface']} />
       </Pressable>
@@ -80,142 +41,61 @@ function Stepper({ value }: { value: number }) {
   );
 }
 
-function LowStockBadge() {
-  return (
-    <View className="rounded bg-error-container px-stack-md py-stack-sm">
-      <Text className="font-mono-medium text-[10px] uppercase tracking-widest text-on-error-container">
-        STOCK BAJO
-      </Text>
-    </View>
-  );
-}
-
-function ItemRow({ row }: { row: Extract<Row, { kind: 'item' }> }) {
-  const [checked, setChecked] = useState(true);
-  return (
-    <View
-      className={`flex-row items-center justify-between border border-card-border bg-card p-gutter ${
-        checked ? '' : 'opacity-40'
-      }`}>
-      <View className="flex-1 flex-row items-center gap-gutter">
-        <Checkbox checked={checked} onToggle={() => setChecked((c) => !c)} />
-        <View className="flex-1">
-          <Text className="font-sans-semibold text-body-md text-primary">{row.name}</Text>
-          <Text className="font-mono text-label-sm text-on-surface-variant">{row.detail}</Text>
-        </View>
-      </View>
-      <View className="flex-row items-center gap-stack-md">
-        {row.lowStock ? <LowStockBadge /> : null}
-        <Stepper value={row.qty} />
-      </View>
-    </View>
-  );
-}
-
-function StockedRow({ row }: { row: Extract<Row, { kind: 'stocked' }> }) {
-  const [checked, setChecked] = useState(true);
+function ItemRow({
+  item,
+  onChangeQuantity,
+  onRemove,
+}: {
+  item: PantryItem;
+  onChangeQuantity: (next: number) => void;
+  onRemove: () => void;
+}) {
   return (
     <View className="flex-row items-center justify-between border border-card-border bg-card p-gutter">
-      <View className="flex-1 flex-row items-center gap-gutter">
-        <Checkbox checked={checked} onToggle={() => setChecked((c) => !c)} />
-        <View className="flex-1">
-          <Text className="font-sans-semibold text-body-md text-primary">{row.name}</Text>
-          <Text className="font-mono text-label-sm text-on-surface-variant">{row.detail}</Text>
-        </View>
+      <View className="flex-1 pr-stack-md">
+        <Text className="font-sans-semibold text-body-md text-primary">{item.name}</Text>
+        <Text className="font-mono text-label-sm text-on-surface-variant">{detailLine(item)}</Text>
       </View>
-      <Text className="font-mono text-label-sm uppercase tracking-widest text-outline-variant">
-        EN STOCK
-      </Text>
-    </View>
-  );
-}
-
-function RestockRow({ row }: { row: Extract<Row, { kind: 'restock' }> }) {
-  return (
-    <View className="flex-row items-center justify-between border border-card-border bg-card p-gutter opacity-60">
-      <View className="flex-1 flex-row items-center gap-gutter">
-        <Checkbox checked={false} onToggle={() => {}} />
-        <View className="flex-1">
-          <Text className="font-sans-semibold text-body-md text-on-surface-variant line-through">
-            {row.name}
-          </Text>
-          <Text className="font-mono text-label-sm text-on-surface-variant">{row.detail}</Text>
-        </View>
-      </View>
-      <View className="flex-row items-center gap-stack-sm rounded bg-tertiary px-stack-md py-stack-sm">
-        <MaterialIcons name="shopping-cart" size={12} color={colors['on-tertiary']} />
-        <Text className="font-mono-medium text-[10px] text-on-tertiary">AUTO</Text>
+      <View className="flex-row items-center gap-stack-md">
+        {isLowStock(item) ? (
+          <View className="rounded bg-error-container px-stack-md py-stack-sm">
+            <Text className="font-mono-medium text-[10px] uppercase tracking-widest text-on-error-container">
+              STOCK BAJO
+            </Text>
+          </View>
+        ) : null}
+        <Stepper item={item} onChange={onChangeQuantity} />
+        <Pressable onPress={onRemove} hitSlop={8}>
+          <MaterialIcons name="delete-outline" size={20} color={colors.outline} />
+        </Pressable>
       </View>
     </View>
   );
 }
 
-function SuggestionRow({ row }: { row: Extract<Row, { kind: 'suggestion' }> }) {
-  return (
-    <View className="flex-row items-center justify-between border border-dashed border-primary/30 bg-primary-fixed/30 p-gutter">
-      <View className="flex-1 flex-row items-center gap-gutter">
-        <MaterialIcons name="auto-awesome" size={22} color={colors.primary} />
-        <View className="flex-1">
-          <Text className="font-sans-semibold text-body-md text-primary">{row.title}</Text>
-          <Text className="font-mono text-label-sm text-on-primary-fixed-variant">{row.text}</Text>
-        </View>
-      </View>
-      <Pressable className="rounded bg-primary px-stack-md py-stack-sm">
-        <Text className="font-mono-medium text-label-sm uppercase tracking-wider text-on-primary">
-          Añadir
-        </Text>
-      </Pressable>
-    </View>
-  );
-}
-
-function renderRow(row: Row) {
-  switch (row.kind) {
-    case 'item':
-      return <ItemRow key={row.id} row={row} />;
-    case 'stocked':
-      return <StockedRow key={row.id} row={row} />;
-    case 'restock':
-      return <RestockRow key={row.id} row={row} />;
-    case 'suggestion':
-      return <SuggestionRow key={row.id} row={row} />;
-  }
-}
-
-function CategorySection({ category }: { category: Category }) {
-  return (
-    <View className="gap-stack-md">
-      <View className="flex-row items-center justify-between border-b border-outline-variant pb-stack-md">
-        <View className="flex-row items-center gap-stack-md">
-          <MaterialIcons name={category.icon} size={22} color={colors.primary} />
-          <Text className="font-sans-semibold text-headline-sm text-primary">{category.name}</Text>
-        </View>
-        <View className="rounded bg-surface-container px-stack-md py-stack-sm">
-          <Text className="font-mono text-label-sm text-on-surface-variant">
-            {category.count} ITEMS
-          </Text>
-        </View>
-      </View>
-      <View className="gap-stack-sm">{category.rows.map(renderRow)}</View>
-    </View>
-  );
-}
-
-function SegmentedFilter() {
-  const [active, setActive] = useState(0);
-  const options = ['TODO', 'STOCK BAJO'];
+function SegmentedFilter({
+  active,
+  onChange,
+}: {
+  active: 'all' | 'low';
+  onChange: (value: 'all' | 'low') => void;
+}) {
+  const options: { value: 'all' | 'low'; label: string }[] = [
+    { value: 'all', label: 'TODO' },
+    { value: 'low', label: 'STOCK BAJO' },
+  ];
   return (
     <View className="flex-row self-start rounded-lg bg-tertiary-fixed p-1">
-      {options.map((label, i) => (
+      {options.map((option) => (
         <Pressable
-          key={label}
-          onPress={() => setActive(i)}
-          className={`rounded px-stack-lg py-stack-md ${active === i ? 'bg-primary' : ''}`}>
+          key={option.value}
+          onPress={() => onChange(option.value)}
+          className={`rounded px-stack-lg py-stack-md ${active === option.value ? 'bg-primary' : ''}`}>
           <Text
             className={`font-mono-medium text-label-md ${
-              active === i ? 'text-on-primary' : 'text-on-surface-variant'
+              active === option.value ? 'text-on-primary' : 'text-on-surface-variant'
             }`}>
-            {label}
+            {option.label}
           </Text>
         </Pressable>
       ))}
@@ -223,107 +103,120 @@ function SegmentedFilter() {
   );
 }
 
-function SearchField() {
-  return (
-    <View className="flex-row items-center gap-stack-md border-b-2 border-outline-variant py-stack-md">
-      <MaterialIcons name="search" size={22} color={colors.outline} />
-      <TextInput
-        className="flex-1 font-sans-semibold text-headline-sm text-on-surface"
-        placeholder="Buscar ingredientes (p. ej. aguacate, sal…)"
-        placeholderTextColor={colors['outline-variant']}
-      />
-    </View>
-  );
-}
-
-function StatsBento() {
-  const bars = [
-    { h: 'h-24', o: '' },
-    { h: 'h-20', o: 'opacity-80' },
-    { h: 'h-28', o: '' },
-    { h: 'h-16', o: 'opacity-60' },
-    { h: 'h-24', o: '' },
-  ];
-  return (
-    <View className="gap-gutter">
-      <View className="justify-between gap-stack-lg rounded-xl border border-card-border bg-card p-stack-lg">
-        <View>
-          <Text className="mb-stack-sm font-mono text-label-sm uppercase tracking-widest text-on-surface-variant">
-            Salud de la alacena
-          </Text>
-          <Text className="font-sans-semibold text-headline-md text-primary">
-            84% de básicos en stock
-          </Text>
-        </View>
-        <View className="flex-row items-end gap-stack-sm">
-          {bars.map((bar, i) => (
-            <View key={i} className={`w-4 rounded-t-sm bg-primary ${bar.h} ${bar.o}`} />
-          ))}
-          <Text className="ml-stack-md flex-1 font-mono text-label-md text-on-surface-variant">
-            Tendencia semanal
-          </Text>
-        </View>
-      </View>
-
-      <View className="items-center justify-center rounded-xl bg-tertiary p-stack-lg">
-        <MaterialIcons name="notifications-active" size={32} color={colors['on-tertiary']} />
-        <Text className="mt-stack-md font-sans-semibold text-headline-sm text-on-tertiary">
-          3 productos caducan
-        </Text>
-        <Text className="mt-stack-sm font-mono text-label-sm text-on-tertiary opacity-80">
-          Actúa en 48 h
-        </Text>
-      </View>
-
-      <View className="gap-stack-lg rounded-xl bg-primary p-stack-lg">
-        <Text className="font-mono text-label-sm uppercase tracking-widest text-on-primary opacity-80">
-          IA Sous-Chef
-        </Text>
-        <Text className="font-sans-semibold text-headline-sm text-on-primary">
-          ¿Generar un plan de comidas con tu stock actual?
-        </Text>
-        <Pressable className="flex-row items-center justify-between bg-surface-container-lowest px-gutter py-stack-md">
-          <Text className="font-mono-medium text-label-md text-primary">INICIAR ANÁLISIS</Text>
-          <MaterialIcons name="arrow-forward" size={20} color={colors.primary} />
-        </Pressable>
-      </View>
-    </View>
-  );
+function groupByCategory(items: PantryItem[]) {
+  const groups = new Map<string, PantryItem[]>();
+  for (const item of items) {
+    const key = item.category?.trim() || UNCATEGORIZED;
+    const bucket = groups.get(key) ?? [];
+    bucket.push(item);
+    groups.set(key, bucket);
+  }
+  return [...groups.entries()].sort(([a], [b]) => a.localeCompare(b));
 }
 
 export default function AlacenaScreen() {
+  const { items, loading, error, refresh, add, setQuantity, remove } = usePantry();
+  const [filter, setFilter] = useState<'all' | 'low'>('all');
+  const [query, setQuery] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const visible = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return items.filter((item) => {
+      if (filter === 'low' && !isLowStock(item)) return false;
+      if (needle && !item.name.toLowerCase().includes(needle)) return false;
+      return true;
+    });
+  }, [items, filter, query]);
+
+  const groups = useMemo(() => groupByCategory(visible), [visible]);
+
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <AppHeader />
       <View className="flex-1">
         <ScrollView
           className="flex-1"
-          contentContainerClassName="px-container-padding pb-section-gap pt-stack-lg gap-section-gap">
-          <View className="gap-stack-lg">
-            <View className="gap-stack-md">
-              <Text className="font-sans-bold text-display-lg text-primary">Mi Alacena</Text>
-              <Text className="font-sans text-body-lg text-on-surface-variant">
-                Organiza tus ingredientes y controla el inventario con precisión. Tu sous-chef
-                invisible sugiere recetas a partir de lo que tienes.
-              </Text>
+          contentContainerClassName="px-container-padding pt-stack-lg pb-section-gap gap-stack-lg">
+          <View className="gap-stack-md">
+            <Text className="font-sans-bold text-display-lg text-primary">Mi Despensa</Text>
+            <Text className="font-sans text-body-lg text-on-surface-variant">
+              Organiza tus ingredientes y controla el inventario con precisión.
+            </Text>
+          </View>
+
+          <SegmentedFilter active={filter} onChange={setFilter} />
+
+          <View className="flex-row items-center gap-stack-md border-b-2 border-outline-variant py-stack-md">
+            <MaterialIcons name="search" size={22} color={colors.outline} />
+            <TextInput
+              value={query}
+              onChangeText={setQuery}
+              className="flex-1 font-sans-semibold text-headline-sm text-on-surface"
+              placeholder="Buscar ingredientes…"
+              placeholderTextColor={colors['outline-variant']}
+            />
+          </View>
+
+          {error ? <ErrorBanner message={error} onRetry={refresh} /> : null}
+
+          {loading ? (
+            <ActivityIndicator color={colors.primary} className="mt-section-gap" />
+          ) : items.length === 0 ? (
+            error ? null : (
+              <View className="mt-section-gap items-center gap-stack-md">
+                <MaterialIcons name="kitchen" size={40} color={colors['outline-variant']} />
+                <Text className="text-center font-sans text-body-md text-on-surface-variant">
+                  Tu despensa está vacía. Añade tu primer ingrediente con el botón +.
+                </Text>
+              </View>
+            )
+          ) : visible.length === 0 ? (
+            <Text className="mt-section-gap text-center font-sans text-body-md text-on-surface-variant">
+              Sin resultados.
+            </Text>
+          ) : (
+            <View className="gap-stack-lg">
+              {groups.map(([category, categoryItems]) => (
+                <View key={category} className="gap-stack-md">
+                  <View className="flex-row items-center justify-between border-b border-outline-variant pb-stack-md">
+                    <Text className="font-sans-semibold text-headline-sm text-primary">{category}</Text>
+                    <View className="rounded bg-surface-container px-stack-md py-stack-sm">
+                      <Text className="font-mono text-label-sm text-on-surface-variant">
+                        {categoryItems.length} ITEMS
+                      </Text>
+                    </View>
+                  </View>
+                  <View className="gap-stack-sm">
+                    {categoryItems.map((item) => (
+                      <ItemRow
+                        key={item.id}
+                        item={item}
+                        onChangeQuantity={(next) => setQuantity(item.id, next)}
+                        onRemove={() => remove(item.id)}
+                      />
+                    ))}
+                  </View>
+                </View>
+              ))}
             </View>
-            <SegmentedFilter />
-            <SearchField />
-          </View>
-
-          <View className="gap-stack-lg">
-            {CATEGORIES.map((category) => (
-              <CategorySection key={category.id} category={category} />
-            ))}
-          </View>
-
-          <StatsBento />
+          )}
         </ScrollView>
 
-        <Pressable className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-primary">
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-primary">
           <MaterialIcons name="add" size={28} color={colors['on-primary']} />
         </Pressable>
       </View>
+
+      <AddItemModal
+        visible={modalVisible}
+        title="Añadir a la despensa"
+        withCategory
+        onClose={() => setModalVisible(false)}
+        onSubmit={add}
+      />
     </SafeAreaView>
   );
 }
