@@ -6,6 +6,7 @@ import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSession } from '@/lib/auth';
+import { cookRecipe } from '@/lib/cooking';
 import {
   addIngredientsToShopping,
   getRecipe,
@@ -230,6 +231,21 @@ export default function RecipeDetailScreen() {
 
   useEffect(() => load(), [load]);
 
+  const [cooking, setCooking] = useState(false);
+
+  async function startCooking() {
+    if (!recipe || cooking) return;
+    setCooking(true);
+    // Descuento best-effort: si falla, igual dejamos cocinar.
+    try {
+      await cookRecipe(recipe.id, recipe.servings);
+    } catch {
+      // se ignora; el usuario puede ajustar la despensa a mano
+    }
+    setCooking(false);
+    router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
+  }
+
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <TopBar />
@@ -290,9 +306,16 @@ export default function RecipeDetailScreen() {
 
           <View className="absolute bottom-8 right-container-padding">
             <Pressable
-              onPress={() => router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } })}
-              className="flex-row items-center gap-stack-md bg-primary px-stack-lg py-gutter">
-              <MaterialIcons name="play-arrow" size={22} color={colors['on-primary']} />
+              onPress={startCooking}
+              disabled={cooking}
+              className={`flex-row items-center gap-stack-md bg-primary px-stack-lg py-gutter ${
+                cooking ? 'opacity-70' : ''
+              }`}>
+              {cooking ? (
+                <ActivityIndicator color={colors['on-primary']} />
+              ) : (
+                <MaterialIcons name="play-arrow" size={22} color={colors['on-primary']} />
+              )}
               <Text className="font-mono-medium text-label-md tracking-widest text-on-primary">
                 EMPEZAR A COCINAR
               </Text>
