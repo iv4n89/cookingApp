@@ -8,10 +8,11 @@ import { fetchWithTimeout } from '../_shared/http.ts';
 // por lotes, para poder llamarlo repetidamente hasta agotar el catálogo.
 const BUCKET = 'ingredient-images';
 // Pollinations tarda ~30-40s por imagen; con el límite de 150s de la función,
-// un lote pequeño evita que se corte a media ejecución. Es idempotente:
+// un lote pequeño evita que se corte a media ejecución. El timeout por imagen se
+// mantiene dentro del presupuesto del lote (3 x 45s = 135s < 150s). Es idempotente:
 // cada imagen se persiste al momento, así que basta con reinvocar hasta agotar.
 const DEFAULT_BATCH = 3;
-const IMAGE_TIMEOUT_MS = 90000;
+const IMAGE_TIMEOUT_MS = 45000;
 
 function imagePrompt(name: string): string {
   return (
