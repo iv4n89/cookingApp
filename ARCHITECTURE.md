@@ -11,12 +11,13 @@ Suscripción: 2,99 €/mes o 29,99 €/año.
 | Móvil     | Expo (React Native) + TypeScript + NativeWind                   |
 | Datos/Auth| Supabase (Postgres + pgvector + Auth + storage)                 |
 | Backend   | Supabase Edge Functions (Deno/TS): orquestación IA + webhook RC |
-| IA        | MiniMax (generación de recetas + embeddings)                    |
+| IA (dev)  | Google Gemini: generación (2.5-flash-lite) + embeddings (768) + web grounding |
 | Pagos     | RevenueCat + IAP nativo (Apple/Google)                          |
 
 No hay servidor propio: la lógica de servidor vive en Edge Functions (pago por
-invocación, 0 € en reposo). La clave de MiniMax es un secreto de la función y
-nunca llega al móvil.
+invocación, 0 € en reposo). La clave de Gemini es un secreto de la función y
+nunca llega al móvil. Gemini se usa durante el desarrollo por su free tier;
+MiniMax queda como alternativa para producción/escala.
 
 ## Monorepo
 
@@ -34,12 +35,12 @@ stitch/            Diseños de origen (DESIGN.md, html, img)
 
 ## Flujo de búsqueda de receta
 
-1. Embedding de la consulta (MiniMax) → búsqueda vectorial en `recipes`.
+1. Embedding de la consulta (Gemini) → búsqueda vectorial en `recipes`.
 2. Si la similitud supera el umbral → se reutiliza (sirve a cualquier usuario).
-3. Si no → búsqueda web → generación con MiniMax.
+3. Si no → búsqueda web → generación con Gemini.
 4. La receta nueva se guarda con embedding + tags para reutilización futura.
 
-El front nunca llama a MiniMax ni a la DB directamente; todo pasa por el backend.
+El front nunca llama a Gemini ni a la DB directamente; todo pasa por el backend.
 
 ## Pagos
 
@@ -49,4 +50,4 @@ envuelve el IAP y notifica al backend por webhook; el backend actualiza
 
 ## Pendiente de confirmar
 
-- Dimensión del vector de embeddings de MiniMax (columna `recipes.embedding`).
+- Proveedor de IA definitivo para producción (Gemini vs MiniMax) según coste a escala.
