@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AddItemModal } from '@/components/add-item-modal';
 import { AppHeader } from '@/components/app-header';
+import { ErrorBanner } from '@/components/error-banner';
 import { usePantry, type PantryItem } from '@/lib/pantry';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
@@ -114,7 +115,7 @@ function groupByCategory(items: PantryItem[]) {
 }
 
 export default function AlacenaScreen() {
-  const { items, loading, add, setQuantity, remove } = usePantry();
+  const { items, loading, error, refresh, add, setQuantity, remove } = usePantry();
   const [filter, setFilter] = useState<'all' | 'low'>('all');
   const [query, setQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -157,9 +158,11 @@ export default function AlacenaScreen() {
             />
           </View>
 
+          {error ? <ErrorBanner message={error} onRetry={refresh} /> : null}
+
           {loading ? (
             <ActivityIndicator color={colors.primary} className="mt-section-gap" />
-          ) : items.length === 0 ? (
+          ) : error ? null : items.length === 0 ? (
             <View className="mt-section-gap items-center gap-stack-md">
               <MaterialIcons name="kitchen" size={40} color={colors['outline-variant']} />
               <Text className="text-center font-sans text-body-md text-on-surface-variant">

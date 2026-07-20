@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AddItemModal } from '@/components/add-item-modal';
 import { AppHeader } from '@/components/app-header';
 import { Checkbox } from '@/components/checkbox';
+import { ErrorBanner } from '@/components/error-banner';
 import { useShoppingList, type ShoppingItem } from '@/lib/shopping';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
@@ -43,7 +44,7 @@ function ItemRow({
 }
 
 export default function ListaScreen() {
-  const { items, loading, add, toggle, removeChecked } = useShoppingList();
+  const { items, loading, error, refresh, add, toggle, removeChecked } = useShoppingList();
   const [modalVisible, setModalVisible] = useState(false);
 
   const checkedCount = items.filter((item) => item.checked).length;
@@ -69,9 +70,11 @@ export default function ListaScreen() {
           </Pressable>
         </View>
 
+        {error ? <ErrorBanner message={error} onRetry={refresh} /> : null}
+
         {loading ? (
           <ActivityIndicator color={colors.primary} className="mt-section-gap" />
-        ) : items.length === 0 ? (
+        ) : error ? null : items.length === 0 ? (
           <View className="mt-section-gap items-center gap-stack-md">
             <MaterialIcons name="shopping-basket" size={40} color={colors['outline-variant']} />
             <Text className="text-center font-sans text-body-md text-on-surface-variant">
