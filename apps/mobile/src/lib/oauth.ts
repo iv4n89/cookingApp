@@ -15,7 +15,11 @@ const redirectTo = Linking.createURL('/');
 async function completeSession(url: string) {
   const { queryParams } = Linking.parse(url);
   const code = queryParams?.code;
-  if (typeof code !== 'string') return;
+  if (typeof code !== 'string') {
+    // El proveedor redirige aquí con error (p. ej. el usuario cancela el consentimiento).
+    const detail = queryParams?.error_description ?? queryParams?.error;
+    throw new Error(typeof detail === 'string' ? detail : 'auth_error');
+  }
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) throw error;
 }
