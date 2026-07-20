@@ -1,9 +1,11 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { useState } from 'react';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
+import { AskAiModal } from '@/components/ask-ai-modal';
 import { RecipeCard, type RecipeCardData } from '@/components/recipe-card';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
@@ -42,23 +44,19 @@ const RECIPES: RecipeCardData[] = [
   },
 ];
 
-function SearchBar() {
+function AskInput({ onPress }: { onPress: () => void }) {
   return (
-    <View className="flex-row items-center gap-stack-md rounded-xl border border-outline-variant bg-surface-container-lowest px-gutter py-stack-md">
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel="Pregunta a la IA"
+      className="flex-row items-center gap-stack-md rounded-xl border border-outline-variant bg-surface-container-lowest px-gutter py-gutter">
       <MaterialIcons name="chat-bubble-outline" size={22} color={colors.primary} />
-      <TextInput
-        className="flex-1 font-sans text-body-lg text-on-surface"
-        placeholder="Pregunta a la IA…"
-        placeholderTextColor={colors['on-surface-variant']}
-        multiline
-      />
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Preguntar a la IA"
-        className="h-10 w-10 items-center justify-center rounded-full bg-primary">
+      <Text className="flex-1 font-sans text-body-lg text-on-surface-variant">Pregunta a la IA…</Text>
+      <View className="h-10 w-10 items-center justify-center rounded-full bg-primary">
         <MaterialIcons name="arrow-forward" size={20} color={colors['on-primary']} />
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 }
 
@@ -134,6 +132,8 @@ function QuickAddCard() {
 }
 
 export default function InicioScreen() {
+  const [askVisible, setAskVisible] = useState(false);
+
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <AppHeader />
@@ -155,7 +155,7 @@ export default function InicioScreen() {
           </Pressable>
         </View>
 
-        <SearchBar />
+        <AskInput onPress={() => setAskVisible(true)} />
 
         <View>
           <SectionHeader title="Tu despensa" action="VER TODO" />
@@ -175,6 +175,12 @@ export default function InicioScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <AskAiModal
+        visible={askVisible}
+        onClose={() => setAskVisible(false)}
+        onSubmit={() => {}}
+      />
     </SafeAreaView>
   );
 }
