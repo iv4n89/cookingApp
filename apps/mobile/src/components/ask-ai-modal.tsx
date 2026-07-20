@@ -41,7 +41,11 @@ export function AskAiModal({
               className="mt-stack-lg gap-stack-lg rounded-xl bg-surface-container-lowest p-container-padding">
               <View className="flex-row items-center justify-between">
                 <Text className="font-sans-bold text-headline-sm text-primary">Pregunta a la IA</Text>
-                <Pressable onPress={close} hitSlop={8} accessibilityLabel="Cerrar">
+                <Pressable
+                  onPress={close}
+                  hitSlop={8}
+                  accessibilityRole="button"
+                  accessibilityLabel="Cerrar">
                   <MaterialIcons name="close" size={24} color={colors['on-surface-variant']} />
                 </Pressable>
               </View>
