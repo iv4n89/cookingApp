@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Culinary Intelligence - Recipe Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .recipe-step-number {
+            opacity: 0.15;
+            line-height: 1;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#524436",
+                        "error-container": "#ffdad6",
+                        "outline": "#727972",
+                        "surface-container": "#f0eded",
+                        "tertiary-container": "#454540",
+                        "primary-fixed-dim": "#adcfb4",
+                        "primary-fixed": "#c8ebd0",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#716252",
+                        "surface": "#fcf9f8",
+                        "primary-container": "#2d4b37",
+                        "surface-tint": "#466550",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#c9c6c0",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#241a0e",
+                        "surface-dim": "#dcd9d9",
+                        "on-background": "#1c1b1b",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#1c1c18",
+                        "on-tertiary-fixed-variant": "#474742",
+                        "background": "#fcf9f8",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-surface-variant": "#424843",
+                        "secondary": "#6b5c4c",
+                        "secondary-fixed": "#f4dfcb",
+                        "secondary-fixed-dim": "#d7c3b0",
+                        "on-primary-container": "#99baa1",
+                        "on-error": "#ffffff",
+                        "tertiary": "#2f2f2a",
+                        "on-primary-fixed": "#022110",
+                        "primary": "#163422",
+                        "outline-variant": "#c2c8c0",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1c1b1b",
+                        "secondary-container": "#f4dfcb",
+                        "surface-container-low": "#f6f3f2",
+                        "inverse-on-surface": "#f3f0ef",
+                        "tertiary-fixed": "#e5e2db",
+                        "on-primary-fixed-variant": "#2f4d39",
+                        "surface-bright": "#fcf9f8",
+                        "surface-container-high": "#eae7e7",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#adcfb4",
+                        "inverse-surface": "#313030",
+                        "on-tertiary-container": "#b4b2ac",
+                        "surface-variant": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "12px",
+                        "section-gap": "40px",
+                        "container-padding": "20px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "stack-lg": "24px",
+                        "stack-sm": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-50 bg-background border-b border-outline-variant">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low transition-colors duration-200">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight text-primary">CULINARY INTELLIGENCE</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-low transition-colors duration-200">
+<span class="material-symbols-outlined text-primary">search</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a home chef in a clean, minimalist kitchen setting. The lighting is soft and natural, emphasizing a high-end, lifestyle aesthetic with a focus on organized culinary craft. The background features muted wood tones and white marble surfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlHdyAhGfEbW42H1UOwSoIKFvmrUfTobc1XD98sSAl5E9AwtDrqwacSpbhWNnJuD_lesUncf3bCNi_eKCFfFICasE59DPe5A-MlD88-Qv3vIBgj0BxO3eINFo17SIWcabKydqEaCSKWAVJxunnisNOXsiWDfyVOCpv5xdZysQMAmCtqjajHwPAdUaFqP6ZOXV9scv-BbjeP1GpTOxrmSwonSzSj9MBrtHzPW1NCdEAVAXP7ZSlAgAxz7WipG6tk2SufEf5xKk87nUI"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto mt-0 md:mt-base">
+<!-- Hero Section -->
+<section class="relative">
+<div class="aspect-[3/2] w-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A gourmet dish of wild mushroom risotto garnished with fresh microgreens and shaved parmesan. The photograph is shot in a high-key, minimalist style on a bone-white ceramic plate. Natural sunlight creates soft shadows, highlighting the creamy texture of the rice and the earthy tones of the mushrooms. The overall mood is premium, clean, and artfully composed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI-hIZ5G7IwRE1SzBmcAmNIA-easet294yLYuWuNPzwqJ2lmmmUFjH-mIYS5kMCLA8RPFIk6vFRz_UOxvTVa1rE1pqlTbkAmIbrbtJM2dnuHR3BJxWsORT4E7jzz5bsYXrxMBXmNPG9veBLYVartMKlx1zjOOtNuAKDUPjiDvGe-Bw-NbKIVrVjMurIoM6smCIFYfV60N3LsmE5BcPrRB_LHaIsv5gubVWKAHveMRegzq4ZI084SU5Bxyntv9vwFg6dT2xYDCVw7m2"/>
+</div>
+<!-- Floating Badge -->
+<div class="absolute bottom-6 right-6">
+<div class="bg-secondary-container px-3 py-1.5 border border-outline-variant inline-flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-secondary-container">SOURCE:</span>
+<span class="font-label-sm text-label-sm text-on-secondary-container font-bold">GENERATED BY AI</span>
+</div>
+</div>
+</section>
+<!-- Content Canvas -->
+<div class="px-container-padding -mt-8 relative z-10">
+<div class="bg-surface-container-lowest p-6 md:p-10 border border-outline-variant shadow-sm">
+<!-- Title & Meta -->
+<div class="mb-stack-lg border-b border-outline-variant pb-stack-lg">
+<h2 class="font-display-lg text-display-lg text-primary mb-2">Wild Mushroom &amp; Truffle Essence Risotto</h2>
+<div class="flex flex-wrap gap-4 items-center">
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span class="font-label-md text-label-md">45 MINS</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">restaurant</span>
+<span class="font-label-md text-label-md">2 SERVINGS</span>
+</div>
+<div class="bg-tertiary-fixed px-2 py-1 flex items-center gap-1.5 border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary">bolt</span>
+<span class="font-label-sm text-label-sm text-tertiary uppercase">Matches your Macros</span>
+</div>
+</div>
+</div>
+<!-- Description -->
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-section-gap leading-relaxed">
+                    An earthy, sophisticated risotto that highlights the complex umami profiles of seasonal wild mushrooms. Finished with a touch of truffle essence for a luxurious digital atelier experience in your own kitchen.
+                </p>
+<!-- Bento Grid for Ingredients and Method -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-section-gap">
+<!-- Ingredients Sidebar (md:4/12) -->
+<div class="md:col-span-5">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-headline-sm text-headline-sm text-primary uppercase tracking-wider">Ingredients</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">9 ITEMS</span>
+</div>
+<div class="space-y-stack-md mb-stack-lg">
+<!-- Ingredient Item: In Pantry -->
+<div class="flex items-center justify-between p-3 bg-surface border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-body-md text-body-md text-on-surface">Arborio Rice</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary uppercase">In Pantry</span>
+</div>
+<!-- Ingredient Item: Need to Buy -->
+<div class="flex items-center justify-between p-3 bg-secondary-container border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-body-md text-body-md text-on-surface">Wild Mushrooms (Chanterelle)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant uppercase">Need to Buy</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-body-md text-body-md text-on-surface">Shallots</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary uppercase">In Pantry</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-secondary-container border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-body-md text-body-md text-on-surface">Fresh Thyme</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant uppercase">Need to Buy</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="font-body-md text-body-md text-on-surface">Vegetable Stock</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary uppercase">In Pantry</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-secondary-container border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-body-md text-body-md text-on-surface">Truffle Oil</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant uppercase">Need to Buy</span>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full py-4 bg-primary text-on-primary flex items-center justify-center gap-2 group transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined font-label-sm">add_shopping_cart</span>
+<span class="font-label-md text-label-md">ADD MISSING TO LIST</span>
+</button>
+</div>
+<!-- Preparation Method (md:7/12) -->
+<div class="md:col-span-7">
+<h3 class="font-headline-sm text-headline-sm text-primary uppercase tracking-wider mb-stack-md">Preparation</h3>
+<div class="space-y-section-gap">
+<!-- Step 1 -->
+<div class="flex gap-4">
+<div class="recipe-step-number font-headline-md text-[40px] text-primary select-none">01</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Prepare the Base</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                                        Finely mince the shallots and sauté in a heavy-bottomed pan with a splash of olive oil until translucent and fragrant.
+                                    </p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex gap-4">
+<div class="recipe-step-number font-headline-md text-[40px] text-primary select-none">02</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Toast the Grains</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                                        Add the Arborio rice to the pan. Toast for 2 minutes, stirring constantly until the edges are translucent but the center remains white.
+                                    </p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex gap-4">
+<div class="recipe-step-number font-headline-md text-[40px] text-primary select-none">03</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Slow Integration</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                                        Begin adding warm vegetable stock one ladle at a time. Wait for the liquid to be almost entirely absorbed before adding the next.
+                                    </p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex gap-4">
+<div class="recipe-step-number font-headline-md text-[40px] text-primary select-none">04</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Mushroom Infusion</h4>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                                        Halfway through the process, fold in the sautéed wild mushrooms and fresh thyme leaves to allow the flavors to meld.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Stats/Insights -->
+<div class="mt-section-gap pt-stack-lg border-t border-outline-variant grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="text-center p-4 border border-outline-variant bg-surface">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1">CALORIES</div>
+<div class="font-headline-sm text-headline-sm text-primary">420 KCAL</div>
+</div>
+<div class="text-center p-4 border border-outline-variant bg-surface">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1">PROTEIN</div>
+<div class="font-headline-sm text-headline-sm text-primary">12G</div>
+</div>
+<div class="text-center p-4 border border-outline-variant bg-surface">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1">FATS</div>
+<div class="font-headline-sm text-headline-sm text-primary">18G</div>
+</div>
+<div class="text-center p-4 border border-outline-variant bg-surface">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1">CARBS</div>
+<div class="font-headline-sm text-headline-sm text-primary">54G</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar (Contextual FAB for Start Cooking) -->
+<div class="fixed bottom-0 left-0 w-full z-40 px-container-padding pb-8 pointer-events-none">
+<div class="max-w-4xl mx-auto flex justify-end">
+<button class="pointer-events-auto bg-primary text-on-primary px-8 py-5 flex items-center gap-3 shadow-lg hover:shadow-xl transition-all active:scale-95">
+<span class="material-symbols-outlined font-headline-sm">play_arrow</span>
+<span class="font-label-md text-label-md tracking-widest">START COOKING</span>
+</button>
+</div>
+</div>
+<!-- Persistent Bottom Nav -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex justify-around items-center h-16 px-container-padding pb-safe max-w-7xl mx-auto">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold transition-all duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">kitchen</span>
+<span class="font-label-sm text-label-sm">My Pantry</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="font-label-sm text-label-sm">Shopping List</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</a>
+</div>
+</nav>
+<script>
+        // Micro-interaction: Scroll effect for Top Bar
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm');
+                header.classList.remove('border-b-transparent');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+
+        // Toggle Ingredient Status (Visual Only Interaction)
+        document.querySelectorAll('.space-y-stack-md > div').forEach(item => {
+            item.addEventListener('click', () => {
+                // Future functionality: mark item as checked or unchecked
+            });
+        });
+    </script>
+</body></html>

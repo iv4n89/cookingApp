@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Plan - Culinary Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#163422",
+                      "on-secondary-fixed": "#241a0e",
+                      "surface-container-high": "#eae7e7",
+                      "secondary-fixed": "#f4dfcb",
+                      "background": "#fcf9f8",
+                      "on-tertiary-container": "#b4b2ac",
+                      "tertiary-fixed-dim": "#c9c6c0",
+                      "inverse-primary": "#adcfb4",
+                      "primary-fixed-dim": "#adcfb4",
+                      "on-surface": "#1c1b1b",
+                      "on-secondary": "#ffffff",
+                      "inverse-surface": "#313030",
+                      "surface-tint": "#466550",
+                      "on-primary-container": "#99baa1",
+                      "secondary": "#6b5c4c",
+                      "surface-bright": "#fcf9f8",
+                      "surface-container-highest": "#e5e2e1",
+                      "on-background": "#1c1b1b",
+                      "inverse-on-surface": "#f3f0ef",
+                      "outline-variant": "#c2c8c0",
+                      "tertiary-fixed": "#e5e2db",
+                      "primary-container": "#2d4b37",
+                      "tertiary-container": "#454540",
+                      "surface-container-low": "#f6f3f2",
+                      "on-error": "#ffffff",
+                      "surface-container": "#f0eded",
+                      "primary-fixed": "#c8ebd0",
+                      "on-primary-fixed": "#022110",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-container": "#716252",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed-dim": "#d7c3b0",
+                      "on-tertiary-fixed-variant": "#474742",
+                      "secondary-container": "#f4dfcb",
+                      "on-secondary-fixed-variant": "#524436",
+                      "outline": "#727972",
+                      "tertiary": "#2f2f2a",
+                      "surface-variant": "#e5e2e1",
+                      "on-tertiary-fixed": "#1c1c18",
+                      "error": "#ba1a1a",
+                      "surface-dim": "#dcd9d9",
+                      "on-primary-fixed-variant": "#2f4d39",
+                      "surface": "#fcf9f8",
+                      "on-surface-variant": "#424843",
+                      "on-error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-lg": "24px",
+                      "section-gap": "40px",
+                      "stack-md": "12px",
+                      "base": "8px",
+                      "stack-sm": "4px",
+                      "container-padding": "20px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-sm": ["Hanken Grotesk"],
+                      "body-md": ["Hanken Grotesk"],
+                      "label-md": ["JetBrains Mono"],
+                      "label-sm": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- TopAppBar Navigation Shell -->
+<header class="w-full top-0 sticky z-50 bg-background border-b border-outline-variant">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-stack-md">
+<button class="p-2 hover:bg-surface-container-low transition-colors duration-200">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<span class="font-headline-sm text-headline-sm font-bold tracking-tight text-primary">CULINARY INTELLIGENCE</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">search</span>
+<div class="w-8 h-8 bg-tertiary-fixed rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a sophisticated chef in a minimalist kitchen setting, illuminated by soft natural light. The style is clean and high-end, featuring organic textures and a muted color palette of whites and deep greens, consistent with a premium culinary intelligence brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqmhE4CAwfuEQia7q7KA36JimJ4qdiAdJUBEREvFahYEY5R5FIW0gAdkGBwnD63Q_4uVH0SQ30r-Vsn_z0neGZEnUBqBwqLLFCcEuqDYwj1czn-f5MZ0cl3O--abXMQxhhWvdUECPG6jOxsPd528g7IfTfCo87UIuQyfqow11UH22iuu2rTc2rP34Dd5FdBvrrUoyV6ecfzj9HBpS9PYGNzoMXC_1T1IW2_my64TV3o86eKQGvMCd7KvNYdPtAKwho3J-2AlvsQWu-"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-container-padding pt-stack-lg animate-in fade-in duration-700">
+<!-- Header -->
+<div class="mb-stack-lg">
+<h1 class="font-display-lg text-display-lg text-primary">Manage Plan</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Oversee your subscription, billing cycles, and payment preferences.</p>
+</div>
+<!-- Plan Bento Grid / Layout -->
+<div class="space-y-stack-md">
+<!-- Current Plan Card -->
+<div class="bg-tertiary-fixed border border-outline-variant p-gutter rounded-xl">
+<div class="flex justify-between items-start mb-stack-md">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest block mb-1">Active Subscription</span>
+<h2 class="font-headline-md text-headline-md text-primary">Premium Monthly</h2>
+</div>
+<div class="bg-primary-container px-3 py-1 rounded-full">
+<span class="font-label-sm text-label-sm text-white">CURRENT</span>
+</div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-6">
+<span class="material-symbols-outlined text-[18px]">event_repeat</span>
+<p class="font-body-md text-body-md">Next billing date: <span class="font-bold text-on-surface">Oct 15, 2023</span></p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-stack-md">
+<button class="bg-primary text-white font-label-md text-label-md py-4 px-6 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+                        Change Plan
+                    </button>
+<div class="flex items-center justify-center p-4 border border-outline-variant bg-surface-container-lowest">
+<span class="font-label-sm text-label-sm text-primary">$29.00 / month</span>
+</div>
+</div>
+</div>
+<!-- Payment Method Card -->
+<div class="bg-surface-container-low border border-outline-variant p-gutter rounded-xl">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-sm text-headline-sm text-primary">Payment Method</h3>
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+</div>
+<div class="flex items-center gap-4 bg-surface-container-lowest p-4 border border-outline-variant rounded-lg mb-stack-lg">
+<div class="w-12 h-8 bg-tertiary-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white">credit_card</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">Visa ending in 1234</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Expires 12/2026</p>
+</div>
+</div>
+<button class="w-full border-[1.5px] border-primary text-primary font-label-md text-label-md py-3 px-6 hover:bg-primary hover:text-white transition-all duration-200">
+                    Update Payment Method
+                </button>
+</div>
+<!-- Billing Insights (Specialty Component) -->
+<div class="flex gap-stack-sm flex-wrap">
+<div class="bg-secondary-container px-3 py-2 border border-outline-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-sm text-label-sm text-on-secondary-container">SENSORY PAIRING INCLUDED</span>
+</div>
+<div class="bg-tertiary-fixed px-3 py-2 border border-outline-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-tertiary-fixed-variant">verified</span>
+<span class="font-label-sm text-label-sm text-on-tertiary-fixed-variant">ANNUAL SAVINGS AVAILABLE</span>
+</div>
+</div>
+<!-- History Link Placeholder -->
+<a class="flex items-center justify-between p-gutter border-b border-outline-variant group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">receipt_long</span>
+<span class="font-body-md text-body-md text-on-surface group-hover:text-primary transition-colors">Billing History</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+<!-- Support / Trust -->
+<div class="pt-stack-lg text-center">
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md">Questions about your billing?</p>
+<button class="font-label-md text-label-md text-primary border-b border-primary pb-1 hover:border-transparent transition-all">Contact Concierge Support</button>
+</div>
+<!-- Cancel Section -->
+<div class="pt-section-gap pb-stack-lg">
+<div class="h-[1px] bg-outline-variant w-full mb-8"></div>
+<div class="flex flex-col items-center">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-error transition-colors uppercase tracking-widest py-2 px-4">
+                        Cancel Subscription
+                    </button>
+<p class="text-[11px] font-label-sm text-on-tertiary-container mt-2 max-w-xs text-center leading-relaxed">
+                        If you cancel, you will lose access to your personalized AI pantry insights at the end of the current billing cycle.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Navigation Shell -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant md:hidden">
+<div class="flex justify-around items-center h-16 px-container-padding pb-safe">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">kitchen</span>
+<span class="font-label-sm text-label-sm">My Pantry</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="font-label-sm text-label-sm">Shopping List</span>
+</div>
+<!-- Active State Logic: Mapping 'Manage Plan' to Profile/Settings context -->
+<div class="flex flex-col items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</div>
+</nav>
+<!-- Micro-interaction script -->
+<script>
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.98)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'scale(1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

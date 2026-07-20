@@ -1,0 +1,10 @@
+{
+  "name": "@recetas/theme",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./tailwind-preset.js",
+  "exports": {
+    "./tailwind-preset": "./tailwind-preset.js",
+    "./tokens": "./tokens.ts"
+  }
+}

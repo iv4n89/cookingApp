@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Culinary Intelligence - Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#524436",
+                    "error-container": "#ffdad6",
+                    "outline": "#727972",
+                    "surface-container": "#f0eded",
+                    "tertiary-container": "#454540",
+                    "primary-fixed-dim": "#adcfb4",
+                    "primary-fixed": "#c8ebd0",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#716252",
+                    "surface": "#fcf9f8",
+                    "primary-container": "#2d4b37",
+                    "surface-tint": "#466550",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed-dim": "#c9c6c0",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#241a0e",
+                    "surface-dim": "#dcd9d9",
+                    "on-background": "#1c1b1b",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#1c1c18",
+                    "on-tertiary-fixed-variant": "#474742",
+                    "background": "#fcf9f8",
+                    "surface-container-highest": "#e5e2e1",
+                    "on-surface-variant": "#424843",
+                    "secondary": "#6b5c4c",
+                    "secondary-fixed": "#f4dfcb",
+                    "secondary-fixed-dim": "#d7c3b0",
+                    "on-primary-container": "#99baa1",
+                    "on-error": "#ffffff",
+                    "tertiary": "#2f2f2a",
+                    "on-primary-fixed": "#022110",
+                    "primary": "#163422",
+                    "outline-variant": "#c2c8c0",
+                    "on-primary": "#ffffff",
+                    "on-surface": "#1c1b1b",
+                    "secondary-container": "#f4dfcb",
+                    "surface-container-low": "#f6f3f2",
+                    "inverse-on-surface": "#f3f0ef",
+                    "tertiary-fixed": "#e5e2db",
+                    "on-primary-fixed-variant": "#2f4d39",
+                    "surface-bright": "#fcf9f8",
+                    "surface-container-high": "#eae7e7",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#adcfb4",
+                    "inverse-surface": "#313030",
+                    "on-tertiary-container": "#b4b2ac",
+                    "surface-variant": "#e5e2e1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-md": "12px",
+                    "section-gap": "40px",
+                    "container-padding": "20px",
+                    "gutter": "16px",
+                    "base": "8px",
+                    "stack-lg": "24px",
+                    "stack-sm": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],
+                    "label-sm": ["JetBrains Mono"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "headline-sm": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-md": ["JetBrains Mono"],
+                    "body-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #fcf9f8;
+            color: #1c1b1b;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .message-gradient {
+            background: linear-gradient(135deg, #fcf9f8 0%, #f6f3f2 100%);
+        }
+        .reasoning-panel {
+            border-left: 2px solid #2d4b37;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background border-b border-outline-variant z-50">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a person in a modern kitchen setting, bright natural light, minimalist aesthetic with soft focus background of culinary tools. High-quality photography, light mode tones, organic minimalism style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQSUHDMLThASZa9v8GlEhV_J229ajPYOIZDAb25OavTDvrRVVGPUmAFM5qqclW-O7fD2OgsyHRJqXpv5MbKjZIezum9OU7wJ41_UJEQU3H3ayEOUHdAxaLk1tVxQ74Y7c9y6ZdFT3Znr7ROpvX6uLQ6mpvrDR8RBi1nfASng1zS-NsQs5qdU30SkPAtHdmMCbziUFIfk45BVFlJ8cvc-xS1a0Es-1L3_Pke8xgaB42zr1gYuWVmXx-zY99ZjyxBkDtEkl2KaCejG40"/>
+</div>
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight text-primary uppercase">CULINARY INTELLIGENCE</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors duration-200 p-2 rounded-full">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="flex-grow flex flex-col w-full max-w-4xl mx-auto px-container-padding pb-32 pt-8 gap-stack-lg">
+<!-- User Message -->
+<div class="flex flex-col items-end w-full gap-2 animate-fade-in">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">You</span>
+</div>
+<div class="bg-primary text-on-primary px-6 py-4 rounded-xl rounded-tr-none max-w-[85%] border border-primary">
+<p class="font-body-lg text-body-lg">What can I cook with what I have? I'm missing coconut milk for my curry, but I have plenty of whole milk and heavy cream.</p>
+</div>
+</div>
+<!-- AI Message -->
+<div class="flex flex-col items-start w-full gap-stack-md animate-fade-in">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 flex items-center justify-center bg-tertiary-fixed rounded-sm border border-outline-variant">
+<span class="font-label-sm text-label-sm text-tertiary font-bold">AI</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Intelligence Agent</span>
+</div>
+<!-- AI Reasoning Section -->
+<div class="reasoning-panel bg-surface-container-low px-6 py-4 rounded-r-xl w-full max-w-[90%] border-y border-r border-outline-variant mb-2">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[18px] text-primary">psychology</span>
+<span class="font-label-sm text-label-sm text-primary">CRAFTING ADAPTATION</span>
+</div>
+<ul class="space-y-2">
+<li class="flex items-start gap-2">
+<div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-outline"></div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">Analyzing fat content: Coconut milk (17-24%) vs. Heavy Cream (36%) + Whole Milk (3.5%).</p>
+</li>
+<li class="flex items-start gap-2">
+<div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-outline"></div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">Solution: A 2:1 ratio of milk to cream will mimic the viscosity and mouthfeel of full-fat coconut milk.</p>
+</li>
+<li class="flex items-start gap-2">
+<div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-outline"></div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">Flavor Profile: Elevating with extra ginger and a touch of lime to compensate for the missing floral coconut notes.</p>
+</li>
+</ul>
+</div>
+<!-- AI Final Response Card -->
+<div class="bg-tertiary-fixed text-tertiary rounded-xl rounded-tl-none border border-outline-variant overflow-hidden w-full max-w-[95%] shadow-sm">
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block bg-primary text-on-primary px-2 py-0.5 font-label-sm text-label-sm mb-2 rounded-sm">ADAPTED RECIPE</span>
+<h2 class="font-headline-md text-headline-md text-primary">Velvet Dairy-Base Golden Curry</h2>
+</div>
+<div class="bg-tertiary text-on-tertiary px-3 py-1 flex items-center gap-2 rounded-sm">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span class="font-label-sm text-label-sm">35 MIN</span>
+</div>
+</div>
+<p class="font-body-lg text-body-lg leading-relaxed">By substituting your whole milk and cream blend, we create a richer, slightly more savory profile. This is an excellent alternative that highlights the aromatics of your curry paste.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg pt-4 border-t border-outline-variant">
+<div>
+<h3 class="font-label-md text-label-md uppercase text-on-surface-variant mb-3 tracking-widest">Adjusted Ingredients</h3>
+<ul class="space-y-2">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">check_box</span>
+<span class="font-body-md text-body-md">1 cup Whole Milk + 1/2 cup Cream</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">check_box</span>
+<span class="font-body-md text-body-md">1.5 tsp Extra Fresh Ginger</span>
+</li>
+<li class="flex items-center gap-2 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined text-[18px]">check_box_outline_blank</span>
+<span class="font-body-md text-body-md">2 tbsp Red Curry Paste</span>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant">
+<div class="bg-secondary-container text-secondary-fixed-dim px-2 py-1 inline-block mb-3">
+<span class="font-label-sm text-label-sm uppercase tracking-tighter text-on-secondary-fixed-variant">AI SENSORY PAIRING</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">"The dairy fats bond better with cumin and coriander. Expect a more intense 'earthy' depth than traditional coconut-based versions."</p>
+</div>
+</div>
+</div>
+<div class="bg-primary px-6 py-4 flex justify-between items-center cursor-pointer hover:bg-opacity-90 transition-all">
+<span class="text-on-primary font-label-md text-label-md tracking-widest uppercase">Start Guided Cooking</span>
+<span class="material-symbols-outlined text-on-primary">arrow_forward</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Chat Input Area (Floating) -->
+<div class="fixed bottom-16 md:bottom-0 left-0 w-full p-4 bg-gradient-to-t from-background via-background to-transparent pointer-events-none">
+<div class="max-w-4xl mx-auto pointer-events-auto bg-surface-container-lowest border border-outline-variant shadow-lg rounded-full flex items-center px-4 py-2 gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<input class="flex-grow bg-transparent border-none focus:ring-0 font-body-md text-body-md py-3 text-on-surface" placeholder="Ask about ingredients or techniques..." type="text"/>
+<button class="bg-primary text-on-primary p-3 rounded-full flex items-center justify-center transition-transform active:scale-90">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant md:hidden">
+<div class="flex justify-around items-center h-16 px-container-padding pb-safe">
+<div class="flex flex-col items-center justify-center text-on-surface-variant transition-transform duration-150 scale-95 active:scale-90">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant transition-transform duration-150 scale-95 active:scale-90">
+<span class="material-symbols-outlined">kitchen</span>
+<span class="font-label-sm text-label-sm">My Pantry</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant transition-transform duration-150 scale-95 active:scale-90">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="font-label-sm text-label-sm">Shopping</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 scale-95 active:scale-90">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</div>
+</div>
+</nav>
+<script>
+        // Simple micro-interaction for messages
+        document.querySelectorAll('.animate-fade-in').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(10px)';
+            el.style.transition = 'all 0.4s ease-out';
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100 * (index + 1));
+        });
+
+        // Sticky header transition
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

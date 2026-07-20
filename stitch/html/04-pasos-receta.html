@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Culinary Intelligence - Cooking Mode</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-secondary-fixed-variant": "#524436",
+                  "error-container": "#ffdad6",
+                  "outline": "#727972",
+                  "surface-container": "#f0eded",
+                  "tertiary-container": "#454540",
+                  "primary-fixed-dim": "#adcfb4",
+                  "primary-fixed": "#c8ebd0",
+                  "on-tertiary": "#ffffff",
+                  "on-secondary-container": "#716252",
+                  "surface": "#fcf9f8",
+                  "primary-container": "#2d4b37",
+                  "surface-tint": "#466550",
+                  "surface-container-lowest": "#ffffff",
+                  "tertiary-fixed-dim": "#c9c6c0",
+                  "on-secondary": "#ffffff",
+                  "on-secondary-fixed": "#241a0e",
+                  "surface-dim": "#dcd9d9",
+                  "on-background": "#1c1b1b",
+                  "error": "#ba1a1a",
+                  "on-tertiary-fixed": "#1c1c18",
+                  "on-tertiary-fixed-variant": "#474742",
+                  "background": "#fcf9f8",
+                  "surface-container-highest": "#e5e2e1",
+                  "on-surface-variant": "#424843",
+                  "secondary": "#6b5c4c",
+                  "secondary-fixed": "#f4dfcb",
+                  "secondary-fixed-dim": "#d7c3b0",
+                  "on-primary-container": "#99baa1",
+                  "on-error": "#ffffff",
+                  "tertiary": "#2f2f2a",
+                  "on-primary-fixed": "#022110",
+                  "primary": "#163422",
+                  "outline-variant": "#c2c8c0",
+                  "on-primary": "#ffffff",
+                  "on-surface": "#1c1b1b",
+                  "secondary-container": "#f4dfcb",
+                  "surface-container-low": "#f6f3f2",
+                  "inverse-on-surface": "#f3f0ef",
+                  "tertiary-fixed": "#e5e2db",
+                  "on-primary-fixed-variant": "#2f4d39",
+                  "surface-bright": "#fcf9f8",
+                  "surface-container-high": "#eae7e7",
+                  "on-error-container": "#93000a",
+                  "inverse-primary": "#adcfb4",
+                  "inverse-surface": "#313030",
+                  "on-tertiary-container": "#b4b2ac",
+                  "surface-variant": "#e5e2e1"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "stack-md": "12px",
+                  "section-gap": "40px",
+                  "container-padding": "20px",
+                  "gutter": "16px",
+                  "base": "8px",
+                  "stack-lg": "24px",
+                  "stack-sm": "4px"
+          },
+          "fontFamily": {
+                  "headline-md": ["Hanken Grotesk"],
+                  "label-sm": ["JetBrains Mono"],
+                  "display-lg": ["Hanken Grotesk"],
+                  "headline-sm": ["Hanken Grotesk"],
+                  "body-md": ["Hanken Grotesk"],
+                  "label-md": ["JetBrains Mono"],
+                  "body-lg": ["Hanken Grotesk"]
+          },
+          "fontSize": {
+                  "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .active-step-ring {
+      box-shadow: 0 0 0 4px rgba(22, 52, 34, 0.1);
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c2c8c0;
+      border-radius: 10px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- Top Navigation Shell -->
+<header class="w-full top-0 sticky z-50 bg-background border-b border-outline-variant">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary" onclick="window.history.back()">arrow_back</button>
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight text-primary">CULINARY INTELLIGENCE</h1>
+</div>
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A professional close-up headshot of a user in a modern, brightly lit minimalist kitchen. The style is clean and corporate, reflecting a premium digital atelier aesthetic. Soft focus background shows organic wooden elements and fresh green plants. Lighting is natural and high-key, emphasizing a light-mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAEomnGAZrOUZhkJWjmBWTLHPLkiOmIRawkKHpwHHCR8v86WT8IqZpEUqVEXTnl_8dXbrLi19fS5n6v0CyMjEfdq7jANvMpPU66gb34c3zDAfTxNSti-TFPwcmU4sTfzAuznys1yMFa---vA2n5N_X2SLEx84TggkYNUnbg19UysebI7S_NxhFSc8J55-GXLwjTNQbnvhLhjr_0Ach9wS9GAWGV4DaOrNLR05646828PfzZ3PeAURhKFJ64aiOjHCwgvHfOO11VqLq"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-container-padding pt-stack-lg space-y-section-gap">
+<!-- Recipe Info Header -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center gap-stack-md">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary">Herb-Crusted Sea Bass</h2>
+<p class="font-body-md text-on-surface-variant">Step 2 of 4 • Remaining time: <span id="total-remaining">18:00</span></p>
+</div>
+<div class="flex gap-base">
+<div class="bg-surface-container-low border border-outline-variant px-4 py-2 rounded-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+<span class="font-label-md text-label-md text-primary">AI SOUS-CHEF ACTIVE</span>
+</div>
+</div>
+</section>
+<!-- Steps Grid -->
+<div class="grid grid-cols-1 gap-stack-lg" id="recipe-steps-container">
+<!-- Step 1: Completed -->
+<article class="relative group p-gutter bg-surface-container-low border border-outline-variant rounded-xl opacity-60 transition-all duration-300">
+<div class="absolute -left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-primary text-on-primary rounded-full z-10">
+<span class="material-symbols-outlined">check</span>
+</div>
+<div class="flex flex-col md:flex-row gap-gutter">
+<div class="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A top-down view of fresh Mediterranean herbs like rosemary, thyme, and parsley being finely chopped on a rustic wooden board. The scene is bright and airy with high-end culinary tools visible. The lighting is crisp, highlighting the textures of the herbs and the wood grain, consistent with a clean modern minimalist design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFyzIdZ49kuEhibjip_CHdrP6ocRsPeHLCN2i5x4hfYS7Gq3XtCpfLjUgwLAzvwXqmsxF2WuzTrW6l8tfaezMY8DLqXOUtkyhw2r-sq-zciPvXnDiarbyDihxtBTRR3PO1OEXOnTL0QELYBryUVClg9oQGl45bVU2FcqRlTPeYLmZdyOBM1ushsZQ7MjkKdQsryIVM_7lhyOJMK2AgHMsH13WQUZngVmcW7v5NxFT8-bO7SQAk7HxTyi5kd78gXRJD7ikufpUy5Nce"/>
+</div>
+<div class="flex-1">
+<span class="font-headline-md text-headline-md opacity-20 block mb-base">01</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface-variant line-through">Prepare the Herb Crust</h3>
+<p class="font-body-md text-on-surface-variant mt-base">Finely mince parsley, thyme, and rosemary. Mix with breadcrumbs and lemon zest.</p>
+</div>
+</div>
+</article>
+<!-- Step 2: Active Step -->
+<article class="relative p-gutter bg-white border-2 border-primary rounded-xl active-step-ring transition-all duration-500" id="step-2">
+<div class="absolute -left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-primary text-on-primary rounded-full z-10 shadow-lg">
+<span class="font-headline-sm">2</span>
+</div>
+<div class="flex flex-col md:flex-row gap-gutter">
+<div class="w-full md:w-64 h-48 rounded-lg overflow-hidden shrink-0 border border-outline-variant bg-tertiary">
+<img class="w-full h-full object-cover" data-alt="A macro shot of a fresh sea bass fillet being seared in a heavy cast-iron skillet. Sizzling oil creates a dynamic texture. The aesthetic is professional and tactile, emphasizing the heat and the quality of the fish. Background is dark and minimal to make the primary subject pop under focused, warm kitchen lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOvx6VkOsU6WWhVqpjBrpEBvn_GpIOYEn9a8aFzeLeo9YTpHZdVCn-ZU3Ttoy4PbnUn7U9nLHY5cgoEpOVipU4Llw4YofzYiJh9mxjy6FP2rF4fKcpfogx3dHUWIoRqew9g-BbRZum4ugZdA1PnUUiY1hWa2K4R1jM-ZP-xwXY_HlZM4CHAp-L5zrTBLFhK7qpBiMHZ8K-_0QFRp5UaEcLZv-ncMMPUrVsonbou51AHbaz86t-6hZYz6pHdxAnelKmBqHbBUs8kuRk"/>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-base">
+<span class="font-headline-md text-headline-md opacity-10 leading-none">02</span>
+<div class="bg-secondary-container px-3 py-1 rounded text-secondary font-label-sm">CURRENT STEP</div>
+</div>
+<h3 class="font-display-lg text-display-lg text-primary">Sear the Fillet</h3>
+<p class="font-body-lg text-body-lg text-on-surface mt-stack-md">Heat olive oil in a skillet over medium-high heat. Place the sea bass skin-side down and sear for 4 minutes until golden and crisp.</p>
+<!-- Ingredient Chips -->
+<div class="flex flex-wrap gap-stack-sm mt-stack-lg">
+<span class="inline-flex items-center gap-1 bg-[#F4F1EA] border border-[#E5E0D5] px-3 py-1 rounded-full text-primary font-label-md">
+<span class="material-symbols-outlined text-[16px]">scale</span> 2 Sea Bass Fillets
+                </span>
+<span class="inline-flex items-center gap-1 bg-[#F4F1EA] border border-[#E5E0D5] px-3 py-1 rounded-full text-primary font-label-md">
+<span class="material-symbols-outlined text-[16px]">water_drop</span> 2tbsp Olive Oil
+                </span>
+</div>
+</div>
+<!-- Timer and AI Interaction Row -->
+<div class="mt-section-gap flex flex-col sm:flex-row items-center gap-gutter">
+<!-- Independent Timer Component -->
+<div class="w-full sm:w-auto flex items-center gap-4 bg-primary text-on-primary px-6 py-4 rounded-xl">
+<div class="flex flex-col">
+<span class="font-label-sm uppercase tracking-widest text-on-primary-container">Timer</span>
+<span class="font-display-lg text-display-lg font-bold leading-none" id="timer-display-2">04:00</span>
+</div>
+<button class="w-12 h-12 flex items-center justify-center bg-on-primary text-primary rounded-full hover:bg-primary-fixed transition-colors" id="timer-toggle-2" onclick="toggleTimer(2, 240)">
+<span class="material-symbols-outlined" id="timer-icon-2" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+<!-- AI Substitute Button -->
+<button class="w-full sm:w-auto flex items-center justify-center gap-3 border-1.5 border-primary text-primary px-6 py-4 rounded-xl font-label-md hover:bg-surface-container-low transition-all duration-200 group">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">auto_awesome</span>
+                ASK AI FOR SUBSTITUTES
+              </button>
+</div>
+</div>
+</div>
+</article>
+<!-- Step 3: Upcoming -->
+<article class="relative p-gutter bg-surface-container-low border border-outline-variant rounded-xl group hover:border-outline transition-all duration-300" id="step-3">
+<div class="absolute -left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-surface-container-highest text-on-surface-variant rounded-full z-10 border border-outline-variant">
+<span class="font-headline-sm">3</span>
+</div>
+<div class="flex flex-col md:flex-row gap-gutter">
+<div class="flex-1">
+<span class="font-headline-md text-headline-md opacity-20 block mb-base">03</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Apply Herb Crust</h3>
+<p class="font-body-md text-on-surface-variant mt-base">Flip the fillets and spread a thin layer of Dijon mustard. Firmly press the prepared herb mixture onto the fish.</p>
+</div>
+<div class="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0 border border-outline-variant grayscale group-hover:grayscale-0 transition-all duration-500">
+<img class="w-full h-full object-cover" data-alt="Close up of a chef's hands delicately pressing a vibrant green herb crust onto a perfectly seared piece of white fish. The setting is a professional kitchen atelier with soft, focused lighting. The palette is dominated by natural greens, deep golden seared tones, and clean ivory surfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGeUWVrV8STYlBHkzh42gYRHvLq6kVlgQALwitZQAhQARl4PK1YjG0x0_2yG5_yMDRjle6e_k_Cw0_WfyqW6lmFs76ENYR6hzin-d2LyviNZzSbtzzzFW0fBCw4XBJEjXxLsHNHE8QTb5fp3AIlAGMjBlQqM17GPH_g-X6UpLNhpr6XNJ_nXuBgEDOFxwN_5ENiWMXRc6XFw28JqxmD9AFpQIIbEnmEhm06tE0LSTDYsjnOEZsKpGytw5dtBaQDo22N3yLhDgFtfhm"/>
+</div>
+</div>
+</article>
+<!-- Step 4: Upcoming -->
+<article class="relative p-gutter bg-surface-container-low border border-outline-variant rounded-xl group hover:border-outline transition-all duration-300" id="step-4">
+<div class="absolute -left-4 top-1/2 -translate-y-1/2 flex items-center justify-center w-10 h-10 bg-surface-container-highest text-on-surface-variant rounded-full z-10 border border-outline-variant">
+<span class="font-headline-sm">4</span>
+</div>
+<div class="flex flex-col md:flex-row gap-gutter">
+<div class="flex-1">
+<span class="font-headline-md text-headline-md opacity-20 block mb-base">04</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Oven Finish</h3>
+<p class="font-body-md text-on-surface-variant mt-base">Transfer skillet to the preheated oven at 200°C (400°F). Bake for 8-10 minutes until the crust is golden brown.</p>
+<!-- Contextual Timer for next step -->
+<div class="mt-stack-md flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">timer</span>
+<span class="font-label-md">10:00 Duration</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+<!-- Sticky Bottom Navigation - Context Aware -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant h-16 px-container-padding flex justify-around items-center">
+<div class="flex flex-col items-center justify-center text-on-surface-variant group cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">kitchen</span>
+<span class="font-label-sm text-label-sm">My Pantry</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant group cursor-pointer">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">shopping_basket</span>
+<span class="font-label-sm text-label-sm">Shopping List</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant group cursor-pointer">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</div>
+</nav>
+<!-- Interaction Script -->
+<script>
+    let activeTimers = {};
+
+    function toggleTimer(id, initialSeconds) {
+      const display = document.getElementById(`timer-display-${id}`);
+      const icon = document.getElementById(`timer-icon-${id}`);
+      const btn = document.getElementById(`timer-toggle-${id}`);
+
+      if (activeTimers[id]) {
+        // Pause timer
+        clearInterval(activeTimers[id].interval);
+        activeTimers[id] = null;
+        icon.innerText = 'play_arrow';
+        btn.classList.remove('bg-primary-fixed');
+      } else {
+        // Start/Resume timer
+        let seconds = activeTimers[id]?.remaining || initialSeconds;
+        
+        icon.innerText = 'pause';
+        btn.classList.add('bg-primary-fixed');
+
+        const interval = setInterval(() => {
+          seconds--;
+          if (seconds <= 0) {
+            clearInterval(interval);
+            activeTimers[id] = null;
+            display.innerText = "DONE!";
+            icon.innerText = 'check';
+            alert("Timer Finished!");
+            return;
+          }
+
+          const mins = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+          display.innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+          activeTimers[id].remaining = seconds;
+        }, 1000);
+
+        activeTimers[id] = { interval, remaining: seconds };
+      }
+    }
+
+    // Micro-interaction: Hover effects for AI badges
+    document.querySelectorAll('.ai-analysis-badge').forEach(badge => {
+      badge.addEventListener('mouseenter', () => {
+        badge.style.transform = 'translateY(-2px)';
+      });
+      badge.addEventListener('mouseleave', () => {
+        badge.style.transform = 'translateY(0)';
+      });
+    });
+
+    // Horizontal Scroll for cards if on mobile
+    // Currently vertical as requested by "stacked layout" guidance
+  </script>
+</body></html>

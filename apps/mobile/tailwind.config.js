@@ -1,0 +1,7 @@
+const recetasPreset = require("@recetas/theme/tailwind-preset");
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{ts,tsx}"],
+  presets: [require("nativewind/preset"), recetasPreset],
+};

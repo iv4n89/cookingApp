@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Culinary Intelligence - Home</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Hanken Grotesk & JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-secondary-fixed-variant": "#524436",
+                "error-container": "#ffdad6",
+                "outline": "#727972",
+                "surface-container": "#f0eded",
+                "tertiary-container": "#454540",
+                "primary-fixed-dim": "#adcfb4",
+                "primary-fixed": "#c8ebd0",
+                "on-tertiary": "#ffffff",
+                "on-secondary-container": "#716252",
+                "surface": "#fcf9f8",
+                "primary-container": "#2d4b37",
+                "surface-tint": "#466550",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed-dim": "#c9c6c0",
+                "on-secondary": "#ffffff",
+                "on-secondary-fixed": "#241a0e",
+                "surface-dim": "#dcd9d9",
+                "on-background": "#1c1b1b",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#1c1c18",
+                "on-tertiary-fixed-variant": "#474742",
+                "background": "#fcf9f8",
+                "surface-container-highest": "#e5e2e1",
+                "on-surface-variant": "#424843",
+                "secondary": "#6b5c4c",
+                "secondary-fixed": "#f4dfcb",
+                "secondary-fixed-dim": "#d7c3b0",
+                "on-primary-container": "#99baa1",
+                "on-error": "#ffffff",
+                "tertiary": "#2f2f2a",
+                "on-primary-fixed": "#022110",
+                "primary": "#163422",
+                "outline-variant": "#c2c8c0",
+                "on-primary": "#ffffff",
+                "on-surface": "#1c1b1b",
+                "secondary-container": "#f4dfcb",
+                "surface-container-low": "#f6f3f2",
+                "inverse-on-surface": "#f3f0ef",
+                "tertiary-fixed": "#e5e2db",
+                "on-primary-fixed-variant": "#2f4d39",
+                "surface-bright": "#fcf9f8",
+                "surface-container-high": "#eae7e7",
+                "on-error-container": "#93000a",
+                "inverse-primary": "#adcfb4",
+                "inverse-surface": "#313030",
+                "on-tertiary-container": "#b4b2ac",
+                "surface-variant": "#e5e2e1"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "stack-md": "12px",
+                "section-gap": "40px",
+                "container-padding": "20px",
+                "gutter": "16px",
+                "base": "8px",
+                "stack-lg": "24px",
+                "stack-sm": "4px"
+            },
+            "fontFamily": {
+                "headline-md": ["Hanken Grotesk"],
+                "label-sm": ["JetBrains Mono"],
+                "display-lg": ["Hanken Grotesk"],
+                "headline-sm": ["Hanken Grotesk"],
+                "body-md": ["Hanken Grotesk"],
+                "label-md": ["JetBrains Mono"],
+                "body-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcf9f8;
+            -webkit-font-smoothing: antialiased;
+        }
+        .custom-scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .custom-scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Depth level 1 as defined in guidance */
+        .card-level-1 {
+            background-color: #F4F1EA;
+            border: 1px solid #E5E0D5;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-background dark:bg-background border-b border-outline-variant dark:border-outline z-50 transition-colors duration-200">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-gutter">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a person in their late 20s with a clean, approachable appearance, set against a soft, neutral studio background that matches the organic minimalist aesthetic of the app. The lighting is soft and natural, emphasizing clarity and high-end photographic quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3GQyyYY1hF0nWbUCAsqZA4TrOGfiNJsshiKMyPfcT8r8EPCOkIHMDx_mqCIGq1FeswhrxbLJfq_uhpqXV_TJ-LQX8-RjotJETpDJjY1Vb_VJ9P6jhdAbi2pSthp2NWnlllmJ05yy8I1oBQ01X_5xlKjrvvcIZp-Vxby0LsqRb8pAG1raemeCvDIvfXJGJohmP6XWoyVSvfTRGaJtPK-mvQeVfeCAkL7LqZR5eKWG-YBwMWaZd2zSuO5RiH_5AHAyGlHfe_JGFEBDW"/>
+</div>
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight text-primary dark:text-primary-fixed">CULINARY INTELLIGENCE</h1>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="hidden md:flex items-center gap-6 px-4">
+<a class="font-label-md text-label-md text-primary dark:text-primary-fixed" href="#">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high px-2 py-1 transition-colors duration-200" href="#">My Pantry</a>
+<a class="font-label-md text-label-md text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high px-2 py-1 transition-colors duration-200" href="#">Shopping List</a>
+</div>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer">search</span>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-padding pb-32 pt-stack-lg space-y-section-gap">
+<!-- Welcome & Subscription Status -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md">
+<div>
+<p class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-stack-sm">Morning, Chef</p>
+<h2 class="font-display-lg text-display-lg text-on-surface">Ready to create?</h2>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-4 py-2 rounded-lg flex items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">workspace_premium</span>
+<span class="font-label-sm text-label-sm">PREMIUM PLAN • $2.99/MO</span>
+</div>
+</section>
+<!-- Chat with AI Search Bar -->
+<section class="w-full">
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary">chat_bubble</span>
+</div>
+<input class="w-full h-16 pl-14 pr-4 bg-surface-container-lowest border-b-2 border-outline focus:border-primary focus:ring-0 font-body-lg text-body-lg transition-colors placeholder:text-on-surface-variant/50" placeholder="Ask AI: What can I make with my leftover kale and bacon?" type="text"/>
+<div class="absolute inset-y-0 right-4 flex items-center">
+<button class="bg-primary text-on-primary px-6 py-2 font-label-md text-label-md flex items-center gap-2 hover:opacity-90 transition-opacity">
+                        ASK <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Pantry Highlights Bento Grid -->
+<section>
+<div class="flex justify-between items-center mb-stack-lg">
+<h3 class="font-headline-md text-headline-md">My Pantry Highlights</h3>
+<a class="font-label-md text-label-md text-primary flex items-center gap-1" href="#">View Full Inventory <span class="material-symbols-outlined text-[16px]">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Bento Item 1: Low Stock -->
+<div class="md:col-span-2 card-level-1 p-stack-lg flex flex-col justify-between">
+<div>
+<div class="bg-primary-container text-on-primary-container inline-block px-2 py-1 mb-stack-md font-label-sm text-label-sm">CRITICAL STOCK</div>
+<h4 class="font-headline-sm text-headline-sm mb-stack-sm">Running Low on Staples</h4>
+<ul class="space-y-2">
+<li class="flex justify-between font-body-md text-body-md">
+<span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error"></span>Greek Yogurt</span>
+<span class="text-on-surface-variant">150g left</span>
+</li>
+<li class="flex justify-between font-body-md text-body-md">
+<span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-error"></span>San Marzano Tomatoes</span>
+<span class="text-on-surface-variant">1 can left</span>
+</li>
+</ul>
+</div>
+<button class="mt-stack-lg w-full border-[1.5px] border-primary text-primary py-3 font-label-md text-label-md hover:bg-primary-container/10 transition-colors">ADD TO SHOPPING LIST</button>
+</div>
+<!-- Bento Item 2: Freshness Tracker -->
+<div class="card-level-1 p-stack-lg flex flex-col">
+<span class="material-symbols-outlined text-secondary mb-stack-md text-3xl">timer</span>
+<h4 class="font-headline-sm text-headline-sm mb-stack-sm">Expiring Soon</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg">Fresh Spinach needs to be used within 48 hours for optimal flavor.</p>
+<div class="mt-auto flex items-center gap-2">
+<div class="bg-tertiary-fixed px-2 py-1 rounded">
+<span class="font-label-sm text-label-sm text-on-tertiary-fixed">MATCHED IN 3 RECIPES</span>
+</div>
+</div>
+</div>
+<!-- Bento Item 3: Quick Add -->
+<div class="card-level-1 p-stack-lg flex flex-col items-center justify-center text-center border-dashed border-2">
+<span class="material-symbols-outlined text-outline text-4xl mb-stack-md">add_circle</span>
+<p class="font-label-md text-label-md text-on-surface-variant">Scan Receipt or<br/>Add Item Manually</p>
+</div>
+</div>
+</section>
+<!-- Personalized Suggestions -->
+<section>
+<div class="flex justify-between items-center mb-stack-lg">
+<h3 class="font-headline-md text-headline-md">Personalized For Your Pantry</h3>
+<div class="flex gap-2">
+<button class="w-10 h-10 border border-outline-variant flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 border border-outline-variant flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Recipe Card 1 -->
+<div class="card-level-1 group cursor-pointer overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+<div class="h-64 w-full relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A top-down, high-resolution food photograph of a rustic pasta dish with fresh basil, cherry tomatoes, and olive oil. The lighting is bright and airy, casting soft shadows that emphasize the texture of the al dente noodles. The background is a clean, off-white linen, perfectly aligning with the app's organic minimalist brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAVyLK9Dd5j09EROC0O4SeI5uZiW4IBv56gTAjNtBMV-OWGeY4AZ5oEUHm12_OvSCqgspY7M7miqxqhM6YndOKVE6aHC_L2V_rRT2eQqDCy3A4teLa3M2mSJ2u7K_NT_oxrD8niZJCaXjvatQ4dX79pPgMMUXmbgqfCPqs_9KEqSWYTeJO15Hr_bXGxwWGp4at9GNKkrSCt6uBj9wxLhjZHROJuOgDYjQcFApCvajXFiC5x5bCCGLIPEepZFaQkv1FKkmdZB1UFpLW"/>
+<div class="absolute top-4 left-4 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span> SENSORY PAIRING
+                        </div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-stack-sm">
+<h4 class="font-headline-sm text-headline-sm">Rustic Heirloom Pomodoro</h4>
+<span class="material-symbols-outlined text-outline hover:text-primary transition-colors">bookmark</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md line-clamp-2">Utilizes your remaining tomatoes and fresh basil. A 15-minute preparation.</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-background border border-outline-variant font-label-sm text-label-sm">VEGETARIAN</span>
+<span class="px-2 py-1 bg-background border border-outline-variant font-label-sm text-label-sm">15 MIN</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 2 -->
+<div class="card-level-1 group cursor-pointer overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+<div class="h-64 w-full relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Close-up professional photography of a seared salmon fillet with a crispy golden skin, resting on a bed of vibrant green steamed asparagus. The lighting is warm and directional, highlighting the succulent flakes of the fish and the gloss of a light lemon-herb drizzle. The aesthetic is sophisticated and culinary-focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOXXPV2SzKSOTYnnlG36-pDYFa9q2t69xQh4U12sQSnlqq0vxIDWv5Gv1wRIlZ7818H9sHutnchTPR_Uk0XARZLgtQht_59co3I-TuXaN-RExi2WR0BlxIpfWweOT2XLt8csNArgJ5x_iU5ftwc5lwsSeIvspbmcioFp6rccHMu4GSdoTwqFysqT9oekiCj-86S9EvHFDYLwu-IB9WVQldyiWy36jkBTBHmeJoeTaQujIjanW76oyQ6qvoPvM_m3K29wJG2aLuDQT-"/>
+<div class="absolute top-4 left-4 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">bolt</span> MATCHES YOUR MACROS
+                        </div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-stack-sm">
+<h4 class="font-headline-sm text-headline-sm">Lemon-Zest Atlantic Salmon</h4>
+<span class="material-symbols-outlined text-outline hover:text-primary transition-colors">bookmark</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md line-clamp-2">Perfect high-protein option using the salmon in your freezer. Rich in Omega-3.</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-background border border-outline-variant font-label-sm text-label-sm">HIGH PROTEIN</span>
+<span class="px-2 py-1 bg-background border border-outline-variant font-label-sm text-label-sm">25 MIN</span>
+</div>
+</div>
+</div>
+<!-- Recipe Card 3 -->
+<div class="card-level-1 group cursor-pointer overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+<div class="h-64 w-full relative overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A beautifully plated kale and quinoa salad in a minimalist ceramic bowl. The salad is vibrant with colors from roasted sweet potatoes, pomegranate seeds, and toasted walnuts. The background is a clean, dark wood surface, providing a rich, premium contrast that emphasizes the freshness of the ingredients." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd9dEc5TuSyiUI-wFVvSnzY0Gd94BWpLnCHqAUIew7YUPXGVQPed7KTbYqRVWotWwYu0u_0Feo04OWxTItWX8m1vk4koVdTKqTWDV25a3ahmA3sJzi55nwqXln5JaoavY0__wwtAS_Ldn_WxYco8Dm4uv_vWjz2pX65exZ1tDKo9m5X9E-HbjaUriTBSE6Blb-ffkCKNQObVxYdjE8gUH0fmssgL6D5GbwIClaWFad7MRxbksz9EJqxBCVgy3BmbRGBBm3nWKu24tA"/>
+<div class="absolute top-4 left-4 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">eco</span> WASTE REDUCTION
+                        </div>
+</div>
+<div class="p-stack-lg">
+<div class="flex justify-between items-start mb-stack-sm">
+<h4 class="font-headline-sm text-headline-sm">Harvest Kale &amp; Grain Bowl</h4>
+<span class="material-symbols-outlined text-outline hover:text-primary transition-colors">bookmark</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md line-clamp-2">Designed specifically to use up your kale before it expires. High fiber.</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-background border border-outline-variant font-label-sm text-label-sm">CLEAN EATING</span>
+<span class="px-2 py-1 bg-background border border-outline-variant font-label-sm text-label-sm">20 MIN</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest dark:bg-surface-dim border-t border-outline-variant dark:border-outline md:hidden">
+<div class="flex justify-around items-center h-16 px-container-padding pb-safe">
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold scale-95 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed scale-95 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">kitchen</span>
+<span class="font-label-sm text-label-sm">My Pantry</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed scale-95 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span class="font-label-sm text-label-sm">List</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed scale-95 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</a>
+</div>
+</nav>
+<script>
+        // Micro-interaction for the search bar focus
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchContainer = searchInput.parentElement;
+        
+        searchInput.addEventListener('focus', () => {
+            searchContainer.classList.add('scale-[1.01]');
+            searchContainer.style.transition = 'transform 0.3s ease';
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchContainer.classList.remove('scale-[1.01]');
+        });
+
+        // Hover effect for cards to simulate "Digital Atelier" precision
+        document.querySelectorAll('.card-level-1').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = '#163422';
+                card.style.transition = 'border-color 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = '#E5E0D5';
+            });
+        });
+    </script>
+</body></html>

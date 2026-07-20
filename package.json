@@ -1,0 +1,13 @@
+{
+  "name": "recetas-app",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.3.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "mobile": "pnpm --filter @recetas/mobile",
+    "api": "pnpm --filter @recetas/api"
+  }
+}

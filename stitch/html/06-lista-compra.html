@@ -1,0 +1,289 @@
+<!DOCTYPE html><html lang="en" class="light"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#524436",
+                    "outline": "#727972",
+                    "surface-tint": "#466550",
+                    "primary": "#163422",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#adcfb4",
+                    "tertiary-container": "#454540",
+                    "primary-container": "#2d4b37",
+                    "on-tertiary-fixed": "#1c1c18",
+                    "background": "#fcf9f8",
+                    "on-surface": "#1c1b1b",
+                    "on-secondary-fixed": "#241a0e",
+                    "surface-container-highest": "#e5e2e1",
+                    "surface": "#fcf9f8",
+                    "surface-dim": "#dcd9d9",
+                    "on-surface-variant": "#424843",
+                    "on-background": "#1c1b1b",
+                    "secondary-container": "#f4dfcb",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#716252",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#f6f3f2",
+                    "surface-container": "#f0eded",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#e5e2db",
+                    "on-primary-fixed-variant": "#2f4d39",
+                    "secondary-fixed-dim": "#d7c3b0",
+                    "inverse-surface": "#313030",
+                    "secondary": "#6b5c4c",
+                    "outline-variant": "#c2c8c0",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#99baa1",
+                    "primary-fixed": "#c8ebd0",
+                    "inverse-on-surface": "#f3f0ef",
+                    "on-tertiary-container": "#b4b2ac",
+                    "inverse-primary": "#adcfb4",
+                    "surface-bright": "#fcf9f8",
+                    "tertiary-fixed-dim": "#c9c6c0",
+                    "on-primary-fixed": "#022110",
+                    "tertiary": "#2f2f2a",
+                    "surface-container-high": "#eae7e7",
+                    "on-tertiary-fixed-variant": "#474742",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e5e2e1",
+                    "secondary-fixed": "#f4dfcb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-sm": "4px",
+                    "base": "8px",
+                    "stack-lg": "24px",
+                    "container-padding": "20px",
+                    "stack-md": "12px",
+                    "section-gap": "40px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "display-lg": ["Hanken Grotesk"],
+                    "label-md": ["JetBrains Mono"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="w-full top-0 sticky z-40 bg-background border-b border-outline-variant transition-colors duration-200">
+<div class="flex justify-between items-center px-container-padding py-stack-md w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-10 object-cover" data-alt="A professional overhead studio portrait of a sophisticated person in a modern kitchen setting. The lighting is soft and natural, emphasizing a clean and organized atmosphere with high-end culinary tools visible in the blurred background. The style is minimalist and elegant, reflecting the brand's intelligent sous-chef identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHJrKhF2QeueKkKT2_CFl8ul_zDxKHuTTkuslD8nIPCMop1_pTFE78zcP3nV-7Bvqm5Mm8PkSrcyRlMxdDxzI0Svy8_bEaJbpJDvaChncXCX4G0u_TGF9TsEAUrLEia9NnAnQPIV5vzVuj_m-vuUGsh_i4-NNB3FImxSOd5VXva5TU5BgXgxK4uY2227HUXhCCj-8pfCzS-HDF075B_vg8N6Jv5TiCIfZYeUtSl30Fs0UdjyPzeMeJRIZ8pmSBcuW_UbaXSP--EkB8">
+</div>
+<h1 class="font-headline-sm text-headline-sm font-bold tracking-tight text-primary">CULINARY INTELLIGENCE</h1>
+</div>
+<button class="p-2 hover:bg-surface-container-low transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">share</span>
+</button><button class="p-2 hover:bg-surface-container-low transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">search</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-padding pt-stack-lg space-y-section-gap">
+<!-- Header Section -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary">Shopping List</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Gather your ingredients for the week.</p>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white font-label-md text-label-md rounded-lg transition-transform active:scale-95">
+<span class="material-symbols-outlined text-sm">add</span>
+                ADD ITEM MANUALLY
+            </button>
+</div>
+<!-- AI Smart Additions -->
+<section class="space-y-stack-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="font-label-md text-label-md text-primary tracking-widest">AI SMART ADDITIONS</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Smart Add Card 1 -->
+<div class="flex items-center justify-between p-4 bg-tertiary-fixed border border-outline-variant rounded-xl">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-white rounded-lg">
+<span class="material-symbols-outlined text-primary">egg</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-semibold">Large Eggs (Dozen)</p>
+<span class="font-label-sm text-label-sm px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded">LOW STOCK IN PANTRY</span>
+</div>
+</div>
+<button class="text-primary hover:bg-primary-fixed p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+</div>
+<!-- Smart Add Card 2 -->
+<div class="flex items-center justify-between p-4 bg-tertiary-fixed border border-outline-variant rounded-xl">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-white rounded-lg">
+<span class="material-symbols-outlined text-primary">opacity</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-semibold">Whole Milk</p>
+<span class="font-label-sm text-label-sm px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded">RUNNING OUT SOON</span>
+</div>
+</div>
+<button class="text-primary hover:bg-primary-fixed p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Need to Buy Section -->
+<section class="space-y-stack-lg">
+<h3 class="font-headline-sm text-headline-sm text-primary">Need to Buy</h3>
+<!-- Category: Produce -->
+<div class="space-y-stack-md">
+<div class="border-b border-outline-variant pb-2">
+<h4 class="font-label-md text-label-md text-on-surface-variant">PRODUCE</h4>
+</div>
+<div class="space-y-base">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-outline-variant rounded-lg">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary custom-checkbox" type="checkbox">
+<div>
+<p class="font-body-md text-body-md font-medium">Wild Mushrooms (500g)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">For Wild Mushroom Risotto</p>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-outline-variant rounded-lg">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary custom-checkbox" type="checkbox">
+<div>
+<p class="font-body-md text-body-md font-medium">Fresh Thyme</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">For Wild Mushroom Risotto</p>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-outline-variant rounded-lg">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary custom-checkbox" type="checkbox">
+<div>
+<p class="font-body-md text-body-md font-medium">Shallots (3 pcs)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">For Wild Mushroom Risotto</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Category: Dairy & Refrigerated -->
+<div class="space-y-stack-md">
+<div class="border-b border-outline-variant pb-2">
+<h4 class="font-label-md text-label-md text-on-surface-variant">DAIRY &amp; REFRIGERATED</h4>
+</div>
+<div class="space-y-base">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-outline-variant rounded-lg">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary custom-checkbox" type="checkbox">
+<div>
+<p class="font-body-md text-body-md font-medium">Parmigiano Reggiano</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">For Wild Mushroom Risotto</p>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-outline-variant rounded-lg">
+<div class="flex items-center gap-4">
+<input class="w-5 h-5 rounded border-outline text-primary focus:ring-primary custom-checkbox" type="checkbox">
+<div>
+<p class="font-body-md text-body-md font-medium">Unsalted Butter</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">For Wild Mushroom Risotto</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Information/Callout -->
+<div class="p-6 bg-primary-container text-white rounded-xl space-y-stack-md">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined mt-1">info</span>
+<div>
+<p class="font-headline-sm text-headline-sm">Automatic Inventory Update</p>
+<p class="font-body-md text-body-md opacity-90">Items marked as purchased will be automatically added to your digital pantry, updating your stock levels for future recipe matches.</p>
+</div>
+</div>
+<button class="w-full py-3 bg-white text-primary font-label-md text-label-md rounded-lg font-bold hover:bg-primary-fixed transition-colors">
+                MARK AS PURCHASED (5 ITEMS)
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant pb-safe">
+<div class="flex justify-around items-center h-16 px-container-padding max-w-7xl mx-auto">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">kitchen</span>
+<span class="font-label-sm text-label-sm">My Pantry</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_basket</span>
+<span class="font-label-sm text-label-sm">Shopping List</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-transform duration-150 scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</a>
+</div>
+</nav>
+<script>
+        // Simple micro-interaction for purchase button update
+        const checkboxes = document.querySelectorAll('.custom-checkbox');
+        const purchaseBtn = document.querySelector('button:contains("MARK AS PURCHASED")') || document.querySelector('.bg-white.text-primary');
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const checkedCount = document.querySelectorAll('.custom-checkbox:checked').length;
+                if(purchaseBtn) {
+                    purchaseBtn.textContent = `MARK AS PURCHASED (${checkedCount} ITEM${checkedCount !== 1 ? 'S' : ''})`;
+                    if(checkedCount === 0) {
+                        purchaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        purchaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                }
+            });
+        });
+
+        // Polyfill for :contains selector in vanilla JS for the demo logic
+        if (!Element.prototype.matches) {
+            Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+        }
+    </script>
+
+</body></html>
