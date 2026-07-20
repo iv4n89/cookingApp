@@ -112,6 +112,36 @@ const RECIPE_SCHEMA = {
   ],
 };
 
+export interface ChatTurn {
+  role: 'user' | 'model';
+  text: string;
+}
+
+// Conversación multi-turno con contexto de sistema (preferencias, despensa…).
+export async function generateChat(turns: ChatTurn[], systemInstruction: string): Promise<string> {
+  const res = await fetchWithTimeout(
+    `${BASE}/models/${GEN_MODEL}:generateContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        contents: turns.map((t) => ({ role: t.role, parts: [{ text: t.text }] })),
+      }),
+    },
+    GEN_TIMEOUT_MS,
+  );
+  if (!res.ok) {
+    throw new Error(`Gemini chat ${res.status}: ${await res.text()}`);
+  }
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (typeof text !== 'string') {
+    throw new Error('Respuesta de chat inesperada de Gemini');
+  }
+  return text;
+}
+
 export async function generateRecipe(
   query: string,
   context?: string,
