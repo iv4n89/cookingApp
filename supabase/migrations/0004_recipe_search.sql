@@ -44,4 +44,5 @@ as $$
   limit match_count;
 $$;
 
-grant execute on function match_recipes(vector, float, int) to service_role, authenticated;
+-- Solo el backend (Edge Functions con service_role) invoca el RPC; el front no.
+grant execute on function match_recipes(vector, float, int) to service_role;

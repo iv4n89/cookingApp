@@ -1,3 +1,4 @@
+import { isAuthenticatedUser } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
 import { embedText } from '../_shared/gemini.ts';
@@ -10,12 +11,14 @@ const MATCH_THRESHOLD = 0.65;
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
-  try {
-    const { query } = await req.json().catch(() => ({}));
-    if (typeof query !== 'string' || !query.trim()) {
-      return json({ error: 'Falta el campo "query".' }, 400);
-    }
+  if (!isAuthenticatedUser(req)) return json({ error: 'No autorizado.' }, 401);
 
+  const { query } = await req.json().catch(() => ({}));
+  if (typeof query !== 'string' || !query.trim()) {
+    return json({ error: 'Falta el campo "query".' }, 400);
+  }
+
+  try {
     const embedding = await embedText(query.trim(), 'RETRIEVAL_QUERY');
 
     const supabase = serviceClient();
@@ -29,6 +32,7 @@ Deno.serve(async (req) => {
     const recipe = data?.[0] ?? null;
     return json({ recipe, origin: recipe ? 'db' : 'none' });
   } catch (e) {
-    return json({ error: e instanceof Error ? e.message : String(e) }, 500);
+    console.error('search-recipe:', e);
+    return json({ error: 'No se pudo procesar la búsqueda.' }, 500);
   }
 });
