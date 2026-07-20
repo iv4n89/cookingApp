@@ -117,8 +117,71 @@ export interface ChatTurn {
   text: string;
 }
 
-// Conversación multi-turno con contexto de sistema (preferencias, despensa…).
-export async function generateChat(turns: ChatTurn[], systemInstruction: string): Promise<string> {
+export interface ChatRecipe {
+  title: string;
+  description?: string;
+  servings?: number;
+  prep_time_min?: number;
+  cook_time_min?: number;
+  ingredients: { name: string; quantity?: string; unit?: string }[];
+  steps: { instruction: string; timer_seconds?: number }[];
+}
+
+export interface ChatResponse {
+  message: string;
+  recipe?: ChatRecipe | null;
+}
+
+// message: respuesta conversacional. recipe: solo cuando se propone/adapta una receta concreta.
+const CHAT_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    message: { type: 'STRING' },
+    recipe: {
+      type: 'OBJECT',
+      nullable: true,
+      properties: {
+        title: { type: 'STRING' },
+        description: { type: 'STRING' },
+        servings: { type: 'INTEGER' },
+        prep_time_min: { type: 'INTEGER' },
+        cook_time_min: { type: 'INTEGER' },
+        ingredients: {
+          type: 'ARRAY',
+          items: {
+            type: 'OBJECT',
+            properties: {
+              name: { type: 'STRING' },
+              quantity: { type: 'STRING' },
+              unit: { type: 'STRING' },
+            },
+            required: ['name'],
+          },
+        },
+        steps: {
+          type: 'ARRAY',
+          items: {
+            type: 'OBJECT',
+            properties: {
+              instruction: { type: 'STRING' },
+              timer_seconds: { type: 'INTEGER' },
+            },
+            required: ['instruction'],
+          },
+        },
+      },
+      required: ['title', 'ingredients', 'steps'],
+    },
+  },
+  required: ['message'],
+};
+
+// Conversación multi-turno con contexto de sistema (preferencias, despensa…) y salida
+// estructurada: texto + receta opcional para pintar la card.
+export async function generateChat(
+  turns: ChatTurn[],
+  systemInstruction: string,
+): Promise<ChatResponse> {
   const res = await fetchWithTimeout(
     `${BASE}/models/${GEN_MODEL}:generateContent`,
     {
@@ -127,6 +190,10 @@ export async function generateChat(turns: ChatTurn[], systemInstruction: string)
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: systemInstruction }] },
         contents: turns.map((t) => ({ role: t.role, parts: [{ text: t.text }] })),
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: CHAT_SCHEMA,
+        },
       }),
     },
     GEN_TIMEOUT_MS,
@@ -139,7 +206,7 @@ export async function generateChat(turns: ChatTurn[], systemInstruction: string)
   if (typeof text !== 'string') {
     throw new Error('Respuesta de chat inesperada de Gemini');
   }
-  return text;
+  return JSON.parse(text) as ChatResponse;
 }
 
 export async function generateRecipe(

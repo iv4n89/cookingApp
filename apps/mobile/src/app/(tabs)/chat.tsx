@@ -13,7 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
-import { sendChat, type ChatMessage } from '@/lib/chat';
+import { sendChat, type ChatMessage, type ChatRecipe } from '@/lib/chat';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -24,23 +24,84 @@ const SUGGESTIONS = [
   'Algo rápido para cenar hoy',
 ];
 
-function Bubble({ message }: { message: ChatMessage }) {
+function MetaChip({ icon, text }: { icon: 'schedule' | 'restaurant'; text: string }) {
+  return (
+    <View className="flex-row items-center gap-stack-sm">
+      <MaterialIcons name={icon} size={16} color={colors['on-surface-variant']} />
+      <Text className="font-mono-medium text-label-sm text-on-surface-variant">{text}</Text>
+    </View>
+  );
+}
+
+function RecipeCard({ recipe }: { recipe: ChatRecipe }) {
+  const total = (recipe.prep_time_min ?? 0) + (recipe.cook_time_min ?? 0);
+  return (
+    <View className="w-full max-w-[92%] gap-gutter rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low p-stack-lg">
+      <View className="self-start bg-primary px-stack-md py-stack-sm">
+        <Text className="font-mono text-label-sm text-on-primary">RECETA</Text>
+      </View>
+      <Text className="font-sans-semibold text-headline-sm text-on-surface">{recipe.title}</Text>
+      {recipe.description ? (
+        <Text className="font-sans text-body-md text-on-surface-variant">{recipe.description}</Text>
+      ) : null}
+      {total > 0 || recipe.servings ? (
+        <View className="flex-row flex-wrap gap-gutter">
+          {total > 0 ? <MetaChip icon="schedule" text={`${total} MIN`} /> : null}
+          {recipe.servings ? <MetaChip icon="restaurant" text={`${recipe.servings} RACIONES`} /> : null}
+        </View>
+      ) : null}
+
+      <View className="gap-stack-md border-t border-outline-variant pt-gutter">
+        <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+          Ingredientes
+        </Text>
+        {recipe.ingredients.map((ing, i) => (
+          <View key={i} className="flex-row items-start gap-stack-md">
+            <View className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
+            <Text className="flex-1 font-sans text-body-md text-on-surface">
+              {[ing.quantity, ing.unit, ing.name].filter(Boolean).join(' ')}
+            </Text>
+          </View>
+        ))}
+      </View>
+
+      <View className="gap-stack-md border-t border-outline-variant pt-gutter">
+        <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+          Pasos
+        </Text>
+        {recipe.steps.map((s, i) => (
+          <View key={i} className="flex-row gap-stack-md">
+            <Text className="font-sans-semibold text-body-md text-primary">{i + 1}.</Text>
+            <Text className="flex-1 font-sans text-body-md leading-relaxed text-on-surface-variant">
+              {s.instruction}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function MessageView({ message }: { message: ChatMessage }) {
   const mine = message.role === 'user';
   return (
-    <View className={mine ? 'items-end gap-stack-sm' : 'items-start gap-stack-sm'}>
+    <View className={mine ? 'items-end gap-stack-sm' : 'items-start gap-stack-md'}>
       <Text className="font-mono uppercase text-label-sm text-on-surface-variant">
         {mine ? 'Tú' : 'Asistente'}
       </Text>
-      <View
-        className={`max-w-[88%] px-stack-lg py-gutter ${
-          mine
-            ? 'rounded-xl rounded-tr-none border border-primary bg-primary'
-            : 'rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low'
-        }`}>
-        <Text className={`font-sans text-body-lg ${mine ? 'text-on-primary' : 'text-on-surface'}`}>
-          {message.content}
-        </Text>
-      </View>
+      {message.content ? (
+        <View
+          className={`max-w-[88%] px-stack-lg py-gutter ${
+            mine
+              ? 'rounded-xl rounded-tr-none border border-primary bg-primary'
+              : 'rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low'
+          }`}>
+          <Text className={`font-sans text-body-lg ${mine ? 'text-on-primary' : 'text-on-surface'}`}>
+            {message.content}
+          </Text>
+        </View>
+      ) : null}
+      {message.recipe ? <RecipeCard recipe={message.recipe} /> : null}
     </View>
   );
 }
@@ -89,7 +150,7 @@ export default function ChatScreen() {
     requestAnimationFrame(() => scrollRef.current?.scrollToEnd({ animated: true }));
     try {
       const reply = await sendChat(next);
-      setMessages((prev) => [...prev, { role: 'assistant', content: reply }]);
+      setMessages((prev) => [...prev, { role: 'assistant', content: reply.message, recipe: reply.recipe }]);
     } catch {
       setFailed(true);
     } finally {
@@ -112,7 +173,7 @@ export default function ChatScreen() {
           {messages.length === 0 ? (
             <EmptyState onPick={send} />
           ) : (
-            messages.map((m, i) => <Bubble key={i} message={m} />)
+            messages.map((m, i) => <MessageView key={i} message={m} />)
           )}
           {sending ? (
             <View className="items-start gap-stack-sm">

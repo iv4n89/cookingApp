@@ -1,7 +1,7 @@
 import { getUserId, isAuthenticatedUser } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
-import { generateChat, type ChatTurn } from '../_shared/gemini.ts';
+import { generateChat, type ChatRecipe, type ChatTurn } from '../_shared/gemini.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Acota coste y contexto: solo los últimos mensajes y un tope por mensaje.
@@ -11,13 +11,27 @@ const MAX_CONTENT_LENGTH = 2000;
 interface InMessage {
   role: 'user' | 'assistant';
   content: string;
+  recipe?: ChatRecipe | null;
 }
 
 const BASE_PROMPT =
   'Eres el asistente de cocina de RecetasApp. Ayudas al usuario a decidir qué cocinar y a ' +
-  'adaptar recetas de forma práctica y cercana. Responde en español, en texto plano (sin markdown), ' +
-  'con mensajes claros y no demasiado largos. Cuando propongas una receta, da ingredientes y pasos ' +
-  'concisos. Aprovecha el contexto de la conversación. No des consejo médico ni nutricional profesional.';
+  'adaptar recetas de forma práctica y cercana. Responde en español, en texto plano (sin markdown). ' +
+  'Devuelve SIEMPRE "message" con tu respuesta conversacional, clara y no demasiado larga. ' +
+  'Cuando propongas o adaptes una receta concreta, rellena ADEMÁS "recipe" con la receta completa ' +
+  '(título, ingredientes con cantidades y pasos numerados); en ese caso "message" es solo la parte ' +
+  'conversacional (p. ej. "Aquí tienes una versión con cebolla"), sin repetir la receta entera. ' +
+  'Si el mensaje no propone una receta, deja "recipe" vacío. Aprovecha el contexto de la conversación. ' +
+  'No des consejo médico ni nutricional profesional.';
+
+// Texto de la receta para que el modelo recuerde lo propuesto en turnos anteriores.
+function recipeContext(recipe: ChatRecipe): string {
+  const ingredients = recipe.ingredients
+    .map((i) => [i.quantity, i.unit, i.name].filter(Boolean).join(' '))
+    .join('; ');
+  const steps = recipe.steps.map((s, i) => `${i + 1}. ${s.instruction}`).join(' ');
+  return `\n\n[Receta propuesta — ${recipe.title}. Ingredientes: ${ingredients}. Pasos: ${steps}]`;
+}
 
 // Contexto siempre activo del usuario: necesidades (a respetar), preferencias y despensa.
 async function buildSystemInstruction(supabase: SupabaseClient, userId: string | null): Promise<string> {
@@ -66,7 +80,9 @@ Deno.serve(async (req) => {
     )
     .map((m) => ({
       role: m.role === 'assistant' ? 'model' : 'user',
-      text: m.content.slice(0, MAX_CONTENT_LENGTH),
+      text:
+        m.content.slice(0, MAX_CONTENT_LENGTH) +
+        (m.role === 'assistant' && m.recipe ? recipeContext(m.recipe) : ''),
     }));
   if (!turns.length || turns[turns.length - 1].role !== 'user') {
     return json({ error: 'El último mensaje debe ser del usuario.' }, 400);
@@ -75,8 +91,8 @@ Deno.serve(async (req) => {
   try {
     const supabase = serviceClient();
     const system = await buildSystemInstruction(supabase, getUserId(req));
-    const reply = await generateChat(turns, system);
-    return json({ reply });
+    const response = await generateChat(turns, system);
+    return json(response);
   } catch (e) {
     console.error('chat:', e);
     return json({ error: 'No se pudo responder.' }, 500);
