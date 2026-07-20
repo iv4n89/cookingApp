@@ -73,7 +73,20 @@ Deno.serve(async (req) => {
 
     const generated = await generateRecipe(text, context || undefined);
     const saved = await saveRecipe(supabase, recipeFromGenerated(generated, sourceUrl));
-    if (userId) await supabase.from('generation_events').insert({ user_id: userId });
+
+    // El registro del evento es best-effort: un fallo aquí no debe convertir una
+    // generación ya exitosa (y guardada) en un error para el usuario.
+    if (userId) {
+      try {
+        const { error: eventError } = await supabase
+          .from('generation_events')
+          .insert({ user_id: userId });
+        if (eventError) console.error('generation_events insert falló:', eventError);
+      } catch (e) {
+        console.error('generation_events insert falló:', e);
+      }
+    }
+
     return json({ recipe: saved, origin: sourceUrl ? 'web' : 'generated' });
   } catch (e) {
     console.error('search-recipe:', e);
