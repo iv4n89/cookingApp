@@ -14,9 +14,14 @@ type IconName = keyof typeof MaterialIcons.glyphMap;
 const AVATAR =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuCrdXRNolt1wLPn3lGhvPoKWeWXJ4OSiO2GLXdvTW6h1GBkP6svm5WoYlq4myUT2z2rsGNmfr3wTk8DJl3_fQywUnrMf1iOdVKQCp4PEdWGUgqnDpq2p2BMx4G5aE3G_NwBn2mIUKJnDFi7mn0hcuMRgK1mTTN0k9BAJymh3C8cKizYRaemSnC_55g3Ig6ia_E7YqKAHhL0PO45UqciDeOGlHCUfZg0YT91A3C4Ji1YL4ZMxWsWe3X561WZG-GwBTRkuGQEitX0MLS2';
 
-const SETTINGS: { icon: IconName; title: string; subtitle: string }[] = [
+const SETTINGS: { icon: IconName; title: string; subtitle: string; onPress?: () => void }[] = [
   { icon: 'person', title: 'Información personal', subtitle: 'Actualiza nombre, email y preferencias' },
-  { icon: 'menu-book', title: 'Mis recetas', subtitle: '42 recetas guardadas por la IA' },
+  {
+    icon: 'history',
+    title: 'Historial de recetas',
+    subtitle: 'Lo que has cocinado',
+    onPress: () => router.push('/historial'),
+  },
   { icon: 'tune', title: 'Preferencias', subtitle: 'Restricciones dietéticas y tema' },
 ];
 
@@ -78,9 +83,21 @@ function SubscriptionCard() {
   );
 }
 
-function SettingsRow({ icon, title, subtitle }: { icon: IconName; title: string; subtitle: string }) {
+function SettingsRow({
+  icon,
+  title,
+  subtitle,
+  onPress,
+}: {
+  icon: IconName;
+  title: string;
+  subtitle: string;
+  onPress?: () => void;
+}) {
   return (
-    <Pressable className="flex-row items-center justify-between rounded-lg border border-outline-variant bg-surface-container-lowest p-stack-lg">
+    <Pressable
+      onPress={onPress}
+      className="flex-row items-center justify-between rounded-lg border border-outline-variant bg-surface-container-lowest p-stack-lg">
       <View className="flex-1 flex-row items-center gap-stack-md">
         <View className="h-10 w-10 items-center justify-center rounded bg-tertiary-fixed">
           <MaterialIcons name={icon} size={22} color={colors.primary} />

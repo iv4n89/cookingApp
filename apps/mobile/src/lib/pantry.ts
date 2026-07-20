@@ -21,6 +21,11 @@ export interface NewPantryItem {
 
 const COLUMNS = 'id, name, quantity, unit, category';
 
+// Postgres numeric llega como string; lo normalizamos a número para mostrarlo limpio.
+function toItem(row: PantryItem): PantryItem {
+  return { ...row, quantity: row.quantity == null ? null : Number(row.quantity) };
+}
+
 export function usePantry() {
   const { session } = useSession();
   const [items, setItems] = useState<PantryItem[]>([]);
@@ -35,7 +40,7 @@ export function usePantry() {
     if (error) setError('No se pudieron cargar los ingredientes.');
     else {
       setError(null);
-      setItems(data ?? []);
+      setItems((data ?? []).map(toItem));
     }
     setLoading(false);
   }, []);
@@ -55,7 +60,7 @@ export function usePantry() {
       setError('No se pudo añadir el ingrediente.');
       return;
     }
-    if (data) setItems((prev) => [...prev, data].sort((a, b) => a.name.localeCompare(b.name)));
+    if (data) setItems((prev) => [...prev, toItem(data)].sort((a, b) => a.name.localeCompare(b.name)));
   }
 
   function setQuantity(id: string, quantity: number) {
