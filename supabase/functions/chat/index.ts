@@ -7,6 +7,9 @@ import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 // Acota coste y contexto: solo los últimos mensajes y un tope por mensaje.
 const MAX_MESSAGES = 20;
 const MAX_CONTENT_LENGTH = 2000;
+const MAX_RECIPE_INGREDIENTS = 40;
+const MAX_RECIPE_STEPS = 25;
+const MAX_RECIPE_CONTEXT_LENGTH = 1500;
 
 interface InMessage {
   role: 'user' | 'assistant';
@@ -25,12 +28,21 @@ const BASE_PROMPT =
   'No des consejo médico ni nutricional profesional.';
 
 // Texto de la receta para que el modelo recuerde lo propuesto en turnos anteriores.
+// Defensivo y acotado: el recipe viene del body del cliente (puede venir malformado o enorme).
 function recipeContext(recipe: ChatRecipe): string {
-  const ingredients = recipe.ingredients
-    .map((i) => [i.quantity, i.unit, i.name].filter(Boolean).join(' '))
+  const title = typeof recipe?.title === 'string' ? recipe.title : '';
+  const ingredients = (Array.isArray(recipe?.ingredients) ? recipe.ingredients : [])
+    .slice(0, MAX_RECIPE_INGREDIENTS)
+    .map((i) => [i?.quantity, i?.unit, i?.name].filter(Boolean).join(' '))
     .join('; ');
-  const steps = recipe.steps.map((s, i) => `${i + 1}. ${s.instruction}`).join(' ');
-  return `\n\n[Receta propuesta — ${recipe.title}. Ingredientes: ${ingredients}. Pasos: ${steps}]`;
+  const steps = (Array.isArray(recipe?.steps) ? recipe.steps : [])
+    .slice(0, MAX_RECIPE_STEPS)
+    .map((s, i) => `${i + 1}. ${s?.instruction ?? ''}`)
+    .join(' ');
+  return `\n\n[Receta propuesta — ${title}. Ingredientes: ${ingredients}. Pasos: ${steps}]`.slice(
+    0,
+    MAX_RECIPE_CONTEXT_LENGTH,
+  );
 }
 
 // Contexto siempre activo del usuario: necesidades (a respetar), preferencias y despensa.
