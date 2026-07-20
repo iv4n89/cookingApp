@@ -5,6 +5,7 @@ export interface RecipeIngredient {
   quantity: number | null;
   unit: string | null;
   substitutions: string[];
+  ingredient_id?: string | null;
 }
 
 export interface RecipeStep {

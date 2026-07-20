@@ -63,8 +63,53 @@ export function recipeFromGenerated(g: GeneratedRecipe, sourceUrl?: string | nul
   };
 }
 
+function normalizeName(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Enlaza cada ingrediente de la receta al catálogo por nombre normalizado,
+// creando en el catálogo (categoría 'Otros') los que no existan.
+async function withIngredientIds(
+  supabase: SupabaseClient,
+  ingredients: { name: string }[],
+): Promise<Record<string, unknown>[]> {
+  if (ingredients.length === 0) return [];
+  const norms = [...new Set(ingredients.map((i) => normalizeName(i.name)).filter(Boolean))];
+
+  const { data: existing } = await supabase
+    .from('ingredients')
+    .select('id, normalized_name')
+    .in('normalized_name', norms);
+  const map = new Map<string, string>((existing ?? []).map((r) => [r.normalized_name, r.id]));
+
+  const missing = norms.filter((n) => !map.has(n));
+  if (missing.length > 0) {
+    const rows = missing.map((n) => ({
+      name: ingredients.find((i) => normalizeName(i.name) === n)!.name.trim(),
+      normalized_name: n,
+      category: 'Otros',
+    }));
+    await supabase
+      .from('ingredients')
+      .upsert(rows, { onConflict: 'normalized_name', ignoreDuplicates: true });
+    const { data: after } = await supabase
+      .from('ingredients')
+      .select('id, normalized_name')
+      .in('normalized_name', missing);
+    for (const r of after ?? []) map.set(r.normalized_name, r.id);
+  }
+
+  return ingredients.map((i) => ({ ...i, ingredient_id: map.get(normalizeName(i.name)) ?? null }));
+}
+
 export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
   const embedding = await embedText(embeddingText(recipe), 'RETRIEVAL_DOCUMENT');
+  const ingredients = await withIngredientIds(supabase, recipe.ingredients ?? []);
   const { data, error } = await supabase
     .from('recipes')
     .insert({
@@ -78,7 +123,7 @@ export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
       cook_time_min: recipe.cook_time_min ?? 0,
       calories: recipe.calories ?? null,
       tags: recipe.tags ?? [],
-      ingredients: recipe.ingredients ?? [],
+      ingredients,
       steps: recipe.steps ?? [],
       embedding,
     })
