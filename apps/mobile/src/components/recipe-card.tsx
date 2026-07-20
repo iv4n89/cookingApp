@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -9,7 +9,7 @@ type IconName = keyof typeof MaterialIcons.glyphMap;
 
 export interface RecipeCardData {
   id: string;
-  image: string;
+  image: string | null;
   badgeIcon: IconName;
   badge: string;
   title: string;
@@ -17,16 +17,22 @@ export interface RecipeCardData {
   tags: string[];
 }
 
-// Placeholder de "sugerencias" en Home (aún sin datos reales); no navega.
-export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
+export function RecipeCard({ recipe, onPress }: { recipe: RecipeCardData; onPress?: () => void }) {
   return (
-    <View className="bg-card border border-card-border rounded-xl overflow-hidden">
-      <View className="h-56 w-full">
-        <Image
-          source={recipe.image}
-          style={{ width: '100%', height: '100%' }}
-          contentFit="cover"
-        />
+    <Pressable
+      onPress={onPress}
+      disabled={!onPress}
+      className="bg-card border border-card-border rounded-xl overflow-hidden">
+      <View className="h-56 w-full items-center justify-center bg-surface-container">
+        {recipe.image ? (
+          <Image
+            source={recipe.image}
+            style={{ width: '100%', height: '100%' }}
+            contentFit="cover"
+          />
+        ) : (
+          <MaterialIcons name="restaurant-menu" size={40} color={colors['outline-variant']} />
+        )}
         <View className="absolute top-stack-md left-stack-md flex-row items-center gap-stack-sm bg-tertiary-fixed px-stack-md py-stack-sm">
           <MaterialIcons name={recipe.badgeIcon} size={14} color={colors['on-tertiary-fixed']} />
           <Text className="font-mono-medium text-label-sm text-on-tertiary-fixed">
@@ -59,6 +65,6 @@ export function RecipeCard({ recipe }: { recipe: RecipeCardData }) {
           ))}
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }

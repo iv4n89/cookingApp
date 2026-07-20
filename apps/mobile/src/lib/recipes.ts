@@ -42,6 +42,24 @@ export async function askRecipe(query: string): Promise<{ recipe: Recipe | null;
   return data as { recipe: Recipe | null; origin: RecipeOrigin };
 }
 
+export interface RecommendedRecipe {
+  id: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  prep_time_min: number;
+  cook_time_min: number;
+  tags: string[];
+  match_count: number;
+}
+
+// Recetas que puedes cocinar con lo que tienes: ordenadas por ingredientes en despensa.
+export async function recommendedRecipes(limit = 6): Promise<RecommendedRecipe[]> {
+  const { data, error } = await supabase.rpc('recommended_recipes', { p_limit: limit });
+  if (error) throw error;
+  return (data as RecommendedRecipe[]) ?? [];
+}
+
 export async function getRecipe(id: string): Promise<Recipe | null> {
   const { data, error } = await supabase.from('recipes').select(COLUMNS).eq('id', id).maybeSingle();
   if (error) throw error;
