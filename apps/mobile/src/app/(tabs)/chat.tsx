@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -15,10 +15,25 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
+import { useSession } from '@/lib/auth';
+import { normalize } from '@/lib/ingredients';
+import { getPantryMatch, type PantryMatch } from '@/lib/pantry';
 import { sendChat, type ChatMessage } from '@/lib/chat';
-import { formatQuantity, scaleIngredients, type Recipe } from '@/lib/recipes';
+import {
+  addIngredientsToShopping,
+  formatQuantity,
+  scaleIngredients,
+  type Recipe,
+  type RecipeIngredient,
+} from '@/lib/recipes';
 
 const MAX_SERVINGS = 20;
+
+function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): boolean {
+  if (ingredient.ingredient_id && pantry.ids.has(ingredient.ingredient_id)) return false;
+  if (pantry.names.has(normalize(ingredient.name))) return false;
+  return true;
+}
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -67,10 +82,37 @@ function ServingsStepper({ servings, onChange }: { servings: number; onChange: (
   );
 }
 
-function RecipeCard({ recipe }: { recipe: Recipe }) {
+function ingredientText(ingredient: RecipeIngredient): string {
+  return [formatQuantity(ingredient.quantity), ingredient.unit, ingredient.name]
+    .filter((v) => v !== '' && v !== null)
+    .join(' ');
+}
+
+function RecipeCard({ recipe, pantry }: { recipe: Recipe; pantry: PantryMatch | null }) {
+  const { session } = useSession();
   const [servings, setServings] = useState(recipe.servings > 0 ? recipe.servings : 1);
+  const [addedMissing, setAddedMissing] = useState(false);
+  const [addingMissing, setAddingMissing] = useState(false);
+  const [addFailed, setAddFailed] = useState(false);
+
   const total = recipe.prep_time_min + recipe.cook_time_min;
   const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
+  const missing = pantry ? scaled.filter((ing) => isMissing(ing, pantry)) : [];
+
+  async function addMissing() {
+    if (!session || addingMissing || addedMissing || missing.length === 0) return;
+    setAddingMissing(true);
+    setAddFailed(false);
+    try {
+      await addIngredientsToShopping(session.user.id, missing);
+      setAddedMissing(true);
+    } catch {
+      setAddFailed(true);
+    } finally {
+      setAddingMissing(false);
+    }
+  }
+
   return (
     <View className="w-full max-w-[92%] gap-gutter overflow-hidden rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low">
       <View className="aspect-[3/2] w-full items-center justify-center bg-surface-container">
@@ -101,15 +143,44 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
             Ingredientes
           </Text>
-          {scaled.map((ing, i) => (
-            <View key={i} className="flex-row items-start gap-stack-md">
-              <View className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
-              <Text className="flex-1 font-sans text-body-md text-on-surface">
-                {[formatQuantity(ing.quantity), ing.unit, ing.name].filter((v) => v !== '' && v !== null).join(' ')}
-              </Text>
-            </View>
-          ))}
+          {scaled.map((ing, i) => {
+            const falta = pantry ? isMissing(ing, pantry) : false;
+            return (
+              <View key={i} className="flex-row items-start gap-stack-md">
+                <View className={`mt-2 h-1.5 w-1.5 rounded-full ${falta ? 'bg-secondary' : 'bg-primary'}`} />
+                <Text className="flex-1 font-sans text-body-md text-on-surface">{ingredientText(ing)}</Text>
+                {falta ? (
+                  <Text className="mt-0.5 font-mono text-label-sm uppercase text-secondary">Falta</Text>
+                ) : null}
+              </View>
+            );
+          })}
         </View>
+
+        {missing.length > 0 ? (
+          <Pressable
+            onPress={addMissing}
+            disabled={addingMissing || addedMissing}
+            className={`flex-row items-center justify-center gap-stack-md border border-primary py-stack-md ${
+              addingMissing || addedMissing ? 'opacity-60' : ''
+            }`}>
+            {addingMissing ? (
+              <ActivityIndicator color={colors.primary} />
+            ) : (
+              <MaterialIcons name={addedMissing ? 'check' : 'add-shopping-cart'} size={18} color={colors.primary} />
+            )}
+            <Text className="font-mono-medium text-label-md text-primary">
+              {addedMissing
+                ? 'AÑADIDO A LA COMPRA'
+                : addingMissing
+                  ? 'AÑADIENDO…'
+                  : `AÑADIR LO QUE FALTA (${missing.length})`}
+            </Text>
+          </Pressable>
+        ) : null}
+        {addFailed ? (
+          <Text className="font-sans text-body-md text-error">No se pudo añadir. Inténtalo de nuevo.</Text>
+        ) : null}
 
         <Pressable
           onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id, servings } })}
@@ -124,7 +195,7 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
   );
 }
 
-function MessageView({ message }: { message: ChatMessage }) {
+function MessageView({ message, pantry }: { message: ChatMessage; pantry: PantryMatch | null }) {
   const mine = message.role === 'user';
   return (
     <View className={mine ? 'items-end gap-stack-sm' : 'items-start gap-stack-md'}>
@@ -143,7 +214,7 @@ function MessageView({ message }: { message: ChatMessage }) {
           </Text>
         </View>
       ) : null}
-      {message.recipe ? <RecipeCard recipe={message.recipe} /> : null}
+      {message.recipe ? <RecipeCard recipe={message.recipe} pantry={pantry} /> : null}
     </View>
   );
 }
@@ -179,7 +250,20 @@ export default function ChatScreen() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [pantry, setPantry] = useState<PantryMatch | null>(null);
   const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    let active = true;
+    getPantryMatch()
+      .then((data) => {
+        if (active) setPantry(data);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   async function send(text: string) {
     const content = text.trim();
@@ -215,7 +299,7 @@ export default function ChatScreen() {
           {messages.length === 0 ? (
             <EmptyState onPick={send} />
           ) : (
-            messages.map((m, i) => <MessageView key={i} message={m} />)
+            messages.map((m, i) => <MessageView key={i} message={m} pantry={pantry} />)
           )}
           {sending ? (
             <View className="items-start gap-stack-sm">

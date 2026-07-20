@@ -1,7 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useSession } from './auth';
+import { normalize } from './ingredients';
 import { supabase } from './supabase';
+
+// Lo que hay en la despensa, para saber qué ingredientes de una receta faltan.
+export interface PantryMatch {
+  ids: Set<string>;
+  names: Set<string>;
+}
+
+export async function getPantryMatch(): Promise<PantryMatch> {
+  const { data, error } = await supabase.from('pantry_items').select('ingredient_id, name');
+  if (error) throw error;
+  const ids = new Set<string>();
+  const names = new Set<string>();
+  for (const row of data ?? []) {
+    if (row.ingredient_id) ids.add(row.ingredient_id as string);
+    if (row.name) names.add(normalize(row.name as string));
+  }
+  return { ids, names };
+}
 
 export interface PantryItem {
   id: string;
