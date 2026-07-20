@@ -1,7 +1,8 @@
 import { getUserId, isAuthenticatedUser } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
-import { generateChat, type ChatRecipe, type ChatTurn } from '../_shared/gemini.ts';
+import { generateChat, type ChatTurn } from '../_shared/gemini.ts';
+import { getUserPrefs, resolveRecipe, type UserPrefs } from '../_shared/recipe-pipeline.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Acota coste y contexto: solo los últimos mensajes y un tope por mensaje.
@@ -10,59 +11,68 @@ const MAX_CONTENT_LENGTH = 2000;
 const MAX_RECIPE_INGREDIENTS = 40;
 const MAX_RECIPE_STEPS = 25;
 const MAX_RECIPE_CONTEXT_LENGTH = 1500;
+const MAX_QUERY_LENGTH = 300;
+
+interface HistoryRecipe {
+  title?: string;
+  ingredients?: { name?: string; quantity?: unknown; unit?: string }[];
+  steps?: { instruction?: string }[];
+}
 
 interface InMessage {
   role: 'user' | 'assistant';
   content: string;
-  recipe?: ChatRecipe | null;
+  recipe?: HistoryRecipe | null;
 }
 
 const BASE_PROMPT =
-  'Eres el asistente de cocina de RecetasApp. Ayudas al usuario a decidir qué cocinar y a ' +
-  'adaptar recetas de forma práctica y cercana. Responde en español, en texto plano (sin markdown). ' +
-  'Devuelve SIEMPRE "message" con tu respuesta conversacional, clara y no demasiado larga. ' +
-  'Cuando propongas o adaptes una receta concreta, rellena ADEMÁS "recipe" con la receta completa ' +
-  '(título, ingredientes con cantidades y pasos numerados); en ese caso "message" es solo la parte ' +
-  'conversacional (p. ej. "Aquí tienes una versión con cebolla"), sin repetir la receta entera. ' +
-  'Si el mensaje no propone una receta, deja "recipe" vacío. Aprovecha el contexto de la conversación. ' +
+  'Eres el asistente de cocina de RecetasApp. Hablas español con un tono natural, cercano y directo, ' +
+  'sin exageraciones ni halagos vacíos: no empieces con "¡Buena idea!", "¡Excelente elección!" ni ' +
+  'exclamaciones por defecto. Sé amable pero ve al grano, en texto plano (sin markdown).\n' +
+  'Devuelve SIEMPRE "message" con tu respuesta conversacional.\n' +
+  'No inventes recetas. Cuando el usuario pida una receta o quiera adaptar/cambiar la actual, NO ' +
+  'escribas la receta: rellena "recipe_query" con una frase de búsqueda breve y autocontenida que ' +
+  'describa el plato deseado teniendo en cuenta toda la conversación (por ejemplo "salteado de patata ' +
+  'con mantequilla, ajo y cebolla"). El sistema buscará o creará la receta real. En "message" coméntalo ' +
+  'brevemente (por ejemplo "Te busco una versión con cebolla"). Si el usuario no pide receta, deja ' +
+  '"recipe_query" vacío.\n' +
   'No des consejo médico ni nutricional profesional.';
 
 // Texto de la receta para que el modelo recuerde lo propuesto en turnos anteriores.
 // Defensivo y acotado: el recipe viene del body del cliente (puede venir malformado o enorme).
-function recipeContext(recipe: ChatRecipe): string {
+function recipeContext(recipe: HistoryRecipe): string {
   const title = typeof recipe?.title === 'string' ? recipe.title : '';
   const ingredients = (Array.isArray(recipe?.ingredients) ? recipe.ingredients : [])
     .slice(0, MAX_RECIPE_INGREDIENTS)
-    .map((i) => [i?.quantity, i?.unit, i?.name].filter(Boolean).join(' '))
+    .map((i) => [i?.quantity != null ? String(i.quantity) : '', i?.unit, i?.name].filter(Boolean).join(' '))
     .join('; ');
   const steps = (Array.isArray(recipe?.steps) ? recipe.steps : [])
     .slice(0, MAX_RECIPE_STEPS)
     .map((s, i) => `${i + 1}. ${s?.instruction ?? ''}`)
     .join(' ');
-  return `\n\n[Receta propuesta — ${title}. Ingredientes: ${ingredients}. Pasos: ${steps}]`.slice(
+  return `\n\n[Receta actual — ${title}. Ingredientes: ${ingredients}. Pasos: ${steps}]`.slice(
     0,
     MAX_RECIPE_CONTEXT_LENGTH,
   );
 }
 
 // Contexto siempre activo del usuario: necesidades (a respetar), preferencias y despensa.
-async function buildSystemInstruction(supabase: SupabaseClient, userId: string | null): Promise<string> {
+async function buildSystemInstruction(
+  supabase: SupabaseClient,
+  userId: string | null,
+  prefs: UserPrefs | null,
+): Promise<string> {
   if (!userId) return BASE_PROMPT;
 
-  const [prefsRes, pantryRes] = await Promise.all([
-    supabase.from('user_preferences').select('food_prefs, special_needs, notes').eq('user_id', userId).maybeSingle(),
-    supabase.from('pantry_items').select('name').eq('user_id', userId).limit(100),
-  ]);
-  const prefs = prefsRes.data;
-  const pantry = pantryRes.data;
+  const { data: pantry } = await supabase.from('pantry_items').select('name').eq('user_id', userId).limit(100);
 
   const parts = [BASE_PROMPT];
-  if (prefs?.special_needs?.length) {
+  if (prefs?.special_needs.length) {
     parts.push(
       `Necesidades del usuario que debes respetar SIEMPRE, evitando esos ingredientes y sus derivados: ${prefs.special_needs.join(', ')}.`,
     );
   }
-  if (prefs?.food_prefs?.length) {
+  if (prefs?.food_prefs.length) {
     parts.push(`Preferencias del usuario: ${prefs.food_prefs.join(', ')}.`);
   }
   const notes = (prefs?.notes ?? '').trim().slice(0, 500);
@@ -102,9 +112,21 @@ Deno.serve(async (req) => {
 
   try {
     const supabase = serviceClient();
-    const system = await buildSystemInstruction(supabase, getUserId(req));
-    const response = await generateChat(turns, system);
-    return json(response);
+    const userId = getUserId(req);
+    const prefs = userId ? await getUserPrefs(supabase, userId) : null;
+    const system = await buildSystemInstruction(supabase, userId, prefs);
+
+    const { message, recipe_query } = await generateChat(turns, system);
+
+    // La receta no la inventa el chat: se resuelve por el pipeline real (caché/web/IA).
+    let recipe: Record<string, unknown> | null = null;
+    const query = typeof recipe_query === 'string' ? recipe_query.trim() : '';
+    if (query) {
+      const resolved = await resolveRecipe(supabase, query.slice(0, MAX_QUERY_LENGTH), userId, prefs);
+      recipe = resolved.recipe;
+    }
+
+    return json({ message, recipe });
   } catch (e) {
     console.error('chat:', e);
     return json({ error: 'No se pudo responder.' }, 500);

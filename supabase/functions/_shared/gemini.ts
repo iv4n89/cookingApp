@@ -117,61 +117,18 @@ export interface ChatTurn {
   text: string;
 }
 
-export interface ChatRecipe {
-  title: string;
-  description?: string;
-  servings?: number;
-  prep_time_min?: number;
-  cook_time_min?: number;
-  ingredients: { name: string; quantity?: string; unit?: string }[];
-  steps: { instruction: string; timer_seconds?: number }[];
-}
-
 export interface ChatResponse {
   message: string;
-  recipe?: ChatRecipe | null;
+  // Frase de búsqueda cuando el usuario pide/adapta una receta; el sistema la resuelve
+  // por el pipeline real (no la inventa el chat). Vacío si el mensaje no pide receta.
+  recipe_query?: string | null;
 }
 
-// message: respuesta conversacional. recipe: solo cuando se propone/adapta una receta concreta.
 const CHAT_SCHEMA = {
   type: 'OBJECT',
   properties: {
     message: { type: 'STRING' },
-    recipe: {
-      type: 'OBJECT',
-      nullable: true,
-      properties: {
-        title: { type: 'STRING' },
-        description: { type: 'STRING' },
-        servings: { type: 'INTEGER' },
-        prep_time_min: { type: 'INTEGER' },
-        cook_time_min: { type: 'INTEGER' },
-        ingredients: {
-          type: 'ARRAY',
-          items: {
-            type: 'OBJECT',
-            properties: {
-              name: { type: 'STRING' },
-              quantity: { type: 'STRING' },
-              unit: { type: 'STRING' },
-            },
-            required: ['name'],
-          },
-        },
-        steps: {
-          type: 'ARRAY',
-          items: {
-            type: 'OBJECT',
-            properties: {
-              instruction: { type: 'STRING' },
-              timer_seconds: { type: 'INTEGER' },
-            },
-            required: ['instruction'],
-          },
-        },
-      },
-      required: ['title', 'ingredients', 'steps'],
-    },
+    recipe_query: { type: 'STRING', nullable: true },
   },
   required: ['message'],
 };

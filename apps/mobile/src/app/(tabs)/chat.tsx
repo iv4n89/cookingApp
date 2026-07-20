@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -13,7 +14,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
-import { sendChat, type ChatMessage, type ChatRecipe } from '@/lib/chat';
+import { sendChat, type ChatMessage } from '@/lib/chat';
+import { formatQuantity, scaleIngredients, type Recipe } from '@/lib/recipes';
+
+const MAX_SERVINGS = 20;
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -33,8 +37,39 @@ function MetaChip({ icon, text }: { icon: 'schedule' | 'restaurant'; text: strin
   );
 }
 
-function RecipeCard({ recipe }: { recipe: ChatRecipe }) {
-  const total = (recipe.prep_time_min ?? 0) + (recipe.cook_time_min ?? 0);
+function ServingsStepper({ servings, onChange }: { servings: number; onChange: (n: number) => void }) {
+  return (
+    <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
+      <Text className="font-sans-semibold text-body-md text-on-surface">Raciones</Text>
+      <View className="flex-row items-center gap-gutter">
+        <Pressable
+          onPress={() => onChange(Math.max(1, servings - 1))}
+          disabled={servings <= 1}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Menos raciones"
+          className={servings <= 1 ? 'opacity-40' : ''}>
+          <MaterialIcons name="remove-circle-outline" size={26} color={colors.primary} />
+        </Pressable>
+        <Text className="w-8 text-center font-mono-medium text-headline-sm text-on-surface">{servings}</Text>
+        <Pressable
+          onPress={() => onChange(Math.min(MAX_SERVINGS, servings + 1))}
+          disabled={servings >= MAX_SERVINGS}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Más raciones"
+          className={servings >= MAX_SERVINGS ? 'opacity-40' : ''}>
+          <MaterialIcons name="add-circle-outline" size={26} color={colors.primary} />
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function RecipeCard({ recipe }: { recipe: Recipe }) {
+  const [servings, setServings] = useState(recipe.servings > 0 ? recipe.servings : 1);
+  const total = recipe.prep_time_min + recipe.cook_time_min;
+  const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
   return (
     <View className="w-full max-w-[92%] gap-gutter rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low p-stack-lg">
       <View className="self-start bg-primary px-stack-md py-stack-sm">
@@ -44,22 +79,23 @@ function RecipeCard({ recipe }: { recipe: ChatRecipe }) {
       {recipe.description ? (
         <Text className="font-sans text-body-md text-on-surface-variant">{recipe.description}</Text>
       ) : null}
-      {total > 0 || recipe.servings ? (
+      {total > 0 ? (
         <View className="flex-row flex-wrap gap-gutter">
-          {total > 0 ? <MetaChip icon="schedule" text={`${total} MIN`} /> : null}
-          {recipe.servings ? <MetaChip icon="restaurant" text={`${recipe.servings} RACIONES`} /> : null}
+          <MetaChip icon="schedule" text={`${total} MIN`} />
         </View>
       ) : null}
+
+      <ServingsStepper servings={servings} onChange={setServings} />
 
       <View className="gap-stack-md border-t border-outline-variant pt-gutter">
         <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
           Ingredientes
         </Text>
-        {recipe.ingredients.map((ing, i) => (
+        {scaled.map((ing, i) => (
           <View key={i} className="flex-row items-start gap-stack-md">
             <View className="mt-2 h-1.5 w-1.5 rounded-full bg-primary" />
             <Text className="flex-1 font-sans text-body-md text-on-surface">
-              {[ing.quantity, ing.unit, ing.name].filter(Boolean).join(' ')}
+              {[formatQuantity(ing.quantity), ing.unit, ing.name].filter((v) => v !== '' && v !== null).join(' ')}
             </Text>
           </View>
         ))}
@@ -78,6 +114,15 @@ function RecipeCard({ recipe }: { recipe: ChatRecipe }) {
           </View>
         ))}
       </View>
+
+      <Pressable
+        onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id, servings } })}
+        className="flex-row items-center justify-center gap-stack-md bg-primary py-gutter">
+        <MaterialIcons name="play-arrow" size={20} color={colors['on-primary']} />
+        <Text className="font-mono-medium uppercase tracking-widest text-label-md text-on-primary">
+          Comenzar a cocinar
+        </Text>
+      </Pressable>
     </View>
   );
 }

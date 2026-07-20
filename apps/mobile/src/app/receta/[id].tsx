@@ -9,7 +9,9 @@ import { useSession } from '@/lib/auth';
 import { cookRecipe } from '@/lib/cooking';
 import {
   addIngredientsToShopping,
+  formatQuantity,
   getRecipe,
+  scaleIngredients,
   type Recipe,
   type RecipeIngredient,
   type RecipeStep,
@@ -32,20 +34,7 @@ function sourceLabel(recipe: Recipe): string {
 }
 
 function quantityLine(ingredient: RecipeIngredient): string {
-  const quantity = ingredient.quantity !== null ? String(Math.round(ingredient.quantity * 100) / 100) : null;
-  return [quantity, ingredient.unit].filter((v) => v !== null && v !== '').join(' ');
-}
-
-function scaleIngredients(
-  ingredients: RecipeIngredient[],
-  base: number,
-  target: number,
-): RecipeIngredient[] {
-  const factor = target / (base > 0 ? base : 1);
-  return ingredients.map((ingredient) => ({
-    ...ingredient,
-    quantity: ingredient.quantity === null ? null : Math.round(ingredient.quantity * factor * 100) / 100,
-  }));
+  return [formatQuantity(ingredient.quantity), ingredient.unit].filter((v) => v !== '' && v !== null).join(' ');
 }
 
 function stepDuration(seconds: number | null): string | null {
@@ -301,7 +290,7 @@ function Stats({ recipe, servings }: { recipe: Recipe; servings: number }) {
 }
 
 export default function RecipeDetailScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, servings: servingsParam } = useLocalSearchParams<{ id: string; servings?: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
@@ -315,7 +304,10 @@ export default function RecipeDetailScreen() {
       .then((data) => {
         if (active) {
           setRecipe(data);
-          if (data) setServings(data.servings > 0 ? data.servings : 1);
+          if (data) {
+            const requested = Number(servingsParam);
+            setServings(requested > 0 ? requested : data.servings > 0 ? data.servings : 1);
+          }
         }
       })
       .catch(() => {
@@ -327,7 +319,7 @@ export default function RecipeDetailScreen() {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, servingsParam]);
 
   useEffect(() => load(), [load]);
 

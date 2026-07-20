@@ -1,24 +1,15 @@
+import type { Recipe } from './recipes';
 import { supabase } from './supabase';
-
-export interface ChatRecipe {
-  title: string;
-  description?: string;
-  servings?: number;
-  prep_time_min?: number;
-  cook_time_min?: number;
-  ingredients: { name: string; quantity?: string; unit?: string }[];
-  steps: { instruction: string; timer_seconds?: number }[];
-}
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
-  recipe?: ChatRecipe | null;
+  recipe?: Recipe | null;
 }
 
 export interface ChatReply {
   message: string;
-  recipe?: ChatRecipe | null;
+  recipe?: Recipe | null;
 }
 
 // Envía el historial completo de la sesión; el backend le añade el contexto del usuario.
