@@ -10,8 +10,8 @@ create table ingredients (
   image_url text,
   created_at timestamptz not null default now()
 );
+-- normalized_name ya tiene índice único por su constraint; solo hace falta el de categoría.
 create index ingredients_category_idx on ingredients (category);
-create index ingredients_normalized_idx on ingredients (normalized_name);
 
 -- Catálogo compartido: lectura para autenticados, escritura solo para el backend.
 alter table ingredients enable row level security;
