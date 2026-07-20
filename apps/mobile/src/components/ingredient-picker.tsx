@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { useEffect, useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,14 +21,36 @@ interface Selected {
   id: string | null;
   name: string;
   category: string;
+  image_url: string | null;
 }
 
-function IngredientRow({ name, onPress }: { name: string; onPress: () => void }) {
+function Thumb({ imageUrl }: { imageUrl: string | null }) {
+  return (
+    <View className="h-10 w-10 items-center justify-center overflow-hidden rounded bg-surface-container">
+      {imageUrl ? (
+        <Image source={imageUrl} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+      ) : (
+        <MaterialIcons name="restaurant" size={18} color={colors['outline-variant']} />
+      )}
+    </View>
+  );
+}
+
+function IngredientRow({
+  name,
+  imageUrl,
+  onPress,
+}: {
+  name: string;
+  imageUrl: string | null;
+  onPress: () => void;
+}) {
   return (
     <Pressable
       onPress={onPress}
-      className="flex-row items-center justify-between border-b border-outline-variant px-container-padding py-stack-md">
-      <Text className="flex-1 pr-gutter font-sans text-body-md text-on-surface">{name}</Text>
+      className="flex-row items-center gap-stack-md border-b border-outline-variant px-container-padding py-stack-md">
+      <Thumb imageUrl={imageUrl} />
+      <Text className="flex-1 font-sans text-body-md text-on-surface">{name}</Text>
       <MaterialIcons name="add-circle-outline" size={22} color={colors.primary} />
     </Pressable>
   );
@@ -118,9 +141,18 @@ export function IngredientPicker({
               <Text className="font-sans-bold text-headline-sm text-primary">Cantidad</Text>
             </View>
 
-            <View className="rounded-lg border border-card-border bg-card p-gutter">
-              <Text className="font-sans-semibold text-headline-sm text-on-surface">{selected.name}</Text>
-              <Text className="font-mono text-label-sm text-on-surface-variant">{selected.category}</Text>
+            <View className="flex-row items-center gap-stack-md rounded-lg border border-card-border bg-card p-gutter">
+              <View className="h-14 w-14 items-center justify-center overflow-hidden rounded bg-surface-container">
+                {selected.image_url ? (
+                  <Image source={selected.image_url} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+                ) : (
+                  <MaterialIcons name="restaurant" size={22} color={colors['outline-variant']} />
+                )}
+              </View>
+              <View className="flex-1">
+                <Text className="font-sans-semibold text-headline-sm text-on-surface">{selected.name}</Text>
+                <Text className="font-mono text-label-sm text-on-surface-variant">{selected.category}</Text>
+              </View>
             </View>
 
             <View className="flex-row gap-gutter">
@@ -179,7 +211,7 @@ export function IngredientPicker({
               {q ? (
                 filtered.length === 0 ? (
                   <Pressable
-                    onPress={() => setSelected({ id: null, name: query.trim(), category: 'Otros' })}
+                    onPress={() => setSelected({ id: null, name: query.trim(), category: 'Otros', image_url: null })}
                     className="flex-row items-center gap-stack-md px-container-padding py-gutter">
                     <MaterialIcons name="add" size={20} color={colors.primary} />
                     <Text className="font-sans text-body-md text-primary">
@@ -188,7 +220,7 @@ export function IngredientPicker({
                   </Pressable>
                 ) : (
                   filtered.map((i) => (
-                    <IngredientRow key={i.id} name={i.name} onPress={() => setSelected(i)} />
+                    <IngredientRow key={i.id} name={i.name} imageUrl={i.image_url} onPress={() => setSelected(i)} />
                   ))
                 )
               ) : (
@@ -209,7 +241,7 @@ export function IngredientPicker({
                     </Pressable>
                     {expanded.has(category)
                       ? list.map((i) => (
-                          <IngredientRow key={i.id} name={i.name} onPress={() => setSelected(i)} />
+                          <IngredientRow key={i.id} name={i.name} imageUrl={i.image_url} onPress={() => setSelected(i)} />
                         ))
                       : null}
                   </View>
