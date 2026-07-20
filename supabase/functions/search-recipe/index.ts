@@ -28,6 +28,33 @@ async function generationsInWindow(supabase: SupabaseClient, userId: string): Pr
   return count ?? 0;
 }
 
+// Directivas de personalización a partir de las preferencias del usuario.
+async function userPreferences(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<string | undefined> {
+  const { data } = await supabase
+    .from('user_preferences')
+    .select('food_prefs, special_needs, notes')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (!data) return undefined;
+
+  const parts: string[] = [];
+  if (data.food_prefs?.length) {
+    parts.push(`Preferencias de comida del usuario (tenlas en cuenta): ${data.food_prefs.join(', ')}.`);
+  }
+  if (data.special_needs?.length) {
+    parts.push(
+      `IMPRESCINDIBLE respetar estas necesidades del usuario; evita por completo esos ingredientes y sus derivados: ${data.special_needs.join(', ')}.`,
+    );
+  }
+  const notes = (data.notes ?? '').trim().slice(0, 500);
+  if (notes) parts.push(`Notas del usuario: ${notes}`);
+
+  return parts.length ? parts.join(' ') : undefined;
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
@@ -71,7 +98,8 @@ Deno.serve(async (req) => {
       .slice(0, 4000);
     const sourceUrl = results[0]?.url ?? null;
 
-    const generated = await generateRecipe(text, context || undefined);
+    const preferences = userId ? await userPreferences(supabase, userId) : undefined;
+    const generated = await generateRecipe(text, context || undefined, preferences);
     const saved = await saveRecipe(supabase, recipeFromGenerated(generated, sourceUrl));
 
     // El registro del evento es best-effort: un fallo aquí no debe convertir una
