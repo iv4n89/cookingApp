@@ -18,7 +18,7 @@ security invoker
 set search_path = ''
 as $$
   select r.id, r.title, r.description, r.image_url, r.prep_time_min, r.cook_time_min, r.tags,
-         count(*)::int as match_count
+         count(distinct ing->>'ingredient_id')::int as match_count
   from public.recipes r
   join lateral jsonb_array_elements(r.ingredients) ing on true
   join public.pantry_items p
