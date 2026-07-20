@@ -14,9 +14,33 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
+import { SessionProvider, useSession } from '@/lib/auth';
+
 import '@/global.css';
 
 SplashScreen.preventAutoHideAsync();
+
+function RootNavigator() {
+  const { session, loading } = useSession();
+
+  if (loading) return null;
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={!!session}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="receta/[id]" />
+        <Stack.Screen name="cocinar/[id]" />
+        <Stack.Screen name="perfil" />
+        <Stack.Screen name="suscripcion" />
+        <Stack.Screen name="premium" />
+      </Stack.Protected>
+      <Stack.Protected guard={!session}>
+        <Stack.Screen name="login" />
+      </Stack.Protected>
+    </Stack>
+  );
+}
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -35,9 +59,9 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <>
+    <SessionProvider>
       <StatusBar style="dark" />
-      <Stack screenOptions={{ headerShown: false }} />
-    </>
+      <RootNavigator />
+    </SessionProvider>
   );
 }

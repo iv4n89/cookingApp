@@ -4,6 +4,8 @@ import { router } from 'expo-router';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { supabase } from '@/lib/supabase';
+
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
@@ -113,7 +115,9 @@ export default function PerfilScreen() {
         </View>
 
         <View className="gap-stack-sm border-t border-outline-variant pt-stack-lg">
-          <Pressable className="flex-row items-center gap-stack-md p-stack-md">
+          <Pressable
+            onPress={() => supabase.auth.signOut()}
+            className="flex-row items-center gap-stack-md p-stack-md">
             <MaterialIcons name="logout" size={22} color={colors['on-surface-variant']} />
             <Text className="font-mono-medium text-label-md text-on-surface-variant">
               CERRAR SESIÓN
