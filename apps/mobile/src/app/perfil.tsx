@@ -17,6 +17,12 @@ const AVATAR =
 const SETTINGS: { icon: IconName; title: string; subtitle: string; onPress?: () => void }[] = [
   { icon: 'person', title: 'Información personal', subtitle: 'Actualiza nombre, email y preferencias' },
   {
+    icon: 'favorite',
+    title: 'Recetas favoritas',
+    subtitle: 'Las que has guardado',
+    onPress: () => router.push('/favoritos'),
+  },
+  {
     icon: 'history',
     title: 'Historial de recetas',
     subtitle: 'Lo que has cocinado',

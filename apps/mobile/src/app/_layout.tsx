@@ -33,6 +33,7 @@ function RootNavigator() {
         <Stack.Screen name="cocinar/[id]" />
         <Stack.Screen name="perfil" />
         <Stack.Screen name="historial" />
+        <Stack.Screen name="favoritos" />
         <Stack.Screen name="suscripcion" />
         <Stack.Screen name="premium" />
       </Stack.Protected>
