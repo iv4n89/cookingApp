@@ -129,8 +129,10 @@ export async function generateRecipe(
     ` (dieta, dificultad). Añade timer_seconds solo en los pasos que requieran un tiempo de espera o cocción.` +
     ` Clasifica la receta con precisión: en "allergens" incluye SOLO las claves de esta lista que la receta` +
     ` contenga realmente: gluten, crustaceans, molluscs, egg, fish, peanut, soy, milk, nuts, celery, mustard,` +
-    ` sesame, pork, alcohol (deja la lista vacía si no contiene ninguno). En "diet" incluye "vegetarian" si es` +
-    ` vegetariana y "vegan" si es vegana (una receta vegana es también vegetariana: incluye ambas).`;
+    ` sesame, fructose (fruta, miel, sirope de fructosa), histamine (alimentos fermentados, curados o muy` +
+    ` madurados), sorbitol (algunas frutas de hueso y edulcorantes "sin azúcar"), pork, alcohol (deja la lista` +
+    ` vacía si no contiene ninguno). En "diet" incluye "vegetarian" si es vegetariana y "vegan" si es vegana` +
+    ` (una receta vegana es también vegetariana: incluye ambas).`;
 
   const res = await fetchWithTimeout(
     `${BASE}/models/${GEN_MODEL}:generateContent`,
