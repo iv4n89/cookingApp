@@ -28,7 +28,12 @@ const SETTINGS: { icon: IconName; title: string; subtitle: string; onPress?: () 
     subtitle: 'Lo que has cocinado',
     onPress: () => router.push('/historial'),
   },
-  { icon: 'tune', title: 'Preferencias', subtitle: 'Restricciones dietéticas y tema' },
+  {
+    icon: 'tune',
+    title: 'Preferencias',
+    subtitle: 'Gustos, alergias y necesidades',
+    onPress: () => router.push('/preferencias'),
+  },
 ];
 
 function TopBar() {

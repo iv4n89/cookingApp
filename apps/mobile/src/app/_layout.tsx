@@ -34,6 +34,7 @@ function RootNavigator() {
         <Stack.Screen name="perfil" />
         <Stack.Screen name="historial" />
         <Stack.Screen name="favoritos" />
+        <Stack.Screen name="preferencias" />
         <Stack.Screen name="suscripcion" />
         <Stack.Screen name="premium" />
       </Stack.Protected>
