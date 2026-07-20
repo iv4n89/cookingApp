@@ -14,6 +14,7 @@ import {
   type RecipeIngredient,
   type RecipeStep,
 } from '@/lib/recipes';
+import { getUserRecipe, setFavorite, setRating, type UserRecipeMeta } from '@/lib/user-recipes';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -53,13 +54,56 @@ function stepDuration(seconds: number | null): string | null {
   return mins >= 1 ? `${mins} min` : `${seconds}s`;
 }
 
-function TopBar() {
+function TopBar({ favorite, onToggleFavorite }: { favorite?: boolean; onToggleFavorite?: () => void }) {
   return (
     <View className="flex-row items-center gap-gutter border-b border-outline-variant bg-background px-container-padding py-stack-md">
       <Pressable onPress={() => router.back()} hitSlop={8} accessibilityRole="button" accessibilityLabel="Volver">
         <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
       </Pressable>
-      <Text className="font-sans-bold text-headline-sm text-primary">COCINA INTELIGENTE</Text>
+      <Text className="flex-1 font-sans-bold text-headline-sm text-primary">COCINA INTELIGENTE</Text>
+      {onToggleFavorite ? (
+        <Pressable
+          onPress={onToggleFavorite}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel={favorite ? 'Quitar de favoritos' : 'Añadir a favoritos'}>
+          <MaterialIcons
+            name={favorite ? 'favorite' : 'favorite-border'}
+            size={24}
+            color={favorite ? colors.primary : colors['on-surface-variant']}
+          />
+        </Pressable>
+      ) : null}
+    </View>
+  );
+}
+
+function RatingStars({
+  rating,
+  onRate,
+}: {
+  rating: number | null;
+  onRate: (value: number) => void;
+}) {
+  return (
+    <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
+      <Text className="font-sans-semibold text-body-md text-on-surface">Tu valoración</Text>
+      <View className="flex-row items-center gap-stack-sm">
+        {[1, 2, 3, 4, 5].map((value) => (
+          <Pressable
+            key={value}
+            onPress={() => onRate(value)}
+            hitSlop={4}
+            accessibilityRole="button"
+            accessibilityLabel={`${value} estrellas`}>
+            <MaterialIcons
+              name={rating !== null && value <= rating ? 'star' : 'star-border'}
+              size={28}
+              color={rating !== null && value <= rating ? colors.primary : colors['outline-variant']}
+            />
+          </Pressable>
+        ))}
+      </View>
     </View>
   );
 }
@@ -287,6 +331,44 @@ export default function RecipeDetailScreen() {
 
   useEffect(() => load(), [load]);
 
+  const { session } = useSession();
+  const [meta, setMeta] = useState<UserRecipeMeta>({ is_favorite: false, rating: null });
+
+  useEffect(() => {
+    if (!recipe) return;
+    let active = true;
+    getUserRecipe(recipe.id)
+      .then((data) => {
+        if (active) setMeta(data);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [recipe?.id]);
+
+  async function toggleFavorite() {
+    if (!recipe || !session) return;
+    const next = !meta.is_favorite;
+    setMeta((prev) => ({ ...prev, is_favorite: next }));
+    try {
+      await setFavorite(session.user.id, recipe.id, next);
+    } catch {
+      setMeta((prev) => ({ ...prev, is_favorite: !next }));
+    }
+  }
+
+  async function rate(value: number) {
+    if (!recipe || !session) return;
+    const prev = meta.rating;
+    setMeta((current) => ({ ...current, rating: value }));
+    try {
+      await setRating(session.user.id, recipe.id, value);
+    } catch {
+      setMeta((current) => ({ ...current, rating: prev }));
+    }
+  }
+
   const [cooking, setCooking] = useState(false);
 
   async function startCooking() {
@@ -306,7 +388,7 @@ export default function RecipeDetailScreen() {
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
-      <TopBar />
+      <TopBar favorite={meta.is_favorite} onToggleFavorite={recipe ? toggleFavorite : undefined} />
 
       {loading ? (
         <ActivityIndicator color={colors.primary} className="mt-section-gap" />
@@ -343,6 +425,8 @@ export default function RecipeDetailScreen() {
                     {recipe.description}
                   </Text>
                 ) : null}
+
+                <RatingStars rating={meta.rating} onRate={rate} />
 
                 <ServingsStepper servings={servings} onChange={setServings} />
 
