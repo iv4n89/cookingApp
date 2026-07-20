@@ -98,9 +98,13 @@ const RECIPE_SCHEMA = {
   ],
 };
 
-export async function generateRecipe(query: string): Promise<GeneratedRecipe> {
+export async function generateRecipe(query: string, context?: string): Promise<GeneratedRecipe> {
+  const grounding = context
+    ? `\n\nApóyate en esta información de recetas reales encontradas en la web (adáptala con tus propias palabras, no la copies literalmente):\n${context}\n`
+    : '';
   const prompt =
     `Eres un chef profesional. Crea una receta realista y en español para esta petición: "${query}".` +
+    grounding +
     ` Usa cantidades concretas, pasos claros y numerados, tiempos y calorías aproximadas, y etiquetas útiles` +
     ` (dieta, dificultad). Añade timer_seconds solo en los pasos que requieran un tiempo de espera o cocción.`;
 

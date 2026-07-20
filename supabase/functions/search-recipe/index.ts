@@ -3,6 +3,7 @@ import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
 import { embedText, generateRecipe } from '../_shared/gemini.ts';
 import { recipeFromGenerated, saveRecipe } from '../_shared/recipes.ts';
+import { searchWeb } from '../_shared/tavily.ts';
 
 // Umbral de similitud coseno para reutilizar una receta existente.
 // Calibrado con embeddings de gemini-embedding-001 (768, normalizados): las
@@ -41,10 +42,17 @@ Deno.serve(async (req) => {
     const match = data?.[0];
     if (match) return json({ recipe: match, origin: 'db' });
 
-    // 2) Si no hay match, generar con Gemini y guardar para reutilizar.
-    const generated = await generateRecipe(text);
-    const saved = await saveRecipe(supabase, recipeFromGenerated(generated));
-    return json({ recipe: saved, origin: 'generated' });
+    // 2) Si no hay match: buscar en la web (contexto + atribución), generar y guardar.
+    const results = await searchWeb(text);
+    const context = results
+      .map((r) => `- ${r.title}: ${r.content}`)
+      .join('\n')
+      .slice(0, 4000);
+    const sourceUrl = results[0]?.url ?? null;
+
+    const generated = await generateRecipe(text, context || undefined);
+    const saved = await saveRecipe(supabase, recipeFromGenerated(generated, sourceUrl));
+    return json({ recipe: saved, origin: sourceUrl ? 'web' : 'generated' });
   } catch (e) {
     console.error('search-recipe:', e);
     return json({ error: 'No se pudo procesar la búsqueda.' }, 500);

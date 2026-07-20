@@ -36,11 +36,13 @@ function parseQuantity(value?: string): number | null {
 
 // Normaliza la receta de Gemini a la forma de dominio (packages/shared/types.ts):
 // Ingredient {name, quantity, unit, substitutions} y RecipeStep {order, instruction, timerSeconds}.
-export function recipeFromGenerated(g: GeneratedRecipe): RecipeData {
+// Si viene de una fuente web se marca source='web' con su source_url para atribución.
+export function recipeFromGenerated(g: GeneratedRecipe, sourceUrl?: string | null): RecipeData {
   return {
     title: g.title,
     description: g.description,
-    source: 'generated',
+    source: sourceUrl ? 'web' : 'generated',
+    source_url: sourceUrl ?? null,
     servings: g.servings,
     prep_time_min: g.prep_time_min,
     cook_time_min: g.cook_time_min,

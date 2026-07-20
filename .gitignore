@@ -12,3 +12,6 @@ coverage/
 *.tsbuildinfo
 
 .remember/
+
+# Deno (generado por deno check)
+deno.lock
