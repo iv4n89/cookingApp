@@ -33,13 +33,16 @@ declare
   v_title text;
   v_deltas jsonb := '[]'::jsonb;
   v_cooked uuid;
-  v_item_id uuid;
-  v_old numeric;
+  v_need numeric;
   v_sub numeric;
   r record;
+  p record;
 begin
   if v_user is null then
     raise exception 'no autenticado';
+  end if;
+  if p_servings <= 0 then
+    raise exception 'raciones inválidas';
   end if;
 
   select servings, title into v_base, v_title from public.recipes where id = p_recipe_id;
@@ -58,19 +61,24 @@ begin
       and ing->>'ingredient_id' is not null
       and ing->>'quantity' is not null
   loop
-    select id, quantity into v_item_id, v_old
-    from public.pantry_items
-    where user_id = v_user and ingredient_id = r.ingredient_id and quantity is not null
-    limit 1;
+    -- Cantidad total a descontar de la despensa para este ingrediente.
+    v_need := round(r.qty * p_servings::numeric / v_base, 3);
 
-    if v_item_id is not null then
-      v_sub := round(least(v_old, r.qty * p_servings::numeric / v_base), 3);
-      if v_sub > 0 then
-        update public.pantry_items set quantity = v_old - v_sub, updated_at = now()
-        where id = v_item_id;
-        v_deltas := v_deltas || jsonb_build_object('pantry_item_id', v_item_id, 'quantity', v_sub);
-      end if;
-    end if;
+    -- Se reparte entre todas las filas de despensa del mismo ingrediente
+    -- (el usuario puede tener duplicados), agotando primero las de menor stock.
+    for p in
+      select id, quantity
+      from public.pantry_items
+      where user_id = v_user and ingredient_id = r.ingredient_id and quantity > 0
+      order by quantity asc, id
+    loop
+      exit when v_need <= 0;
+      v_sub := least(p.quantity, v_need);
+      update public.pantry_items set quantity = p.quantity - v_sub, updated_at = now()
+      where id = p.id;
+      v_deltas := v_deltas || jsonb_build_object('pantry_item_id', p.id, 'quantity', v_sub);
+      v_need := v_need - v_sub;
+    end loop;
   end loop;
 
   insert into public.cooked_recipes (user_id, recipe_id, title, servings, pantry_deltas)
