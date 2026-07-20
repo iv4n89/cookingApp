@@ -1,49 +1,29 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
 import { AskAiModal } from '@/components/ask-ai-modal';
 import { RecipeCard, type RecipeCardData } from '@/components/recipe-card';
-import { askRecipe } from '@/lib/recipes';
+import { askRecipe, recommendedRecipes, type RecommendedRecipe } from '@/lib/recipes';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-const RECIPES: RecipeCardData[] = [
-  {
-    id: 'pomodoro',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCAVyLK9Dd5j09EROC0O4SeI5uZiW4IBv56gTAjNtBMV-OWGeY4AZ5oEUHm12_OvSCqgspY7M7miqxqhM6YndOKVE6aHC_L2V_rRT2eQqDCy3A4teLa3M2mSJ2u7K_NT_oxrD8niZJCaXjvatQ4dX79pPgMMUXmbgqfCPqs_9KEqSWYTeJO15Hr_bXGxwWGp4at9GNKkrSCt6uBj9wxLhjZHROJuOgDYjQcFApCvajXFiC5x5bCCGLIPEepZFaQkv1FKkmdZB1UFpLW',
-    badgeIcon: 'auto-awesome',
-    badge: 'MARIDAJE SENSORIAL',
-    title: 'Pomodoro rústico',
-    description: 'Aprovecha tus tomates y albahaca fresca. 15 min de preparación.',
-    tags: ['VEGETARIANO', '15 MIN'],
-  },
-  {
-    id: 'salmon',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAOXXPV2SzKSOTYnnlG36-pDYFa9q2t69xQh4U12sQSnlqq0vxIDWv5Gv1wRIlZ7818H9sHutnchTPR_Uk0XARZLgtQht_59co3I-TuXaN-RExi2WR0BlxIpfWweOT2XLt8csNArgJ5x_iU5ftwc5lwsSeIvspbmcioFp6rccHMu4GSdoTwqFysqT9oekiCj-86S9EvHFDYLwu-IB9WVQldyiWy36jkBTBHmeJoeTaQujIjanW76oyQ6qvoPvM_m3K29wJG2aLuDQT-',
-    badgeIcon: 'bolt',
-    badge: 'ENCAJA CON TUS MACROS',
-    title: 'Salmón atlántico al limón',
-    description: 'Opción alta en proteína con el salmón de tu congelador. Rico en Omega-3.',
-    tags: ['ALTA PROTEÍNA', '25 MIN'],
-  },
-  {
-    id: 'kale',
-    image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCd9dEc5TuSyiUI-wFVvSnzY0Gd94BWpLnCHqAUIew7YUPXGVQPed7KTbYqRVWotWwYu0u_0Feo04OWxTItWX8m1vk4koVdTKqTWDV25a3ahmA3sJzi55nwqXln5JaoavY0__wwtAS_Ldn_WxYco8Dm4uv_vWjz2pX65exZ1tDKo9m5X9E-HbjaUriTBSE6Blb-ffkCKNQObVxYdjE8gUH0fmssgL6D5GbwIClaWFad7MRxbksz9EJqxBCVgy3BmbRGBBm3nWKu24tA',
-    badgeIcon: 'eco',
-    badge: 'CERO DESPERDICIO',
-    title: 'Bowl de col y cereales',
-    description: 'Pensada para gastar tu col antes de que caduque. Alta en fibra.',
-    tags: ['SALUDABLE', '20 MIN'],
-  },
-];
+function toCardData(recipe: RecommendedRecipe): RecipeCardData {
+  const total = recipe.prep_time_min + recipe.cook_time_min;
+  return {
+    id: recipe.id,
+    image: recipe.image_url,
+    badgeIcon: 'kitchen',
+    badge: `${recipe.match_count} EN TU DESPENSA`,
+    title: recipe.title,
+    description: recipe.description,
+    tags: [...recipe.tags.slice(0, 2).map((t) => t.toUpperCase()), `${total} MIN`],
+  };
+}
 
 function AskInput({ onPress }: { onPress: () => void }) {
   return (
@@ -134,6 +114,26 @@ function QuickAddCard() {
 
 export default function InicioScreen() {
   const [askVisible, setAskVisible] = useState(false);
+  const [suggestions, setSuggestions] = useState<RecommendedRecipe[]>([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(true);
+
+  const loadSuggestions = useCallback(() => {
+    let active = true;
+    setLoadingSuggestions(true);
+    recommendedRecipes()
+      .then((data) => {
+        if (active) setSuggestions(data);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoadingSuggestions(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => loadSuggestions(), [loadSuggestions]);
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
@@ -169,11 +169,26 @@ export default function InicioScreen() {
 
         <View>
           <SectionHeader title="Para tu despensa" action="VER MÁS" />
-          <View className="gap-gutter">
-            {RECIPES.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
-            ))}
-          </View>
+          {loadingSuggestions ? (
+            <ActivityIndicator color={colors.primary} className="py-stack-lg" />
+          ) : suggestions.length === 0 ? (
+            <View className="items-center gap-stack-md rounded-xl border border-dashed border-card-border bg-card p-stack-lg">
+              <MaterialIcons name="kitchen" size={32} color={colors['outline-variant']} />
+              <Text className="text-center font-sans text-body-md text-on-surface-variant">
+                Añade ingredientes a tu despensa para ver recetas que puedes cocinar.
+              </Text>
+            </View>
+          ) : (
+            <View className="gap-gutter">
+              {suggestions.map((recipe) => (
+                <RecipeCard
+                  key={recipe.id}
+                  recipe={toCardData(recipe)}
+                  onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id } })}
+                />
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
 
