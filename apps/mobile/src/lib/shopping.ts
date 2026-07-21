@@ -67,17 +67,18 @@ export function useShoppingList() {
     }
   }
 
-  async function removeChecked() {
+  // Marca lo comprado: lo mueve a la despensa (fusionando cantidades) y lo quita de la lista.
+  async function buyChecked() {
     const ids = items.filter((item) => item.checked).map((item) => item.id);
     if (ids.length === 0) return;
     const snapshot = items;
     setItems((prev) => prev.filter((item) => !item.checked));
-    const { error } = await supabase.from('shopping_list_items').delete().in('id', ids);
+    const { error } = await supabase.rpc('buy_shopping_items', { p_ids: ids });
     if (error) {
-      setError('No se pudo actualizar la lista.');
+      setError('No se pudo mover a la despensa.');
       setItems(snapshot);
     }
   }
 
-  return { items, loading, error, refresh, add, toggle, removeChecked };
+  return { items, loading, error, refresh, add, toggle, buyChecked };
 }
