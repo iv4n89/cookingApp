@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,6 +15,7 @@ import {
   recommendedRecipes,
   type RecommendedRecipe,
 } from '@/lib/recipes';
+import { listFavorites, setFavorite } from '@/lib/user-recipes';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -137,6 +138,9 @@ export default function InicioScreen() {
   const [pantry, setPantry] = useState<PantrySummary | null>(null);
   const [addingLow, setAddingLow] = useState(false);
   const [addedLow, setAddedLow] = useState(false);
+  const [saved, setSaved] = useState<Set<string>>(new Set());
+  // Toggles de guardado en vuelo, para ignorar taps repetidos mientras se resuelve.
+  const savingIds = useRef<Set<string>>(new Set());
 
   const load = useCallback(() => {
     let active = true;
@@ -155,12 +159,41 @@ export default function InicioScreen() {
         if (active) setPantry(data);
       })
       .catch(() => {});
+    listFavorites()
+      .then((favorites) => {
+        if (active) setSaved(new Set(favorites.map((favorite) => favorite.id)));
+      })
+      .catch(() => {});
     return () => {
       active = false;
     };
   }, []);
 
   useFocusEffect(load);
+
+  async function toggleSave(id: string) {
+    if (!session || savingIds.current.has(id)) return;
+    savingIds.current.add(id);
+    const wasSaved = saved.has(id);
+    setSaved((prev) => {
+      const next = new Set(prev);
+      if (wasSaved) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+    try {
+      await setFavorite(session.user.id, id, !wasSaved);
+    } catch {
+      setSaved((prev) => {
+        const next = new Set(prev);
+        if (wasSaved) next.add(id);
+        else next.delete(id);
+        return next;
+      });
+    } finally {
+      savingIds.current.delete(id);
+    }
+  }
 
   async function addLowToShopping() {
     if (!session || !pantry || addingLow || addedLow || pantry.low.length === 0) return;
@@ -233,6 +266,8 @@ export default function InicioScreen() {
                 <RecipeCard
                   key={recipe.id}
                   recipe={toCardData(recipe)}
+                  saved={saved.has(recipe.id)}
+                  onToggleSave={() => toggleSave(recipe.id)}
                   onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id } })}
                 />
               ))}
