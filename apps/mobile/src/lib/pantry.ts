@@ -38,6 +38,28 @@ export interface CookPantryItem {
   ingredient_id: string | null;
 }
 
+export interface PantrySummary {
+  count: number;
+  // Los ingredientes con menos stock (por cantidad), para el resumen de la Home.
+  low: { id: string; name: string; quantity: number; unit: string | null }[];
+}
+
+export async function getPantrySummary(): Promise<PantrySummary> {
+  const { data, error } = await supabase.from('pantry_items').select('id, name, quantity, unit');
+  if (error) throw error;
+  const rows = (data ?? []).map((row) => ({
+    id: row.id as string,
+    name: row.name as string,
+    quantity: row.quantity == null ? null : Number(row.quantity),
+    unit: (row.unit as string | null) ?? null,
+  }));
+  const low = rows
+    .filter((row): row is PantrySummary['low'][number] => row.quantity != null)
+    .sort((a, b) => a.quantity - b.quantity)
+    .slice(0, 3);
+  return { count: rows.length, low };
+}
+
 export async function getPantryForCook(): Promise<CookPantryItem[]> {
   const { data, error } = await supabase.from('pantry_items').select('id, name, quantity, ingredient_id');
   if (error) throw error;
