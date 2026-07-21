@@ -310,15 +310,16 @@ export default function ChatScreen() {
           ) : null}
         </ScrollView>
 
-        <View className="flex-row items-center gap-stack-sm border-t border-outline-variant bg-background px-container-padding py-stack-md">
+        <View className="flex-row items-end gap-stack-sm border-t border-outline-variant bg-background px-container-padding py-stack-md">
           <TextInput
             value={input}
             onChangeText={setInput}
-            onSubmitEditing={() => send(input)}
             editable={!sending}
+            multiline
             placeholder="Pregunta sobre recetas o ingredientes…"
             placeholderTextColor={colors['on-surface-variant']}
-            className="flex-1 rounded-full border border-outline-variant bg-surface-container-lowest px-gutter py-stack-md font-sans text-body-md text-on-surface"
+            style={{ minHeight: 44, maxHeight: 120, textAlignVertical: 'top' }}
+            className="flex-1 rounded-2xl border border-outline-variant bg-surface-container-lowest px-gutter py-stack-md font-sans text-body-md text-on-surface"
           />
           <Pressable
             onPress={() => send(input)}
