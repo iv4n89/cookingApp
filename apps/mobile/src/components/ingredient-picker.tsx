@@ -77,6 +77,7 @@ export function IngredientPicker({
   const [selected, setSelected] = useState<Selected | null>(null);
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('');
+  const [unitOpen, setUnitOpen] = useState(false);
 
   useEffect(() => {
     if (visible && items.length === 0) listIngredients().then(setItems).catch(() => {});
@@ -86,6 +87,7 @@ export function IngredientPicker({
     setSelected(null);
     setQuantity('');
     setUnit('');
+    setUnitOpen(false);
   }
 
   function close() {
@@ -161,41 +163,34 @@ export function IngredientPicker({
               </View>
             </View>
 
-            <View className="gap-stack-sm">
-              <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-                Cantidad
-              </Text>
-              <TextInput
-                value={quantity}
-                onChangeText={setQuantity}
-                keyboardType="numeric"
-                autoFocus
-                className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
-              />
-            </View>
-            <View className="gap-stack-md">
-              <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-                Unidad
-              </Text>
-              <View className="flex-row flex-wrap gap-stack-sm">
-                {UNITS.map((option) => {
-                  const isSelected = unit === option;
-                  return (
-                    <Pressable
-                      key={option}
-                      onPress={() => setUnit(isSelected ? '' : option)}
-                      className={`border px-stack-md py-stack-sm ${
-                        isSelected ? 'border-primary bg-primary' : 'border-outline-variant bg-background'
-                      }`}>
-                      <Text
-                        className={`font-mono-medium text-label-sm ${
-                          isSelected ? 'text-on-primary' : 'text-on-surface'
-                        }`}>
-                        {option}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
+            <View className="flex-row gap-gutter">
+              <View className="flex-1 gap-stack-sm">
+                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+                  Cantidad
+                </Text>
+                <TextInput
+                  value={quantity}
+                  onChangeText={setQuantity}
+                  keyboardType="numeric"
+                  autoFocus
+                  className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
+                />
+              </View>
+              <View className="flex-1 gap-stack-sm">
+                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+                  Unidad
+                </Text>
+                <Pressable
+                  onPress={() => setUnitOpen(true)}
+                  accessibilityRole="button"
+                  accessibilityLabel="Elegir unidad"
+                  className="flex-row items-center justify-between border-b-2 border-outline py-stack-md">
+                  <Text
+                    className={`font-sans text-body-lg ${unit ? 'text-on-surface' : 'text-outline-variant'}`}>
+                    {unit || 'Elegir'}
+                  </Text>
+                  <MaterialIcons name="arrow-drop-down" size={24} color={colors.outline} />
+                </Pressable>
               </View>
             </View>
 
@@ -267,6 +262,53 @@ export function IngredientPicker({
             </ScrollView>
           </View>
         )}
+
+        <Modal
+          visible={unitOpen}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setUnitOpen(false)}>
+          <Pressable
+            onPress={() => setUnitOpen(false)}
+            style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
+            className="flex-1 justify-end">
+            <Pressable style={{ maxHeight: '60%' }} className="rounded-t-2xl bg-background pb-stack-lg pt-stack-md">
+              <View className="mb-stack-sm flex-row items-center justify-between px-container-padding">
+                <Text className="font-sans-bold text-headline-sm text-primary">Unidad</Text>
+                <Pressable onPress={() => setUnitOpen(false)} hitSlop={8} accessibilityLabel="Cerrar">
+                  <MaterialIcons name="close" size={24} color={colors['on-surface-variant']} />
+                </Pressable>
+              </View>
+              <ScrollView>
+                <Pressable
+                  onPress={() => {
+                    setUnit('');
+                    setUnitOpen(false);
+                  }}
+                  className="border-b border-outline-variant px-container-padding py-stack-md">
+                  <Text className="font-sans text-body-lg text-on-surface-variant">Sin unidad</Text>
+                </Pressable>
+                {UNITS.map((option) => (
+                  <Pressable
+                    key={option}
+                    onPress={() => {
+                      setUnit(option);
+                      setUnitOpen(false);
+                    }}
+                    className="flex-row items-center justify-between border-b border-outline-variant px-container-padding py-stack-md">
+                    <Text
+                      className={`text-body-lg ${
+                        unit === option ? 'font-sans-semibold text-primary' : 'font-sans text-on-surface'
+                      }`}>
+                      {option}
+                    </Text>
+                    {unit === option ? <MaterialIcons name="check" size={20} color={colors.primary} /> : null}
+                  </Pressable>
+                ))}
+              </ScrollView>
+            </Pressable>
+          </Pressable>
+        </Modal>
       </SafeAreaView>
     </Modal>
   );
