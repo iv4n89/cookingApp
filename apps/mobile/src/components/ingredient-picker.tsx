@@ -9,6 +9,12 @@ import { listIngredients, normalize, type CatalogIngredient } from '@/lib/ingred
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
+// Unidades controladas para el stock (líquidos en brick/botella, secos en g/paquete, etc.).
+const UNITS = [
+  'g', 'kg', 'ml', 'l', 'ud', 'paquete', 'lata', 'brick', 'botella',
+  'diente', 'cabeza', 'ramillete', 'loncha', 'cucharada', 'pizca',
+];
+
 export interface PickedIngredient {
   ingredientId: string | null;
   name: string;
@@ -155,30 +161,41 @@ export function IngredientPicker({
               </View>
             </View>
 
-            <View className="flex-row gap-gutter">
-              <View className="flex-1 gap-stack-sm">
-                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-                  Cantidad
-                </Text>
-                <TextInput
-                  value={quantity}
-                  onChangeText={setQuantity}
-                  keyboardType="numeric"
-                  autoFocus
-                  className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
-                />
-              </View>
-              <View className="flex-1 gap-stack-sm">
-                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-                  Unidad
-                </Text>
-                <TextInput
-                  value={unit}
-                  onChangeText={setUnit}
-                  placeholder="g, uds…"
-                  placeholderTextColor={colors['outline-variant']}
-                  className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
-                />
+            <View className="gap-stack-sm">
+              <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+                Cantidad
+              </Text>
+              <TextInput
+                value={quantity}
+                onChangeText={setQuantity}
+                keyboardType="numeric"
+                autoFocus
+                className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
+              />
+            </View>
+            <View className="gap-stack-md">
+              <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+                Unidad
+              </Text>
+              <View className="flex-row flex-wrap gap-stack-sm">
+                {UNITS.map((option) => {
+                  const isSelected = unit === option;
+                  return (
+                    <Pressable
+                      key={option}
+                      onPress={() => setUnit(isSelected ? '' : option)}
+                      className={`border px-stack-md py-stack-sm ${
+                        isSelected ? 'border-primary bg-primary' : 'border-outline-variant bg-background'
+                      }`}>
+                      <Text
+                        className={`font-mono-medium text-label-sm ${
+                          isSelected ? 'text-on-primary' : 'text-on-surface'
+                        }`}>
+                        {option}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
               </View>
             </View>
 
