@@ -71,12 +71,12 @@ export function useShoppingList() {
     }
   }
 
-  async function setQuantity(id: string, quantity: number | null) {
+  async function editItem(id: string, quantity: number | null, unit: string | null) {
     const snapshot = items;
-    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
-    const { error } = await supabase.from('shopping_list_items').update({ quantity }).eq('id', id);
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity, unit } : item)));
+    const { error } = await supabase.from('shopping_list_items').update({ quantity, unit }).eq('id', id);
     if (error) {
-      setError('No se pudo guardar la cantidad.');
+      setError('No se pudo guardar el cambio.');
       setItems(snapshot);
     }
   }
@@ -94,5 +94,5 @@ export function useShoppingList() {
     }
   }
 
-  return { items, loading, error, refresh, add, toggle, setQuantity, buyChecked };
+  return { items, loading, error, refresh, add, toggle, editItem, buyChecked };
 }

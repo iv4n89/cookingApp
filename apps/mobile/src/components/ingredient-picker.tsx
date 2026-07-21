@@ -6,14 +6,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { listIngredients, normalize, type CatalogIngredient } from '@/lib/ingredients';
 
+import { UnitSelect } from './unit-select';
+
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
-
-// Unidades controladas para el stock (líquidos en brick/botella, secos en g/paquete, etc.).
-const UNITS = [
-  'g', 'kg', 'ml', 'l', 'ud', 'paquete', 'lata', 'bote', 'brick', 'botella',
-  'diente', 'cabeza', 'ramillete', 'loncha', 'cucharada', 'pizca',
-];
 
 export interface PickedIngredient {
   ingredientId: string | null;
@@ -81,7 +77,6 @@ export function IngredientPicker({
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('');
   const [min, setMin] = useState('');
-  const [unitOpen, setUnitOpen] = useState(false);
 
   // Al elegir un ingrediente, pre-rellena unidad y mínimo con los defaults del catálogo.
   function choose(item: Selected) {
@@ -99,7 +94,6 @@ export function IngredientPicker({
     setQuantity('');
     setUnit('');
     setMin('');
-    setUnitOpen(false);
   }
 
   function close() {
@@ -194,17 +188,7 @@ export function IngredientPicker({
                 <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
                   Unidad
                 </Text>
-                <Pressable
-                  onPress={() => setUnitOpen(true)}
-                  accessibilityRole="button"
-                  accessibilityLabel="Elegir unidad"
-                  className="flex-row items-center justify-between border-b-2 border-outline py-stack-md">
-                  <Text
-                    className={`font-sans text-body-lg ${unit ? 'text-on-surface' : 'text-outline-variant'}`}>
-                    {unit || 'Elegir'}
-                  </Text>
-                  <MaterialIcons name="arrow-drop-down" size={24} color={colors.outline} />
-                </Pressable>
+                <UnitSelect value={unit || null} onChange={(u) => setUnit(u ?? '')} />
               </View>
             </View>
 
@@ -299,53 +283,6 @@ export function IngredientPicker({
             </ScrollView>
           </View>
         )}
-
-        <Modal
-          visible={unitOpen}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setUnitOpen(false)}>
-          <Pressable
-            onPress={() => setUnitOpen(false)}
-            style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
-            className="flex-1 justify-end">
-            <Pressable style={{ maxHeight: '60%' }} className="rounded-t-2xl bg-background pb-stack-lg pt-stack-md">
-              <View className="mb-stack-sm flex-row items-center justify-between px-container-padding">
-                <Text className="font-sans-bold text-headline-sm text-primary">Unidad</Text>
-                <Pressable onPress={() => setUnitOpen(false)} hitSlop={8} accessibilityLabel="Cerrar">
-                  <MaterialIcons name="close" size={24} color={colors['on-surface-variant']} />
-                </Pressable>
-              </View>
-              <ScrollView>
-                <Pressable
-                  onPress={() => {
-                    setUnit('');
-                    setUnitOpen(false);
-                  }}
-                  className="border-b border-outline-variant px-container-padding py-stack-md">
-                  <Text className="font-sans text-body-lg text-on-surface-variant">Sin unidad</Text>
-                </Pressable>
-                {UNITS.map((option) => (
-                  <Pressable
-                    key={option}
-                    onPress={() => {
-                      setUnit(option);
-                      setUnitOpen(false);
-                    }}
-                    className="flex-row items-center justify-between border-b border-outline-variant px-container-padding py-stack-md">
-                    <Text
-                      className={`text-body-lg ${
-                        unit === option ? 'font-sans-semibold text-primary' : 'font-sans text-on-surface'
-                      }`}>
-                      {option}
-                    </Text>
-                    {unit === option ? <MaterialIcons name="check" size={20} color={colors.primary} /> : null}
-                  </Pressable>
-                ))}
-              </ScrollView>
-            </Pressable>
-          </Pressable>
-        </Modal>
       </SafeAreaView>
     </Modal>
   );
