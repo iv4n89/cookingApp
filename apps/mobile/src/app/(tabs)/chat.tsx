@@ -29,15 +29,18 @@ import {
 
 const MAX_SERVINGS = 20;
 
-function singular(word: string): string {
-  return word.endsWith('s') ? word.slice(0, -1) : word;
+// Dos palabras casan si son la misma o una es plural de la otra (-s / -es): tolera
+// "aguacate/aguacates" y "limón/limones" sin casar palabras no relacionadas ("sal"/"salmón").
+function sameWord(a: string, b: string): boolean {
+  if (a === b) return true;
+  const [short, long] = a.length < b.length ? [a, b] : [b, a];
+  return long === `${short}s` || long === `${short}es`;
 }
 
 function words(text: string): string[] {
   return normalize(text)
     .split(/\s+/)
-    .filter((w) => w.length >= 3)
-    .map(singular);
+    .filter((w) => w.length >= 3);
 }
 
 // Un ingrediente está en la despensa si casa por ingredient_id, por nombre exacto, o si
@@ -50,7 +53,7 @@ function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): boolean {
     const pantryWords = words(pantryName);
     if (
       pantryWords.length > 0 &&
-      pantryWords.every((p) => recipeWords.includes(p))
+      pantryWords.every((p) => recipeWords.some((r) => sameWord(p, r)))
     ) {
       return false;
     }
