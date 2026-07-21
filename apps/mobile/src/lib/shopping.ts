@@ -10,6 +10,7 @@ export interface ShoppingItem {
   quantity: number | null;
   unit: string | null;
   checked: boolean;
+  ingredient_id: string | null;
 }
 
 export interface NewShoppingItem {
@@ -19,7 +20,17 @@ export interface NewShoppingItem {
   ingredient_id: string | null;
 }
 
-const COLUMNS = 'id, name, quantity, unit, checked';
+const COLUMNS = 'id, name, quantity, unit, checked, ingredient_id';
+
+// Fetch puntual (fuera del hook) para calcular qué falta de una receta ya está en la lista.
+export async function getShoppingItems(): Promise<ShoppingItem[]> {
+  const { data, error } = await supabase.from('shopping_list_items').select(COLUMNS).order('created_at');
+  if (error) throw error;
+  return (data ?? []).map((row) => ({
+    ...(row as ShoppingItem),
+    quantity: row.quantity == null ? null : Number(row.quantity),
+  }));
+}
 
 export function useShoppingList() {
   const { session } = useSession();

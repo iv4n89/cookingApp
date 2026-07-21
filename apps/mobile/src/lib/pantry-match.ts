@@ -46,8 +46,13 @@ export function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): bo
   return true;
 }
 
-function normalizeUnit(unit: string | null): string {
+export function normalizeUnit(unit: string | null): string {
   return (unit ?? '').trim().toLowerCase().replace(/s$/, '');
+}
+
+// ¿Dos nombres de ingrediente se refieren al mismo? (match por palabras con tolerancia a plurales)
+export function namesMatch(a: string, b: string): boolean {
+  return nameMatches(words(a), words(b));
 }
 
 // Falta con conciencia de cantidad: no está en la despensa (por id/nombre), o está pero —con

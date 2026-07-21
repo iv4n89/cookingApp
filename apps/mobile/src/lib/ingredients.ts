@@ -26,6 +26,30 @@ function resolveImageUrl(key: string | null): string | null {
   return supabase.storage.from(IMAGE_BUCKET).getPublicUrl(key).data.publicUrl;
 }
 
+export interface CatalogDefault {
+  unit: string | null;
+  min: number | null;
+}
+
+// Unidad y cantidad de compra por defecto de cada ingrediente del catálogo (por id).
+export async function getCatalogDefaults(ids: string[]): Promise<Map<string, CatalogDefault>> {
+  const map = new Map<string, CatalogDefault>();
+  const unique = [...new Set(ids.filter(Boolean))];
+  if (unique.length === 0) return map;
+  const { data, error } = await supabase
+    .from('ingredients')
+    .select('id, default_unit, default_min_stock')
+    .in('id', unique);
+  if (error) throw error;
+  for (const row of data ?? []) {
+    map.set(row.id as string, {
+      unit: (row.default_unit as string | null) ?? null,
+      min: row.default_min_stock == null ? null : Number(row.default_min_stock),
+    });
+  }
+  return map;
+}
+
 export async function listIngredients(): Promise<CatalogIngredient[]> {
   const { data, error } = await supabase
     .from('ingredients')

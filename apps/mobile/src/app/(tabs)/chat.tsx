@@ -14,18 +14,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { AddMissingButton } from '@/components/add-missing-button';
 import { AppHeader } from '@/components/app-header';
-import { useSession } from '@/lib/auth';
 import { getPantryMatch, type PantryMatch } from '@/lib/pantry';
 import { isMissing } from '@/lib/pantry-match';
 import { sendChat, type ChatMessage } from '@/lib/chat';
-import {
-  addIngredientsToShopping,
-  formatQuantity,
-  scaleIngredients,
-  type Recipe,
-  type RecipeIngredient,
-} from '@/lib/recipes';
+import { formatQuantity, scaleIngredients, type Recipe, type RecipeIngredient } from '@/lib/recipes';
 
 const MAX_SERVINGS = 20;
 
@@ -83,29 +77,11 @@ function ingredientText(ingredient: RecipeIngredient): string {
 }
 
 function RecipeCard({ recipe, pantry }: { recipe: Recipe; pantry: PantryMatch | null }) {
-  const { session } = useSession();
   const [servings, setServings] = useState(recipe.servings > 0 ? recipe.servings : 1);
-  const [addedMissing, setAddedMissing] = useState(false);
-  const [addingMissing, setAddingMissing] = useState(false);
-  const [addFailed, setAddFailed] = useState(false);
 
   const total = recipe.prep_time_min + recipe.cook_time_min;
   const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
   const missing = pantry ? scaled.filter((ing) => isMissing(ing, pantry)) : [];
-
-  async function addMissing() {
-    if (!session || addingMissing || addedMissing || missing.length === 0) return;
-    setAddingMissing(true);
-    setAddFailed(false);
-    try {
-      await addIngredientsToShopping(session.user.id, missing);
-      setAddedMissing(true);
-    } catch {
-      setAddFailed(true);
-    } finally {
-      setAddingMissing(false);
-    }
-  }
 
   return (
     <View className="w-full max-w-[92%] gap-gutter overflow-hidden rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low">
@@ -151,30 +127,7 @@ function RecipeCard({ recipe, pantry }: { recipe: Recipe; pantry: PantryMatch | 
           })}
         </View>
 
-        {missing.length > 0 ? (
-          <Pressable
-            onPress={addMissing}
-            disabled={addingMissing || addedMissing}
-            className={`flex-row items-center justify-center gap-stack-md border border-primary py-stack-md ${
-              addingMissing || addedMissing ? 'opacity-60' : ''
-            }`}>
-            {addingMissing ? (
-              <ActivityIndicator color={colors.primary} />
-            ) : (
-              <MaterialIcons name={addedMissing ? 'check' : 'add-shopping-cart'} size={18} color={colors.primary} />
-            )}
-            <Text className="font-mono-medium text-label-md text-primary">
-              {addedMissing
-                ? 'AÑADIDO A LA COMPRA'
-                : addingMissing
-                  ? 'AÑADIENDO…'
-                  : `AÑADIR LO QUE FALTA (${missing.length})`}
-            </Text>
-          </Pressable>
-        ) : null}
-        {addFailed ? (
-          <Text className="font-sans text-body-md text-error">No se pudo añadir. Inténtalo de nuevo.</Text>
-        ) : null}
+        {missing.length > 0 ? <AddMissingButton missing={missing} /> : null}
 
         <Pressable
           onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id, servings } })}
