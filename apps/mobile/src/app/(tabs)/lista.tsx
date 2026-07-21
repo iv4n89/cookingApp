@@ -7,6 +7,7 @@ import { AppHeader } from '@/components/app-header';
 import { Checkbox } from '@/components/checkbox';
 import { ErrorBanner } from '@/components/error-banner';
 import { IngredientPicker } from '@/components/ingredient-picker';
+import { UnitSelect } from '@/components/unit-select';
 import { useShoppingList, type ShoppingItem } from '@/lib/shopping';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
@@ -52,20 +53,22 @@ function ItemRow({
 }
 
 export default function ListaScreen() {
-  const { items, loading, error, refresh, add, toggle, setQuantity, buyChecked } = useShoppingList();
+  const { items, loading, error, refresh, add, toggle, editItem, buyChecked } = useShoppingList();
   const [modalVisible, setModalVisible] = useState(false);
   const [editingQty, setEditingQty] = useState<ShoppingItem | null>(null);
   const [qtyDraft, setQtyDraft] = useState('');
+  const [unitDraft, setUnitDraft] = useState<string | null>(null);
 
   function openQtyEditor(item: ShoppingItem) {
     setEditingQty(item);
     setQtyDraft(item.quantity != null ? String(item.quantity) : '');
+    setUnitDraft(item.unit);
   }
 
   function saveQty() {
     if (!editingQty) return;
     const parsed = qtyDraft.trim() ? Number(qtyDraft.replace(',', '.')) : null;
-    setQuantity(editingQty.id, parsed !== null && !Number.isNaN(parsed) ? parsed : null);
+    editItem(editingQty.id, parsed !== null && !Number.isNaN(parsed) ? parsed : null, unitDraft);
     setEditingQty(null);
   }
 
@@ -166,19 +169,27 @@ export default function ListaScreen() {
             <Text className="font-sans text-body-md text-on-surface-variant">
               Lo que compres se sumará a tu despensa al marcarlo como comprado.
             </Text>
-            <View className="flex-row items-center gap-stack-md">
-              <TextInput
-                value={qtyDraft}
-                onChangeText={setQtyDraft}
-                keyboardType="numeric"
-                autoFocus
-                placeholder="Cantidad"
-                placeholderTextColor={colors['outline-variant']}
-                className="flex-1 border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
-              />
-              {editingQty?.unit ? (
-                <Text className="font-mono text-label-md text-on-surface-variant">{editingQty.unit}</Text>
-              ) : null}
+            <View className="flex-row gap-gutter">
+              <View className="flex-1 gap-stack-sm">
+                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+                  Cantidad
+                </Text>
+                <TextInput
+                  value={qtyDraft}
+                  onChangeText={setQtyDraft}
+                  keyboardType="numeric"
+                  autoFocus
+                  placeholder="Cantidad"
+                  placeholderTextColor={colors['outline-variant']}
+                  className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
+                />
+              </View>
+              <View className="flex-1 gap-stack-sm">
+                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+                  Unidad
+                </Text>
+                <UnitSelect value={unitDraft} onChange={setUnitDraft} />
+              </View>
             </View>
             <View className="flex-row justify-end gap-gutter">
               <Pressable onPress={() => setEditingQty(null)} className="px-gutter py-stack-md">
