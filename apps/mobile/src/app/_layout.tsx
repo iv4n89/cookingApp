@@ -13,6 +13,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 import { SessionProvider, useSession } from '@/lib/auth';
 
@@ -63,9 +64,11 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <SessionProvider>
-      <StatusBar style="dark" />
-      <RootNavigator />
-    </SessionProvider>
+    <KeyboardProvider>
+      <SessionProvider>
+        <StatusBar style="dark" />
+        <RootNavigator />
+      </SessionProvider>
+    </KeyboardProvider>
   );
 }
