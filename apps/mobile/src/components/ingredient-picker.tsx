@@ -179,17 +179,17 @@ export function IngredientPicker({
               </Text>
               <View className="flex-row flex-wrap gap-stack-sm">
                 {UNITS.map((option) => {
-                  const selected = unit === option;
+                  const isSelected = unit === option;
                   return (
                     <Pressable
                       key={option}
-                      onPress={() => setUnit(selected ? '' : option)}
+                      onPress={() => setUnit(isSelected ? '' : option)}
                       className={`border px-stack-md py-stack-sm ${
-                        selected ? 'border-primary bg-primary' : 'border-outline-variant bg-background'
+                        isSelected ? 'border-primary bg-primary' : 'border-outline-variant bg-background'
                       }`}>
                       <Text
                         className={`font-mono-medium text-label-sm ${
-                          selected ? 'text-on-primary' : 'text-on-surface'
+                          isSelected ? 'text-on-primary' : 'text-on-surface'
                         }`}>
                         {option}
                       </Text>
