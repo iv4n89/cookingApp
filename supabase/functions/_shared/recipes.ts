@@ -18,6 +18,8 @@ export interface RecipeData {
   diet?: string[] | null;
   ingredients?: { name: string }[];
   steps?: unknown[];
+  // false para recetas personalizadas del chat: no entran en la caché semántica compartida.
+  reusable?: boolean;
 }
 
 const RETURN_COLUMNS =
@@ -132,6 +134,7 @@ export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
       diet: recipe.diet ?? null,
       ingredients,
       steps: recipe.steps ?? [],
+      reusable: recipe.reusable ?? true,
       embedding,
     })
     .select(RETURN_COLUMNS)

@@ -17,6 +17,8 @@ const MAX_QUERY_LENGTH = 300;
 const RATE_LIMIT_MESSAGE =
   'Has creado muchas recetas nuevas en poco tiempo. Espera un rato y vuelve a pedírmela.';
 
+const RECIPE_ERROR_NOTE = 'No he podido preparar la receta ahora mismo. Inténtalo de nuevo en un momento.';
+
 interface HistoryRecipe {
   title?: string;
   ingredients?: { name?: string; quantity?: unknown; unit?: string }[];
@@ -133,21 +135,28 @@ Deno.serve(async (req) => {
     let recipe: Record<string, unknown> | null = null;
     const query = typeof recipe_query === 'string' ? recipe_query.trim() : '';
     if (query) {
-      const resolved = await resolveRecipe(
-        supabase,
-        query.slice(0, MAX_QUERY_LENGTH),
-        userId,
-        prefs,
-        {
-          excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
-          requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
-        },
-        { skipCache: true },
-      );
-      if (resolved.origin === 'rate_limited') {
-        return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+      try {
+        const resolved = await resolveRecipe(
+          supabase,
+          query.slice(0, MAX_QUERY_LENGTH),
+          userId,
+          prefs,
+          {
+            excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
+            requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
+          },
+          { skipCache: true },
+        );
+        if (resolved.origin === 'rate_limited') {
+          return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+        }
+        recipe = resolved.recipe;
+      } catch (e) {
+        // El mensaje conversacional es válido aunque falle la resolución de la receta:
+        // lo devolvemos con un aviso en vez de perder toda la respuesta con un 500.
+        console.error('chat resolveRecipe:', e);
+        return json({ message: `${message}\n\n${RECIPE_ERROR_NOTE}`, recipe: null });
       }
-      recipe = resolved.recipe;
     }
 
     return json({ message, recipe });

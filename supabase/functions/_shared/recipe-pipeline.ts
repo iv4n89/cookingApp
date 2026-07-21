@@ -141,7 +141,10 @@ export async function resolveRecipe(
   const guidanceText = guidance.filter(Boolean).join(' ') || undefined;
 
   const generated = await generateRecipe(query, context || undefined, guidanceText);
-  const saved = await saveRecipe(supabase, recipeFromGenerated(generated, sourceUrl));
+  const saved = await saveRecipe(supabase, {
+    ...recipeFromGenerated(generated, sourceUrl),
+    reusable: !options.skipCache,
+  });
 
   // Imagen de la receta en segundo plano: no bloquea la respuesta y se guarda para el futuro.
   const savedId = saved?.id;
