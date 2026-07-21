@@ -17,7 +17,17 @@ export interface RecipeCardData {
   tags: string[];
 }
 
-export function RecipeCard({ recipe, onPress }: { recipe: RecipeCardData; onPress?: () => void }) {
+export function RecipeCard({
+  recipe,
+  onPress,
+  saved,
+  onToggleSave,
+}: {
+  recipe: RecipeCardData;
+  onPress?: () => void;
+  saved?: boolean;
+  onToggleSave?: () => void;
+}) {
   return (
     <Pressable
       onPress={onPress}
@@ -46,7 +56,21 @@ export function RecipeCard({ recipe, onPress }: { recipe: RecipeCardData; onPres
           <Text className="flex-1 pr-stack-md font-sans-semibold text-headline-sm text-on-surface">
             {recipe.title}
           </Text>
-          <MaterialIcons name="bookmark-border" size={22} color={colors.outline} />
+          {onToggleSave ? (
+            <Pressable
+              onPress={onToggleSave}
+              hitSlop={10}
+              accessibilityRole="button"
+              accessibilityLabel={saved ? 'Quitar de guardadas' : 'Guardar receta'}>
+              <MaterialIcons
+                name={saved ? 'bookmark' : 'bookmark-border'}
+                size={22}
+                color={saved ? colors.primary : colors.outline}
+              />
+            </Pressable>
+          ) : (
+            <MaterialIcons name="bookmark-border" size={22} color={colors.outline} />
+          )}
         </View>
 
         <Text
