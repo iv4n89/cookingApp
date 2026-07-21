@@ -66,10 +66,11 @@ function ItemRow({
         <Stepper item={item} onChange={onChangeQuantity} />
         <View className="flex-row items-center gap-stack-md">
           {isLowStock(item) ? (
-            <View className="rounded bg-error-container px-stack-md py-stack-sm">
-              <Text className="font-mono-medium text-[10px] uppercase tracking-widest text-on-error-container">
-                STOCK BAJO
-              </Text>
+            <View
+              accessibilityRole="image"
+              accessibilityLabel="Stock bajo"
+              className="h-7 w-7 items-center justify-center rounded-full bg-error">
+              <MaterialIcons name="shopping-cart" size={15} color={colors['on-error']} />
             </View>
           ) : null}
           <Pressable onPress={onEditMin} hitSlop={8} className="flex-row items-center gap-stack-sm">
