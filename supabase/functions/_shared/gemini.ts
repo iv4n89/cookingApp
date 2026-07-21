@@ -122,6 +122,10 @@ export interface ChatResponse {
   // Frase de búsqueda cuando el usuario pide/adapta una receta; el sistema la resuelve
   // por el pipeline real (no la inventa el chat). Vacío si el mensaje no pide receta.
   recipe_query?: string | null;
+  // Restricciones que el usuario pide en la conversación (además de sus preferencias
+  // guardadas): alérgenos a evitar y dieta requerida. El sistema filtra la caché con ellas.
+  exclude_allergens?: string[] | null;
+  require_diet?: string[] | null;
 }
 
 const CHAT_SCHEMA = {
@@ -129,6 +133,8 @@ const CHAT_SCHEMA = {
   properties: {
     message: { type: 'STRING' },
     recipe_query: { type: 'STRING', nullable: true },
+    exclude_allergens: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
+    require_diet: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
   },
   required: ['message'],
 };

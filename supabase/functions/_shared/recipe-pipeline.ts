@@ -66,6 +66,16 @@ async function generationsInWindow(supabase: SupabaseClient, userId: string): Pr
 
 export type RecipeOrigin = 'db' | 'web' | 'generated' | 'rate_limited';
 
+// Restricciones ad-hoc de la conversación (además de las preferencias guardadas).
+export interface Constraints {
+  excludeAllergens?: string[];
+  requireDiet?: string[];
+}
+
+function unique(values: string[]): string[] {
+  return [...new Set(values)];
+}
+
 // Flujo único de recetas: caché (filtrada por preferencias) -> web + IA -> guardar.
 // Lo usan tanto la búsqueda directa como el chat, para que ninguna receta sea "inventada"
 // suelta: siempre queda guardada, atribuida y etiquetada.
@@ -74,9 +84,16 @@ export async function resolveRecipe(
   query: string,
   userId: string | null,
   prefs: UserPrefs | null,
+  constraints: Constraints = {},
 ): Promise<{ recipe: Record<string, unknown> | null; origin: RecipeOrigin }> {
-  const exclude_allergens = prefs ? excludedAllergens(prefs.special_needs) : [];
-  const require_diet = prefs ? requiredDiet(prefs.food_prefs) : [];
+  const exclude_allergens = unique([
+    ...(prefs ? excludedAllergens(prefs.special_needs) : []),
+    ...(constraints.excludeAllergens ?? []),
+  ]);
+  const require_diet = unique([
+    ...(prefs ? requiredDiet(prefs.food_prefs) : []),
+    ...(constraints.requireDiet ?? []),
+  ]);
 
   const embedding = await embedText(query, 'RETRIEVAL_QUERY');
   const { data, error } = await supabase.rpc('match_recipes', {
@@ -102,7 +119,18 @@ export async function resolveRecipe(
     .slice(0, 4000);
   const sourceUrl = results[0]?.url ?? null;
 
-  const generated = await generateRecipe(query, context || undefined, prefs ? buildPrefText(prefs) : undefined);
+  const guidance = [prefs ? buildPrefText(prefs) : undefined];
+  if (constraints.excludeAllergens?.length) {
+    guidance.push(
+      `Evita por completo estos ingredientes y sus derivados: ${constraints.excludeAllergens.join(', ')}.`,
+    );
+  }
+  if (constraints.requireDiet?.length) {
+    guidance.push(`La receta debe cumplir esta dieta: ${constraints.requireDiet.join(', ')}.`);
+  }
+  const guidanceText = guidance.filter(Boolean).join(' ') || undefined;
+
+  const generated = await generateRecipe(query, context || undefined, guidanceText);
   const saved = await saveRecipe(supabase, recipeFromGenerated(generated, sourceUrl));
 
   // Imagen de la receta en segundo plano: no bloquea la respuesta y se guarda para el futuro.

@@ -2,6 +2,7 @@ import { getUserId, isAuthenticatedUser } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
 import { generateChat, type ChatTurn } from '../_shared/gemini.ts';
+import { ALLERGEN_KEYS, DIET_KEYS, sanitizeKeys } from '../_shared/preferences.ts';
 import { getUserPrefs, resolveRecipe, type UserPrefs } from '../_shared/recipe-pipeline.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -36,6 +37,12 @@ const BASE_PROMPT =
   'con mantequilla, ajo y cebolla"). El sistema buscará o creará la receta real. En "message" coméntalo ' +
   'brevemente (por ejemplo "Te busco una versión con cebolla"). Si el usuario no pide receta, deja ' +
   '"recipe_query" vacío.\n' +
+  'Si en la conversación el usuario pide EVITAR algún ingrediente que sea uno de estos alérgenos, ' +
+  'ponlo en "exclude_allergens" con su clave exacta: egg (huevo), milk (leche/lácteos/queso/nata), ' +
+  'nuts (frutos secos), peanut (cacahuete), gluten, fish (pescado), crustaceans y molluscs (marisco), ' +
+  'soy (soja), sesame (sésamo), mustard (mostaza), celery (apio), fructose, histamine, sorbitol, ' +
+  'pork (cerdo), alcohol. Ejemplo: "sin huevo" -> ["egg"]. Si pide vegano o vegetariano, ponlo en ' +
+  '"require_diet" (vegan o vegetarian). Deja ambos vacíos si no aplica.\n' +
   'No des consejo médico ni nutricional profesional.';
 
 // Texto de la receta para que el modelo recuerde lo propuesto en turnos anteriores.
@@ -116,13 +123,17 @@ Deno.serve(async (req) => {
     const prefs = userId ? await getUserPrefs(supabase, userId) : null;
     const system = await buildSystemInstruction(supabase, userId, prefs);
 
-    const { message, recipe_query } = await generateChat(turns, system);
+    const { message, recipe_query, exclude_allergens, require_diet } = await generateChat(turns, system);
 
-    // La receta no la inventa el chat: se resuelve por el pipeline real (caché/web/IA).
+    // La receta no la inventa el chat: se resuelve por el pipeline real (caché/web/IA),
+    // aplicando también las restricciones que el usuario pide en la conversación.
     let recipe: Record<string, unknown> | null = null;
     const query = typeof recipe_query === 'string' ? recipe_query.trim() : '';
     if (query) {
-      const resolved = await resolveRecipe(supabase, query.slice(0, MAX_QUERY_LENGTH), userId, prefs);
+      const resolved = await resolveRecipe(supabase, query.slice(0, MAX_QUERY_LENGTH), userId, prefs, {
+        excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
+        requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
+      });
       recipe = resolved.recipe;
     }
 
