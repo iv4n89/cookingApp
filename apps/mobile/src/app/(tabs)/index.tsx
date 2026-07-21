@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -139,6 +139,8 @@ export default function InicioScreen() {
   const [addingLow, setAddingLow] = useState(false);
   const [addedLow, setAddedLow] = useState(false);
   const [saved, setSaved] = useState<Set<string>>(new Set());
+  // Toggles de guardado en vuelo, para ignorar taps repetidos mientras se resuelve.
+  const savingIds = useRef<Set<string>>(new Set());
 
   const load = useCallback(() => {
     let active = true;
@@ -170,7 +172,8 @@ export default function InicioScreen() {
   useFocusEffect(load);
 
   async function toggleSave(id: string) {
-    if (!session) return;
+    if (!session || savingIds.current.has(id)) return;
+    savingIds.current.add(id);
     const wasSaved = saved.has(id);
     setSaved((prev) => {
       const next = new Set(prev);
@@ -187,6 +190,8 @@ export default function InicioScreen() {
         else next.delete(id);
         return next;
       });
+    } finally {
+      savingIds.current.delete(id);
     }
   }
 
