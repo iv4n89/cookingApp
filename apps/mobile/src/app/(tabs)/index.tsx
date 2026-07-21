@@ -270,7 +270,9 @@ export default function InicioScreen() {
       <AskAiModal
         visible={askVisible}
         onClose={() => setAskVisible(false)}
-        onSubmit={(question) => router.push({ pathname: '/chat', params: { q: question } })}
+        onSubmit={(question) =>
+          router.push({ pathname: '/chat', params: { q: question, t: String(Date.now()) } })
+        }
       />
     </SafeAreaView>
   );

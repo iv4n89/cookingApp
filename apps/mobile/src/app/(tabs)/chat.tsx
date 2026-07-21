@@ -246,7 +246,7 @@ export default function ChatScreen() {
   const [failed, setFailed] = useState(false);
   const [pantry, setPantry] = useState<PantryMatch | null>(null);
   const scrollRef = useRef<ScrollView>(null);
-  const params = useLocalSearchParams<{ q?: string }>();
+  const params = useLocalSearchParams<{ q?: string; t?: string }>();
 
   useEffect(() => {
     let active = true;
@@ -286,15 +286,17 @@ export default function ChatScreen() {
   }
 
   // Pregunta llegada desde el Home: nueva conversación con ese texto como primer mensaje.
+  // Se identifica por el nonce t (una pulsación) para que repetir la misma pregunta re-inicie.
   const seeded = useRef<string | null>(null);
   useEffect(() => {
     const q = typeof params.q === 'string' ? params.q.trim() : '';
-    if (q && seeded.current !== q) {
-      seeded.current = q;
+    const t = typeof params.t === 'string' ? params.t : '';
+    if (q && t && seeded.current !== t) {
+      seeded.current = t;
       runChat([{ role: 'user', content: q }]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.q]);
+  }, [params.t]);
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
