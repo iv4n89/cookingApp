@@ -5,12 +5,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { AddMissingButton } from '@/components/add-missing-button';
 import { useSession } from '@/lib/auth';
 import { cookRecipe } from '@/lib/cooking';
 import { getPantryForCook, type CookPantryItem } from '@/lib/pantry';
 import { computeCookDeltas, isBasic, isMissingByStock } from '@/lib/pantry-match';
 import {
-  addIngredientsToShopping,
   formatQuantity,
   getRecipe,
   scaleIngredients,
@@ -163,29 +163,10 @@ function Ingredients({
   ingredients: RecipeIngredient[];
   pantry: CookPantryItem[] | null;
 }) {
-  const { session } = useSession();
-  const [added, setAdded] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [failed, setFailed] = useState(false);
-
   // Lo que falta: si aún no cargó la despensa, todo lo no básico (fallback).
   const missing = pantry
     ? ingredients.filter((i) => isMissingByStock(i, pantry))
     : ingredients.filter((i) => !isBasic(i.name));
-
-  async function addMissing() {
-    if (added || submitting || !session || missing.length === 0) return;
-    setSubmitting(true);
-    setFailed(false);
-    try {
-      await addIngredientsToShopping(session.user.id, missing);
-      setAdded(true);
-    } catch {
-      setFailed(true);
-    } finally {
-      setSubmitting(false);
-    }
-  }
 
   return (
     <View>
@@ -218,42 +199,7 @@ function Ingredients({
           );
         })}
       </View>
-      {failed ? (
-        <Text className="mb-stack-md font-sans text-body-md text-error">
-          No se pudo añadir a la compra. Inténtalo de nuevo.
-        </Text>
-      ) : null}
-      {missing.length > 0 ? (
-        <Pressable
-          onPress={addMissing}
-          disabled={added || submitting}
-          className={`flex-row items-center justify-center gap-stack-md bg-primary py-gutter ${
-            added || submitting ? 'opacity-60' : ''
-          }`}>
-          {submitting ? (
-            <ActivityIndicator color={colors['on-primary']} />
-          ) : (
-            <MaterialIcons
-              name={added ? 'check' : 'add-shopping-cart'}
-              size={18}
-              color={colors['on-primary']}
-            />
-          )}
-          <Text className="font-mono-medium text-label-md text-on-primary">
-            {added
-              ? 'AÑADIDO A LA COMPRA'
-              : submitting
-                ? 'AÑADIENDO…'
-                : `AÑADIR LO QUE FALTA (${missing.length})`}
-          </Text>
-        </Pressable>
-      ) : (
-        <View className="items-center border border-outline-variant bg-surface py-gutter">
-          <Text className="font-mono-medium text-label-md text-on-surface-variant">
-            YA TIENES TODO LO NECESARIO
-          </Text>
-        </View>
-      )}
+      <AddMissingButton missing={missing} />
     </View>
   );
 }
