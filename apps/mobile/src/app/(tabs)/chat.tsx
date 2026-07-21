@@ -8,12 +8,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AddMissingButton } from '@/components/add-missing-button';
 import { AppHeader } from '@/components/app-header';
+import { ServingsStepper } from '@/components/servings-stepper';
 import { getPantryMatch, type PantryMatch } from '@/lib/pantry';
 import { isMissing } from '@/lib/pantry-match';
 import { sendChat, type ChatMessage } from '@/lib/chat';
 import { formatQuantity, scaleIngredients, type Recipe, type RecipeIngredient } from '@/lib/recipes';
-
-const MAX_SERVINGS = 20;
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -29,35 +28,6 @@ function MetaChip({ icon, text }: { icon: 'schedule' | 'restaurant'; text: strin
     <View className="flex-row items-center gap-stack-sm">
       <MaterialIcons name={icon} size={16} color={colors['on-surface-variant']} />
       <Text className="font-mono-medium text-label-sm text-on-surface-variant">{text}</Text>
-    </View>
-  );
-}
-
-function ServingsStepper({ servings, onChange }: { servings: number; onChange: (n: number) => void }) {
-  return (
-    <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
-      <Text className="font-sans-semibold text-body-md text-on-surface">Raciones</Text>
-      <View className="flex-row items-center gap-gutter">
-        <Pressable
-          onPress={() => onChange(Math.max(1, servings - 1))}
-          disabled={servings <= 1}
-          hitSlop={8}
-          accessibilityRole="button"
-          accessibilityLabel="Menos raciones"
-          className={servings <= 1 ? 'opacity-40' : ''}>
-          <MaterialIcons name="remove-circle-outline" size={26} color={colors.primary} />
-        </Pressable>
-        <Text className="w-8 text-center font-mono-medium text-headline-sm text-on-surface">{servings}</Text>
-        <Pressable
-          onPress={() => onChange(Math.min(MAX_SERVINGS, servings + 1))}
-          disabled={servings >= MAX_SERVINGS}
-          hitSlop={8}
-          accessibilityRole="button"
-          accessibilityLabel="Más raciones"
-          className={servings >= MAX_SERVINGS ? 'opacity-40' : ''}>
-          <MaterialIcons name="add-circle-outline" size={26} color={colors.primary} />
-        </Pressable>
-      </View>
     </View>
   );
 }
