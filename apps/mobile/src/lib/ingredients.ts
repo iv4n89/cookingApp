@@ -5,6 +5,8 @@ export interface CatalogIngredient {
   name: string;
   category: string;
   image_url: string | null;
+  default_min_stock: number | null;
+  default_unit: string | null;
 }
 
 // minúsculas y sin acentos, para búsqueda insensible a tildes.
@@ -27,12 +29,16 @@ function resolveImageUrl(key: string | null): string | null {
 export async function listIngredients(): Promise<CatalogIngredient[]> {
   const { data, error } = await supabase
     .from('ingredients')
-    .select('id, name, category, image_url')
+    .select('id, name, category, image_url, default_min_stock, default_unit')
     .order('category')
     .order('name');
   if (error) throw error;
-  return (data ?? []).map((row) => ({
-    ...(row as CatalogIngredient),
-    image_url: resolveImageUrl((row as CatalogIngredient).image_url),
-  }));
+  return (data ?? []).map((row) => {
+    const item = row as CatalogIngredient;
+    return {
+      ...item,
+      image_url: resolveImageUrl(item.image_url),
+      default_min_stock: item.default_min_stock == null ? null : Number(item.default_min_stock),
+    };
+  });
 }

@@ -21,6 +21,7 @@ export interface PickedIngredient {
   category: string;
   quantity: number | null;
   unit: string | null;
+  minStock: number | null;
 }
 
 interface Selected {
@@ -28,6 +29,8 @@ interface Selected {
   name: string;
   category: string;
   image_url: string | null;
+  default_min_stock: number | null;
+  default_unit: string | null;
 }
 
 function Thumb({ imageUrl }: { imageUrl: string | null }) {
@@ -77,7 +80,15 @@ export function IngredientPicker({
   const [selected, setSelected] = useState<Selected | null>(null);
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('');
+  const [min, setMin] = useState('');
   const [unitOpen, setUnitOpen] = useState(false);
+
+  // Al elegir un ingrediente, pre-rellena unidad y mínimo con los defaults del catálogo.
+  function choose(item: Selected) {
+    setSelected(item);
+    setUnit(item.default_unit ?? '');
+    setMin(item.default_min_stock != null ? String(item.default_min_stock) : '');
+  }
 
   useEffect(() => {
     if (visible && items.length === 0) listIngredients().then(setItems).catch(() => {});
@@ -87,6 +98,7 @@ export function IngredientPicker({
     setSelected(null);
     setQuantity('');
     setUnit('');
+    setMin('');
     setUnitOpen(false);
   }
 
@@ -127,12 +139,14 @@ export function IngredientPicker({
   function confirm() {
     if (!selected) return;
     const parsed = quantity.trim() ? Number(quantity.replace(',', '.')) : null;
+    const parsedMin = min.trim() ? Number(min.replace(',', '.')) : null;
     onAdd({
       ingredientId: selected.id,
       name: selected.name,
       category: selected.category,
       quantity: parsed !== null && !Number.isNaN(parsed) ? parsed : null,
       unit: unit.trim() || null,
+      minStock: parsedMin !== null && !Number.isNaN(parsedMin) ? parsedMin : null,
     });
     close();
   }
@@ -194,6 +208,20 @@ export function IngredientPicker({
               </View>
             </View>
 
+            <View className="gap-stack-sm">
+              <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+                Mínimo (opcional)
+              </Text>
+              <TextInput
+                value={min}
+                onChangeText={setMin}
+                keyboardType="numeric"
+                placeholder="Avisar de stock bajo cuando baje de…"
+                placeholderTextColor={colors['outline-variant']}
+                className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
+              />
+            </View>
+
             <Pressable onPress={confirm} className="items-center rounded-lg bg-primary py-gutter">
               <Text className="font-mono-medium text-label-md text-on-primary">AÑADIR</Text>
             </Pressable>
@@ -223,7 +251,16 @@ export function IngredientPicker({
               {q ? (
                 filtered.length === 0 ? (
                   <Pressable
-                    onPress={() => setSelected({ id: null, name: query.trim(), category: 'Otros', image_url: null })}
+                    onPress={() =>
+                      choose({
+                        id: null,
+                        name: query.trim(),
+                        category: 'Otros',
+                        image_url: null,
+                        default_min_stock: null,
+                        default_unit: null,
+                      })
+                    }
                     className="flex-row items-center gap-stack-md px-container-padding py-gutter">
                     <MaterialIcons name="add" size={20} color={colors.primary} />
                     <Text className="font-sans text-body-md text-primary">
@@ -232,7 +269,7 @@ export function IngredientPicker({
                   </Pressable>
                 ) : (
                   filtered.map((i) => (
-                    <IngredientRow key={i.id} name={i.name} imageUrl={i.image_url} onPress={() => setSelected(i)} />
+                    <IngredientRow key={i.id} name={i.name} imageUrl={i.image_url} onPress={() => choose(i)} />
                   ))
                 )
               ) : (
@@ -253,7 +290,7 @@ export function IngredientPicker({
                     </Pressable>
                     {expanded.has(category)
                       ? list.map((i) => (
-                          <IngredientRow key={i.id} name={i.name} imageUrl={i.image_url} onPress={() => setSelected(i)} />
+                          <IngredientRow key={i.id} name={i.name} imageUrl={i.image_url} onPress={() => choose(i)} />
                         ))
                       : null}
                   </View>
