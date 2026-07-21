@@ -102,6 +102,10 @@ export interface CookDelta {
   quantity: number;
 }
 
+// Umbral por debajo del cual una cantidad es ruido de coma flotante (las cantidades reales de
+// receta son >= ~0,1); evita descontar residuos como 1e-17 tras convertir entre unidades.
+const EPSILON = 1e-6;
+
 // Qué descontar de la despensa al cocinar. Casa cada ingrediente con los items de despensa
 // (por id o por nombre) y reparte la cantidad necesaria, agotando primero los de menor stock
 // (el usuario puede tener duplicados). La cantidad de la receta se convierte a la unidad de
@@ -123,14 +127,20 @@ export function computeCookDeltas(
           ((ing.ingredient_id != null && p.ingredient_id === ing.ingredient_id) ||
             nameMatches(recipeWords, words(p.name))),
       )
-      .sort((a, b) => (a.quantity ?? 0) - (b.quantity ?? 0));
+      // Menor stock primero, comparando en la unidad de la receta; los no comparables al final
+      // (se saltan igual dentro del bucle).
+      .sort(
+        (a, b) =>
+          (convertQuantity(a.quantity ?? 0, a.unit, ing.unit) ?? Infinity) -
+          (convertQuantity(b.quantity ?? 0, b.unit, ing.unit) ?? Infinity),
+      );
     let need = ing.quantity; // en la unidad de la receta
     for (const p of matches) {
-      if (need <= 0) break;
+      if (need <= EPSILON) break;
       const needInItemUnit = convertQuantity(need, ing.unit, p.unit);
       if (needInItemUnit == null) continue; // unidad no comparable: no se descuenta este item
       const sub = Math.min(p.quantity ?? 0, needInItemUnit);
-      if (sub <= 0) continue;
+      if (sub <= EPSILON) continue; // evita deltas basura por residuos de coma flotante
       deltas.push({ pantry_item_id: p.id, quantity: sub });
       need -= convertQuantity(sub, p.unit, ing.unit) ?? 0;
     }
