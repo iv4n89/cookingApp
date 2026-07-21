@@ -23,18 +23,6 @@ import { getUserRecipe, setFavorite, setRating, type UserRecipeMeta } from '@/li
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-function sourceLabel(recipe: Recipe): string {
-  if (recipe.source === 'generated') return 'GENERADO POR IA';
-  if (recipe.source_url) {
-    try {
-      return new URL(recipe.source_url).hostname.replace(/^www\./, '').toUpperCase();
-    } catch {
-      return 'WEB';
-    }
-  }
-  return 'WEB';
-}
-
 function quantityLine(ingredient: RecipeIngredient): string {
   return [formatQuantity(ingredient.quantity), ingredient.unit].filter((v) => v !== '' && v !== null).join(' ');
 }
@@ -107,12 +95,6 @@ function Hero({ recipe }: { recipe: Recipe }) {
       ) : (
         <MaterialIcons name="restaurant-menu" size={48} color={colors['outline-variant']} />
       )}
-      <View className="absolute bottom-6 right-6 flex-row items-center gap-stack-md border border-outline-variant bg-secondary-container px-stack-md py-stack-sm">
-        <Text className="font-mono text-label-sm text-on-secondary-container">FUENTE:</Text>
-        <Text className="font-mono-medium text-label-sm text-on-secondary-container">
-          {sourceLabel(recipe)}
-        </Text>
-      </View>
     </View>
   );
 }
