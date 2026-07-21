@@ -2,7 +2,6 @@ import { embedText, generateRecipe } from './gemini.ts';
 import { excludedAllergens, requiredDiet } from './preferences.ts';
 import { generateRecipeImage } from './recipe-image.ts';
 import { recipeFromGenerated, saveRecipe } from './recipes.ts';
-import { searchWeb } from './tavily.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Global del edge runtime de Supabase para trabajo en segundo plano tras responder.
@@ -64,7 +63,7 @@ async function generationsInWindow(supabase: SupabaseClient, userId: string): Pr
   return count ?? 0;
 }
 
-export type RecipeOrigin = 'db' | 'web' | 'generated' | 'rate_limited';
+export type RecipeOrigin = 'db' | 'generated' | 'rate_limited';
 
 // Restricciones ad-hoc de la conversación (además de las preferencias guardadas).
 export interface Constraints {
@@ -122,13 +121,6 @@ export async function resolveRecipe(
     return { recipe: null, origin: 'rate_limited' };
   }
 
-  const results = await searchWeb(query);
-  const context = results
-    .map((r) => `- ${r.title}: ${r.content}`)
-    .join('\n')
-    .slice(0, 4000);
-  const sourceUrl = results[0]?.url ?? null;
-
   const guidance = [prefs ? buildPrefText(prefs) : undefined];
   if (constraints.excludeAllergens?.length) {
     guidance.push(
@@ -140,9 +132,9 @@ export async function resolveRecipe(
   }
   const guidanceText = guidance.filter(Boolean).join(' ') || undefined;
 
-  const generated = await generateRecipe(query, context || undefined, guidanceText);
+  const generated = await generateRecipe(query, guidanceText);
   const saved = await saveRecipe(supabase, {
-    ...recipeFromGenerated(generated, sourceUrl),
+    ...recipeFromGenerated(generated),
     reusable: !options.skipCache,
   });
 
@@ -165,5 +157,5 @@ export async function resolveRecipe(
     }
   }
 
-  return { recipe: saved, origin: sourceUrl ? 'web' : 'generated' };
+  return { recipe: saved, origin: 'generated' };
 }
