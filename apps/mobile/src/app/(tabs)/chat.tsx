@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { KeyboardStickyView } from 'react-native-keyboard-controller';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AddMissingButton } from '@/components/add-missing-button';
 import { AppHeader } from '@/components/app-header';
@@ -218,7 +218,6 @@ export default function ChatScreen() {
   const [pantry, setPantry] = useState<PantryMatch | null>(null);
   const scrollRef = useRef<ScrollView>(null);
   const params = useLocalSearchParams<{ q?: string; t?: string }>();
-  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     let active = true;
@@ -310,9 +309,7 @@ export default function ChatScreen() {
         </ScrollView>
 
         <KeyboardStickyView>
-          <View
-            style={{ paddingBottom: Math.max(insets.bottom, 8) }}
-            className="flex-row items-end gap-stack-sm border-t border-outline-variant bg-background px-container-padding pt-stack-md">
+          <View className="flex-row items-end gap-stack-sm border-t border-outline-variant bg-background px-container-padding py-stack-md">
             <TextInput
               value={input}
               onChangeText={setInput}

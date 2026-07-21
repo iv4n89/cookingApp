@@ -353,7 +353,7 @@ export default function RecipeDetailScreen() {
   const scaledIngredients = recipe ? scaleIngredients(recipe.ingredients, recipe.servings, servings) : [];
 
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-background">
+    <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
       <TopBar favorite={meta.is_favorite} onToggleFavorite={recipe ? toggleFavorite : undefined} />
 
       {loading ? (

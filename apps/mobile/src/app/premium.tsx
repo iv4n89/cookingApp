@@ -99,7 +99,7 @@ export default function PremiumScreen() {
   const [plan, setPlan] = useState<'monthly' | 'yearly'>('yearly');
 
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-background">
+    <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
       <View className="flex-row items-center justify-between border-b border-outline-variant bg-background px-container-padding py-stack-md">
         <Text className="font-sans-bold text-headline-sm text-primary">COCINA INTELIGENTE</Text>
         <Pressable onPress={() => router.back()} hitSlop={8}>
