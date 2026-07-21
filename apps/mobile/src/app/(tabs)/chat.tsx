@@ -1,173 +1,367 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Image } from 'expo-image';
+import { router } from 'expo-router';
+import { useEffect, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
+import { useSession } from '@/lib/auth';
+import { normalize } from '@/lib/ingredients';
+import { getPantryMatch, type PantryMatch } from '@/lib/pantry';
+import { sendChat, type ChatMessage } from '@/lib/chat';
+import {
+  addIngredientsToShopping,
+  formatQuantity,
+  scaleIngredients,
+  type Recipe,
+  type RecipeIngredient,
+} from '@/lib/recipes';
+
+const MAX_SERVINGS = 20;
+
+// Dos palabras casan si son la misma o una es plural de la otra (-s / -es): tolera
+// "aguacate/aguacates" y "limón/limones" sin casar palabras no relacionadas ("sal"/"salmón").
+function sameWord(a: string, b: string): boolean {
+  if (a === b) return true;
+  const [short, long] = a.length < b.length ? [a, b] : [b, a];
+  return long === `${short}s` || long === `${short}es`;
+}
+
+function words(text: string): string[] {
+  return normalize(text)
+    .split(/\s+/)
+    .filter((w) => w.length >= 3);
+}
+
+// Un ingrediente está en la despensa si casa por ingredient_id, por nombre exacto, o si
+// todas las palabras del item de despensa aparecen en el nombre de la receta (tolerando
+// plurales: "Aguacate" vs "aguacates maduros", "Ajo" vs "diente de ajo").
+function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): boolean {
+  if (ingredient.ingredient_id && pantry.ids.has(ingredient.ingredient_id)) return false;
+  const recipeWords = words(ingredient.name);
+  for (const pantryName of pantry.names) {
+    const pantryWords = words(pantryName);
+    if (
+      pantryWords.length > 0 &&
+      pantryWords.every((p) => recipeWords.some((r) => sameWord(p, r)))
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-const REASONING = [
-  'Analizando grasa: leche de coco (17-24%) vs. nata (36%) + leche entera (3,5%).',
-  'Solución: una proporción 2:1 de leche y nata imita la viscosidad de la leche de coco entera.',
-  'Sabor: refuerza con más jengibre y un toque de lima para compensar las notas florales del coco.',
+const SUGGESTIONS = [
+  'Tengo mantequilla y patatas, dame una receta',
+  '¿Qué puedo cocinar con lo que tengo?',
+  'Algo rápido para cenar hoy',
 ];
 
-const ADJUSTED = [
-  { name: '1 taza de leche entera + ½ de nata', done: true },
-  { name: '1,5 cdtas de jengibre fresco', done: true },
-  { name: '2 cdas de pasta de curry rojo', done: false },
-];
-
-function UserMessage({ text }: { text: string }) {
+function MetaChip({ icon, text }: { icon: 'schedule' | 'restaurant'; text: string }) {
   return (
-    <View className="items-end gap-stack-sm">
-      <Text className="font-mono uppercase text-label-sm text-on-surface-variant">Tú</Text>
-      <View className="max-w-[85%] rounded-xl rounded-tr-none border border-primary bg-primary px-stack-lg py-gutter">
-        <Text className="font-sans text-body-lg text-on-primary">{text}</Text>
+    <View className="flex-row items-center gap-stack-sm">
+      <MaterialIcons name={icon} size={16} color={colors['on-surface-variant']} />
+      <Text className="font-mono-medium text-label-sm text-on-surface-variant">{text}</Text>
+    </View>
+  );
+}
+
+function ServingsStepper({ servings, onChange }: { servings: number; onChange: (n: number) => void }) {
+  return (
+    <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
+      <Text className="font-sans-semibold text-body-md text-on-surface">Raciones</Text>
+      <View className="flex-row items-center gap-gutter">
+        <Pressable
+          onPress={() => onChange(Math.max(1, servings - 1))}
+          disabled={servings <= 1}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Menos raciones"
+          className={servings <= 1 ? 'opacity-40' : ''}>
+          <MaterialIcons name="remove-circle-outline" size={26} color={colors.primary} />
+        </Pressable>
+        <Text className="w-8 text-center font-mono-medium text-headline-sm text-on-surface">{servings}</Text>
+        <Pressable
+          onPress={() => onChange(Math.min(MAX_SERVINGS, servings + 1))}
+          disabled={servings >= MAX_SERVINGS}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Más raciones"
+          className={servings >= MAX_SERVINGS ? 'opacity-40' : ''}>
+          <MaterialIcons name="add-circle-outline" size={26} color={colors.primary} />
+        </Pressable>
       </View>
     </View>
   );
 }
 
-function ReasoningPanel() {
+function ingredientText(ingredient: RecipeIngredient): string {
+  return [formatQuantity(ingredient.quantity), ingredient.unit, ingredient.name]
+    .filter((v) => v !== '' && v !== null)
+    .join(' ');
+}
+
+function RecipeCard({ recipe, pantry }: { recipe: Recipe; pantry: PantryMatch | null }) {
+  const { session } = useSession();
+  const [servings, setServings] = useState(recipe.servings > 0 ? recipe.servings : 1);
+  const [addedMissing, setAddedMissing] = useState(false);
+  const [addingMissing, setAddingMissing] = useState(false);
+  const [addFailed, setAddFailed] = useState(false);
+
+  const total = recipe.prep_time_min + recipe.cook_time_min;
+  const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
+  const missing = pantry ? scaled.filter((ing) => isMissing(ing, pantry)) : [];
+
+  async function addMissing() {
+    if (!session || addingMissing || addedMissing || missing.length === 0) return;
+    setAddingMissing(true);
+    setAddFailed(false);
+    try {
+      await addIngredientsToShopping(session.user.id, missing);
+      setAddedMissing(true);
+    } catch {
+      setAddFailed(true);
+    } finally {
+      setAddingMissing(false);
+    }
+  }
+
   return (
-    <View className="w-full max-w-[92%] rounded-r-xl border-l-2 border-primary bg-surface-container-low px-stack-lg py-gutter">
-      <View className="mb-stack-md flex-row items-center gap-stack-sm">
-        <MaterialIcons name="psychology" size={18} color={colors.primary} />
-        <Text className="font-mono-medium text-label-sm text-primary">ADAPTANDO LA RECETA</Text>
+    <View className="w-full max-w-[92%] gap-gutter overflow-hidden rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low">
+      <View className="aspect-[3/2] w-full items-center justify-center bg-surface-container">
+        {recipe.image_url ? (
+          <Image source={recipe.image_url} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+        ) : (
+          <MaterialIcons name="restaurant-menu" size={36} color={colors['outline-variant']} />
+        )}
       </View>
-      <View className="gap-stack-md">
-        {REASONING.map((line) => (
-          <View key={line} className="flex-row items-start gap-stack-md">
-            <View className="mt-2 h-1.5 w-1.5 rounded-full bg-outline" />
-            <Text className="flex-1 font-sans text-body-md italic text-on-surface-variant">{line}</Text>
+
+      <View className="gap-gutter p-stack-lg pt-0">
+        <View className="self-start bg-primary px-stack-md py-stack-sm">
+          <Text className="font-mono text-label-sm text-on-primary">RECETA</Text>
+        </View>
+        <Text className="font-sans-semibold text-headline-sm text-on-surface">{recipe.title}</Text>
+        {recipe.description ? (
+          <Text className="font-sans text-body-md text-on-surface-variant">{recipe.description}</Text>
+        ) : null}
+        {total > 0 ? (
+          <View className="flex-row flex-wrap gap-gutter">
+            <MetaChip icon="schedule" text={`${total} MIN`} />
           </View>
+        ) : null}
+
+        <ServingsStepper servings={servings} onChange={setServings} />
+
+        <View className="gap-stack-md border-t border-outline-variant pt-gutter">
+          <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
+            Ingredientes
+          </Text>
+          {scaled.map((ing, i) => {
+            const falta = pantry ? isMissing(ing, pantry) : false;
+            return (
+              <View key={i} className="flex-row items-start gap-stack-md">
+                <View className={`mt-2 h-1.5 w-1.5 rounded-full ${falta ? 'bg-secondary' : 'bg-primary'}`} />
+                <Text className="flex-1 font-sans text-body-md text-on-surface">{ingredientText(ing)}</Text>
+                {falta ? (
+                  <Text className="mt-0.5 font-mono text-label-sm uppercase text-secondary">Falta</Text>
+                ) : null}
+              </View>
+            );
+          })}
+        </View>
+
+        {missing.length > 0 ? (
+          <Pressable
+            onPress={addMissing}
+            disabled={addingMissing || addedMissing}
+            className={`flex-row items-center justify-center gap-stack-md border border-primary py-stack-md ${
+              addingMissing || addedMissing ? 'opacity-60' : ''
+            }`}>
+            {addingMissing ? (
+              <ActivityIndicator color={colors.primary} />
+            ) : (
+              <MaterialIcons name={addedMissing ? 'check' : 'add-shopping-cart'} size={18} color={colors.primary} />
+            )}
+            <Text className="font-mono-medium text-label-md text-primary">
+              {addedMissing
+                ? 'AÑADIDO A LA COMPRA'
+                : addingMissing
+                  ? 'AÑADIENDO…'
+                  : `AÑADIR LO QUE FALTA (${missing.length})`}
+            </Text>
+          </Pressable>
+        ) : null}
+        {addFailed ? (
+          <Text className="font-sans text-body-md text-error">No se pudo añadir. Inténtalo de nuevo.</Text>
+        ) : null}
+
+        <Pressable
+          onPress={() => router.push({ pathname: '/receta/[id]', params: { id: recipe.id, servings } })}
+          className="flex-row items-center justify-center gap-stack-md bg-primary py-gutter">
+          <MaterialIcons name="play-arrow" size={20} color={colors['on-primary']} />
+          <Text className="font-mono-medium uppercase tracking-widest text-label-md text-on-primary">
+            Comenzar a cocinar
+          </Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function MessageView({ message, pantry }: { message: ChatMessage; pantry: PantryMatch | null }) {
+  const mine = message.role === 'user';
+  return (
+    <View className={mine ? 'items-end gap-stack-sm' : 'items-start gap-stack-md'}>
+      <Text className="font-mono uppercase text-label-sm text-on-surface-variant">
+        {mine ? 'Tú' : 'Asistente'}
+      </Text>
+      {message.content ? (
+        <View
+          className={`max-w-[88%] px-stack-lg py-gutter ${
+            mine
+              ? 'rounded-xl rounded-tr-none border border-primary bg-primary'
+              : 'rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low'
+          }`}>
+          <Text className={`font-sans text-body-lg ${mine ? 'text-on-primary' : 'text-on-surface'}`}>
+            {message.content}
+          </Text>
+        </View>
+      ) : null}
+      {message.recipe ? <RecipeCard recipe={message.recipe} pantry={pantry} /> : null}
+    </View>
+  );
+}
+
+function EmptyState({ onPick }: { onPick: (text: string) => void }) {
+  return (
+    <View className="mt-section-gap items-center gap-stack-lg px-container-padding">
+      <View className="h-14 w-14 items-center justify-center rounded-full bg-tertiary-fixed">
+        <MaterialIcons name="auto-awesome" size={26} color={colors.primary} />
+      </View>
+      <Text className="text-center font-sans-semibold text-headline-sm text-on-surface">
+        Pregúntame qué cocinar
+      </Text>
+      <Text className="text-center font-sans text-body-md text-on-surface-variant">
+        Tengo en cuenta tus preferencias, tus necesidades y lo que hay en tu despensa.
+      </Text>
+      <View className="gap-stack-md">
+        {SUGGESTIONS.map((s) => (
+          <Pressable
+            key={s}
+            onPress={() => onPick(s)}
+            className="rounded-full border border-outline-variant bg-surface px-stack-lg py-stack-md">
+            <Text className="font-sans text-body-md text-on-surface">{s}</Text>
+          </Pressable>
         ))}
       </View>
     </View>
   );
 }
 
-function AdjustedIngredient({ name, done }: { name: string; done: boolean }) {
-  return (
-    <View className={`flex-row items-center gap-stack-md ${done ? '' : 'opacity-60'}`}>
-      <MaterialIcons
-        name={done ? 'check-box' : 'check-box-outline-blank'}
-        size={18}
-        color={done ? colors.primary : colors['on-surface-variant']}
-      />
-      <Text className="flex-1 font-sans text-body-md text-on-surface">{name}</Text>
-    </View>
-  );
-}
-
-function ResponseCard() {
-  return (
-    <View className="w-full max-w-[96%] overflow-hidden rounded-xl rounded-tl-none border border-outline-variant bg-tertiary-fixed">
-      <View className="gap-gutter p-stack-lg">
-        <View className="flex-row items-start justify-between gap-stack-md">
-          <View className="flex-1">
-            <View className="mb-stack-sm self-start rounded-sm bg-primary px-stack-md py-stack-sm">
-              <Text className="font-mono text-label-sm text-on-primary">RECETA ADAPTADA</Text>
-            </View>
-            <Text className="font-sans-semibold text-headline-md text-primary">
-              Curry dorado cremoso con base láctea
-            </Text>
-          </View>
-          <View className="flex-row items-center gap-stack-sm rounded-sm bg-tertiary px-stack-md py-stack-sm">
-            <MaterialIcons name="timer" size={16} color={colors['on-tertiary']} />
-            <Text className="font-mono text-label-sm text-on-tertiary">35 MIN</Text>
-          </View>
-        </View>
-
-        <Text className="font-sans text-body-lg leading-relaxed text-tertiary">
-          Sustituyendo por tu mezcla de leche y nata logramos un perfil más rico y algo más sabroso.
-          Una alternativa excelente que resalta los aromas de tu pasta de curry.
-        </Text>
-
-        <View className="gap-stack-lg border-t border-outline-variant pt-gutter">
-          <View>
-            <Text className="mb-stack-md font-mono-medium text-label-md uppercase tracking-widest text-on-surface-variant">
-              Ingredientes ajustados
-            </Text>
-            <View className="gap-stack-md">
-              {ADJUSTED.map((item) => (
-                <AdjustedIngredient key={item.name} name={item.name} done={item.done} />
-              ))}
-            </View>
-          </View>
-
-          <View className="rounded-lg border border-outline-variant bg-surface-container-low p-gutter">
-            <View className="mb-stack-md self-start bg-secondary-container px-stack-md py-stack-sm">
-              <Text className="font-mono text-label-sm uppercase text-on-secondary-fixed-variant">
-                Maridaje sensorial IA
-              </Text>
-            </View>
-            <Text className="font-sans text-body-md italic text-on-surface-variant">
-              “Las grasas lácteas ligan mejor con el comino y el cilantro. Espera una profundidad más
-              ‘terrosa’ e intensa que las versiones con coco.”
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <Pressable className="flex-row items-center justify-between bg-primary px-stack-lg py-gutter">
-        <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
-          Empezar cocina guiada
-        </Text>
-        <MaterialIcons name="arrow-forward" size={22} color={colors['on-primary']} />
-      </Pressable>
-    </View>
-  );
-}
-
-function AiMessage() {
-  return (
-    <View className="items-start gap-stack-md">
-      <View className="flex-row items-center gap-stack-md">
-        <View className="h-8 w-8 items-center justify-center rounded-sm border border-outline-variant bg-tertiary-fixed">
-          <Text className="font-mono-medium text-label-sm text-tertiary">IA</Text>
-        </View>
-        <Text className="font-mono uppercase tracking-widest text-label-sm text-on-surface-variant">
-          Agente inteligente
-        </Text>
-      </View>
-      <ReasoningPanel />
-      <ResponseCard />
-    </View>
-  );
-}
-
-function InputBar() {
-  return (
-    <View className="flex-row items-center gap-stack-sm border-t border-outline-variant bg-background px-container-padding py-stack-md">
-      <Pressable hitSlop={8}>
-        <MaterialIcons name="add-circle-outline" size={26} color={colors['on-surface-variant']} />
-      </Pressable>
-      <TextInput
-        className="flex-1 rounded-full border border-outline-variant bg-surface-container-lowest px-gutter py-stack-md font-sans text-body-md text-on-surface"
-        placeholder="Pregunta sobre ingredientes o técnicas…"
-        placeholderTextColor={colors['on-surface-variant']}
-      />
-      <Pressable className="h-11 w-11 items-center justify-center rounded-full bg-primary">
-        <MaterialIcons name="send" size={20} color={colors['on-primary']} />
-      </Pressable>
-    </View>
-  );
-}
-
 export default function ChatScreen() {
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [pantry, setPantry] = useState<PantryMatch | null>(null);
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    let active = true;
+    getPantryMatch()
+      .then((data) => {
+        if (active) setPantry(data);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function send(text: string) {
+    const content = text.trim();
+    if (!content || sending) return;
+    setInput('');
+    setFailed(false);
+    const next = [...messages, { role: 'user' as const, content }];
+    setMessages(next);
+    setSending(true);
+    requestAnimationFrame(() => scrollRef.current?.scrollToEnd({ animated: true }));
+    try {
+      const reply = await sendChat(next);
+      setMessages((prev) => [...prev, { role: 'assistant', content: reply.message, recipe: reply.recipe }]);
+    } catch {
+      setFailed(true);
+    } finally {
+      setSending(false);
+      requestAnimationFrame(() => scrollRef.current?.scrollToEnd({ animated: true }));
+    }
+  }
+
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <AppHeader />
-      <ScrollView
+      <KeyboardAvoidingView
         className="flex-1"
-        contentContainerClassName="px-container-padding pt-stack-lg pb-stack-lg gap-stack-lg">
-        <UserMessage text="¿Qué puedo cocinar con lo que tengo? Me falta leche de coco para el curry, pero tengo leche entera y nata de sobra." />
-        <AiMessage />
-      </ScrollView>
-      <InputBar />
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <ScrollView
+          ref={scrollRef}
+          className="flex-1"
+          contentContainerClassName="px-container-padding pt-stack-lg pb-stack-lg gap-stack-lg"
+          keyboardShouldPersistTaps="handled">
+          {messages.length === 0 ? (
+            <EmptyState onPick={send} />
+          ) : (
+            messages.map((m, i) => <MessageView key={i} message={m} pantry={pantry} />)
+          )}
+          {sending ? (
+            <View className="items-start gap-stack-sm">
+              <Text className="font-mono uppercase text-label-sm text-on-surface-variant">Asistente</Text>
+              <View className="rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low px-stack-lg py-gutter">
+                <ActivityIndicator color={colors.primary} />
+              </View>
+            </View>
+          ) : null}
+          {failed ? (
+            <Text className="font-sans text-body-md text-error">
+              No se pudo responder. Inténtalo de nuevo.
+            </Text>
+          ) : null}
+        </ScrollView>
+
+        <View className="flex-row items-center gap-stack-sm border-t border-outline-variant bg-background px-container-padding py-stack-md">
+          <TextInput
+            value={input}
+            onChangeText={setInput}
+            onSubmitEditing={() => send(input)}
+            editable={!sending}
+            placeholder="Pregunta sobre recetas o ingredientes…"
+            placeholderTextColor={colors['on-surface-variant']}
+            className="flex-1 rounded-full border border-outline-variant bg-surface-container-lowest px-gutter py-stack-md font-sans text-body-md text-on-surface"
+          />
+          <Pressable
+            onPress={() => send(input)}
+            disabled={sending || !input.trim()}
+            className={`h-11 w-11 items-center justify-center rounded-full bg-primary ${
+              sending || !input.trim() ? 'opacity-50' : ''
+            }`}>
+            <MaterialIcons name="send" size={20} color={colors['on-primary']} />
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

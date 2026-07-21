@@ -112,6 +112,66 @@ const RECIPE_SCHEMA = {
   ],
 };
 
+export interface ChatTurn {
+  role: 'user' | 'model';
+  text: string;
+}
+
+export interface ChatResponse {
+  message: string;
+  // Frase de búsqueda cuando el usuario pide/adapta una receta; el sistema la resuelve
+  // por el pipeline real (no la inventa el chat). Vacío si el mensaje no pide receta.
+  recipe_query?: string | null;
+  // Restricciones que el usuario pide en la conversación (además de sus preferencias
+  // guardadas): alérgenos a evitar y dieta requerida. El sistema filtra la caché con ellas.
+  exclude_allergens?: string[] | null;
+  require_diet?: string[] | null;
+}
+
+const CHAT_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    message: { type: 'STRING' },
+    recipe_query: { type: 'STRING', nullable: true },
+    exclude_allergens: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
+    require_diet: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
+  },
+  required: ['message'],
+};
+
+// Conversación multi-turno con contexto de sistema (preferencias, despensa…) y salida
+// estructurada: texto + receta opcional para pintar la card.
+export async function generateChat(
+  turns: ChatTurn[],
+  systemInstruction: string,
+): Promise<ChatResponse> {
+  const res = await fetchWithTimeout(
+    `${BASE}/models/${GEN_MODEL}:generateContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemInstruction }] },
+        contents: turns.map((t) => ({ role: t.role, parts: [{ text: t.text }] })),
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: CHAT_SCHEMA,
+        },
+      }),
+    },
+    GEN_TIMEOUT_MS,
+  );
+  if (!res.ok) {
+    throw new Error(`Gemini chat ${res.status}: ${await res.text()}`);
+  }
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (typeof text !== 'string') {
+    throw new Error('Respuesta de chat inesperada de Gemini');
+  }
+  return JSON.parse(text) as ChatResponse;
+}
+
 export async function generateRecipe(
   query: string,
   context?: string,

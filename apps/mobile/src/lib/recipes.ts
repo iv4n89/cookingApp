@@ -32,6 +32,23 @@ export interface Recipe {
 
 export type RecipeOrigin = 'db' | 'generated' | 'none';
 
+export function formatQuantity(quantity: number | null): string {
+  return quantity !== null ? String(Math.round(quantity * 100) / 100) : '';
+}
+
+// Escala las cantidades de los ingredientes al cambiar las raciones.
+export function scaleIngredients(
+  ingredients: RecipeIngredient[],
+  base: number,
+  target: number,
+): RecipeIngredient[] {
+  const factor = target / (base > 0 ? base : 1);
+  return ingredients.map((ingredient) => ({
+    ...ingredient,
+    quantity: ingredient.quantity === null ? null : Math.round(ingredient.quantity * factor * 100) / 100,
+  }));
+}
+
 const COLUMNS =
   'id, title, description, source, source_url, image_url, servings, prep_time_min, cook_time_min, calories, tags, ingredients, steps';
 
