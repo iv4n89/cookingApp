@@ -222,14 +222,6 @@ export default function InicioScreen() {
             Buenos días, chef
           </Text>
           <Text className="font-sans-bold text-display-lg text-on-surface">¿Qué cocinamos hoy?</Text>
-          <Pressable
-            onPress={() => router.push('/premium')}
-            className="mt-stack-sm flex-row items-center gap-stack-md self-start rounded-lg border border-outline-variant bg-secondary-container px-stack-md py-stack-sm">
-            <MaterialIcons name="workspace-premium" size={18} color={colors['on-secondary-container']} />
-            <Text className="font-mono-medium text-label-sm text-on-secondary-container">
-              PLAN PREMIUM • 2,99 €/MES
-            </Text>
-          </Pressable>
         </View>
 
         <AskInput onPress={() => setAskVisible(true)} />
