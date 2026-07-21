@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { useMemo, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
@@ -14,7 +14,7 @@ const colors = theme.extend.colors;
 const UNCATEGORIZED = 'Otros';
 
 function isLowStock(item: PantryItem) {
-  return item.quantity !== null && item.quantity <= 1;
+  return item.quantity !== null && item.min_stock !== null && item.quantity <= item.min_stock;
 }
 
 function detailLine(item: PantryItem) {
@@ -48,10 +48,12 @@ function Stepper({ item, onChange }: { item: PantryItem; onChange: (next: number
 function ItemRow({
   item,
   onChangeQuantity,
+  onEditMin,
   onRemove,
 }: {
   item: PantryItem;
   onChangeQuantity: (next: number) => void;
+  onEditMin: () => void;
   onRemove: () => void;
 }) {
   return (
@@ -70,6 +72,12 @@ function ItemRow({
               </Text>
             </View>
           ) : null}
+          <Pressable onPress={onEditMin} hitSlop={8} className="flex-row items-center gap-stack-sm">
+            <MaterialIcons name="flag" size={16} color={colors.outline} />
+            <Text className="font-mono text-label-sm text-on-surface-variant">
+              {item.min_stock != null ? `mín ${item.min_stock}` : 'mín —'}
+            </Text>
+          </Pressable>
           <Pressable onPress={onRemove} hitSlop={8}>
             <MaterialIcons name="delete-outline" size={20} color={colors.outline} />
           </Pressable>
@@ -121,10 +129,24 @@ function groupByCategory(items: PantryItem[]) {
 }
 
 export default function AlacenaScreen() {
-  const { items, loading, error, refresh, add, setQuantity, remove } = usePantry();
+  const { items, loading, error, refresh, add, setQuantity, setMinStock, remove } = usePantry();
   const [filter, setFilter] = useState<'all' | 'low'>('all');
   const [query, setQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
+  const [editingMin, setEditingMin] = useState<PantryItem | null>(null);
+  const [minDraft, setMinDraft] = useState('');
+
+  function openMinEditor(item: PantryItem) {
+    setEditingMin(item);
+    setMinDraft(item.min_stock != null ? String(item.min_stock) : '');
+  }
+
+  function saveMin() {
+    if (!editingMin) return;
+    const parsed = minDraft.trim() ? Number(minDraft.replace(',', '.')) : null;
+    setMinStock(editingMin.id, parsed !== null && !Number.isNaN(parsed) ? parsed : null);
+    setEditingMin(null);
+  }
 
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -199,6 +221,7 @@ export default function AlacenaScreen() {
                         key={item.id}
                         item={item}
                         onChangeQuantity={(next) => setQuantity(item.id, next)}
+                        onEditMin={() => openMinEditor(item)}
                         onRemove={() => remove(item.id)}
                       />
                     ))}
@@ -228,9 +251,47 @@ export default function AlacenaScreen() {
             category: item.category,
             quantity: item.quantity,
             unit: item.unit,
+            min_stock: item.minStock,
           })
         }
       />
+
+      <Modal
+        visible={editingMin !== null}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setEditingMin(null)}>
+        <Pressable
+          onPress={() => setEditingMin(null)}
+          style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
+          className="flex-1 items-center justify-center px-container-padding">
+          <Pressable className="w-full gap-stack-lg rounded-xl bg-background p-stack-lg">
+            <Text className="font-sans-bold text-headline-sm text-primary">
+              Mínimo de {editingMin?.name}
+            </Text>
+            <Text className="font-sans text-body-md text-on-surface-variant">
+              Marcamos “STOCK BAJO” cuando la cantidad baje de este número. Déjalo vacío para no avisar.
+            </Text>
+            <TextInput
+              value={minDraft}
+              onChangeText={setMinDraft}
+              keyboardType="numeric"
+              autoFocus
+              placeholder="Sin mínimo"
+              placeholderTextColor={colors['outline-variant']}
+              className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
+            />
+            <View className="flex-row justify-end gap-gutter">
+              <Pressable onPress={() => setEditingMin(null)} className="px-gutter py-stack-md">
+                <Text className="font-mono-medium text-label-md text-on-surface-variant">CANCELAR</Text>
+              </Pressable>
+              <Pressable onPress={saveMin} className="rounded-lg bg-primary px-gutter py-stack-md">
+                <Text className="font-mono-medium text-label-md text-on-primary">GUARDAR</Text>
+              </Pressable>
+            </View>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }

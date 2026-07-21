@@ -29,6 +29,7 @@ export interface PantryItem {
   quantity: number | null;
   unit: string | null;
   category: string | null;
+  min_stock: number | null;
 }
 
 // Lo que necesita el descuento al cocinar: item con su cantidad y enlace al catálogo.
@@ -78,13 +79,18 @@ export interface NewPantryItem {
   unit: string | null;
   category: string | null;
   ingredient_id: string | null;
+  min_stock: number | null;
 }
 
-const COLUMNS = 'id, name, quantity, unit, category';
+const COLUMNS = 'id, name, quantity, unit, category, min_stock';
 
 // Postgres numeric llega como string; lo normalizamos a número para mostrarlo limpio.
 function toItem(row: PantryItem): PantryItem {
-  return { ...row, quantity: row.quantity == null ? null : Number(row.quantity) };
+  return {
+    ...row,
+    quantity: row.quantity == null ? null : Number(row.quantity),
+    min_stock: row.min_stock == null ? null : Number(row.min_stock),
+  };
 }
 
 export function usePantry() {
@@ -140,6 +146,18 @@ export function usePantry() {
     });
   }
 
+  function setMinStock(id: string, min: number | null) {
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, min_stock: min } : item)));
+    const previous = writes.current[id] ?? Promise.resolve();
+    writes.current[id] = previous.then(async () => {
+      const { error } = await supabase.from('pantry_items').update({ min_stock: min }).eq('id', id);
+      if (error) {
+        setError('No se pudo guardar el mínimo.');
+        refresh();
+      }
+    });
+  }
+
   async function remove(id: string) {
     const snapshot = items;
     setItems((prev) => prev.filter((item) => item.id !== id));
@@ -150,5 +168,5 @@ export function usePantry() {
     }
   }
 
-  return { items, loading, error, refresh, add, setQuantity, remove };
+  return { items, loading, error, refresh, add, setQuantity, setMinStock, remove };
 }
