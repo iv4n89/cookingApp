@@ -130,10 +130,17 @@ Deno.serve(async (req) => {
     let recipe: Record<string, unknown> | null = null;
     const query = typeof recipe_query === 'string' ? recipe_query.trim() : '';
     if (query) {
-      const resolved = await resolveRecipe(supabase, query.slice(0, MAX_QUERY_LENGTH), userId, prefs, {
-        excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
-        requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
-      });
+      const resolved = await resolveRecipe(
+        supabase,
+        query.slice(0, MAX_QUERY_LENGTH),
+        userId,
+        prefs,
+        {
+          excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
+          requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
+        },
+        { skipCache: true },
+      );
       recipe = resolved.recipe;
     }
 

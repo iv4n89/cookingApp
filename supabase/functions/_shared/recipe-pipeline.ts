@@ -79,12 +79,20 @@ function unique(values: string[]): string[] {
 // Flujo único de recetas: caché (filtrada por preferencias) -> web + IA -> guardar.
 // Lo usan tanto la búsqueda directa como el chat, para que ninguna receta sea "inventada"
 // suelta: siempre queda guardada, atribuida y etiquetada.
+export interface ResolveOptions {
+  // El chat pasa true: la caché semántica no distingue modificaciones ("con/sin huevo",
+  // "más picante"), así que en conversación se genera siempre fresco para que la receta
+  // refleje exactamente lo pedido. La búsqueda del Home (una sola tirada) sí reutiliza.
+  skipCache?: boolean;
+}
+
 export async function resolveRecipe(
   supabase: SupabaseClient,
   query: string,
   userId: string | null,
   prefs: UserPrefs | null,
   constraints: Constraints = {},
+  options: ResolveOptions = {},
 ): Promise<{ recipe: Record<string, unknown> | null; origin: RecipeOrigin }> {
   const exclude_allergens = unique([
     ...(prefs ? excludedAllergens(prefs.special_needs) : []),
@@ -95,18 +103,20 @@ export async function resolveRecipe(
     ...(constraints.requireDiet ?? []),
   ]);
 
-  const embedding = await embedText(query, 'RETRIEVAL_QUERY');
-  const { data, error } = await supabase.rpc('match_recipes', {
-    query_embedding: embedding,
-    match_threshold: MATCH_THRESHOLD,
-    match_count: 1,
-    exclude_allergens,
-    require_diet,
-  });
-  if (error) throw error;
+  if (!options.skipCache) {
+    const embedding = await embedText(query, 'RETRIEVAL_QUERY');
+    const { data, error } = await supabase.rpc('match_recipes', {
+      query_embedding: embedding,
+      match_threshold: MATCH_THRESHOLD,
+      match_count: 1,
+      exclude_allergens,
+      require_diet,
+    });
+    if (error) throw error;
 
-  const match = data?.[0];
-  if (match) return { recipe: match, origin: 'db' };
+    const match = data?.[0];
+    if (match) return { recipe: match, origin: 'db' };
+  }
 
   if (userId && (await generationsInWindow(supabase, userId)) >= MAX_GENERATIONS_PER_WINDOW) {
     return { recipe: null, origin: 'rate_limited' };
