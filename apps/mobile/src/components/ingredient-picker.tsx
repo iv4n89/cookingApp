@@ -11,7 +11,7 @@ const colors = theme.extend.colors;
 
 // Unidades controladas para el stock (líquidos en brick/botella, secos en g/paquete, etc.).
 const UNITS = [
-  'g', 'kg', 'ml', 'l', 'ud', 'paquete', 'lata', 'brick', 'botella',
+  'g', 'kg', 'ml', 'l', 'ud', 'paquete', 'lata', 'bote', 'brick', 'botella',
   'diente', 'cabeza', 'ramillete', 'loncha', 'cucharada', 'pizca',
 ];
 

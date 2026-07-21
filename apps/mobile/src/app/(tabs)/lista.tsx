@@ -26,7 +26,9 @@ function ItemRow({
 }) {
   const detail = detailLine(item);
   return (
-    <View className="flex-row items-center gap-gutter rounded-lg border border-outline-variant bg-surface-container-low p-gutter">
+    <Pressable
+      onPress={() => onToggle(!item.checked)}
+      className="flex-row items-center gap-gutter rounded-lg border border-outline-variant bg-surface-container-low p-gutter">
       <Checkbox checked={item.checked} onToggle={() => onToggle(!item.checked)} />
       <View className="flex-1">
         <Text
@@ -39,7 +41,7 @@ function ItemRow({
           <Text className="font-mono text-label-sm text-on-surface-variant">{detail}</Text>
         ) : null}
       </View>
-    </View>
+    </Pressable>
   );
 }
 

@@ -203,6 +203,8 @@ export default function AlacenaScreen() {
               ))}
             </View>
           )}
+          {/* Colchón inferior para que el botón + no tape la última card. */}
+          <View className="h-20" />
         </ScrollView>
 
         <Pressable
