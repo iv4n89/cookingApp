@@ -83,14 +83,34 @@ export async function getRecipe(id: string): Promise<Recipe | null> {
   return (data as Recipe | null) ?? null;
 }
 
+// Añade a la compra en unidades de compra: si el ingrediente está en el catálogo, usa su
+// unidad y cantidad de referencia (default_unit/default_min_stock, p.ej. aceite -> 1 botella)
+// en vez de la de la receta (1 cucharada). Si no, deja la de la receta.
 export async function addIngredientsToShopping(userId: string, ingredients: RecipeIngredient[]) {
-  const rows = ingredients.map((item) => ({
-    user_id: userId,
-    name: item.name,
-    quantity: item.quantity,
-    unit: item.unit,
-    ingredient_id: item.ingredient_id ?? null,
-  }));
+  const ids = [...new Set(ingredients.map((i) => i.ingredient_id).filter((x): x is string => !!x))];
+  const defaults = new Map<string, { unit: string | null; min: number | null }>();
+  if (ids.length) {
+    const { data } = await supabase
+      .from('ingredients')
+      .select('id, default_unit, default_min_stock')
+      .in('id', ids);
+    for (const row of data ?? []) {
+      defaults.set(row.id as string, {
+        unit: (row.default_unit as string | null) ?? null,
+        min: row.default_min_stock == null ? null : Number(row.default_min_stock),
+      });
+    }
+  }
+  const rows = ingredients.map((item) => {
+    const preset = item.ingredient_id ? defaults.get(item.ingredient_id) : undefined;
+    return {
+      user_id: userId,
+      name: item.name,
+      quantity: preset?.min ?? item.quantity,
+      unit: preset?.unit ?? item.unit,
+      ingredient_id: item.ingredient_id ?? null,
+    };
+  });
   const { error } = await supabase.from('shopping_list_items').insert(rows);
   if (error) throw error;
 }
