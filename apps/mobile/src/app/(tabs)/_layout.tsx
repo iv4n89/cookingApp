@@ -17,6 +17,8 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        // Oculta la barra de pestañas al abrir el teclado: así el input del chat no queda tapado.
+        tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors['on-surface-variant'],
         tabBarStyle: {
