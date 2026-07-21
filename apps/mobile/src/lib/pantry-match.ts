@@ -50,6 +50,27 @@ export function normalizeUnit(unit: string | null): string {
   return (unit ?? '').trim().toLowerCase().replace(/s$/, '');
 }
 
+// Factor de cada unidad a la base de su dimensión (volumen→ml, masa→g). Las unidades sin
+// factor (ud, bote, lata, diente, pizca…) solo son comparables consigo mismas.
+const UNIT_TO_BASE: Record<string, { dim: string; factor: number }> = {
+  ml: { dim: 'vol', factor: 1 },
+  l: { dim: 'vol', factor: 1000 },
+  cucharada: { dim: 'vol', factor: 15 },
+  cucharadita: { dim: 'vol', factor: 5 },
+  g: { dim: 'mass', factor: 1 },
+  kg: { dim: 'mass', factor: 1000 },
+};
+
+// Convierte una cantidad de una unidad a otra cuando son de la misma dimensión (o la misma
+// unidad). Devuelve null si no son comparables: entonces no se puede saber cuánto descontar.
+export function convertQuantity(quantity: number, from: string | null, to: string | null): number | null {
+  const a = UNIT_TO_BASE[normalizeUnit(from)];
+  const b = UNIT_TO_BASE[normalizeUnit(to)];
+  if (a && b && a.dim === b.dim) return (quantity * a.factor) / b.factor;
+  if (normalizeUnit(from) === normalizeUnit(to)) return quantity;
+  return null;
+}
+
 // ¿Dos nombres de ingrediente se refieren al mismo? (match por palabras con tolerancia a plurales)
 export function namesMatch(a: string, b: string): boolean {
   return nameMatches(words(a), words(b));
@@ -83,8 +104,10 @@ export interface CookDelta {
 
 // Qué descontar de la despensa al cocinar. Casa cada ingrediente con los items de despensa
 // (por id o por nombre) y reparte la cantidad necesaria, agotando primero los de menor stock
-// (el usuario puede tener duplicados). Los básicos no se descuentan. El descuento real lo
-// recalcula la RPC contra el stock vivo, así que basta con proponer los items y cantidades.
+// (el usuario puede tener duplicados). La cantidad de la receta se convierte a la unidad de
+// cada item; si las unidades no son comparables (p. ej. receta en cucharadas, despensa en
+// litros para el mismo ingrediente) ese item no se descuenta. Los básicos no se descuentan.
+// El descuento real lo recalcula la RPC contra el stock vivo (en la unidad del item).
 export function computeCookDeltas(
   ingredients: RecipeIngredient[],
   pantryItems: CookPantryItem[],
@@ -101,12 +124,15 @@ export function computeCookDeltas(
             nameMatches(recipeWords, words(p.name))),
       )
       .sort((a, b) => (a.quantity ?? 0) - (b.quantity ?? 0));
-    let need = ing.quantity;
+    let need = ing.quantity; // en la unidad de la receta
     for (const p of matches) {
       if (need <= 0) break;
-      const sub = Math.min(p.quantity ?? 0, need);
+      const needInItemUnit = convertQuantity(need, ing.unit, p.unit);
+      if (needInItemUnit == null) continue; // unidad no comparable: no se descuenta este item
+      const sub = Math.min(p.quantity ?? 0, needInItemUnit);
+      if (sub <= 0) continue;
       deltas.push({ pantry_item_id: p.id, quantity: sub });
-      need -= sub;
+      need -= convertQuantity(sub, p.unit, ing.unit) ?? 0;
     }
   }
   return deltas;
