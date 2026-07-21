@@ -1,78 +1,39 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
-import { Checkbox } from '@/components/checkbox';
 import { ErrorBanner } from '@/components/error-banner';
 import { IngredientPicker } from '@/components/ingredient-picker';
-import { UnitSelect } from '@/components/unit-select';
-import { useShoppingList, type ShoppingItem } from '@/lib/shopping';
+import { BuyCheckedBanner } from '@/features/shopping/components/buy-checked-banner';
+import { QuantityEditorModal } from '@/features/shopping/components/quantity-editor-modal';
+import { ShoppingItemRow } from '@/features/shopping/components/shopping-item-row';
+import { useShoppingScreen } from '@/features/shopping/hooks/use-shopping-screen';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-function detailLine(item: ShoppingItem) {
-  const parts = [item.quantity, item.unit].filter((value) => value !== null && value !== '');
-  return parts.length ? parts.join(' ') : null;
-}
-
-function ItemRow({
-  item,
-  onToggle,
-  onEditQty,
-}: {
-  item: ShoppingItem;
-  onToggle: (checked: boolean) => void;
-  onEditQty: () => void;
-}) {
-  const detail = detailLine(item);
-  return (
-    <Pressable
-      onPress={() => onToggle(!item.checked)}
-      className="flex-row items-center gap-gutter rounded-lg border border-outline-variant bg-surface-container-low p-gutter">
-      <Checkbox checked={item.checked} onToggle={() => onToggle(!item.checked)} />
-      <Text
-        className={`flex-1 font-sans-medium text-body-md ${
-          item.checked ? 'text-on-surface-variant line-through' : 'text-on-surface'
-        }`}>
-        {item.name}
-      </Text>
-      <Pressable
-        onPress={onEditQty}
-        hitSlop={8}
-        accessibilityRole="button"
-        accessibilityLabel="Editar cantidad"
-        className="flex-row items-center gap-stack-sm border border-outline-variant px-stack-md py-stack-sm">
-        <Text className="font-mono text-label-sm text-on-surface">{detail ?? 'Cantidad'}</Text>
-        <MaterialIcons name="edit" size={14} color={colors.outline} />
-      </Pressable>
-    </Pressable>
-  );
-}
-
 export default function ListaScreen() {
-  const { items, loading, error, refresh, add, toggle, editItem, buyChecked } = useShoppingList();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editingQty, setEditingQty] = useState<ShoppingItem | null>(null);
-  const [qtyDraft, setQtyDraft] = useState('');
-  const [unitDraft, setUnitDraft] = useState<string | null>(null);
-
-  function openQtyEditor(item: ShoppingItem) {
-    setEditingQty(item);
-    setQtyDraft(item.quantity != null ? String(item.quantity) : '');
-    setUnitDraft(item.unit);
-  }
-
-  function saveQty() {
-    if (!editingQty) return;
-    const parsed = qtyDraft.trim() ? Number(qtyDraft.replace(',', '.')) : null;
-    editItem(editingQty.id, parsed !== null && !Number.isNaN(parsed) ? parsed : null, unitDraft);
-    setEditingQty(null);
-  }
-
-  const checkedCount = items.filter((item) => item.checked).length;
+  const {
+    items,
+    loading,
+    error,
+    refresh,
+    add,
+    toggle,
+    buyChecked,
+    checkedCount,
+    modalVisible,
+    setModalVisible,
+    editingQty,
+    qtyDraft,
+    setQtyDraft,
+    unitDraft,
+    setUnitDraft,
+    openQtyEditor,
+    saveQty,
+    closeQtyEditor,
+  } = useShoppingScreen();
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
@@ -111,7 +72,7 @@ export default function ListaScreen() {
         ) : (
           <View className="gap-base">
             {items.map((item) => (
-              <ItemRow
+              <ShoppingItemRow
                 key={item.id}
                 item={item}
                 onToggle={(checked) => toggle(item.id, checked)}
@@ -121,23 +82,7 @@ export default function ListaScreen() {
           </View>
         )}
 
-        {checkedCount > 0 ? (
-          <View className="gap-stack-md rounded-xl bg-primary-container p-stack-lg">
-            <View className="flex-row items-start gap-gutter">
-              <MaterialIcons name="info" size={22} color={colors['on-primary']} />
-              <Text className="flex-1 font-sans text-body-md text-on-primary opacity-90">
-                Al marcar como comprado se mueven a tu despensa, sumándose a lo que ya tengas.
-              </Text>
-            </View>
-            <Pressable
-              onPress={buyChecked}
-              className="items-center rounded-lg bg-surface-container-lowest py-stack-md">
-              <Text className="font-mono-medium text-label-md text-primary">
-                MARCAR COMO COMPRADO ({checkedCount})
-              </Text>
-            </Pressable>
-          </View>
-        ) : null}
+        {checkedCount > 0 ? <BuyCheckedBanner count={checkedCount} onBuy={buyChecked} /> : null}
       </ScrollView>
 
       <IngredientPicker
@@ -153,55 +98,15 @@ export default function ListaScreen() {
         }
       />
 
-      <Modal
-        visible={editingQty !== null}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setEditingQty(null)}>
-        <Pressable
-          onPress={() => setEditingQty(null)}
-          style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
-          className="flex-1 items-center justify-center px-container-padding">
-          <Pressable className="w-full gap-stack-lg rounded-xl bg-background p-stack-lg">
-            <Text className="font-sans-bold text-headline-sm text-primary">
-              Cantidad de {editingQty?.name}
-            </Text>
-            <Text className="font-sans text-body-md text-on-surface-variant">
-              Lo que compres se sumará a tu despensa al marcarlo como comprado.
-            </Text>
-            <View className="flex-row gap-gutter">
-              <View className="flex-1 gap-stack-sm">
-                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-                  Cantidad
-                </Text>
-                <TextInput
-                  value={qtyDraft}
-                  onChangeText={setQtyDraft}
-                  keyboardType="numeric"
-                  autoFocus
-                  placeholder="Cantidad"
-                  placeholderTextColor={colors['outline-variant']}
-                  className="border-b-2 border-outline bg-transparent py-stack-md font-sans text-body-lg text-on-surface"
-                />
-              </View>
-              <View className="flex-1 gap-stack-sm">
-                <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-                  Unidad
-                </Text>
-                <UnitSelect value={unitDraft} onChange={setUnitDraft} />
-              </View>
-            </View>
-            <View className="flex-row justify-end gap-gutter">
-              <Pressable onPress={() => setEditingQty(null)} className="px-gutter py-stack-md">
-                <Text className="font-mono-medium text-label-md text-on-surface-variant">CANCELAR</Text>
-              </Pressable>
-              <Pressable onPress={saveQty} className="rounded-lg bg-primary px-gutter py-stack-md">
-                <Text className="font-mono-medium text-label-md text-on-primary">GUARDAR</Text>
-              </Pressable>
-            </View>
-          </Pressable>
-        </Pressable>
-      </Modal>
+      <QuantityEditorModal
+        item={editingQty}
+        qtyDraft={qtyDraft}
+        onQtyChange={setQtyDraft}
+        unitDraft={unitDraft}
+        onUnitChange={setUnitDraft}
+        onCancel={closeQtyEditor}
+        onSave={saveQty}
+      />
     </SafeAreaView>
   );
 }
