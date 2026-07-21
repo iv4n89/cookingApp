@@ -51,23 +51,25 @@ function ItemRow({
   onRemove: () => void;
 }) {
   return (
-    <View className="flex-row items-center justify-between border border-card-border bg-card p-gutter">
-      <View className="flex-1 pr-stack-md">
-        <Text className="font-sans-semibold text-body-md text-primary">{item.name}</Text>
+    <View className="gap-stack-md border border-card-border bg-card p-gutter">
+      <View className="flex-row items-start justify-between gap-stack-md">
+        <Text className="flex-1 font-sans-semibold text-body-md text-primary">{item.name}</Text>
         <Text className="font-mono text-label-sm text-on-surface-variant">{detailLine(item)}</Text>
       </View>
-      <View className="flex-row items-center gap-stack-md">
-        {isLowStock(item) ? (
-          <View className="rounded bg-error-container px-stack-md py-stack-sm">
-            <Text className="font-mono-medium text-[10px] uppercase tracking-widest text-on-error-container">
-              STOCK BAJO
-            </Text>
-          </View>
-        ) : null}
+      <View className="flex-row items-center justify-between">
         <Stepper item={item} onChange={onChangeQuantity} />
-        <Pressable onPress={onRemove} hitSlop={8}>
-          <MaterialIcons name="delete-outline" size={20} color={colors.outline} />
-        </Pressable>
+        <View className="flex-row items-center gap-stack-md">
+          {isLowStock(item) ? (
+            <View className="rounded bg-error-container px-stack-md py-stack-sm">
+              <Text className="font-mono-medium text-[10px] uppercase tracking-widest text-on-error-container">
+                STOCK BAJO
+              </Text>
+            </View>
+          ) : null}
+          <Pressable onPress={onRemove} hitSlop={8}>
+            <MaterialIcons name="delete-outline" size={20} color={colors.outline} />
+          </Pressable>
+        </View>
       </View>
     </View>
   );
