@@ -44,7 +44,7 @@ function ItemRow({
 }
 
 export default function ListaScreen() {
-  const { items, loading, error, refresh, add, toggle, removeChecked } = useShoppingList();
+  const { items, loading, error, refresh, add, toggle, buyChecked } = useShoppingList();
   const [modalVisible, setModalVisible] = useState(false);
 
   const checkedCount = items.filter((item) => item.checked).length;
@@ -96,12 +96,11 @@ export default function ListaScreen() {
             <View className="flex-row items-start gap-gutter">
               <MaterialIcons name="info" size={22} color={colors['on-primary']} />
               <Text className="flex-1 font-sans text-body-md text-on-primary opacity-90">
-                Marca lo comprado para quitarlo de la lista. Más adelante se añadirá a tu despensa
-                automáticamente.
+                Al marcar como comprado se mueven a tu despensa, sumándose a lo que ya tengas.
               </Text>
             </View>
             <Pressable
-              onPress={removeChecked}
+              onPress={buyChecked}
               className="items-center rounded-lg bg-surface-container-lowest py-stack-md">
               <Text className="font-mono-medium text-label-md text-primary">
                 MARCAR COMO COMPRADO ({checkedCount})
