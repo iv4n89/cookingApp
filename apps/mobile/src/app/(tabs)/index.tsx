@@ -95,7 +95,7 @@ function PantryCard({
             Lo que menos te queda
           </Text>
           {summary.low.map((item) => (
-            <View key={item.name} className="flex-row items-center justify-between">
+            <View key={item.id} className="flex-row items-center justify-between">
               <Text className="font-sans text-body-md text-on-surface">{item.name}</Text>
               <Text className="font-sans text-body-md text-on-surface-variant">{formatAmount(item)}</Text>
             </View>

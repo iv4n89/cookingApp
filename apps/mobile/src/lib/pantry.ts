@@ -41,13 +41,14 @@ export interface CookPantryItem {
 export interface PantrySummary {
   count: number;
   // Los ingredientes con menos stock (por cantidad), para el resumen de la Home.
-  low: { name: string; quantity: number; unit: string | null }[];
+  low: { id: string; name: string; quantity: number; unit: string | null }[];
 }
 
 export async function getPantrySummary(): Promise<PantrySummary> {
-  const { data, error } = await supabase.from('pantry_items').select('name, quantity, unit');
+  const { data, error } = await supabase.from('pantry_items').select('id, name, quantity, unit');
   if (error) throw error;
   const rows = (data ?? []).map((row) => ({
+    id: row.id as string,
     name: row.name as string,
     quantity: row.quantity == null ? null : Number(row.quantity),
     unit: (row.unit as string | null) ?? null,
