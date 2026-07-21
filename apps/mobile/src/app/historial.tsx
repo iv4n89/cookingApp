@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -32,7 +32,6 @@ export default function HistorialScreen() {
 
   const load = useCallback(() => {
     let active = true;
-    setLoading(true);
     listCooked()
       .then((data) => {
         if (active) setEntries(data);
@@ -46,9 +45,9 @@ export default function HistorialScreen() {
     };
   }, []);
 
-  useEffect(() => load(), [load]);
+  useFocusEffect(load);
 
-  async function undo(id: string) {
+  async function remove(id: string) {
     if (busy) return;
     setBusy(id);
     try {
@@ -79,30 +78,33 @@ export default function HistorialScreen() {
           className="flex-1"
           contentContainerClassName="px-container-padding pt-stack-lg pb-section-gap gap-stack-md">
           <Text className="font-sans text-body-md text-on-surface-variant">
-            Deshacer una receta devuelve sus ingredientes a la despensa.
+            Borrar una receta la quita del historial y devuelve sus ingredientes a la despensa.
           </Text>
           {entries.map((entry) => (
             <View
               key={entry.id}
               className="flex-row items-center justify-between rounded-lg border border-outline-variant bg-surface-container-low p-gutter">
-              <View className="flex-1 pr-gutter">
+              <Pressable
+                onPress={() => router.push({ pathname: '/historial/[id]', params: { id: entry.id } })}
+                accessibilityRole="button"
+                className="flex-1 pr-gutter">
                 <Text className="font-sans-semibold text-body-md text-on-surface">{entry.title}</Text>
                 <Text className="font-mono text-label-sm text-on-surface-variant">
                   {entry.servings} raciones · {formatDate(entry.cooked_at)}
                 </Text>
-              </View>
+              </Pressable>
               <Pressable
-                onPress={() => undo(entry.id)}
+                onPress={() => remove(entry.id)}
                 disabled={busy === entry.id}
+                hitSlop={8}
                 accessibilityRole="button"
-                accessibilityLabel="Deshacer"
-                className="flex-row items-center gap-stack-sm">
+                accessibilityLabel="Borrar del historial"
+                className="h-9 w-9 items-center justify-center">
                 {busy === entry.id ? (
                   <ActivityIndicator color={colors.primary} />
                 ) : (
-                  <MaterialIcons name="undo" size={20} color={colors.primary} />
+                  <MaterialIcons name="close" size={22} color={colors['on-surface-variant']} />
                 )}
-                <Text className="font-mono-medium text-label-md text-primary">Deshacer</Text>
               </Pressable>
             </View>
           ))}
