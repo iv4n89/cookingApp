@@ -187,7 +187,7 @@ export default function CookingModeScreen() {
     done.has(i) ? 'done' : i === current ? 'active' : 'upcoming';
 
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-background">
+    <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
       <TopBar />
 
       {loading ? (
