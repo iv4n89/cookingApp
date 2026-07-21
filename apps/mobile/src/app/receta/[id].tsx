@@ -7,8 +7,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSession } from '@/lib/auth';
 import { cookRecipe } from '@/lib/cooking';
-import { getPantryForCook } from '@/lib/pantry';
-import { computeCookDeltas, isBasic } from '@/lib/pantry-match';
+import { getPantryForCook, type CookPantryItem } from '@/lib/pantry';
+import { computeCookDeltas, isBasic, isMissingByStock } from '@/lib/pantry-match';
 import {
   addIngredientsToShopping,
   formatQuantity,
@@ -156,18 +156,29 @@ function ServingsStepper({
   );
 }
 
-function Ingredients({ ingredients }: { ingredients: RecipeIngredient[] }) {
+function Ingredients({
+  ingredients,
+  pantry,
+}: {
+  ingredients: RecipeIngredient[];
+  pantry: CookPantryItem[] | null;
+}) {
   const { session } = useSession();
   const [added, setAdded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [failed, setFailed] = useState(false);
 
-  async function addAll() {
-    if (added || submitting || !session) return;
+  // Lo que falta: si aún no cargó la despensa, todo lo no básico (fallback).
+  const missing = pantry
+    ? ingredients.filter((i) => isMissingByStock(i, pantry))
+    : ingredients.filter((i) => !isBasic(i.name));
+
+  async function addMissing() {
+    if (added || submitting || !session || missing.length === 0) return;
     setSubmitting(true);
     setFailed(false);
     try {
-      await addIngredientsToShopping(session.user.id, ingredients.filter((i) => !isBasic(i.name)));
+      await addIngredientsToShopping(session.user.id, missing);
       setAdded(true);
     } catch {
       setFailed(true);
@@ -187,44 +198,62 @@ function Ingredients({ ingredients }: { ingredients: RecipeIngredient[] }) {
         </Text>
       </View>
       <View className="mb-stack-lg gap-stack-md">
-        {ingredients.map((ingredient, i) => (
-          <View
-            key={`${ingredient.name}-${i}`}
-            className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
-            <View className="flex-1 flex-row items-center gap-stack-md">
-              <View className="h-2 w-2 rounded-full bg-primary" />
-              <Text className="flex-1 font-sans text-body-md text-on-surface">{ingredient.name}</Text>
+        {ingredients.map((ingredient, i) => {
+          const falta = pantry ? isMissingByStock(ingredient, pantry) : false;
+          return (
+            <View
+              key={`${ingredient.name}-${i}`}
+              className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
+              <View className="flex-1 flex-row items-center gap-stack-md">
+                <View className={`h-2 w-2 rounded-full ${falta ? 'bg-secondary' : 'bg-primary'}`} />
+                <Text className="flex-1 font-sans text-body-md text-on-surface">{ingredient.name}</Text>
+                {falta ? (
+                  <Text className="font-mono text-label-sm uppercase text-secondary">Falta</Text>
+                ) : null}
+              </View>
+              <Text className="font-mono text-label-sm text-on-surface-variant">
+                {quantityLine(ingredient)}
+              </Text>
             </View>
-            <Text className="font-mono text-label-sm text-on-surface-variant">
-              {quantityLine(ingredient)}
-            </Text>
-          </View>
-        ))}
+          );
+        })}
       </View>
       {failed ? (
         <Text className="mb-stack-md font-sans text-body-md text-error">
           No se pudo añadir a la compra. Inténtalo de nuevo.
         </Text>
       ) : null}
-      <Pressable
-        onPress={addAll}
-        disabled={added || submitting}
-        className={`flex-row items-center justify-center gap-stack-md bg-primary py-gutter ${
-          added || submitting ? 'opacity-60' : ''
-        }`}>
-        {submitting ? (
-          <ActivityIndicator color={colors['on-primary']} />
-        ) : (
-          <MaterialIcons
-            name={added ? 'check' : 'add-shopping-cart'}
-            size={18}
-            color={colors['on-primary']}
-          />
-        )}
-        <Text className="font-mono-medium text-label-md text-on-primary">
-          {added ? 'AÑADIDO A LA COMPRA' : submitting ? 'AÑADIENDO…' : 'AÑADIR A LA COMPRA'}
-        </Text>
-      </Pressable>
+      {missing.length > 0 ? (
+        <Pressable
+          onPress={addMissing}
+          disabled={added || submitting}
+          className={`flex-row items-center justify-center gap-stack-md bg-primary py-gutter ${
+            added || submitting ? 'opacity-60' : ''
+          }`}>
+          {submitting ? (
+            <ActivityIndicator color={colors['on-primary']} />
+          ) : (
+            <MaterialIcons
+              name={added ? 'check' : 'add-shopping-cart'}
+              size={18}
+              color={colors['on-primary']}
+            />
+          )}
+          <Text className="font-mono-medium text-label-md text-on-primary">
+            {added
+              ? 'AÑADIDO A LA COMPRA'
+              : submitting
+                ? 'AÑADIENDO…'
+                : `AÑADIR LO QUE FALTA (${missing.length})`}
+          </Text>
+        </Pressable>
+      ) : (
+        <View className="items-center border border-outline-variant bg-surface py-gutter">
+          <Text className="font-mono-medium text-label-md text-on-surface-variant">
+            YA TIENES TODO LO NECESARIO
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -309,6 +338,7 @@ export default function RecipeDetailScreen() {
 
   const { session } = useSession();
   const [meta, setMeta] = useState<UserRecipeMeta>({ is_favorite: false, rating: null });
+  const [pantry, setPantry] = useState<CookPantryItem[] | null>(null);
 
   useEffect(() => {
     if (!recipe) return;
@@ -322,6 +352,18 @@ export default function RecipeDetailScreen() {
       active = false;
     };
   }, [recipe?.id]);
+
+  useEffect(() => {
+    let active = true;
+    getPantryForCook()
+      .then((data) => {
+        if (active) setPantry(data);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   async function toggleFavorite() {
     if (!recipe || !session) return;
@@ -408,7 +450,7 @@ export default function RecipeDetailScreen() {
 
                 <ServingsStepper servings={servings} onChange={setServings} />
 
-                <Ingredients key={servings} ingredients={scaledIngredients} />
+                <Ingredients key={servings} ingredients={scaledIngredients} pantry={pantry} />
 
                 <View>
                   <Text className="mb-stack-md font-sans-semibold text-headline-sm uppercase tracking-wider text-primary">
