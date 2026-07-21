@@ -46,6 +46,31 @@ export function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): bo
   return true;
 }
 
+function normalizeUnit(unit: string | null): string {
+  return (unit ?? '').trim().toLowerCase().replace(/s$/, '');
+}
+
+// Falta con conciencia de cantidad: no está en la despensa (por id/nombre), o está pero —con
+// la misma unidad— la cantidad disponible no llega a la que pide la receta. Solo se juzga
+// insuficiente cuando las unidades son comparables; si no, se asume que lo tienes. Los básicos
+// nunca faltan.
+export function isMissingByStock(ingredient: RecipeIngredient, pantry: CookPantryItem[]): boolean {
+  if (isBasic(ingredient.name)) return false;
+  const recipeWords = words(ingredient.name);
+  const matches = pantry.filter(
+    (p) =>
+      (ingredient.ingredient_id != null && p.ingredient_id === ingredient.ingredient_id) ||
+      nameMatches(recipeWords, words(p.name)),
+  );
+  if (matches.length === 0) return true;
+  if (ingredient.quantity == null || ingredient.quantity <= 0) return false;
+  const unit = normalizeUnit(ingredient.unit);
+  const comparable = matches.filter((p) => p.quantity != null && normalizeUnit(p.unit) === unit);
+  if (comparable.length === 0) return false;
+  const available = comparable.reduce((sum, p) => sum + (p.quantity ?? 0), 0);
+  return available < ingredient.quantity;
+}
+
 export interface CookDelta {
   pantry_item_id: string;
   quantity: number;

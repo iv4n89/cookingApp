@@ -37,6 +37,7 @@ export interface CookPantryItem {
   id: string;
   name: string;
   quantity: number | null;
+  unit: string | null;
   ingredient_id: string | null;
 }
 
@@ -64,12 +65,13 @@ export async function getPantrySummary(): Promise<PantrySummary> {
 }
 
 export async function getPantryForCook(): Promise<CookPantryItem[]> {
-  const { data, error } = await supabase.from('pantry_items').select('id, name, quantity, ingredient_id');
+  const { data, error } = await supabase.from('pantry_items').select('id, name, quantity, unit, ingredient_id');
   if (error) throw error;
   return (data ?? []).map((row) => ({
     id: row.id as string,
     name: row.name as string,
     quantity: row.quantity == null ? null : Number(row.quantity),
+    unit: (row.unit as string | null) ?? null,
     ingredient_id: (row.ingredient_id as string | null) ?? null,
   }));
 }
