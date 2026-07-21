@@ -31,7 +31,11 @@ function Stepper({ item, onChange }: { item: PantryItem; onChange: (next: number
         className="h-8 w-8 items-center justify-center rounded-full border border-outline-variant">
         <MaterialIcons name="remove" size={16} color={colors['on-surface']} />
       </Pressable>
-      <Text className="w-6 text-center font-mono-medium text-label-md text-on-surface">{value}</Text>
+      <Text
+        numberOfLines={1}
+        className="min-w-[3rem] px-stack-sm text-center font-mono-medium text-label-md text-on-surface">
+        {value}
+      </Text>
       <Pressable
         onPress={() => onChange(value + 1)}
         className="h-8 w-8 items-center justify-center rounded-full border border-outline-variant">
