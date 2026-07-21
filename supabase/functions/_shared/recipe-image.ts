@@ -2,8 +2,8 @@ import { fetchWithTimeout } from './http.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const BUCKET = 'recipe-images';
-// Base pública (la que ve la app). En local es 127.0.0.1:54321; en la nube, la URL del proyecto.
-const PUBLIC_BASE = Deno.env.get('PUBLIC_SUPABASE_URL') ?? 'http://127.0.0.1:54321';
+// Base pública (la que ve la app): la URL del proyecto. Debe estar configurada; sin ella no
+// se persiste ninguna URL (mejor sin imagen que una URL rota guardada para siempre en la fila).
 const IMAGE_TIMEOUT_MS = 60000;
 
 function pollinationsUrl(title: string): string {
@@ -20,6 +20,9 @@ export async function generateRecipeImage(
   recipeId: string,
   title: string,
 ): Promise<void> {
+  const publicBase = Deno.env.get('PUBLIC_SUPABASE_URL');
+  if (!publicBase) throw new Error('PUBLIC_SUPABASE_URL no configurada');
+
   const res = await fetchWithTimeout(pollinationsUrl(title), {}, IMAGE_TIMEOUT_MS);
   if (!res.ok) throw new Error(`pollinations ${res.status}`);
   const bytes = new Uint8Array(await res.arrayBuffer());
@@ -30,7 +33,7 @@ export async function generateRecipeImage(
     .upload(path, bytes, { contentType: 'image/jpeg', upsert: true });
   if (upload.error) throw upload.error;
 
-  const url = `${PUBLIC_BASE}/storage/v1/object/public/${BUCKET}/${path}`;
+  const url = `${publicBase}/storage/v1/object/public/${BUCKET}/${path}`;
   const { error } = await supabase.from('recipes').update({ image_url: url }).eq('id', recipeId);
   if (error) throw error;
 }

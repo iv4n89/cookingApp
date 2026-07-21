@@ -14,6 +14,9 @@ const MAX_RECIPE_STEPS = 25;
 const MAX_RECIPE_CONTEXT_LENGTH = 1500;
 const MAX_QUERY_LENGTH = 300;
 
+const RATE_LIMIT_MESSAGE =
+  'Has creado muchas recetas nuevas en poco tiempo. Espera un rato y vuelve a pedírmela.';
+
 interface HistoryRecipe {
   title?: string;
   ingredients?: { name?: string; quantity?: unknown; unit?: string }[];
@@ -141,6 +144,9 @@ Deno.serve(async (req) => {
         },
         { skipCache: true },
       );
+      if (resolved.origin === 'rate_limited') {
+        return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+      }
       recipe = resolved.recipe;
     }
 

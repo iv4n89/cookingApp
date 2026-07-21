@@ -29,15 +29,20 @@ import {
 
 const MAX_SERVINGS = 20;
 
+function singular(word: string): string {
+  return word.endsWith('s') ? word.slice(0, -1) : word;
+}
+
 function words(text: string): string[] {
   return normalize(text)
     .split(/\s+/)
-    .filter((w) => w.length >= 3);
+    .filter((w) => w.length >= 3)
+    .map(singular);
 }
 
 // Un ingrediente está en la despensa si casa por ingredient_id, por nombre exacto, o si
 // todas las palabras del item de despensa aparecen en el nombre de la receta (tolerando
-// plurales y matices: "Aguacate" vs "aguacates maduros", "Ajo" vs "diente de ajo").
+// plurales: "Aguacate" vs "aguacates maduros", "Ajo" vs "diente de ajo").
 function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): boolean {
   if (ingredient.ingredient_id && pantry.ids.has(ingredient.ingredient_id)) return false;
   const recipeWords = words(ingredient.name);
@@ -45,7 +50,7 @@ function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): boolean {
     const pantryWords = words(pantryName);
     if (
       pantryWords.length > 0 &&
-      pantryWords.every((p) => recipeWords.some((r) => r.startsWith(p) || p.startsWith(r)))
+      pantryWords.every((p) => recipeWords.includes(p))
     ) {
       return false;
     }
