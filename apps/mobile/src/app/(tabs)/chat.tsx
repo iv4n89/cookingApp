@@ -16,8 +16,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
 import { useSession } from '@/lib/auth';
-import { normalize } from '@/lib/ingredients';
 import { getPantryMatch, type PantryMatch } from '@/lib/pantry';
+import { isMissing } from '@/lib/pantry-match';
 import { sendChat, type ChatMessage } from '@/lib/chat';
 import {
   addIngredientsToShopping,
@@ -28,38 +28,6 @@ import {
 } from '@/lib/recipes';
 
 const MAX_SERVINGS = 20;
-
-// Dos palabras casan si son la misma o una es plural de la otra (-s / -es): tolera
-// "aguacate/aguacates" y "limón/limones" sin casar palabras no relacionadas ("sal"/"salmón").
-function sameWord(a: string, b: string): boolean {
-  if (a === b) return true;
-  const [short, long] = a.length < b.length ? [a, b] : [b, a];
-  return long === `${short}s` || long === `${short}es`;
-}
-
-function words(text: string): string[] {
-  return normalize(text)
-    .split(/\s+/)
-    .filter((w) => w.length >= 3);
-}
-
-// Un ingrediente está en la despensa si casa por ingredient_id, por nombre exacto, o si
-// todas las palabras del item de despensa aparecen en el nombre de la receta (tolerando
-// plurales: "Aguacate" vs "aguacates maduros", "Ajo" vs "diente de ajo").
-function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): boolean {
-  if (ingredient.ingredient_id && pantry.ids.has(ingredient.ingredient_id)) return false;
-  const recipeWords = words(ingredient.name);
-  for (const pantryName of pantry.names) {
-    const pantryWords = words(pantryName);
-    if (
-      pantryWords.length > 0 &&
-      pantryWords.every((p) => recipeWords.some((r) => sameWord(p, r)))
-    ) {
-      return false;
-    }
-  }
-  return true;
-}
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
