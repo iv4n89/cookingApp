@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
 
 import { useSession } from './auth';
 import { normalize } from './ingredients';
@@ -105,9 +106,13 @@ export function usePantry() {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  // Recarga al enfocar la pestaña (no solo al montar): así se ve lo comprado que se
+  // acaba de mover a la despensa desde la lista de la compra.
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh]),
+  );
 
   async function add(input: NewPantryItem) {
     if (!session) return;
