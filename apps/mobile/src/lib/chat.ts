@@ -1,15 +1,22 @@
 import type { Recipe } from './recipes';
 import { supabase } from './supabase';
 
+export interface ChatSuggestion {
+  title: string;
+  hint: string;
+}
+
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   recipe?: Recipe | null;
+  suggestions?: ChatSuggestion[] | null;
 }
 
 export interface ChatReply {
   message: string;
   recipe?: Recipe | null;
+  suggestions?: ChatSuggestion[] | null;
 }
 
 // Envía el historial completo de la sesión; el backend le añade el contexto del usuario.

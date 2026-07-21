@@ -189,7 +189,15 @@ function RecipeCard({ recipe, pantry }: { recipe: Recipe; pantry: PantryMatch | 
   );
 }
 
-function MessageView({ message, pantry }: { message: ChatMessage; pantry: PantryMatch | null }) {
+function MessageView({
+  message,
+  pantry,
+  onPickSuggestion,
+}: {
+  message: ChatMessage;
+  pantry: PantryMatch | null;
+  onPickSuggestion: (title: string) => void;
+}) {
   const mine = message.role === 'user';
   return (
     <View className={mine ? 'items-end gap-stack-sm' : 'items-start gap-stack-md'}>
@@ -206,6 +214,24 @@ function MessageView({ message, pantry }: { message: ChatMessage; pantry: Pantry
           <Text className={`font-sans text-body-lg ${mine ? 'text-on-primary' : 'text-on-surface'}`}>
             {message.content}
           </Text>
+        </View>
+      ) : null}
+      {message.suggestions && message.suggestions.length > 0 ? (
+        <View className="w-full max-w-[88%] gap-stack-sm">
+          {message.suggestions.map((s, i) => (
+            <Pressable
+              key={i}
+              onPress={() => onPickSuggestion(s.title)}
+              className="flex-row items-center justify-between gap-stack-md rounded-xl border border-outline-variant bg-surface-container-low px-stack-lg py-gutter">
+              <View className="flex-1">
+                <Text className="font-sans-semibold text-body-md text-on-surface">{s.title}</Text>
+                {s.hint ? (
+                  <Text className="font-mono text-label-sm text-on-surface-variant">{s.hint}</Text>
+                ) : null}
+              </View>
+              <MaterialIcons name="arrow-forward" size={18} color={colors.primary} />
+            </Pressable>
+          ))}
         </View>
       ) : null}
       {message.recipe ? <RecipeCard recipe={message.recipe} pantry={pantry} /> : null}
@@ -269,7 +295,10 @@ export default function ChatScreen() {
     requestAnimationFrame(() => scrollRef.current?.scrollToEnd({ animated: true }));
     try {
       const reply = await sendChat(history);
-      setMessages((prev) => [...prev, { role: 'assistant', content: reply.message, recipe: reply.recipe }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: reply.message, recipe: reply.recipe, suggestions: reply.suggestions },
+      ]);
     } catch {
       setFailed(true);
     } finally {
@@ -312,7 +341,14 @@ export default function ChatScreen() {
           {messages.length === 0 ? (
             <EmptyState onPick={send} />
           ) : (
-            messages.map((m, i) => <MessageView key={i} message={m} pantry={pantry} />)
+            messages.map((m, i) => (
+              <MessageView
+                key={i}
+                message={m}
+                pantry={pantry}
+                onPickSuggestion={(title) => send(`Quiero la receta de "${title}"`)}
+              />
+            ))
           )}
           {sending ? (
             <View className="items-start gap-stack-sm">

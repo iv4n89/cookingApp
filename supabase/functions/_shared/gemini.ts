@@ -117,11 +117,18 @@ export interface ChatTurn {
   text: string;
 }
 
+export interface ChatSuggestion {
+  title: string;
+  hint: string;
+}
+
 export interface ChatResponse {
   message: string;
   // Frase de búsqueda cuando el usuario pide/adapta una receta; el sistema la resuelve
   // por el pipeline real (no la inventa el chat). Vacío si el mensaje no pide receta.
   recipe_query?: string | null;
+  // Ideas de platos cuando el usuario pide opciones (p.ej. "qué puedo cocinar"): título + pista.
+  suggestions?: ChatSuggestion[] | null;
   // Restricciones que el usuario pide en la conversación (además de sus preferencias
   // guardadas): alérgenos a evitar y dieta requerida. El sistema filtra la caché con ellas.
   exclude_allergens?: string[] | null;
@@ -133,6 +140,18 @@ const CHAT_SCHEMA = {
   properties: {
     message: { type: 'STRING' },
     recipe_query: { type: 'STRING', nullable: true },
+    suggestions: {
+      type: 'ARRAY',
+      nullable: true,
+      items: {
+        type: 'OBJECT',
+        properties: {
+          title: { type: 'STRING' },
+          hint: { type: 'STRING' },
+        },
+        required: ['title', 'hint'],
+      },
+    },
     exclude_allergens: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     require_diet: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
   },
