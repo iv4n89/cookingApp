@@ -93,7 +93,7 @@ function PantryCard({
       ) : summary.low.length > 0 ? (
         <View className="gap-stack-md border-t border-outline-variant pt-stack-md">
           <Text className="font-mono uppercase tracking-wider text-label-sm text-on-surface-variant">
-            Lo que menos te queda
+            Por reponer (bajo mínimo)
           </Text>
           {summary.low.map((item) => (
             <View key={item.id} className="flex-row items-center justify-between">
