@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -246,6 +246,7 @@ export default function ChatScreen() {
   const [failed, setFailed] = useState(false);
   const [pantry, setPantry] = useState<PantryMatch | null>(null);
   const scrollRef = useRef<ScrollView>(null);
+  const params = useLocalSearchParams<{ q?: string; t?: string }>();
 
   useEffect(() => {
     let active = true;
@@ -259,17 +260,15 @@ export default function ChatScreen() {
     };
   }, []);
 
-  async function send(text: string) {
-    const content = text.trim();
-    if (!content || sending) return;
-    setInput('');
+  // Envía una conversación (el historial ya con el último mensaje del usuario) y añade la
+  // respuesta. Al sembrar desde el Home se pasa un historial de un solo mensaje (nueva conversación).
+  async function runChat(history: ChatMessage[]) {
     setFailed(false);
-    const next = [...messages, { role: 'user' as const, content }];
-    setMessages(next);
+    setMessages(history);
     setSending(true);
     requestAnimationFrame(() => scrollRef.current?.scrollToEnd({ animated: true }));
     try {
-      const reply = await sendChat(next);
+      const reply = await sendChat(history);
       setMessages((prev) => [...prev, { role: 'assistant', content: reply.message, recipe: reply.recipe }]);
     } catch {
       setFailed(true);
@@ -278,6 +277,26 @@ export default function ChatScreen() {
       requestAnimationFrame(() => scrollRef.current?.scrollToEnd({ animated: true }));
     }
   }
+
+  function send(text: string) {
+    const content = text.trim();
+    if (!content || sending) return;
+    setInput('');
+    runChat([...messages, { role: 'user', content }]);
+  }
+
+  // Pregunta llegada desde el Home: nueva conversación con ese texto como primer mensaje.
+  // Se identifica por el nonce t (una pulsación) para que repetir la misma pregunta re-inicie.
+  const seeded = useRef<string | null>(null);
+  useEffect(() => {
+    const q = typeof params.q === 'string' ? params.q.trim() : '';
+    const t = typeof params.t === 'string' ? params.t : '';
+    if (q && t && seeded.current !== t) {
+      seeded.current = t;
+      runChat([{ role: 'user', content: q }]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.t]);
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
