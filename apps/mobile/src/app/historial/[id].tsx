@@ -1,135 +1,28 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { getCooked, uncookRecipe, type CookedEntry } from '@/lib/cooking';
-import { getRecipe, type Recipe, type RecipeStep } from '@/lib/recipes';
-import { getUserRecipe } from '@/lib/user-recipes';
+import { BackHeader } from '@/components/back-header';
+import { CookedRatingStars } from '@/features/history/components/cooked-rating-stars';
+import { CookedStepItem } from '@/features/history/components/cooked-step-item';
+import { DeleteCookedButton } from '@/features/history/components/delete-cooked-button';
+import { formatDate } from '@/features/history/format-date';
+import { useCookedDetail } from '@/features/history/hooks/use-cooked-detail';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-function formatDate(iso: string): string {
-  const [y, m, d] = iso.slice(0, 10).split('-');
-  return `${d}/${m}/${y}`;
-}
-
-function RatingStars({ rating }: { rating: number }) {
-  return (
-    <View className="flex-row items-center gap-stack-sm">
-      {[1, 2, 3, 4, 5].map((value) => (
-        <MaterialIcons
-          key={value}
-          name={value <= rating ? 'star' : 'star-border'}
-          size={22}
-          color={value <= rating ? colors.primary : colors['outline-variant']}
-        />
-      ))}
-    </View>
-  );
-}
-
-function StepItem({ step, index }: { step: RecipeStep; index: number }) {
-  const number = String(index + 1).padStart(2, '0');
-  const minutes = step.timerSeconds ? Math.round(step.timerSeconds / 60) : 0;
-  return (
-    <View className="flex-row gap-gutter">
-      <Text className="font-sans-semibold text-primary opacity-[0.15]" style={{ fontSize: 40, lineHeight: 40 }}>
-        {number}
-      </Text>
-      <View className="flex-1">
-        <Text className="font-sans text-body-md leading-relaxed text-on-surface-variant">{step.instruction}</Text>
-        {minutes > 0 ? (
-          <View className="mt-stack-sm flex-row items-center gap-stack-sm">
-            <MaterialIcons name="timer" size={16} color={colors.secondary} />
-            <Text className="font-mono-medium text-label-sm text-secondary">{minutes} MIN</Text>
-          </View>
-        ) : null}
-      </View>
-    </View>
-  );
-}
-
 export default function CookedDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [entry, setEntry] = useState<CookedEntry | null>(null);
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [rating, setRating] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [failed, setFailed] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-
-  const load = useCallback(() => {
-    let active = true;
-    setLoading(true);
-    setFailed(false);
-    getCooked(id)
-      .then(async (cooked) => {
-        if (!cooked) {
-          if (active) setFailed(true);
-          return;
-        }
-        const [recipeData, meta] = await Promise.all([
-          getRecipe(cooked.recipe_id),
-          getUserRecipe(cooked.recipe_id),
-        ]);
-        if (active) {
-          setEntry(cooked);
-          setRecipe(recipeData);
-          setRating(meta.rating);
-        }
-      })
-      .catch(() => {
-        if (active) setFailed(true);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-    return () => {
-      active = false;
-    };
-  }, [id]);
-
-  useEffect(() => load(), [load]);
-
-  async function remove() {
-    if (deleting || !entry) return;
-    setDeleting(true);
-    try {
-      await uncookRecipe(entry.id);
-      router.back();
-    } catch {
-      setDeleting(false);
-    }
-  }
+  const { entry, recipe, rating, loading, failed, deleting, remove } = useCookedDetail(id);
 
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
-      <View className="flex-row items-center justify-between border-b border-outline-variant bg-background px-container-padding py-stack-md">
-        <View className="flex-row items-center gap-gutter">
-          <Pressable onPress={() => router.back()} hitSlop={8} accessibilityRole="button" accessibilityLabel="Volver">
-            <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
-          </Pressable>
-          <Text className="font-sans-bold text-headline-sm text-primary">Historial</Text>
-        </View>
-        {entry ? (
-          <Pressable
-            onPress={remove}
-            disabled={deleting}
-            hitSlop={8}
-            accessibilityRole="button"
-            accessibilityLabel="Borrar del historial"
-            className="h-9 w-9 items-center justify-center rounded-full bg-on-surface">
-            {deleting ? (
-              <ActivityIndicator color={colors.background} />
-            ) : (
-              <MaterialIcons name="close" size={20} color={colors.background} />
-            )}
-          </Pressable>
-        ) : null}
-      </View>
+      <BackHeader
+        title="Historial"
+        right={entry ? <DeleteCookedButton deleting={deleting} onPress={remove} /> : null}
+      />
 
       {loading ? (
         <ActivityIndicator color={colors.primary} className="mt-section-gap" />
@@ -154,7 +47,7 @@ export default function CookedDetailScreen() {
           {rating !== null ? (
             <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
               <Text className="font-sans-semibold text-body-md text-on-surface">Tu valoración</Text>
-              <RatingStars rating={rating} />
+              <CookedRatingStars rating={rating} />
             </View>
           ) : null}
 
@@ -164,7 +57,7 @@ export default function CookedDetailScreen() {
                 Pasos
               </Text>
               {recipe.steps.map((step, i) => (
-                <StepItem key={i} step={step} index={i} />
+                <CookedStepItem key={i} step={step} index={i} />
               ))}
             </View>
           ) : null}
