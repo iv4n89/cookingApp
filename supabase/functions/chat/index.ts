@@ -42,6 +42,13 @@ const BASE_PROMPT =
   'con mantequilla, ajo y cebolla"). El sistema buscará o creará la receta real. En "message" coméntalo ' +
   'brevemente (por ejemplo "Te busco una versión con cebolla"). Si el usuario no pide receta, deja ' +
   '"recipe_query" vacío.\n' +
+  'Si el usuario pide IDEAS u OPCIONES de qué cocinar (por ejemplo "¿qué puedo cocinar con lo que ' +
+  'tengo?", "dame ideas", "sugiéreme algo", "opciones"), NO rellenes "recipe_query": en su lugar ' +
+  'rellena "suggestions" con 3 o 4 platos concretos y variados, aprovechando su despensa cuando ' +
+  'aplique. Cada sugerencia lleva "title" (nombre del plato) y "hint" (pista corta con tiempo ' +
+  'aproximado y tipo de comida o dificultad, por ejemplo "25 min · cena fácil"). En "message" ' +
+  'invítale a elegir una. Cuando pida una receta concreta o elija una opción, usa "recipe_query" y ' +
+  'deja "suggestions" vacío.\n' +
   'Si en la conversación el usuario pide EVITAR algún ingrediente que sea uno de estos alérgenos, ' +
   'ponlo en "exclude_allergens" con su clave exacta: egg (huevo), milk (leche/lácteos/queso/nata), ' +
   'nuts (frutos secos), peanut (cacahuete), gluten, fish (pescado), crustaceans y molluscs (marisco), ' +
@@ -128,7 +135,10 @@ Deno.serve(async (req) => {
     const prefs = userId ? await getUserPrefs(supabase, userId) : null;
     const system = await buildSystemInstruction(supabase, userId, prefs);
 
-    const { message, recipe_query, exclude_allergens, require_diet } = await generateChat(turns, system);
+    const { message, recipe_query, suggestions, exclude_allergens, require_diet } = await generateChat(
+      turns,
+      system,
+    );
 
     // La receta no la inventa el chat: se resuelve por el pipeline real (caché/web/IA),
     // aplicando también las restricciones que el usuario pide en la conversación.
@@ -159,7 +169,18 @@ Deno.serve(async (req) => {
       }
     }
 
-    return json({ message, recipe });
+    // Opciones para elegir: solo cuando no se ha pedido una receta concreta.
+    const options = !query && Array.isArray(suggestions)
+      ? suggestions
+          .filter((s) => s && typeof s.title === 'string' && s.title.trim())
+          .slice(0, 4)
+          .map((s) => ({
+            title: s.title.trim().slice(0, 120),
+            hint: typeof s.hint === 'string' ? s.hint.trim().slice(0, 80) : '',
+          }))
+      : [];
+
+    return json({ message, recipe, suggestions: options });
   } catch (e) {
     console.error('chat:', e);
     return json({ error: 'No se pudo responder.' }, 500);
