@@ -71,6 +71,16 @@ export function useShoppingList() {
     }
   }
 
+  async function setQuantity(id: string, quantity: number | null) {
+    const snapshot = items;
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
+    const { error } = await supabase.from('shopping_list_items').update({ quantity }).eq('id', id);
+    if (error) {
+      setError('No se pudo guardar la cantidad.');
+      setItems(snapshot);
+    }
+  }
+
   // Marca lo comprado: lo mueve a la despensa (fusionando cantidades) y lo quita de la lista.
   async function buyChecked() {
     const ids = items.filter((item) => item.checked).map((item) => item.id);
@@ -84,5 +94,5 @@ export function useShoppingList() {
     }
   }
 
-  return { items, loading, error, refresh, add, toggle, buyChecked };
+  return { items, loading, error, refresh, add, toggle, setQuantity, buyChecked };
 }
