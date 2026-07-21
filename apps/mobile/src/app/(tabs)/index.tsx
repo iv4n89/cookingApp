@@ -11,7 +11,6 @@ import { useSession } from '@/lib/auth';
 import { getPantrySummary, type PantrySummary } from '@/lib/pantry';
 import {
   addIngredientsToShopping,
-  askRecipe,
   recommendedRecipes,
   type RecommendedRecipe,
 } from '@/lib/recipes';
@@ -271,10 +270,7 @@ export default function InicioScreen() {
       <AskAiModal
         visible={askVisible}
         onClose={() => setAskVisible(false)}
-        onSubmit={async (question) => {
-          const { recipe } = await askRecipe(question);
-          if (recipe) router.push({ pathname: '/receta/[id]', params: { id: recipe.id } });
-        }}
+        onSubmit={(question) => router.push({ pathname: '/chat', params: { q: question } })}
       />
     </SafeAreaView>
   );
