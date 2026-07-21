@@ -14,7 +14,7 @@ const colors = theme.extend.colors;
 const UNCATEGORIZED = 'Otros';
 
 function isLowStock(item: PantryItem) {
-  return item.quantity !== null && item.min_stock !== null && item.quantity <= item.min_stock;
+  return item.quantity !== null && item.min_stock !== null && item.quantity < item.min_stock;
 }
 
 function detailLine(item: PantryItem) {
