@@ -1,0 +1,604 @@
+[
+  {
+    "title": "Tortilla de patatas",
+    "description": "La tortilla española clásica, jugosa por dentro y con cebolla pochada.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 30,
+    "calories": 330,
+    "tags": ["española", "clásica", "sartén"],
+    "allergens": ["egg"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Patata", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Huevo", "quantity": 6, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 200, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pela y corta las patatas en láminas finas y la cebolla en juliana.", "timerSeconds": null },
+      { "order": 2, "instruction": "Confítalas a fuego medio en el aceite hasta que estén tiernas, sin que doren.", "timerSeconds": 1200 },
+      { "order": 3, "instruction": "Escurre y mezcla con los huevos batidos y sal. Deja reposar 5 minutos.", "timerSeconds": 300 },
+      { "order": 4, "instruction": "Cuaja en una sartén con un poco de aceite, 3 minutos por cada lado dándole la vuelta con un plato.", "timerSeconds": 360 }
+    ]
+  },
+  {
+    "title": "Gazpacho andaluz",
+    "description": "Sopa fría de tomate y hortalizas, refrescante y ligera para el verano.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 0,
+    "calories": 120,
+    "tags": ["española", "frío", "sopa", "sin cocción"],
+    "allergens": [],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Tomate maduro", "quantity": 1, "unit": "kg", "substitutions": [] },
+      { "name": "Pepino", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Pimiento verde", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 60, "unit": "ml", "substitutions": [] },
+      { "name": "Vinagre de vino", "quantity": 1, "unit": "cucharada", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Trocea los tomates, el pepino y el pimiento.", "timerSeconds": null },
+      { "order": 2, "instruction": "Tritura todo con el ajo, el aceite, el vinagre y la sal hasta que quede muy fino.", "timerSeconds": null },
+      { "order": 3, "instruction": "Cuela si lo quieres más suave y enfría al menos 2 horas antes de servir.", "timerSeconds": 7200 }
+    ]
+  },
+  {
+    "title": "Paella de marisco",
+    "description": "Arroz seco con gambas, mejillones y calamar, sabroso y con buen socarrat.",
+    "servings": 4,
+    "prep_time_min": 20,
+    "cook_time_min": 35,
+    "calories": 480,
+    "tags": ["española", "arroz", "marisco"],
+    "allergens": ["crustaceans", "molluscs"],
+    "diet": [],
+    "ingredients": [
+      { "name": "Arroz redondo", "quantity": 320, "unit": "g", "substitutions": [] },
+      { "name": "Gamba", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Mejillón", "quantity": 250, "unit": "g", "substitutions": [] },
+      { "name": "Calamar", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Tomate", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Caldo de pescado", "quantity": 800, "unit": "ml", "substitutions": [] },
+      { "name": "Azafrán", "quantity": null, "unit": null, "substitutions": ["colorante alimentario"] },
+      { "name": "Aceite de oliva", "quantity": 3, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Sofríe el calamar y las gambas en la paellera y reserva.", "timerSeconds": null },
+      { "order": 2, "instruction": "Sofríe el tomate rallado, añade el arroz y rehógalo 2 minutos.", "timerSeconds": 120 },
+      { "order": 3, "instruction": "Vierte el caldo caliente con el azafrán y reparte el marisco. Cuece 18 minutos sin remover.", "timerSeconds": 1080 },
+      { "order": 4, "instruction": "Sube el fuego el último minuto para el socarrat y deja reposar 5 minutos tapada.", "timerSeconds": 300 }
+    ]
+  },
+  {
+    "title": "Lentejas estofadas con verduras",
+    "description": "Guiso de lentejas reconfortante, con zanahoria y pimiento, 100% vegetal.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 45,
+    "calories": 360,
+    "tags": ["española", "legumbre", "guiso"],
+    "allergens": [],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Lenteja", "quantity": 300, "unit": "g", "substitutions": [] },
+      { "name": "Zanahoria", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Tomate triturado", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Pimentón dulce", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pocha la cebolla, la zanahoria y el pimiento troceados en aceite.", "timerSeconds": 600 },
+      { "order": 2, "instruction": "Añade el pimentón y el tomate y cocina 2 minutos.", "timerSeconds": 120 },
+      { "order": 3, "instruction": "Incorpora las lentejas y cubre con agua. Cuece a fuego suave 40 minutos.", "timerSeconds": 2400 },
+      { "order": 4, "instruction": "Rectifica de sal y deja reposar antes de servir.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Pollo al curry",
+    "description": "Pollo tierno en salsa cremosa de curry y leche de coco, listo en media hora.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 25,
+    "calories": 450,
+    "tags": ["india", "ave", "rápido"],
+    "allergens": [],
+    "diet": [],
+    "ingredients": [
+      { "name": "Pechuga de pollo", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Leche de coco", "quantity": 400, "unit": "ml", "substitutions": [] },
+      { "name": "Curry en polvo", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Jengibre", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Dora el pollo troceado y reserva.", "timerSeconds": null },
+      { "order": 2, "instruction": "Sofríe la cebolla, el ajo y el jengibre. Añade el curry y tuesta 1 minuto.", "timerSeconds": 60 },
+      { "order": 3, "instruction": "Vierte la leche de coco, devuelve el pollo y cuece 15 minutos a fuego suave.", "timerSeconds": 900 },
+      { "order": 4, "instruction": "Sirve con arroz basmati.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Dal de lentejas rojas",
+    "description": "Guiso indio especiado de lentejas rojas, cremoso y vegano.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 25,
+    "calories": 300,
+    "tags": ["india", "legumbre", "vegana"],
+    "allergens": [],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Lenteja roja", "quantity": 250, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Tomate", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Cúrcuma", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Jengibre", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Sofríe la cebolla con el comino, la cúrcuma y el jengibre.", "timerSeconds": 300 },
+      { "order": 2, "instruction": "Añade el tomate troceado y cocina 5 minutos.", "timerSeconds": 300 },
+      { "order": 3, "instruction": "Incorpora las lentejas rojas y 700 ml de agua. Cuece 18 minutos hasta que se deshagan.", "timerSeconds": 1080 },
+      { "order": 4, "instruction": "Tritura ligeramente si lo quieres más cremoso y sirve con arroz o pan naan.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Pad thai de pollo",
+    "description": "Fideos de arroz salteados al estilo tailandés con pollo, huevo y cacahuete.",
+    "servings": 2,
+    "prep_time_min": 20,
+    "cook_time_min": 10,
+    "calories": 520,
+    "tags": ["tailandesa", "wok", "fideos"],
+    "allergens": ["egg", "peanut", "fish", "soy", "gluten"],
+    "diet": [],
+    "ingredients": [
+      { "name": "Fideo de arroz", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Pechuga de pollo", "quantity": 250, "unit": "g", "substitutions": [] },
+      { "name": "Huevo", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Cacahuete", "quantity": 40, "unit": "g", "substitutions": [] },
+      { "name": "Salsa de pescado", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Salsa de soja", "quantity": 1, "unit": "cucharada", "substitutions": [] },
+      { "name": "Lima", "quantity": 1, "unit": "ud", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Hidrata los fideos en agua caliente 8 minutos y escúrrelos.", "timerSeconds": 480 },
+      { "order": 2, "instruction": "Saltea el pollo en el wok a fuego fuerte y aparta a un lado.", "timerSeconds": null },
+      { "order": 3, "instruction": "Cuaja el huevo, añade los fideos, la salsa de pescado y la de soja y saltea.", "timerSeconds": null },
+      { "order": 4, "instruction": "Sirve con cacahuete picado y un chorro de lima.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Ramen de miso con verduras",
+    "description": "Cuenco japonés reconfortante de caldo de miso con fideos y huevo.",
+    "servings": 2,
+    "prep_time_min": 15,
+    "cook_time_min": 20,
+    "calories": 430,
+    "tags": ["japonesa", "sopa", "fideos"],
+    "allergens": ["soy", "gluten", "sesame", "egg"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Fideo ramen", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Pasta de miso", "quantity": 3, "unit": "cucharada", "substitutions": [] },
+      { "name": "Huevo", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Champiñón", "quantity": 150, "unit": "g", "substitutions": [] },
+      { "name": "Cebolleta", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de sésamo", "quantity": 1, "unit": "cucharadita", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Cuece los huevos 7 minutos, enfría y pélalos.", "timerSeconds": 420 },
+      { "order": 2, "instruction": "Calienta 800 ml de agua, disuelve el miso sin que hierva y añade los champiñones.", "timerSeconds": 300 },
+      { "order": 3, "instruction": "Cuece los fideos aparte según el paquete y repártelos en los cuencos.", "timerSeconds": null },
+      { "order": 4, "instruction": "Vierte el caldo y remata con el huevo, la cebolleta y el aceite de sésamo.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Tacos al pastor",
+    "description": "Tacos mexicanos de cerdo marinado en adobo con piña y cilantro.",
+    "servings": 4,
+    "prep_time_min": 25,
+    "cook_time_min": 15,
+    "calories": 420,
+    "tags": ["mexicana", "cerdo", "taco"],
+    "allergens": ["pork"],
+    "diet": [],
+    "ingredients": [
+      { "name": "Carne de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Tortilla de maíz", "quantity": 12, "unit": "ud", "substitutions": [] },
+      { "name": "Piña", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Cilantro", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Pimentón", "quantity": 2, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Zumo de naranja", "quantity": 100, "unit": "ml", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Marina el cerdo en tiras con el pimentón y el zumo de naranja 20 minutos.", "timerSeconds": 1200 },
+      { "order": 2, "instruction": "Ásalo a fuego fuerte junto con trozos de piña hasta dorar.", "timerSeconds": null },
+      { "order": 3, "instruction": "Calienta las tortillas en una sartén seca.", "timerSeconds": null },
+      { "order": 4, "instruction": "Monta los tacos con la carne, la piña, cebolla y cilantro picados.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Guacamole",
+    "description": "El clásico dip mexicano de aguacate, lima y cilantro. Rápido y vegano.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 0,
+    "calories": 180,
+    "tags": ["mexicana", "entrante", "sin cocción"],
+    "allergens": [],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Aguacate", "quantity": 3, "unit": "ud", "substitutions": [] },
+      { "name": "Lima", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Tomate", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 0.5, "unit": "ud", "substitutions": [] },
+      { "name": "Cilantro", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Machaca la pulpa de los aguacates con un tenedor.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade el tomate y la cebolla picados finos, el cilantro y el zumo de lima.", "timerSeconds": null },
+      { "order": 3, "instruction": "Salpimenta al gusto y sirve enseguida con totopos.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Chili con carne",
+    "description": "Guiso tex-mex de ternera picada, alubias y especias, con un punto picante.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 40,
+    "calories": 470,
+    "tags": ["tex-mex", "ternera", "guiso"],
+    "allergens": [],
+    "diet": [],
+    "ingredients": [
+      { "name": "Carne picada de ternera", "quantity": 500, "unit": "g", "substitutions": [] },
+      { "name": "Alubia roja", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Guindilla", "quantity": 1, "unit": "ud", "substitutions": ["pimienta de cayena"] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Sofríe la cebolla y añade la carne picada hasta que dore.", "timerSeconds": null },
+      { "order": 2, "instruction": "Incorpora el comino, la guindilla y el tomate. Cocina 5 minutos.", "timerSeconds": 300 },
+      { "order": 3, "instruction": "Añade las alubias escurridas y guisa a fuego lento 30 minutos.", "timerSeconds": 1800 },
+      { "order": 4, "instruction": "Sirve con arroz blanco o nachos.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Espaguetis a la carbonara",
+    "description": "La carbonara romana auténtica: huevo, guanciale y pecorino, sin nata.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 15,
+    "calories": 600,
+    "tags": ["italiana", "pasta", "rápido"],
+    "allergens": ["egg", "milk", "pork", "gluten"],
+    "diet": [],
+    "ingredients": [
+      { "name": "Espagueti", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Panceta", "quantity": 120, "unit": "g", "substitutions": ["guanciale"] },
+      { "name": "Huevo", "quantity": 3, "unit": "ud", "substitutions": [] },
+      { "name": "Queso pecorino", "quantity": 60, "unit": "g", "substitutions": ["parmesano"] },
+      { "name": "Pimienta negra", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Cuece los espaguetis en agua con sal y reserva un poco del agua de cocción.", "timerSeconds": 540 },
+      { "order": 2, "instruction": "Dora la panceta en dados en una sartén sin aceite.", "timerSeconds": null },
+      { "order": 3, "instruction": "Bate los huevos con el pecorino y mucha pimienta.", "timerSeconds": null },
+      { "order": 4, "instruction": "Fuera del fuego, mezcla la pasta con la panceta y la crema de huevo, aflojando con agua de cocción.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Risotto de setas",
+    "description": "Arroz cremoso al estilo italiano con setas y parmesano.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 30,
+    "calories": 430,
+    "tags": ["italiana", "arroz", "vegetariana"],
+    "allergens": ["milk"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Arroz arborio", "quantity": 320, "unit": "g", "substitutions": [] },
+      { "name": "Seta", "quantity": 300, "unit": "g", "substitutions": ["champiñón"] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Caldo de verduras", "quantity": 1, "unit": "l", "substitutions": [] },
+      { "name": "Queso parmesano", "quantity": 60, "unit": "g", "substitutions": [] },
+      { "name": "Mantequilla", "quantity": 30, "unit": "g", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Sofríe la cebolla y las setas en la mantequilla.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade el arroz, nacáralo 2 minutos y ve incorporando el caldo caliente cazo a cazo.", "timerSeconds": 120 },
+      { "order": 3, "instruction": "Remueve unos 18 minutos hasta que el arroz esté cremoso y al dente.", "timerSeconds": 1080 },
+      { "order": 4, "instruction": "Fuera del fuego, integra el parmesano y una nuez de mantequilla y deja reposar 2 minutos.", "timerSeconds": 120 }
+    ]
+  },
+  {
+    "title": "Pizza margarita",
+    "description": "Pizza napolitana sencilla con tomate, mozzarella y albahaca.",
+    "servings": 2,
+    "prep_time_min": 20,
+    "cook_time_min": 12,
+    "calories": 550,
+    "tags": ["italiana", "horno", "vegetariana"],
+    "allergens": ["gluten", "milk"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Masa de pizza", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Tomate triturado", "quantity": 150, "unit": "g", "substitutions": [] },
+      { "name": "Mozzarella", "quantity": 150, "unit": "g", "substitutions": [] },
+      { "name": "Albahaca", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Precalienta el horno al máximo (250 °C) con la bandeja dentro.", "timerSeconds": null },
+      { "order": 2, "instruction": "Estira la masa y extiende el tomate con una pizca de sal y aceite.", "timerSeconds": null },
+      { "order": 3, "instruction": "Reparte la mozzarella y hornea 10-12 minutos hasta que dore.", "timerSeconds": 660 },
+      { "order": 4, "instruction": "Añade la albahaca fresca al salir del horno.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Ensalada César con pollo",
+    "description": "Ensalada completa con pollo a la plancha, picatostes y salsa césar.",
+    "servings": 2,
+    "prep_time_min": 15,
+    "cook_time_min": 10,
+    "calories": 480,
+    "tags": ["americana", "ensalada", "ave"],
+    "allergens": ["egg", "milk", "fish", "gluten"],
+    "diet": [],
+    "ingredients": [
+      { "name": "Lechuga romana", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Pechuga de pollo", "quantity": 300, "unit": "g", "substitutions": [] },
+      { "name": "Pan", "quantity": 100, "unit": "g", "substitutions": [] },
+      { "name": "Queso parmesano", "quantity": 40, "unit": "g", "substitutions": [] },
+      { "name": "Mayonesa", "quantity": 3, "unit": "cucharada", "substitutions": [] },
+      { "name": "Anchoa", "quantity": 2, "unit": "ud", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Tuesta el pan en dados con un poco de aceite para los picatostes.", "timerSeconds": null },
+      { "order": 2, "instruction": "Haz el pollo a la plancha y córtalo en tiras.", "timerSeconds": null },
+      { "order": 3, "instruction": "Mezcla la mayonesa con la anchoa picada y parte del parmesano para la salsa.", "timerSeconds": null },
+      { "order": 4, "instruction": "Monta la lechuga con el pollo, los picatostes, la salsa y el resto de parmesano.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Hummus de garbanzos",
+    "description": "Puré cremoso de garbanzos con tahini y limón, el clásico de Oriente Medio.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 0,
+    "calories": 250,
+    "tags": ["libanesa", "entrante", "vegana"],
+    "allergens": ["sesame"],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Garbanzo cocido", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Tahini", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
+      { "name": "Comino", "quantity": 0.5, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 3, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Tritura los garbanzos escurridos con el tahini, el ajo, el comino y el zumo de limón.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade agua fría poco a poco hasta que quede muy cremoso.", "timerSeconds": null },
+      { "order": 3, "instruction": "Sirve con un hilo de aceite y pimentón por encima.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Falafel",
+    "description": "Croquetas fritas de garbanzo y hierbas, crujientes por fuera y tiernas dentro.",
+    "servings": 4,
+    "prep_time_min": 20,
+    "cook_time_min": 15,
+    "calories": 350,
+    "tags": ["mediterránea", "fritura", "vegana"],
+    "allergens": ["sesame"],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Garbanzo seco", "quantity": 250, "unit": "g", "substitutions": [] },
+      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": ["cilantro"] },
+      { "name": "Cebolla", "quantity": 0.5, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
+      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Sésamo", "quantity": 1, "unit": "cucharada", "substitutions": [] },
+      { "name": "Aceite de girasol", "quantity": 300, "unit": "ml", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Deja los garbanzos en remojo la noche anterior (no se cuecen).", "timerSeconds": null },
+      { "order": 2, "instruction": "Tritura los garbanzos crudos con la cebolla, el ajo, las hierbas y el comino hasta una pasta.", "timerSeconds": null },
+      { "order": 3, "instruction": "Forma bolitas, rebózalas en sésamo y fríelas en aceite caliente hasta dorar.", "timerSeconds": null },
+      { "order": 4, "instruction": "Escurre sobre papel y sirve con salsa de yogur o hummus.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Shakshuka",
+    "description": "Huevos escalfados en una salsa especiada de tomate y pimiento.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 320,
+    "tags": ["norteafricana", "huevo", "sartén"],
+    "allergens": ["egg"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
+      { "name": "Tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Pimentón", "quantity": 1, "unit": "cucharadita", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pocha la cebolla y el pimiento en tiras.", "timerSeconds": 480 },
+      { "order": 2, "instruction": "Añade el comino, el pimentón y el tomate y cocina 10 minutos.", "timerSeconds": 600 },
+      { "order": 3, "instruction": "Haz huecos en la salsa y casca los huevos dentro.", "timerSeconds": null },
+      { "order": 4, "instruction": "Tapa y cuece hasta que la clara cuaje y la yema quede jugosa.", "timerSeconds": 360 }
+    ]
+  },
+  {
+    "title": "Cuscús de verduras",
+    "description": "Sémola esponjosa con verduras salteadas y especias marroquíes.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 20,
+    "calories": 340,
+    "tags": ["marroquí", "vegana", "rápido"],
+    "allergens": ["gluten"],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Cuscús", "quantity": 250, "unit": "g", "substitutions": [] },
+      { "name": "Calabacín", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Zanahoria", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Garbanzo cocido", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Ras el hanout", "quantity": 1, "unit": "cucharada", "substitutions": ["comino y canela"] },
+      { "name": "Aceite de oliva", "quantity": 3, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Saltea la zanahoria y el calabacín en dados con el ras el hanout.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade los garbanzos y calienta un par de minutos.", "timerSeconds": 120 },
+      { "order": 3, "instruction": "Hidrata el cuscús con el mismo volumen de agua hirviendo y un chorro de aceite, tapa 5 minutos.", "timerSeconds": 300 },
+      { "order": 4, "instruction": "Suelta los granos con un tenedor y mezcla con las verduras.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Bibimbap de verduras",
+    "description": "Cuenco coreano de arroz con verduras salteadas, huevo y salsa gochujang.",
+    "servings": 2,
+    "prep_time_min": 25,
+    "cook_time_min": 15,
+    "calories": 460,
+    "tags": ["coreana", "arroz", "vegetariana"],
+    "allergens": ["soy", "sesame", "egg"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Arroz", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Espinaca", "quantity": 150, "unit": "g", "substitutions": [] },
+      { "name": "Zanahoria", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Champiñón", "quantity": 150, "unit": "g", "substitutions": [] },
+      { "name": "Huevo", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Gochujang", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Aceite de sésamo", "quantity": 1, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Cuece el arroz y resérvalo caliente.", "timerSeconds": null },
+      { "order": 2, "instruction": "Saltea por separado la zanahoria en juliana, los champiñones y la espinaca.", "timerSeconds": null },
+      { "order": 3, "instruction": "Fríe los huevos dejando la yema líquida.", "timerSeconds": null },
+      { "order": 4, "instruction": "Monta el arroz con las verduras alrededor, el huevo encima y el gochujang con aceite de sésamo.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Salmón al horno con verduras",
+    "description": "Lomos de salmón jugosos al horno sobre una cama de verduras. Fácil y saludable.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 400,
+    "tags": ["pescado", "horno", "rápido"],
+    "allergens": ["fish"],
+    "diet": [],
+    "ingredients": [
+      { "name": "Salmón", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Calabacín", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Eneldo", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Precalienta el horno a 200 °C.", "timerSeconds": null },
+      { "order": 2, "instruction": "Corta las verduras en tiras, alíñalas y extiéndelas en una bandeja.", "timerSeconds": null },
+      { "order": 3, "instruction": "Coloca el salmón encima con rodajas de limón y eneldo.", "timerSeconds": null },
+      { "order": 4, "instruction": "Hornea 18 minutos hasta que el salmón se desmigue con facilidad.", "timerSeconds": 1080 }
+    ]
+  },
+  {
+    "title": "Crema de calabaza",
+    "description": "Crema suave y reconfortante de calabaza asada, naturalmente vegana.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 30,
+    "calories": 180,
+    "tags": ["sopa", "vegana", "otoño"],
+    "allergens": [],
+    "diet": ["vegan", "vegetarian"],
+    "ingredients": [
+      { "name": "Calabaza", "quantity": 800, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Zanahoria", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Caldo de verduras", "quantity": 700, "unit": "ml", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pocha la cebolla y la zanahoria en aceite.", "timerSeconds": 480 },
+      { "order": 2, "instruction": "Añade la calabaza en dados y el caldo. Cuece 20 minutos.", "timerSeconds": 1200 },
+      { "order": 3, "instruction": "Tritura hasta que quede una crema fina y rectifica de sal.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Tortitas americanas",
+    "description": "Pancakes esponjosos para el desayuno, perfectos con sirope o fruta.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 15,
+    "calories": 420,
+    "tags": ["desayuno", "dulce", "vegetariana"],
+    "allergens": ["gluten", "milk", "egg"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Harina", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Leche", "quantity": 250, "unit": "ml", "substitutions": [] },
+      { "name": "Huevo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Levadura química", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
+      { "name": "Azúcar", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Mantequilla", "quantity": 20, "unit": "g", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Mezcla la harina con la levadura y el azúcar.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade el huevo y la leche y bate hasta una masa lisa. Deja reposar 5 minutos.", "timerSeconds": 300 },
+      { "order": 3, "instruction": "Cuaja cucharones de masa en una sartén con mantequilla hasta que salgan burbujas y dales la vuelta.", "timerSeconds": null },
+      { "order": 4, "instruction": "Sirve apiladas con sirope de arce o fruta.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Brownie de chocolate",
+    "description": "Brownie denso y húmedo, con corteza fina y corazón fundente.",
+    "servings": 8,
+    "prep_time_min": 15,
+    "cook_time_min": 25,
+    "calories": 380,
+    "tags": ["postre", "horno", "chocolate"],
+    "allergens": ["gluten", "egg", "milk"],
+    "diet": ["vegetarian"],
+    "ingredients": [
+      { "name": "Chocolate negro", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Mantequilla", "quantity": 150, "unit": "g", "substitutions": [] },
+      { "name": "Azúcar", "quantity": 180, "unit": "g", "substitutions": [] },
+      { "name": "Huevo", "quantity": 3, "unit": "ud", "substitutions": [] },
+      { "name": "Harina", "quantity": 100, "unit": "g", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Precalienta el horno a 180 °C y forra un molde con papel.", "timerSeconds": null },
+      { "order": 2, "instruction": "Funde el chocolate con la mantequilla al baño maría o en el microondas.", "timerSeconds": null },
+      { "order": 3, "instruction": "Bate los huevos con el azúcar, integra el chocolate y por último la harina tamizada.", "timerSeconds": null },
+      { "order": 4, "instruction": "Hornea 22-25 minutos: debe quedar hecho por fuera y jugoso por dentro.", "timerSeconds": 1380 }
+    ]
+  }
+]
