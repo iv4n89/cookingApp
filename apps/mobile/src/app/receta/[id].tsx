@@ -7,6 +7,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useSession } from '@/lib/auth';
 import { cookRecipe } from '@/lib/cooking';
+import { getPantryForCook } from '@/lib/pantry';
+import { computeCookDeltas, isBasic } from '@/lib/pantry-match';
 import {
   addIngredientsToShopping,
   formatQuantity,
@@ -183,7 +185,7 @@ function Ingredients({ ingredients }: { ingredients: RecipeIngredient[] }) {
     setSubmitting(true);
     setFailed(false);
     try {
-      await addIngredientsToShopping(session.user.id, ingredients);
+      await addIngredientsToShopping(session.user.id, ingredients.filter((i) => !isBasic(i.name)));
       setAdded(true);
     } catch {
       setFailed(true);
@@ -368,7 +370,9 @@ export default function RecipeDetailScreen() {
     setCooking(true);
     // Descuento best-effort: si falla, igual dejamos cocinar.
     try {
-      await cookRecipe(recipe.id, servings);
+      const pantry = await getPantryForCook();
+      const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
+      await cookRecipe(recipe.id, servings, computeCookDeltas(scaled, pantry));
     } catch {
       // se ignora; el usuario puede ajustar la despensa a mano
     }

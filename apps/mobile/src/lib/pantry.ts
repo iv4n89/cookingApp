@@ -30,6 +30,25 @@ export interface PantryItem {
   category: string | null;
 }
 
+// Lo que necesita el descuento al cocinar: item con su cantidad y enlace al catálogo.
+export interface CookPantryItem {
+  id: string;
+  name: string;
+  quantity: number | null;
+  ingredient_id: string | null;
+}
+
+export async function getPantryForCook(): Promise<CookPantryItem[]> {
+  const { data, error } = await supabase.from('pantry_items').select('id, name, quantity, ingredient_id');
+  if (error) throw error;
+  return (data ?? []).map((row) => ({
+    id: row.id as string,
+    name: row.name as string,
+    quantity: row.quantity == null ? null : Number(row.quantity),
+    ingredient_id: (row.ingredient_id as string | null) ?? null,
+  }));
+}
+
 export interface NewPantryItem {
   name: string;
   quantity: number | null;
