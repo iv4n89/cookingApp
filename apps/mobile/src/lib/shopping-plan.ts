@@ -44,15 +44,17 @@ export interface ShoppingPlan {
 
 export function buildPlan(targets: ShoppingTarget[], shopping: ShoppingItem[]): ShoppingPlan {
   const toInsert: ShoppingTarget[] = [];
-  const toBump: { id: string; quantity: number }[] = [];
+  // Por id, la mayor cantidad pedida (dos ingredientes pueden casar con la misma fila).
+  const bumps = new Map<string, number>();
   for (const target of targets) {
     const match = findMatch(target, shopping);
     if (!match) {
       toInsert.push(target);
     } else if (!covers(match, target) && target.quantity != null) {
-      toBump.push({ id: match.id, quantity: target.quantity });
+      bumps.set(match.id, Math.max(bumps.get(match.id) ?? 0, target.quantity));
     }
   }
+  const toBump = [...bumps.entries()].map(([id, quantity]) => ({ id, quantity }));
   return { toInsert, toBump };
 }
 
