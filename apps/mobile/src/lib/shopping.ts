@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 
 import { useSession } from './auth';
 import { supabase } from './supabase';
@@ -39,9 +40,12 @@ export function useShoppingList() {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    refresh();
-  }, [refresh]);
+  // Recarga al enfocar la pestaña: refleja lo añadido desde el detalle de receta.
+  useFocusEffect(
+    useCallback(() => {
+      refresh();
+    }, [refresh]),
+  );
 
   async function add(input: NewShoppingItem) {
     if (!session) return;
