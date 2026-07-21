@@ -1,6 +1,7 @@
 import { hasInternalSecret } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
+import { queueRecipeImage } from '../_shared/recipe-image.ts';
 import { saveRecipe, type RecipeData } from '../_shared/recipes.ts';
 
 Deno.serve(async (req) => {
@@ -13,7 +14,10 @@ Deno.serve(async (req) => {
   if (!recipe?.title) return json({ error: 'Falta el campo "title".' }, 400);
 
   try {
-    const saved = await saveRecipe(serviceClient(), recipe);
+    const supabase = serviceClient();
+    const saved = await saveRecipe(supabase, recipe);
+    // Imagen en segundo plano (Pollinations), igual que el flujo on-demand.
+    queueRecipeImage(supabase, saved?.id, saved?.title);
     return json({ recipe: saved });
   } catch (e) {
     console.error('index-recipe:', e);
