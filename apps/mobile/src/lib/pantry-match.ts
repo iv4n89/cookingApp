@@ -20,9 +20,10 @@ function words(text: string): string[] {
     .filter((w) => w.length >= 3);
 }
 
+// Solo el ingrediente básico exacto: "sal", "pimienta", "agua", "aceite". Cualquier variante
+// ("aceite de oliva", "sal gorda", "agua de coco") es un ingrediente normal a comprar.
 export function isBasic(name: string): boolean {
-  const w = words(name);
-  return BASICS.some((b) => w.some((x) => sameWord(x, b)));
+  return BASICS.includes(normalize(name));
 }
 
 // Casan si el nombre más corto está contenido en el más largo (tolerando plurales). Simétrico
