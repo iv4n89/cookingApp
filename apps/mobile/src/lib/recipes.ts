@@ -22,6 +22,7 @@ export interface Recipe {
   source: 'web' | 'generated';
   source_url: string | null;
   image_url: string | null;
+  image_status: ImageStatus;
   servings: number;
   prep_time_min: number;
   cook_time_min: number;
@@ -32,6 +33,8 @@ export interface Recipe {
 }
 
 export type RecipeOrigin = 'db' | 'generated' | 'none';
+
+export type ImageStatus = 'pending' | 'ready' | 'none';
 
 export function formatQuantity(quantity: number | null): string {
   return quantity !== null ? String(Math.round(quantity * 100) / 100) : '';
@@ -51,7 +54,7 @@ export function scaleIngredients(
 }
 
 const COLUMNS =
-  'id, title, description, source, source_url, image_url, servings, prep_time_min, cook_time_min, calories, tags, ingredients, steps';
+  'id, title, description, source, source_url, image_url, image_status, servings, prep_time_min, cook_time_min, calories, tags, ingredients, steps';
 
 // Pide una receta a la IA: busca una parecida ya guardada o la genera.
 export async function askRecipe(query: string): Promise<{ recipe: Recipe | null; origin: RecipeOrigin }> {
@@ -71,6 +74,7 @@ export interface RecommendedRecipe {
   title: string;
   description: string;
   image_url: string | null;
+  image_status: ImageStatus;
   prep_time_min: number;
   cook_time_min: number;
   tags: string[];
