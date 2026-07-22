@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
@@ -12,20 +12,41 @@ import { PantrySummaryCard } from '@/features/home/components/pantry-summary-car
 import { QuickAddCard } from '@/features/home/components/quick-add-card';
 import { useHome } from '@/features/home/hooks/use-home';
 
+const { theme } = require('@recetas/theme/tailwind-preset');
+const colors = theme.extend.colors;
+
 export default function InicioScreen() {
   const [askVisible, setAskVisible] = useState(false);
-  const { suggestions, loadingSuggestions, pantry, addingLow, addedLow, saved, toggleSave, addLowToShopping } =
-    useHome();
+  const {
+    suggestions,
+    buySuggestions,
+    loadingSuggestions,
+    refreshing,
+    refresh,
+    meal,
+    greetingText,
+    pantry,
+    addingLow,
+    addedLow,
+    saved,
+    toggleSave,
+    addLowToShopping,
+  } = useHome();
+
+  const openRecipe = (id: string) => router.push({ pathname: '/receta/[id]', params: { id } });
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <AppHeader />
       <ScrollView
         className="flex-1"
-        contentContainerClassName="px-container-padding pb-section-gap pt-stack-lg gap-section-gap">
+        contentContainerClassName="px-container-padding pb-section-gap pt-stack-lg gap-section-gap"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh} tintColor={colors.primary} />
+        }>
         <View className="gap-stack-md">
           <Text className="font-mono-medium text-label-md uppercase tracking-widest text-secondary">
-            Buenos días, chef
+            {greetingText}, chef
           </Text>
           <Text className="font-sans-bold text-display-lg text-on-surface">¿Qué cocinamos hoy?</Text>
         </View>
@@ -48,15 +69,28 @@ export default function InicioScreen() {
         </View>
 
         <View>
-          <HomeSectionHeader title="Para tu despensa" />
+          <HomeSectionHeader title={`Ideas para tu ${meal}`} />
           <HomeSuggestions
             loading={loadingSuggestions}
             suggestions={suggestions}
             saved={saved}
             onToggleSave={toggleSave}
-            onOpen={(id) => router.push({ pathname: '/receta/[id]', params: { id } })}
+            onOpen={openRecipe}
           />
         </View>
+
+        {!loadingSuggestions && buySuggestions.length > 0 ? (
+          <View>
+            <HomeSectionHeader title="Para comprar algo más" />
+            <HomeSuggestions
+              loading={false}
+              suggestions={buySuggestions}
+              saved={saved}
+              onToggleSave={toggleSave}
+              onOpen={openRecipe}
+            />
+          </View>
+        ) : null}
       </ScrollView>
 
       <AskAiModal

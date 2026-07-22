@@ -7,13 +7,23 @@ import type { RecommendedRecipe } from '@/lib/recipes';
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
+function badgeFor(recipe: RecommendedRecipe): Pick<RecipeCardData, 'badge' | 'badgeIcon'> {
+  if (recipe.bucket === 'idea') {
+    return { badge: 'IDEA', badgeIcon: 'restaurant' };
+  }
+  if (recipe.missing_count === 0) {
+    return { badge: 'LISTA PARA COCINAR', badgeIcon: 'check-circle' };
+  }
+  const missing = recipe.missing_count === 1 ? 'TE FALTA 1' : `TE FALTAN ${recipe.missing_count}`;
+  return { badge: missing, badgeIcon: 'shopping-cart' };
+}
+
 function toCardData(recipe: RecommendedRecipe): RecipeCardData {
   const total = recipe.prep_time_min + recipe.cook_time_min;
   return {
     id: recipe.id,
     image: recipe.image_url,
-    badgeIcon: 'kitchen',
-    badge: `${recipe.match_count} EN TU DESPENSA`,
+    ...badgeFor(recipe),
     title: recipe.title,
     description: recipe.description,
     tags: [...recipe.tags.slice(0, 2).map((t) => t.toUpperCase()), `${total} MIN`],

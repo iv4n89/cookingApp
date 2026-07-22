@@ -1,7 +1,7 @@
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 import { embedText, type GeneratedRecipe } from './gemini.ts';
-import { ALLERGEN_KEYS, DIET_KEYS, sanitizeKeys } from './preferences.ts';
+import { ALLERGEN_KEYS, DIET_KEYS, MEAL_TYPE_KEYS, sanitizeKeys } from './preferences.ts';
 
 export interface RecipeData {
   title: string;
@@ -16,6 +16,7 @@ export interface RecipeData {
   tags?: string[];
   allergens?: string[] | null;
   diet?: string[] | null;
+  meal_types?: string[] | null;
   ingredients?: { name: string }[];
   steps?: unknown[];
   // false para recetas personalizadas del chat: no entran en la caché semántica compartida.
@@ -55,6 +56,7 @@ export function recipeFromGenerated(g: GeneratedRecipe): RecipeData {
     tags: g.tags ?? [],
     allergens: sanitizeKeys(g.allergens, ALLERGEN_KEYS),
     diet: sanitizeKeys(g.diet, DIET_KEYS),
+    meal_types: sanitizeKeys(g.meal_types, MEAL_TYPE_KEYS),
     ingredients: g.ingredients.map((i) => ({
       name: i.name,
       quantity: parseQuantity(i.quantity),
@@ -132,6 +134,7 @@ export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
       tags: recipe.tags ?? [],
       allergens: recipe.allergens ?? null,
       diet: recipe.diet ?? null,
+      meal_types: recipe.meal_types ?? [],
       ingredients,
       steps: recipe.steps ?? [],
       reusable: recipe.reusable ?? true,
