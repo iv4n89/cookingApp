@@ -1,5 +1,6 @@
 import { getCatalogDefaults, type CatalogDefault } from './ingredients';
-import { namesMatch, normalizeUnit } from './pantry-match';
+import { sameIngredient, normalizeUnit } from './pantry-match';
+import type { CanonicalMap } from './ingredients';
 import type { RecipeIngredient } from './recipes';
 import { getShoppingItems, type ShoppingItem } from './shopping';
 import { supabase } from './supabase';
@@ -21,11 +22,13 @@ function toTarget(ing: RecipeIngredient, def: CatalogDefault | undefined): Shopp
   return { name: ing.name, ingredient_id: ing.ingredient_id ?? null, unit, quantity };
 }
 
-function findMatch(target: ShoppingTarget, shopping: ShoppingItem[]): ShoppingItem | undefined {
-  return shopping.find(
-    (item) =>
-      (target.ingredient_id != null && item.ingredient_id === target.ingredient_id) ||
-      namesMatch(item.name, target.name),
+function findMatch(
+  target: ShoppingTarget,
+  shopping: ShoppingItem[],
+  map: CanonicalMap,
+): ShoppingItem | undefined {
+  return shopping.find((item) =>
+    sameIngredient(target.ingredient_id, target.name, item.ingredient_id, item.name, map),
   );
 }
 
@@ -42,12 +45,15 @@ export interface ShoppingPlan {
   toBump: { id: string; quantity: number }[]; // están pero con cantidad insuficiente (misma unidad)
 }
 
-export function buildPlan(targets: ShoppingTarget[], shopping: ShoppingItem[]): ShoppingPlan {
+export function buildPlan(
+  targets: ShoppingTarget[],
+  shopping: ShoppingItem[],
+  map: CanonicalMap,
+): ShoppingPlan {
   const toInsert: ShoppingTarget[] = [];
-  // Por id, la mayor cantidad pedida (dos ingredientes pueden casar con la misma fila).
   const bumps = new Map<string, number>();
   for (const target of targets) {
-    const match = findMatch(target, shopping);
+    const match = findMatch(target, shopping, map);
     if (!match) {
       toInsert.push(target);
     } else if (!covers(match, target) && target.quantity != null) {
