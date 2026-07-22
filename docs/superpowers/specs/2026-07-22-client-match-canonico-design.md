@@ -95,7 +95,8 @@ Cada punto que casa obtiene el mapa canónico (cacheado) y lo pasa a los matcher
 - `ingredient-list.tsx`: recibe el mapa (por props del hook) y lo pasa a `isMissingByStock`.
 - `use-chat.ts` + `chat-recipe-card.tsx` (y `chat-message.tsx` que reenvía `pantry`): cargan y
   pasan el mapa a `isMissing`.
-- `shopping-plan.ts` (`loadTargets`/`buildPlan`): carga el mapa y lo pasa a `findMatch`.
+- `shopping-plan.ts` (`buildPlan`/`findMatch`): reciben el mapa por parámetro. Quien lo carga
+  (cacheado) y lo pasa es `add-missing-button.tsx`, que es donde se construye el plan.
 
 ## Fuera de alcance
 

@@ -87,11 +87,6 @@ export function convertQuantity(quantity: number, from: string | null, to: strin
   return null;
 }
 
-// ¿Dos nombres de ingrediente se refieren al mismo? (match por palabras con tolerancia a plurales)
-export function namesMatch(a: string, b: string): boolean {
-  return nameMatches(words(a), words(b));
-}
-
 // Falta con conciencia de cantidad: no está en la despensa (por id/nombre), o está pero —con
 // la misma unidad— la cantidad disponible no llega a la que pide la receta. Solo se juzga
 // insuficiente cuando las unidades son comparables; si no, se asume que lo tienes. Los básicos
