@@ -16,8 +16,3 @@ export function greeting(date: Date): string {
   if (h >= 12 && h < 20) return 'Buenas tardes';
   return 'Buenas noches';
 }
-
-// Etiqueta para el título de sección ("Ideas para tu {label}").
-export function mealLabel(meal: MealType): string {
-  return meal;
-}
