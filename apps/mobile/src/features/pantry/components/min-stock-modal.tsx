@@ -29,7 +29,7 @@ export function MinStockModal({
         <Pressable className="w-full gap-stack-lg rounded-xl bg-background p-stack-lg">
           <Text className="font-sans-bold text-headline-sm text-primary">Mínimo de {item?.name}</Text>
           <Text className="font-sans text-body-md text-on-surface-variant">
-            Marcamos “STOCK BAJO” cuando la cantidad baje de este número. Déjalo vacío para no avisar.
+            Marcamos “STOCK BAJO” cuando la cantidad llegue o baje de este número. Déjalo vacío para no avisar.
           </Text>
           <TextInput
             value={draft}

@@ -52,7 +52,7 @@ export async function getPantrySummary(): Promise<PantrySummary> {
     min_stock: row.min_stock == null ? null : Number(row.min_stock),
   }));
   const low = rows
-    .filter((row) => row.quantity != null && row.min_stock != null && row.quantity < row.min_stock)
+    .filter((row) => row.quantity != null && row.min_stock != null && row.quantity <= row.min_stock)
     .sort((a, b) => (a.quantity ?? 0) - (b.quantity ?? 0))
     .map((row) => ({ id: row.id, name: row.name, quantity: row.quantity as number, unit: row.unit }));
   return { count: rows.length, low };
