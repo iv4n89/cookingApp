@@ -256,6 +256,7 @@ export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
       ingredients,
       steps: recipe.steps ?? [],
       reusable: recipe.reusable ?? true,
+      image_status: (recipe.reusable ?? true) ? 'pending' : 'none',
       embedding,
     })
     .select(RETURN_COLUMNS)

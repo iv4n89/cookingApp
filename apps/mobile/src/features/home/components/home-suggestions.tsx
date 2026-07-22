@@ -23,6 +23,7 @@ function toCardData(recipe: RecommendedRecipe): RecipeCardData {
   return {
     id: recipe.id,
     image: recipe.image_url,
+    imageStatus: recipe.image_status,
     ...badgeFor(recipe),
     title: recipe.title,
     description: recipe.description,

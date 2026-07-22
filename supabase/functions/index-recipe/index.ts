@@ -16,7 +16,8 @@ Deno.serve(async (req) => {
   try {
     const supabase = serviceClient();
     const saved = await saveRecipe(supabase, recipe);
-    // Imagen en segundo plano (Pollinations), igual que el flujo on-demand.
+    // Imagen en segundo plano (fal.ai), igual que el flujo on-demand. Las semillas son
+    // reutilizables, así que sí reciben imagen.
     queueRecipeImage(supabase, saved?.id, saved?.title);
     return json({ recipe: saved });
   } catch (e) {

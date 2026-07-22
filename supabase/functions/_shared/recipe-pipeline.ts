@@ -66,6 +66,10 @@ export type RecipeOrigin = 'db' | 'generated' | 'rate_limited';
 export interface Constraints {
   excludeAllergens?: string[];
   requireDiet?: string[];
+  // Cocinar solo con lo que hay en casa: si true y `pantry` viene, la generación se restringe
+  // a esos ingredientes (más básicos).
+  pantryOnly?: boolean;
+  pantry?: string[];
 }
 
 function unique(values: string[]): string[] {
@@ -127,6 +131,13 @@ export async function resolveRecipe(
   if (constraints.requireDiet?.length) {
     guidance.push(`La receta debe cumplir esta dieta: ${constraints.requireDiet.join(', ')}.`);
   }
+  if (constraints.pantryOnly && constraints.pantry?.length) {
+    guidance.push(
+      `IMPRESCINDIBLE: el usuario no puede comprar nada, cocina SOLO con lo que ya tiene. Usa ` +
+        `únicamente ingredientes de esta lista (más básicos siempre disponibles: sal, pimienta, ` +
+        `aceite, agua): ${constraints.pantry.join(', ')}. No incluyas ningún otro ingrediente.`,
+    );
+  }
   const guidanceText = guidance.filter(Boolean).join(' ') || undefined;
 
   const generated = await generateRecipe(query, guidanceText);
@@ -135,8 +146,9 @@ export async function resolveRecipe(
     reusable: !options.skipCache,
   });
 
-  // Imagen de la receta en segundo plano: no bloquea la respuesta y se guarda para el futuro.
-  queueRecipeImage(supabase, saved?.id, saved?.title);
+  // Imagen de la receta en segundo plano SOLO para reutilizables (las del chat, reusable=false,
+  // van con placeholder para no gastar en fal). No bloquea la respuesta.
+  if (!options.skipCache) queueRecipeImage(supabase, saved?.id, saved?.title);
 
   if (userId) {
     try {

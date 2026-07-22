@@ -7,6 +7,9 @@ const EMBED_TIMEOUT_MS = 15000;
 const GEN_TIMEOUT_MS = 30000;
 // Alias "-latest": apunta siempre al flash-lite vigente (evita deprecaciones).
 const GEN_MODEL = 'gemini-flash-lite-latest';
+// El chat conversacional usa el flash (no lite): mejor seguimiento de instrucciones y menos
+// respuestas "a medias". La generación de recetas y la resolución de ingredientes siguen en lite.
+const CHAT_MODEL = 'gemini-flash-latest';
 
 export const EMBED_DIM = 768;
 
@@ -137,6 +140,9 @@ export interface ChatResponse {
   // guardadas): alérgenos a evitar y dieta requerida. El sistema filtra la caché con ellas.
   exclude_allergens?: string[] | null;
   require_diet?: string[] | null;
+  // true cuando el usuario pide cocinar SOLO con lo que tiene en casa / sin comprar. El sistema
+  // pasa entonces la despensa como restricción dura a la generación.
+  pantry_only?: boolean | null;
 }
 
 const CHAT_SCHEMA = {
@@ -158,8 +164,10 @@ const CHAT_SCHEMA = {
     },
     exclude_allergens: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     require_diet: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
+    pantry_only: { type: 'BOOLEAN' },
   },
-  required: ['message'],
+  // pantry_only obligatorio: el modelo debe decidir siempre (true/false), no omitirlo.
+  required: ['message', 'pantry_only'],
 };
 
 // Conversación multi-turno con contexto de sistema (preferencias, despensa…) y salida
@@ -169,7 +177,7 @@ export async function generateChat(
   systemInstruction: string,
 ): Promise<ChatResponse> {
   const res = await fetchWithTimeout(
-    `${BASE}/models/${GEN_MODEL}:generateContent`,
+    `${BASE}/models/${CHAT_MODEL}:generateContent`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
