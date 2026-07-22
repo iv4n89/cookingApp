@@ -9,7 +9,7 @@ const GEN_TIMEOUT_MS = 30000;
 const GEN_MODEL = 'gemini-flash-lite-latest';
 // El chat conversacional usa el flash (no lite): mejor seguimiento de instrucciones y menos
 // respuestas "a medias". La generación de recetas y la resolución de ingredientes siguen en lite.
-const CHAT_MODEL = 'gemini-flash-latest';
+const CHAT_MODEL = 'gemini-flash-lite-latest';
 
 export const EMBED_DIM = 768;
 

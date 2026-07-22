@@ -53,6 +53,10 @@ const BASE_PROMPT =
   'aproximado y tipo de comida o dificultad, por ejemplo "25 min · cena fácil"). En "message" ' +
   'invítale a elegir una. Cuando pida una receta concreta o elija una opción, usa "recipe_query" y ' +
   'deja "suggestions" vacío.\n' +
+  'COHERENCIA OBLIGATORIA: si en "message" dices que le buscas o le das UNA receta, DEBES rellenar ' +
+  '"recipe_query"; si dices que le ofreces varias opciones, DEBES rellenar "suggestions" con 3 o 4. ' +
+  'Nunca dejes los dos vacíos cuando el usuario pide comida (una receta, ideas, "algo para cenar", ' +
+  '"otra cosa", "algo diferente", "algo moderno"…): rellena siempre uno de los dos.\n' +
   'Si en la conversación el usuario pide EVITAR algún ingrediente que sea uno de estos alérgenos, ' +
   'ponlo en "exclude_allergens" con su clave exacta: egg (huevo), milk (leche/lácteos/queso/nata), ' +
   'nuts (frutos secos), peanut (cacahuete), gluten, fish (pescado), crustaceans y molluscs (marisco), ' +
