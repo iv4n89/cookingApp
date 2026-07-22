@@ -1,4 +1,5 @@
 import { fetchWithTimeout } from './http.ts';
+import { CATALOG_CATEGORIES } from './preferences.ts';
 
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const EMBED_MODEL = 'gemini-embedding-001';
@@ -237,4 +238,72 @@ export async function generateRecipe(
     throw new Error('Respuesta de generación inesperada de Gemini');
   }
   return JSON.parse(text) as GeneratedRecipe;
+}
+
+export interface ResolvedIngredient {
+  input: string; // nombre tal cual lo generó la receta
+  canonical_name: string; // concepto base, reutilizando el vocabulario del catálogo
+  category: string; // una de CATALOG_CATEGORIES
+}
+
+const RESOLVE_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    items: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          input: { type: 'STRING' },
+          canonical_name: { type: 'STRING' },
+          category: { type: 'STRING' },
+        },
+        required: ['input', 'canonical_name', 'category'],
+      },
+    },
+  },
+  required: ['items'],
+};
+
+// Mapea cada nombre de ingrediente de una receta a un concepto canónico del catálogo (o a uno
+// nuevo bien categorizado). El servidor luego resuelve canonical_name -> id por nombre; el LLM
+// nunca devuelve UUIDs.
+export async function resolveIngredients(
+  names: string[],
+  canonicals: { name: string; category: string }[],
+): Promise<ResolvedIngredient[]> {
+  const vocab = canonicals.map((c) => `- ${c.name} (${c.category})`).join('\n');
+  const prompt =
+    `Eres un normalizador de ingredientes de cocina. Para cada ingrediente de entrada devuelve ` +
+    `su "canonical_name" (concepto base, en minúsculas y singular) y su "category".\n` +
+    `REUTILIZA exactamente uno de los nombres canónicos del catálogo cuando el concepto coincida, ` +
+    `colapsando variedad/color/formato ("cebolla morada picada" -> "cebolla"), pero mantén ` +
+    `separados los sustancialmente distintos ("leche" vs "leche de coco").\n` +
+    `Si el ingrediente no está en el catálogo, propón un canonical_name nuevo y su category.\n` +
+    `"category" SOLO puede ser una de estas, y NUNCA "Otros": ${CATALOG_CATEGORIES.join(', ')}.\n` +
+    `Devuelve "input" igual que el nombre de entrada.\n\n` +
+    `Catálogo canónico (nombre (categoría)):\n${vocab}\n\n` +
+    `Ingredientes de entrada:\n${names.map((n) => `- ${n}`).join('\n')}`;
+
+  const res = await fetchWithTimeout(
+    `${BASE}/models/${GEN_MODEL}:generateContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: 'application/json', responseSchema: RESOLVE_SCHEMA },
+      }),
+    },
+    GEN_TIMEOUT_MS,
+  );
+  if (!res.ok) {
+    throw new Error(`Gemini resolve ${res.status}: ${await res.text()}`);
+  }
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (typeof text !== 'string') {
+    throw new Error('Respuesta de resolución inesperada de Gemini');
+  }
+  return (JSON.parse(text).items ?? []) as ResolvedIngredient[];
 }
