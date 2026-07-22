@@ -9,6 +9,7 @@ export function useCookedHistory() {
   const [entries, setEntries] = useState<CookedEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
+  const [deleteFailed, setDeleteFailed] = useState(false);
 
   const load = useCallback(() => {
     let active = true;
@@ -30,15 +31,16 @@ export function useCookedHistory() {
   async function remove(id: string) {
     if (busy) return;
     setBusy(id);
+    setDeleteFailed(false);
     try {
       await uncookRecipe(id);
       setEntries((prev) => prev.filter((entry) => entry.id !== id));
     } catch {
-      // ignored; the user can retry
+      setDeleteFailed(true);
     } finally {
       setBusy(null);
     }
   }
 
-  return { entries, loading, busy, remove };
+  return { entries, loading, busy, deleteFailed, remove };
 }

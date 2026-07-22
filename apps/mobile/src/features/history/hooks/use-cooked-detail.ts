@@ -14,6 +14,7 @@ export function useCookedDetail(id: string) {
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [deleteFailed, setDeleteFailed] = useState(false);
 
   const reload = useCallback(() => {
     let active = true;
@@ -51,13 +52,15 @@ export function useCookedDetail(id: string) {
   async function remove() {
     if (deleting || !entry) return;
     setDeleting(true);
+    setDeleteFailed(false);
     try {
       await uncookRecipe(entry.id);
       router.back();
     } catch {
+      setDeleteFailed(true);
       setDeleting(false);
     }
   }
 
-  return { entry, recipe, rating, loading, failed, deleting, remove };
+  return { entry, recipe, rating, loading, failed, deleting, deleteFailed, remove };
 }
