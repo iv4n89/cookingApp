@@ -4,7 +4,6 @@ import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BackHeader } from '@/components/back-header';
-import { CookedRatingStars } from '@/features/history/components/cooked-rating-stars';
 import { CookedStepItem } from '@/features/history/components/cooked-step-item';
 import { DeleteCookedButton } from '@/features/history/components/delete-cooked-button';
 import { formatDate } from '@/features/history/format-date';
@@ -15,7 +14,7 @@ const colors = theme.extend.colors;
 
 export default function CookedDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { entry, recipe, rating, loading, failed, deleting, deleteFailed, remove } = useCookedDetail(id);
+  const { entry, recipe, loading, failed, deleting, deleteFailed, remove } = useCookedDetail(id);
 
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
@@ -48,13 +47,6 @@ export default function CookedDetailScreen() {
             <Text className="font-sans text-body-md text-error">
               No se pudo borrar. Inténtalo de nuevo.
             </Text>
-          ) : null}
-
-          {rating !== null ? (
-            <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
-              <Text className="font-sans-semibold text-body-md text-on-surface">Tu valoración</Text>
-              <CookedRatingStars rating={rating} />
-            </View>
           ) : null}
 
           {recipe && recipe.steps.length > 0 ? (

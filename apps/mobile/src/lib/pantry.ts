@@ -52,7 +52,7 @@ export async function getPantrySummary(): Promise<PantrySummary> {
     min_stock: row.min_stock == null ? null : Number(row.min_stock),
   }));
   const low = rows
-    .filter((row) => row.quantity != null && row.min_stock != null && row.quantity < row.min_stock)
+    .filter((row) => row.quantity != null && row.min_stock != null && row.quantity <= row.min_stock)
     .sort((a, b) => (a.quantity ?? 0) - (b.quantity ?? 0))
     .map((row) => ({ id: row.id, name: row.name, quantity: row.quantity as number, unit: row.unit }));
   return { count: rows.length, low };
@@ -100,6 +100,10 @@ export function usePantry() {
   const writes = useRef<Record<string, Promise<unknown>>>({});
 
   const refresh = useCallback(async () => {
+    // Espera las escrituras en vuelo (cola del stepper) antes de leer, para no traer un estado
+    // previo y pisar el valor optimista al volver a la pestaña.
+    const pending = Object.values(writes.current);
+    if (pending.length) await Promise.allSettled(pending);
     const { data, error } = await supabase.from('pantry_items').select(COLUMNS).order('name');
     if (error) setError('No se pudieron cargar los ingredientes.');
     else {
@@ -156,12 +160,13 @@ export function usePantry() {
   }
 
   async function remove(id: string) {
-    const snapshot = items;
     setItems((prev) => prev.filter((item) => item.id !== id));
     const { error } = await supabase.from('pantry_items').delete().eq('id', id);
     if (error) {
       setError('No se pudo eliminar el ingrediente.');
-      setItems(snapshot);
+      // Re-sincroniza desde la DB en vez de restaurar un snapshot que pudo quedar obsoleto
+      // (una escritura de cantidad concurrente lo habría revertido).
+      refresh();
     }
   }
 

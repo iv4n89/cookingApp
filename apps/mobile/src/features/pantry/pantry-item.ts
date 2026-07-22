@@ -1,8 +1,8 @@
 import type { PantryItem } from '@/lib/pantry';
 
-// A pantry item runs low when its quantity drops below the user's configured minimum.
+// A pantry item runs low when its quantity reaches or drops below the configured minimum.
 export function isLowStock(item: PantryItem) {
-  return item.quantity !== null && item.min_stock !== null && item.quantity < item.min_stock;
+  return item.quantity !== null && item.min_stock !== null && item.quantity <= item.min_stock;
 }
 
 // Compact "quantity unit" line for a pantry item, or an em dash when there's nothing to show.
