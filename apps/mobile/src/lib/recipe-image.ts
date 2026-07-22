@@ -6,6 +6,13 @@ import type { ImageStatus } from './recipes';
 const POLL_MS = 1500;
 const MAX_POLLS = 13; // ~20s de sondeo como tope de seguridad
 
+// Pide al backend generar la imagen de una receta que aún no la tiene (on-demand al abrir el
+// detalle). Devuelve el estado resultante: 'pending' si se puso a generar, 'none' si no se pudo.
+export async function ensureRecipeImage(recipeId: string): Promise<ImageStatus> {
+  const { data } = await supabase.functions.invoke('ensure-recipe-image', { body: { recipeId } });
+  return (data?.image_status as ImageStatus | undefined) ?? 'none';
+}
+
 // Resuelve la imagen de una receta: si está lista, su url; si se está generando ('pending'),
 // sondea hasta que llegue ('ready') o se descarte ('none'); si no habrá, null. `pending`
 // indica mostrar spinner.
