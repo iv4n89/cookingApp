@@ -48,15 +48,13 @@ export function ChatRecipeCard({
 
   return (
     <View className="w-full max-w-[92%] gap-gutter overflow-hidden rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low">
-      <View className="aspect-[3/2] w-full items-center justify-center bg-surface-container">
-        {recipe.image_url ? (
+      {recipe.image_url ? (
+        <View className="aspect-[3/2] w-full items-center justify-center bg-surface-container">
           <Image source={recipe.image_url} style={{ width: '100%', height: '100%' }} contentFit="cover" />
-        ) : (
-          <MaterialIcons name="restaurant-menu" size={36} color={colors['outline-variant']} />
-        )}
-      </View>
+        </View>
+      ) : null}
 
-      <View className="gap-gutter p-stack-lg pt-0">
+      <View className={`gap-gutter p-stack-lg ${recipe.image_url ? 'pt-0' : ''}`}>
         <View className="self-start bg-primary px-stack-md py-stack-sm">
           <Text className="font-mono text-label-sm text-on-primary">RECETA</Text>
         </View>
