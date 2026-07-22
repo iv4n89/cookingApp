@@ -66,3 +66,27 @@ export async function listIngredients(): Promise<CatalogIngredient[]> {
     };
   });
 }
+
+export type CanonicalMap = Map<string, string>; // varianteId -> canónicoId
+
+let canonicalCache: CanonicalMap | null = null;
+
+// Mapa id->canónico de las variantes (canonical_id not null), cacheado por sesión. Si el fetch
+// falla devuelve un mapa vacío y no cachea (para reintentar en la siguiente llamada).
+export async function getCanonicalMap(): Promise<CanonicalMap> {
+  if (canonicalCache) return canonicalCache;
+  const { data, error } = await supabase
+    .from('ingredients')
+    .select('id, canonical_id')
+    .not('canonical_id', 'is', null);
+  if (error) return new Map();
+  const map = new Map<string, string>();
+  for (const row of data ?? []) map.set(row.id as string, row.canonical_id as string);
+  canonicalCache = map;
+  return map;
+}
+
+// canon(id) = su canónico si es variante; el propio id si es canónico o desconocido.
+export function canon(id: string, map: CanonicalMap): string {
+  return map.get(id) ?? id;
+}

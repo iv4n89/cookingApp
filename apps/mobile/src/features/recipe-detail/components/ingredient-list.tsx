@@ -1,6 +1,7 @@
 import { Text, View } from 'react-native';
 
 import { AddMissingButton } from '@/components/add-missing-button';
+import type { CanonicalMap } from '@/lib/ingredients';
 import type { CookPantryItem } from '@/lib/pantry';
 import { isBasic, isMissingByStock } from '@/lib/pantry-match';
 import { formatQuantity, type RecipeIngredient } from '@/lib/recipes';
@@ -14,12 +15,14 @@ function quantityLine(ingredient: RecipeIngredient): string {
 export function IngredientList({
   ingredients,
   pantry,
+  canonMap,
 }: {
   ingredients: RecipeIngredient[];
   pantry: CookPantryItem[] | null;
+  canonMap: CanonicalMap;
 }) {
   const missing = pantry
-    ? ingredients.filter((i) => isMissingByStock(i, pantry))
+    ? ingredients.filter((i) => isMissingByStock(i, pantry, canonMap))
     : ingredients.filter((i) => !isBasic(i.name));
 
   return (
@@ -32,7 +35,7 @@ export function IngredientList({
       </View>
       <View className="mb-stack-lg gap-stack-md">
         {ingredients.map((ingredient, i) => {
-          const falta = pantry ? isMissingByStock(ingredient, pantry) : false;
+          const falta = pantry ? isMissingByStock(ingredient, pantry, canonMap) : false;
           return (
             <View
               key={`${ingredient.name}-${i}`}

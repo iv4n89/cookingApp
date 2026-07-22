@@ -31,6 +31,7 @@ export default function RecipeDetailScreen() {
     toggleFavorite,
     rate,
     pantry,
+    canonMap,
     cooking,
     startCooking,
   } = useRecipeDetail(id, servingsParam);
@@ -66,7 +67,7 @@ export default function RecipeDetailScreen() {
 
                 <ServingsStepper servings={servings} onChange={setServings} />
 
-                <IngredientList key={servings} ingredients={scaledIngredients} pantry={pantry} />
+                <IngredientList key={servings} ingredients={scaledIngredients} pantry={pantry} canonMap={canonMap} />
 
                 <View>
                   <Text className="mb-stack-md font-sans-semibold text-headline-sm uppercase tracking-wider text-primary">

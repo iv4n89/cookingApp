@@ -6,6 +6,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import { AddMissingButton } from '@/components/add-missing-button';
 import { ServingsStepper } from '@/components/servings-stepper';
+import type { CanonicalMap } from '@/lib/ingredients';
 import type { PantryMatch } from '@/lib/pantry';
 import { isMissing } from '@/lib/pantry-match';
 import { formatQuantity, scaleIngredients, type Recipe, type RecipeIngredient } from '@/lib/recipes';
@@ -30,12 +31,20 @@ function ingredientText(ingredient: RecipeIngredient): string {
 
 // Recipe card rendered inside an assistant message: image, servings stepper, ingredient list
 // marking what's missing (with a shortcut to the shopping list) and a link to cook it.
-export function ChatRecipeCard({ recipe, pantry }: { recipe: Recipe; pantry: PantryMatch | null }) {
+export function ChatRecipeCard({
+  recipe,
+  pantry,
+  canonMap,
+}: {
+  recipe: Recipe;
+  pantry: PantryMatch | null;
+  canonMap: CanonicalMap;
+}) {
   const [servings, setServings] = useState(recipe.servings > 0 ? recipe.servings : 1);
 
   const total = recipe.prep_time_min + recipe.cook_time_min;
   const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
-  const missing = pantry ? scaled.filter((ing) => isMissing(ing, pantry)) : [];
+  const missing = pantry ? scaled.filter((ing) => isMissing(ing, pantry, canonMap)) : [];
 
   return (
     <View className="w-full max-w-[92%] gap-gutter overflow-hidden rounded-xl rounded-tl-none border border-outline-variant bg-surface-container-low">
@@ -68,7 +77,7 @@ export function ChatRecipeCard({ recipe, pantry }: { recipe: Recipe; pantry: Pan
             Ingredientes
           </Text>
           {scaled.map((ing, i) => {
-            const falta = pantry ? isMissing(ing, pantry) : false;
+            const falta = pantry ? isMissing(ing, pantry, canonMap) : false;
             return (
               <View key={i} className="flex-row items-start gap-stack-md">
                 <View className={`mt-2 h-1.5 w-1.5 rounded-full ${falta ? 'bg-secondary' : 'bg-primary'}`} />

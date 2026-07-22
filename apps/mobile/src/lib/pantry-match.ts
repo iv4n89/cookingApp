@@ -1,4 +1,4 @@
-import { normalize } from './ingredients';
+import { canon, normalize, type CanonicalMap } from './ingredients';
 import type { CookPantryItem, PantryMatch } from './pantry';
 import type { RecipeIngredient } from './recipes';
 
@@ -35,15 +35,31 @@ function nameMatches(a: string[], b: string[]): boolean {
   return few.every((f) => many.some((m) => sameWord(f, m)));
 }
 
-// Un ingrediente falta si no es un básico y no está en la despensa (por id o por nombre).
-export function isMissing(ingredient: RecipeIngredient, pantry: PantryMatch): boolean {
+// ¿El ingrediente de receta y el item de despensa/compra son el mismo? Con ambos ids -> por
+// canónico (preciso); si falta id en algún lado -> por nombre (respaldo para añadidos manuales
+// o ingredientes sin resolver).
+export function sameIngredient(
+  aId: string | null | undefined,
+  aName: string,
+  bId: string | null | undefined,
+  bName: string,
+  map: CanonicalMap,
+): boolean {
+  if (aId && bId) return canon(aId, map) === canon(bId, map);
+  return nameMatches(words(aName), words(bName));
+}
+
+// Un ingrediente falta si no es un básico y no está en la despensa (por canónico o, sin id,
+// por nombre).
+export function isMissing(
+  ingredient: RecipeIngredient,
+  pantry: PantryMatch,
+  map: CanonicalMap,
+): boolean {
   if (isBasic(ingredient.name)) return false;
-  if (ingredient.ingredient_id && pantry.ids.has(ingredient.ingredient_id)) return false;
-  const recipeWords = words(ingredient.name);
-  for (const pantryName of pantry.names) {
-    if (nameMatches(recipeWords, words(pantryName))) return false;
-  }
-  return true;
+  return !pantry.some((p) =>
+    sameIngredient(ingredient.ingredient_id, ingredient.name, p.ingredient_id, p.name, map),
+  );
 }
 
 export function normalizeUnit(unit: string | null): string {
@@ -71,22 +87,18 @@ export function convertQuantity(quantity: number, from: string | null, to: strin
   return null;
 }
 
-// ¿Dos nombres de ingrediente se refieren al mismo? (match por palabras con tolerancia a plurales)
-export function namesMatch(a: string, b: string): boolean {
-  return nameMatches(words(a), words(b));
-}
-
 // Falta con conciencia de cantidad: no está en la despensa (por id/nombre), o está pero —con
 // la misma unidad— la cantidad disponible no llega a la que pide la receta. Solo se juzga
 // insuficiente cuando las unidades son comparables; si no, se asume que lo tienes. Los básicos
 // nunca faltan.
-export function isMissingByStock(ingredient: RecipeIngredient, pantry: CookPantryItem[]): boolean {
+export function isMissingByStock(
+  ingredient: RecipeIngredient,
+  pantry: CookPantryItem[],
+  map: CanonicalMap,
+): boolean {
   if (isBasic(ingredient.name)) return false;
-  const recipeWords = words(ingredient.name);
-  const matches = pantry.filter(
-    (p) =>
-      (ingredient.ingredient_id != null && p.ingredient_id === ingredient.ingredient_id) ||
-      nameMatches(recipeWords, words(p.name)),
+  const matches = pantry.filter((p) =>
+    sameIngredient(ingredient.ingredient_id, ingredient.name, p.ingredient_id, p.name, map),
   );
   if (matches.length === 0) return true;
   if (ingredient.quantity == null || ingredient.quantity <= 0) return false;
@@ -115,20 +127,18 @@ const EPSILON = 1e-6;
 export function computeCookDeltas(
   ingredients: RecipeIngredient[],
   pantryItems: CookPantryItem[],
+  map: CanonicalMap,
 ): CookDelta[] {
   const deltas: CookDelta[] = [];
   for (const ing of ingredients) {
     if (ing.quantity == null || ing.quantity <= 0 || isBasic(ing.name)) continue;
-    const recipeWords = words(ing.name);
     const matches = pantryItems
       .filter(
         (p) =>
           (p.quantity ?? 0) > 0 &&
-          ((ing.ingredient_id != null && p.ingredient_id === ing.ingredient_id) ||
-            nameMatches(recipeWords, words(p.name))),
+          sameIngredient(ing.ingredient_id, ing.name, p.ingredient_id, p.name, map),
       )
-      // Menor stock primero, comparando en la unidad de la receta; los no comparables al final
-      // (se saltan igual dentro del bucle).
+      // Menor stock primero, comparando en la unidad de la receta; los no comparables al final.
       .sort(
         (a, b) =>
           (convertQuantity(a.quantity ?? 0, a.unit, ing.unit) ?? Infinity) -

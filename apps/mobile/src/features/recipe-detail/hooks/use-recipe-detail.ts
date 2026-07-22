@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useSession } from '@/lib/auth';
 import { cookRecipe } from '@/lib/cooking';
+import { getCanonicalMap, type CanonicalMap } from '@/lib/ingredients';
 import { getPantryForCook, type CookPantryItem } from '@/lib/pantry';
 import { computeCookDeltas } from '@/lib/pantry-match';
 import { getRecipe, scaleIngredients, type Recipe } from '@/lib/recipes';
@@ -18,6 +19,7 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
   const { session } = useSession();
   const [meta, setMeta] = useState<UserRecipeMeta>({ is_favorite: false, rating: null });
   const [pantry, setPantry] = useState<CookPantryItem[] | null>(null);
+  const [canonMap, setCanonMap] = useState<CanonicalMap>(new Map());
   const [cooking, setCooking] = useState(false);
 
   const reload = useCallback(() => {
@@ -67,6 +69,11 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
         if (active) setPantry(data);
       })
       .catch(() => {});
+    getCanonicalMap()
+      .then((data) => {
+        if (active) setCanonMap(data);
+      })
+      .catch(() => {});
     return () => {
       active = false;
     };
@@ -101,7 +108,7 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     try {
       const items = await getPantryForCook();
       const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
-      await cookRecipe(recipe.id, servings, computeCookDeltas(scaled, items));
+      await cookRecipe(recipe.id, servings, computeCookDeltas(scaled, items, canonMap));
     } catch {
       // ignored; the user can adjust the pantry by hand
     }
@@ -123,6 +130,7 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     toggleFavorite,
     rate,
     pantry,
+    canonMap,
     cooking,
     startCooking,
   };
