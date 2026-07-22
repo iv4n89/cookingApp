@@ -3,7 +3,8 @@ import { useCallback, useRef, useState } from 'react';
 
 import { useSession } from '@/lib/auth';
 import { getPantrySummary, type PantrySummary } from '@/lib/pantry';
-import { addIngredientsToShopping, recommendedRecipes, type RecommendedRecipe } from '@/lib/recipes';
+import { addIngredientsToShopping, recommendedRecipes, type MealType, type RecommendedRecipe } from '@/lib/recipes';
+import { currentMealType, greeting } from '@/features/home/meal-time';
 import { listFavorites, setFavorite } from '@/lib/user-recipes';
 
 // Home data: recommended recipes, the pantry summary and saved (favorite) recipes. Refetches on
@@ -12,6 +13,10 @@ export function useHome() {
   const { session } = useSession();
   const [suggestions, setSuggestions] = useState<RecommendedRecipe[]>([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [meal, setMeal] = useState<MealType>(() => currentMealType(new Date()));
+  // Ids ya mostrados en esta sesión, para traer nuevas en el pull-to-refresh.
+  const seen = useRef<Set<string>>(new Set());
   const [pantry, setPantry] = useState<PantrySummary | null>(null);
   const [addingLow, setAddingLow] = useState(false);
   const [addedLow, setAddedLow] = useState(false);
@@ -19,11 +24,21 @@ export function useHome() {
   // In-flight save toggles, to ignore repeated taps while a request resolves.
   const savingIds = useRef<Set<string>>(new Set());
 
+  const fetchSuggestions = useCallback((mealType: MealType, exclude: string[]) => {
+    return recommendedRecipes(mealType, exclude).then((data) => {
+      data.forEach((recipe) => seen.current.add(recipe.id));
+      return data;
+    });
+  }, []);
+
   const load = useCallback(() => {
     let active = true;
+    const mealType = currentMealType(new Date());
+    setMeal(mealType);
+    seen.current.clear();
     setLoadingSuggestions(true);
     setAddedLow(false);
-    recommendedRecipes()
+    fetchSuggestions(mealType, [])
       .then((data) => {
         if (active) setSuggestions(data);
       })
@@ -44,9 +59,29 @@ export function useHome() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [fetchSuggestions]);
 
   useFocusEffect(load);
+
+  // Pull-to-refresh: trae otras recetas excluyendo las ya vistas; si se agotan, reinicia.
+  async function refresh() {
+    if (refreshing) return;
+    setRefreshing(true);
+    const mealType = currentMealType(new Date());
+    setMeal(mealType);
+    try {
+      let data = await fetchSuggestions(mealType, Array.from(seen.current));
+      if (data.length === 0) {
+        seen.current.clear();
+        data = await fetchSuggestions(mealType, []);
+      }
+      if (data.length > 0) setSuggestions(data);
+    } catch {
+      // se ignora; el usuario puede reintentar
+    } finally {
+      setRefreshing(false);
+    }
+  }
 
   async function toggleSave(id: string) {
     if (!session || savingIds.current.has(id)) return;
@@ -88,5 +123,18 @@ export function useHome() {
     }
   }
 
-  return { suggestions, loadingSuggestions, pantry, addingLow, addedLow, saved, toggleSave, addLowToShopping };
+  return {
+    suggestions,
+    loadingSuggestions,
+    refreshing,
+    refresh,
+    meal,
+    greetingText: greeting(new Date()),
+    pantry,
+    addingLow,
+    addedLow,
+    saved,
+    toggleSave,
+    addLowToShopping,
+  };
 }
