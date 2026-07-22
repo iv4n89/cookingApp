@@ -24,6 +24,8 @@ export const ALLERGEN_KEYS = [
 
 export const DIET_KEYS = ['vegan', 'vegetarian'];
 
+export const MEAL_TYPE_KEYS = ['desayuno', 'almuerzo', 'merienda', 'cena'];
+
 // Necesidad especial (etiqueta del catálogo del perfil) -> alérgenos a excluir de la caché.
 // Solo las de exclusión determinista; condiciones vagas (ostomía, diabetes, hipertensión...)
 // no se pueden mapear a un "contiene X" y se atienden por guía de generación.

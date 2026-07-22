@@ -58,6 +58,7 @@ export interface GeneratedRecipe {
   tags: string[];
   allergens?: string[];
   diet?: string[];
+  meal_types?: string[];
   ingredients: { name: string; quantity?: string; unit?: string }[];
   steps: { instruction: string; timer_seconds?: number }[];
 }
@@ -74,6 +75,7 @@ const RECIPE_SCHEMA = {
     tags: { type: 'ARRAY', items: { type: 'STRING' } },
     allergens: { type: 'ARRAY', items: { type: 'STRING' } },
     diet: { type: 'ARRAY', items: { type: 'STRING' } },
+    meal_types: { type: 'ARRAY', items: { type: 'STRING' } },
     ingredients: {
       type: 'ARRAY',
       items: {
@@ -107,6 +109,7 @@ const RECIPE_SCHEMA = {
     'tags',
     'allergens',
     'diet',
+    'meal_types',
     'ingredients',
     'steps',
   ],
@@ -206,7 +209,9 @@ export async function generateRecipe(
     ` sesame, fructose (fruta, miel, sirope de fructosa), histamine (alimentos fermentados, curados o muy` +
     ` madurados), sorbitol (algunas frutas de hueso y edulcorantes "sin azúcar"), pork, alcohol (deja la lista` +
     ` vacía si no contiene ninguno). En "diet" incluye "vegetarian" si es vegetariana y "vegan" si es vegana` +
-    ` (una receta vegana es también vegetariana: incluye ambas).`;
+    ` (una receta vegana es también vegetariana: incluye ambas).` +
+    ` En "meal_types" indica en qué momentos del día encaja el plato, usando SOLO estas claves` +
+    ` (una receta puede valer para varias): desayuno, almuerzo, merienda, cena.`;
 
   const res = await fetchWithTimeout(
     `${BASE}/models/${GEN_MODEL}:generateContent`,
