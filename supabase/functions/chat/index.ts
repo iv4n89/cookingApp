@@ -55,6 +55,10 @@ const BASE_PROMPT =
   'soy (soja), sesame (sésamo), mustard (mostaza), celery (apio), fructose, histamine, sorbitol, ' +
   'pork (cerdo), alcohol. Ejemplo: "sin huevo" -> ["egg"]. Si pide vegano o vegetariano, ponlo en ' +
   '"require_diet" (vegan o vegetarian). Deja ambos vacíos si no aplica.\n' +
+  'Si el usuario pide cocinar SOLO con lo que tiene en casa o dice que no puede/quiere comprar ' +
+  '(por ejemplo "con lo que tenga", "no puedo salir a comprar", "sin ir a la tienda", "con lo que ' +
+  'haya por casa"), pon "pantry_only" en true; si no, déjalo false. Cuando sea true, elige un plato ' +
+  'realista con los ingredientes de su despensa.\n' +
   'No des consejo médico ni nutricional profesional.';
 
 // Texto de la receta para que el modelo recuerde lo propuesto en turnos anteriores.
@@ -75,16 +79,13 @@ function recipeContext(recipe: HistoryRecipe): string {
   );
 }
 
+async function fetchPantryNames(supabase: SupabaseClient, userId: string): Promise<string[]> {
+  const { data } = await supabase.from('pantry_items').select('name').eq('user_id', userId).limit(100);
+  return (data ?? []).map((p) => p.name as string).filter(Boolean);
+}
+
 // Contexto siempre activo del usuario: necesidades (a respetar), preferencias y despensa.
-async function buildSystemInstruction(
-  supabase: SupabaseClient,
-  userId: string | null,
-  prefs: UserPrefs | null,
-): Promise<string> {
-  if (!userId) return BASE_PROMPT;
-
-  const { data: pantry } = await supabase.from('pantry_items').select('name').eq('user_id', userId).limit(100);
-
+function buildSystemInstruction(prefs: UserPrefs | null, pantryNames: string[]): string {
   const parts = [BASE_PROMPT];
   if (prefs?.special_needs.length) {
     parts.push(
@@ -96,9 +97,9 @@ async function buildSystemInstruction(
   }
   const notes = (prefs?.notes ?? '').trim().slice(0, 500);
   if (notes) parts.push(`Notas del usuario: ${notes}`);
-  if (pantry?.length) {
+  if (pantryNames.length) {
     parts.push(
-      `Ingredientes que el usuario tiene en su despensa: ${pantry.map((p) => p.name).join(', ')}. ` +
+      `Ingredientes que el usuario tiene en su despensa: ${pantryNames.join(', ')}. ` +
         `Prioriza recetas que aprovechen lo que ya tiene.`,
     );
   }
@@ -133,12 +134,11 @@ Deno.serve(async (req) => {
     const supabase = serviceClient();
     const userId = getUserId(req);
     const prefs = userId ? await getUserPrefs(supabase, userId) : null;
-    const system = await buildSystemInstruction(supabase, userId, prefs);
+    const pantryNames = userId ? await fetchPantryNames(supabase, userId) : [];
+    const system = buildSystemInstruction(prefs, pantryNames);
 
-    const { message, recipe_query, suggestions, exclude_allergens, require_diet } = await generateChat(
-      turns,
-      system,
-    );
+    const { message, recipe_query, suggestions, exclude_allergens, require_diet, pantry_only } =
+      await generateChat(turns, system);
 
     // La receta no la inventa el chat: se resuelve por el pipeline real (caché/web/IA),
     // aplicando también las restricciones que el usuario pide en la conversación.
@@ -154,6 +154,8 @@ Deno.serve(async (req) => {
           {
             excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
             requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
+            pantryOnly: pantry_only === true,
+            pantry: pantry_only === true ? pantryNames : undefined,
           },
           { skipCache: true },
         );
