@@ -8,6 +8,13 @@
 
 **Tech Stack:** Supabase Postgres (plpgsql + pgvector), Edge Functions (Deno/TS), Expo React Native (TS), Gemini (`gemini-flash-lite-latest`).
 
+> **Iteración 22-jul:** tras probar, las sugeridas se dividen en dos secciones (ver el spec,
+> sección "Revisión 22-jul"). La migración `0026_recommended_recipes_buckets.sql` sustituye
+> la RPC de la Task 2/0025: devuelve un `bucket` (`pantry` missing≤1 / `buy` missing 2-4 /
+> `idea` si no hay nada cocinable) y el cliente renderiza dos secciones ("Ideas para tu
+> {franja}" y "Para comprar algo más"). Las Tasks 5-9 quedan como base; el badge y el split
+> por bucket son el estado final.
+
 **Sin infra de tests:** el repo no tiene framework de tests. La verificación es real: migraciones aplicadas a la Supabase local, `\df`/consultas psql, `deno check`, `tsc --noEmit` y comprobación en el dev-client.
 
 ---

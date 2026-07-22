@@ -29,10 +29,27 @@ La variedad (dedup por similitud de embeddings) ya existe en la RPC actual y se 
   en el flujo de búsqueda IA (patrón `exclude_allergens` / `require_diet`).
 - No existe flag `purchasable` en `ingredients`; sí categorías controladas.
 
+## Revisión 22-jul (dos secciones)
+
+Tras probar, mostrar en una sola lista recetas con muchos faltantes (te faltan 4-5)
+resultó confuso. Se divide en dos secciones y se endurece el umbral principal:
+
+- **Sección principal "Ideas para tu {franja}"**: solo recetas cocinables o a falta de 1
+  ingrediente no-staple (`missing <= 1`, `mc >= 1`). Bucket `pantry`.
+- **Sección extra "Para comprar algo más"**: recetas relevantes a la despensa (`mc >= 1`)
+  a las que faltan 2-4 no-staple. Bucket `buy`. Pequeña (≈3).
+- **Fallback ideas**: solo si la sección principal no da NADA (despensa vacía), se rellena
+  con ideas por preferencias+franja ignorando la despensa. Bucket `idea` (badge "IDEA").
+- La franja sigue ordenando primero (`slot_match`) pero no filtra en duro.
+
+La RPC devuelve un `bucket` por fila y el cliente parte en dos secciones. Esto sustituye
+al fallback blando por preferencias que antes rellenaba la lista única.
+
 ## Decisiones tomadas
 
 - **Match despensa:** "casi completo" — se admiten recetas a las que falten <=2
-  ingredientes (staples no cuentan como faltantes).
+  ingredientes (staples no cuentan como faltantes). *(Revisado: la sección principal usa
+  `missing <= 1`; la extra `buy` cubre 2-4.)*
 - **Franjas:** columna `meal_types text[]` en `recipes` (una receta puede valer para
   varias franjas).
 - **Clasificación:** IA (Gemini) en el pipeline de generación + backfill del pool
