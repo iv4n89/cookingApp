@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { useSession } from '@/lib/auth';
 import { cookRecipe } from '@/lib/cooking';
@@ -8,6 +9,9 @@ import { getPantryForCook, type CookPantryItem } from '@/lib/pantry';
 import { computeCookDeltas } from '@/lib/pantry-match';
 import { getRecipe, scaleIngredients, type Recipe } from '@/lib/recipes';
 import { getUserRecipe, setFavorite, setRating, type UserRecipeMeta } from '@/lib/user-recipes';
+
+// Recetas ya cocinadas (descontadas) en esta sesión de app: reentrar no vuelve a descontar.
+const cookedThisSession = new Set<string>();
 
 // Loads a recipe and its per-user metadata (favorite/rating), tracks the chosen servings and
 // exposes the favorite/rate/cook actions. Keeps the recipe detail screen free of data logic.
@@ -21,6 +25,12 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
   const [pantry, setPantry] = useState<CookPantryItem[] | null>(null);
   const [canonMap, setCanonMap] = useState<CanonicalMap>(new Map());
   const [cooking, setCooking] = useState(false);
+  const [cooked, setCooked] = useState(false);
+  const [cookFailed, setCookFailed] = useState(false);
+
+  useEffect(() => {
+    setCooked(recipe ? cookedThisSession.has(recipe.id) : false);
+  }, [recipe?.id]);
 
   const reload = useCallback(() => {
     let active = true;
@@ -101,19 +111,43 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     }
   }
 
-  async function startCooking() {
-    if (!recipe || cooking) return;
+  async function doCook() {
+    if (!recipe) return;
     setCooking(true);
-    // Best-effort discount: if it fails we still let the user cook.
+    setCookFailed(false);
     try {
       const items = await getPantryForCook();
       const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
       await cookRecipe(recipe.id, servings, computeCookDeltas(scaled, items, canonMap));
+      cookedThisSession.add(recipe.id);
+      setCooked(true);
+      router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
     } catch {
-      // ignored; the user can adjust the pantry by hand
+      setCookFailed(true);
+    } finally {
+      setCooking(false);
     }
-    setCooking(false);
-    router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
+  }
+
+  // Descuenta la despensa (con confirmación) y entra al modo cocina. Si ya se cocinó en esta
+  // sesión, entra sin volver a descontar (evita el doble descuento al reentrar).
+  function startCooking() {
+    if (!recipe || cooking) return;
+    if (cookedThisSession.has(recipe.id)) {
+      router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
+      return;
+    }
+    // Bloquea ya (antes de abrir el diálogo) para que un doble-tap no apile dos Alert.
+    setCooking(true);
+    Alert.alert(
+      '¿Cocinar esta receta?',
+      'Se descontarán sus ingredientes de tu despensa.',
+      [
+        { text: 'Cancelar', style: 'cancel', onPress: () => setCooking(false) },
+        { text: 'Cocinar', onPress: doCook },
+      ],
+      { cancelable: true, onDismiss: () => setCooking(false) },
+    );
   }
 
   const scaledIngredients = recipe ? scaleIngredients(recipe.ingredients, recipe.servings, servings) : [];
@@ -132,6 +166,8 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     pantry,
     canonMap,
     cooking,
+    cooked,
+    cookFailed,
     startCooking,
   };
 }
