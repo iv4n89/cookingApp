@@ -135,8 +135,9 @@ export async function resolveRecipe(
     reusable: !options.skipCache,
   });
 
-  // Imagen de la receta en segundo plano: no bloquea la respuesta y se guarda para el futuro.
-  queueRecipeImage(supabase, saved?.id, saved?.title);
+  // Imagen de la receta en segundo plano SOLO para reutilizables (las del chat, reusable=false,
+  // van con placeholder para no gastar en fal). No bloquea la respuesta.
+  if (!options.skipCache) queueRecipeImage(supabase, saved?.id, saved?.title);
 
   if (userId) {
     try {
