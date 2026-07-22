@@ -6,6 +6,7 @@ import { AppHeader } from '@/components/app-header';
 import { ErrorBanner } from '@/components/error-banner';
 import { IngredientPicker } from '@/components/ingredient-picker';
 import { MinStockModal } from '@/features/pantry/components/min-stock-modal';
+import { QuantityModal } from '@/features/pantry/components/quantity-modal';
 import { PantryAddButton } from '@/features/pantry/components/pantry-add-button';
 import { PantryList } from '@/features/pantry/components/pantry-list';
 import { PantrySegmentedFilter } from '@/features/pantry/components/pantry-segmented-filter';
@@ -37,6 +38,12 @@ export default function AlacenaScreen() {
     openMinEditor,
     saveMin,
     closeMinEditor,
+    editingQty,
+    qtyDraft,
+    setQtyDraft,
+    openQtyEditor,
+    saveQty,
+    closeQtyEditor,
   } = usePantryScreen();
 
   return (
@@ -84,7 +91,13 @@ export default function AlacenaScreen() {
               Sin resultados.
             </Text>
           ) : (
-            <PantryList groups={groups} onSetQuantity={setQuantity} onEditMin={openMinEditor} onRemove={remove} />
+            <PantryList
+              groups={groups}
+              onSetQuantity={setQuantity}
+              onEditQuantity={openQtyEditor}
+              onEditMin={openMinEditor}
+              onRemove={remove}
+            />
           )}
           {/* Bottom spacer so the + button doesn't cover the last card. */}
           <View className="h-20" />
@@ -114,6 +127,14 @@ export default function AlacenaScreen() {
         onDraftChange={setMinDraft}
         onCancel={closeMinEditor}
         onSave={saveMin}
+      />
+
+      <QuantityModal
+        item={editingQty}
+        draft={qtyDraft}
+        onDraftChange={setQtyDraft}
+        onCancel={closeQtyEditor}
+        onSave={saveQty}
       />
     </SafeAreaView>
   );
