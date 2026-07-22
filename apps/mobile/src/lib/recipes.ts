@@ -60,6 +60,8 @@ export async function askRecipe(query: string): Promise<{ recipe: Recipe | null;
   return data as { recipe: Recipe | null; origin: RecipeOrigin };
 }
 
+export type MealType = 'desayuno' | 'almuerzo' | 'merienda' | 'cena';
+
 export interface RecommendedRecipe {
   id: string;
   title: string;
@@ -69,11 +71,21 @@ export interface RecommendedRecipe {
   cook_time_min: number;
   tags: string[];
   match_count: number;
+  missing_count: number;
 }
 
-// Recetas que puedes cocinar con lo que tienes: ordenadas por ingredientes en despensa.
-export async function recommendedRecipes(limit = 6): Promise<RecommendedRecipe[]> {
-  const { data, error } = await supabase.rpc('recommended_recipes', { p_limit: limit });
+// Recetas sugeridas de la Home: por despensa (casi completo) y preferencias, filtradas por
+// la franja del día. `exclude` son ids ya mostrados, para rotar en el pull-to-refresh.
+export async function recommendedRecipes(
+  mealType: MealType,
+  exclude: string[] = [],
+  limit = 6,
+): Promise<RecommendedRecipe[]> {
+  const { data, error } = await supabase.rpc('recommended_recipes', {
+    p_limit: limit,
+    p_meal_type: mealType,
+    p_exclude: exclude,
+  });
   if (error) throw error;
   return (data as RecommendedRecipe[]) ?? [];
 }
