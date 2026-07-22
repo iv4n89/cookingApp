@@ -13,11 +13,15 @@ export function usePreferences() {
   const [notes, setNotes] = useState('');
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
 
-  useEffect(() => {
+  const reload = useCallback(() => {
     let active = true;
+    setLoading(true);
+    setLoadFailed(false);
     getPreferences()
       .then((prefs) => {
         if (!active) return;
@@ -25,7 +29,11 @@ export function usePreferences() {
         setNeeds(new Set(prefs.special_needs));
         setNotes(prefs.notes);
       })
-      .catch(() => {})
+      .catch(() => {
+        // Si no se pudo cargar, la pantalla no muestra el formulario, para no sobrescribir
+        // las preferencias reales con un estado vacío al guardar.
+        if (active) setLoadFailed(true);
+      })
       .finally(() => {
         if (active) setLoading(false);
       });
@@ -34,9 +42,12 @@ export function usePreferences() {
     };
   }, []);
 
+  useEffect(() => reload(), [reload]);
+
   const toggle = useCallback((setter: typeof setFood) => {
     return (label: string) => {
       setSaved(false);
+      setSaveFailed(false);
       setter((prev) => {
         const next = new Set(prev);
         if (next.has(label)) next.delete(label);
@@ -51,12 +62,14 @@ export function usePreferences() {
 
   function changeNotes(text: string) {
     setSaved(false);
+    setSaveFailed(false);
     setNotes(text);
   }
 
   async function save() {
     if (!session || saving) return;
     setSaving(true);
+    setSaveFailed(false);
     try {
       await savePreferences(session.user.id, {
         food_prefs: [...food],
@@ -65,7 +78,7 @@ export function usePreferences() {
       });
       setSaved(true);
     } catch {
-      // ignored; the user can retry
+      setSaveFailed(true);
     } finally {
       setSaving(false);
     }
@@ -73,8 +86,11 @@ export function usePreferences() {
 
   return {
     loading,
+    loadFailed,
+    reload,
     saving,
     saved,
+    saveFailed,
     query,
     setQuery,
     food,

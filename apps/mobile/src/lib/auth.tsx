@@ -15,10 +15,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
-    });
+    // Si getSession rechaza (red/almacenamiento), igualmente hay que salir de `loading` o la
+    // app se queda en blanco tras el splash; sin sesión, el guard manda al login.
+    supabase.auth
+      .getSession()
+      .then(({ data }) => setSession(data.session))
+      .catch(() => setSession(null))
+      .finally(() => setLoading(false));
     const { data } = supabase.auth.onAuthStateChange((_event, next) => {
       setSession(next);
     });

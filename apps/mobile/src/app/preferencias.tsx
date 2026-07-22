@@ -11,8 +11,23 @@ const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
 export default function PreferenciasScreen() {
-  const { loading, saving, saved, query, setQuery, food, needs, notes, changeNotes, toggleFood, toggleNeeds, save } =
-    usePreferences();
+  const {
+    loading,
+    loadFailed,
+    reload,
+    saving,
+    saved,
+    saveFailed,
+    query,
+    setQuery,
+    food,
+    needs,
+    notes,
+    changeNotes,
+    toggleFood,
+    toggleNeeds,
+    save,
+  } = usePreferences();
 
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
@@ -20,6 +35,16 @@ export default function PreferenciasScreen() {
 
       {loading ? (
         <ActivityIndicator color={colors.primary} className="mt-section-gap" />
+      ) : loadFailed ? (
+        <View className="mt-section-gap items-center gap-stack-md px-container-padding">
+          <MaterialIcons name="error-outline" size={40} color={colors['outline-variant']} />
+          <Text className="text-center font-sans text-body-md text-on-surface-variant">
+            No se pudieron cargar tus preferencias.
+          </Text>
+          <Pressable onPress={reload} className="rounded-lg border border-primary px-gutter py-stack-md">
+            <Text className="font-mono-medium text-label-md text-primary">Reintentar</Text>
+          </Pressable>
+        </View>
       ) : (
         <View className="flex-1">
           <ScrollView
@@ -71,7 +96,12 @@ export default function PreferenciasScreen() {
             </View>
           </ScrollView>
 
-          <View className="absolute inset-x-0 bottom-0 border-t border-outline-variant bg-background px-container-padding py-stack-md">
+          <View className="absolute inset-x-0 bottom-0 gap-stack-sm border-t border-outline-variant bg-background px-container-padding py-stack-md">
+            {saveFailed ? (
+              <Text className="text-center font-sans text-body-md text-error">
+                No se pudo guardar. Inténtalo de nuevo.
+              </Text>
+            ) : null}
             <Pressable
               onPress={save}
               disabled={saving}
