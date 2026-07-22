@@ -81,11 +81,12 @@ function normalizeName(name: string): string {
     .trim();
 }
 
-// Enlaza cada ingrediente de la receta al catálogo por su canónico. Un resolver IA mapea el
-// nombre generado a un canonical_name del vocabulario del catálogo; el servidor lo resuelve a
-// id por normalized_name. Los genuinamente nuevos se crean bien categorizados y como su propio
-// canónico (canonical_id null). Nunca se crean entradas en 'Otros'. Ante fallo de IA: match
-// exacto por nombre y el resto queda sin enlazar (ingredient_id null); la receta se guarda igual.
+// Enlaza cada ingrediente de la receta al catálogo por su canónico. Orden de resolución:
+// (1) match exacto por normalized_name; (2) caché de alias (ingredient_aliases) de nombres ya
+// resueltos antes; (3) solo lo que quede va al resolver IA, que mapea a un canonical_name del
+// catálogo y crea los nuevos bien categorizados. Tras la IA se cachean los pares nuevos. Nunca
+// se crean entradas en 'Otros'. Ante fallo de IA: exacto + caché y el resto sin enlazar; la
+// receta se guarda igual.
 async function withIngredientIds(
   supabase: SupabaseClient,
   ingredients: { name: string }[],
@@ -94,22 +95,38 @@ async function withIngredientIds(
 
   const norms = [...new Set(ingredients.map((i) => normalizeName(i.name)).filter(Boolean))];
 
-  // Índice del catálogo COMPLETO por normalized_name (fast-path y precedencia por match exacto).
+  // (1) Índice del catálogo COMPLETO por normalized_name.
   const { data: exact } = await supabase
     .from('ingredients')
     .select('id, normalized_name')
     .in('normalized_name', norms);
   const exactByNorm = new Map<string, string>((exact ?? []).map((r) => [r.normalized_name, r.id]));
 
-  const resolved = new Map<string, string>(); // normalizeName(input) -> ingredient_id
+  // (2) Caché de alias: nombres del LLM ya resueltos antes, para no volver a llamar a la IA.
+  const unresolvedNorms = norms.filter((n) => !exactByNorm.has(n));
+  const aliasByNorm = new Map<string, string>();
+  if (unresolvedNorms.length > 0) {
+    const { data: aliases } = await supabase
+      .from('ingredient_aliases')
+      .select('normalized_alias, ingredient_id')
+      .in('normalized_alias', unresolvedNorms);
+    for (const a of aliases ?? []) {
+      aliasByNorm.set(a.normalized_alias as string, a.ingredient_id as string);
+    }
+  }
 
-  // Fast-path: todos casan exacto -> sin IA.
-  if (norms.every((n) => exactByNorm.has(n))) {
+  const resolved = new Map<string, string>(); // normalizeName(input) -> ingredient_id
+  const resolveKnown = () => {
     for (const i of ingredients) {
       const n = normalizeName(i.name);
-      const id = exactByNorm.get(n);
+      const id = exactByNorm.get(n) ?? aliasByNorm.get(n);
       if (id) resolved.set(n, id);
     }
+  };
+
+  // (3) Fast-path: todo resuelto por exacto o caché -> sin IA.
+  if (norms.every((n) => exactByNorm.has(n) || aliasByNorm.has(n))) {
+    resolveKnown();
     return ingredients.map((i) => ({ ...i, ingredient_id: resolved.get(normalizeName(i.name)) ?? null }));
   }
 
@@ -126,19 +143,26 @@ async function withIngredientIds(
   }[];
   const canonByNorm = new Map<string, string>(canonList.map((c) => [c.normalized_name, c.id]));
 
+  // Solo los nombres que no resuelven por exacto ni caché van a la IA.
+  const seenAi = new Set<string>();
+  const namesForAi: string[] = [];
+  for (const i of ingredients) {
+    const n = normalizeName(i.name);
+    if (!n || exactByNorm.has(n) || aliasByNorm.has(n) || seenAi.has(n)) continue;
+    seenAi.add(n);
+    namesForAi.push(i.name);
+  }
+
   let items: ResolvedIngredient[];
   try {
     items = await resolveIngredients(
-      ingredients.map((i) => i.name),
+      namesForAi,
       canonList.map((c) => ({ name: c.name, category: c.category })),
     );
   } catch (e) {
-    // Fallback: solo match exacto; el resto sin enlazar. Nunca 'Otros'.
+    // Fallback: exacto + caché; el resto sin enlazar. Nunca 'Otros'.
     console.error('resolveIngredients:', e);
-    for (const i of ingredients) {
-      const n = normalizeName(i.name);
-      if (exactByNorm.has(n)) resolved.set(n, exactByNorm.get(n)!);
-    }
+    resolveKnown();
     return ingredients.map((i) => ({ ...i, ingredient_id: resolved.get(normalizeName(i.name)) ?? null }));
   }
 
@@ -175,17 +199,36 @@ async function withIngredientIds(
     for (const r of created ?? []) canonByNorm.set(r.normalized_name, r.id);
   }
 
-  // Resolver cada ingrediente: match exacto primero, luego por canonical_name.
+  // Resolver cada ingrediente: exacto -> caché -> canónico de la IA.
   for (const i of ingredients) {
     const inputNorm = normalizeName(i.name);
     if (exactByNorm.has(inputNorm)) {
       resolved.set(inputNorm, exactByNorm.get(inputNorm)!);
       continue;
     }
+    if (aliasByNorm.has(inputNorm)) {
+      resolved.set(inputNorm, aliasByNorm.get(inputNorm)!);
+      continue;
+    }
     const canonNorm = inputToCanon.get(inputNorm);
     if (canonNorm && canonByNorm.has(canonNorm)) {
       resolved.set(inputNorm, canonByNorm.get(canonNorm)!);
     }
+  }
+
+  // Cachear en ingredient_aliases los nombres recién resueltos por IA (no los ya conocidos).
+  const newAliases = new Map<string, string>();
+  for (const i of ingredients) {
+    const inputNorm = normalizeName(i.name);
+    if (!inputNorm || exactByNorm.has(inputNorm) || aliasByNorm.has(inputNorm)) continue;
+    const id = resolved.get(inputNorm);
+    if (id) newAliases.set(inputNorm, id);
+  }
+  if (newAliases.size > 0) {
+    await supabase.from('ingredient_aliases').upsert(
+      [...newAliases].map(([normalized_alias, ingredient_id]) => ({ normalized_alias, ingredient_id })),
+      { onConflict: 'normalized_alias', ignoreDuplicates: true },
+    );
   }
 
   return ingredients.map((i) => ({ ...i, ingredient_id: resolved.get(normalizeName(i.name)) ?? null }));
