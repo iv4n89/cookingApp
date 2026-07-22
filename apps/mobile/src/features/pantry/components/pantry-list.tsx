@@ -8,11 +8,13 @@ import { PantryItemRow } from './pantry-item-row';
 export function PantryList({
   groups,
   onSetQuantity,
+  onEditQuantity,
   onEditMin,
   onRemove,
 }: {
   groups: [string, PantryItem[]][];
   onSetQuantity: (id: string, next: number) => void;
+  onEditQuantity: (item: PantryItem) => void;
   onEditMin: (item: PantryItem) => void;
   onRemove: (id: string) => void;
 }) {
@@ -32,6 +34,7 @@ export function PantryList({
                 key={item.id}
                 item={item}
                 onChangeQuantity={(next) => onSetQuantity(item.id, next)}
+                onEditQuantity={() => onEditQuantity(item)}
                 onEditMin={() => onEditMin(item)}
                 onRemove={() => onRemove(item.id)}
               />

@@ -11,7 +11,7 @@ const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
 export default function HistorialScreen() {
-  const { entries, loading, busy, remove } = useCookedHistory();
+  const { entries, loading, busy, deleteFailed, remove } = useCookedHistory();
 
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
@@ -33,6 +33,11 @@ export default function HistorialScreen() {
           <Text className="font-sans text-body-md text-on-surface-variant">
             Borrar una receta la quita del historial y devuelve sus ingredientes a la despensa.
           </Text>
+          {deleteFailed ? (
+            <Text className="font-sans text-body-md text-error">
+              No se pudo borrar. Inténtalo de nuevo.
+            </Text>
+          ) : null}
           {entries.map((entry) => (
             <CookedEntryRow
               key={entry.id}

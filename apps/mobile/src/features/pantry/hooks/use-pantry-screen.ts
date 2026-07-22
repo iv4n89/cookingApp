@@ -25,6 +25,8 @@ export function usePantryScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingMin, setEditingMin] = useState<PantryItem | null>(null);
   const [minDraft, setMinDraft] = useState('');
+  const [editingQty, setEditingQty] = useState<PantryItem | null>(null);
+  const [qtyDraft, setQtyDraft] = useState('');
 
   function openMinEditor(item: PantryItem) {
     setEditingMin(item);
@@ -40,6 +42,22 @@ export function usePantryScreen() {
     const parsed = minDraft.trim() ? Number(minDraft.replace(',', '.')) : null;
     setMinStock(editingMin.id, parsed !== null && !Number.isNaN(parsed) ? parsed : null);
     setEditingMin(null);
+  }
+
+  function openQtyEditor(item: PantryItem) {
+    setEditingQty(item);
+    setQtyDraft(item.quantity != null ? String(item.quantity) : '');
+  }
+
+  function closeQtyEditor() {
+    setEditingQty(null);
+  }
+
+  function saveQty() {
+    if (!editingQty) return;
+    const parsed = qtyDraft.trim() ? Number(qtyDraft.replace(',', '.')) : 0;
+    if (!Number.isNaN(parsed) && parsed >= 0) setQuantity(editingQty.id, parsed);
+    setEditingQty(null);
   }
 
   const visible = useMemo(() => {
@@ -75,5 +93,11 @@ export function usePantryScreen() {
     openMinEditor,
     saveMin,
     closeMinEditor,
+    editingQty,
+    qtyDraft,
+    setQtyDraft,
+    openQtyEditor,
+    saveQty,
+    closeQtyEditor,
   };
 }

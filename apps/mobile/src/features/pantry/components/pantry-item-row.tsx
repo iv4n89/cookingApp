@@ -7,7 +7,15 @@ import type { PantryItem } from '@/lib/pantry';
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
 
-function Stepper({ item, onChange }: { item: PantryItem; onChange: (next: number) => void }) {
+function Stepper({
+  item,
+  onChange,
+  onEdit,
+}: {
+  item: PantryItem;
+  onChange: (next: number) => void;
+  onEdit: () => void;
+}) {
   const value = item.quantity ?? 0;
   return (
     <View className="flex-row items-center gap-stack-md">
@@ -16,11 +24,13 @@ function Stepper({ item, onChange }: { item: PantryItem; onChange: (next: number
         className="h-8 w-8 items-center justify-center rounded-full border border-outline-variant">
         <MaterialIcons name="remove" size={16} color={colors['on-surface']} />
       </Pressable>
-      <Text
-        numberOfLines={1}
-        className="min-w-[3rem] px-stack-sm text-center font-mono-medium text-label-md text-on-surface">
-        {value}
-      </Text>
+      <Pressable onPress={onEdit} hitSlop={6} accessibilityLabel="Editar cantidad">
+        <Text
+          numberOfLines={1}
+          className="min-w-[3rem] px-stack-sm text-center font-mono-medium text-label-md text-on-surface">
+          {value}
+        </Text>
+      </Pressable>
       <Pressable
         onPress={() => onChange(value + 1)}
         className="h-8 w-8 items-center justify-center rounded-full border border-outline-variant">
@@ -34,11 +44,13 @@ function Stepper({ item, onChange }: { item: PantryItem; onChange: (next: number
 export function PantryItemRow({
   item,
   onChangeQuantity,
+  onEditQuantity,
   onEditMin,
   onRemove,
 }: {
   item: PantryItem;
   onChangeQuantity: (next: number) => void;
+  onEditQuantity: () => void;
   onEditMin: () => void;
   onRemove: () => void;
 }) {
@@ -49,7 +61,7 @@ export function PantryItemRow({
         <Text className="font-mono text-label-sm text-on-surface-variant">{detailLine(item)}</Text>
       </View>
       <View className="flex-row items-center justify-between">
-        <Stepper item={item} onChange={onChangeQuantity} />
+        <Stepper item={item} onChange={onChangeQuantity} onEdit={onEditQuantity} />
         <View className="flex-row items-center gap-stack-md">
           {isLowStock(item) ? (
             <View

@@ -15,7 +15,7 @@ const colors = theme.extend.colors;
 
 export default function CookedDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { entry, recipe, rating, loading, failed, deleting, remove } = useCookedDetail(id);
+  const { entry, recipe, rating, loading, failed, deleting, deleteFailed, remove } = useCookedDetail(id);
 
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
@@ -43,6 +43,12 @@ export default function CookedDetailScreen() {
               Cocinado el {formatDate(entry.cooked_at)} · {entry.servings} raciones
             </Text>
           </View>
+
+          {deleteFailed ? (
+            <Text className="font-sans text-body-md text-error">
+              No se pudo borrar. Inténtalo de nuevo.
+            </Text>
+          ) : null}
 
           {rating !== null ? (
             <View className="flex-row items-center justify-between border border-outline-variant bg-surface p-stack-md">
