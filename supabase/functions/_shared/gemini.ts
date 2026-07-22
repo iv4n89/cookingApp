@@ -7,9 +7,10 @@ const EMBED_TIMEOUT_MS = 15000;
 const GEN_TIMEOUT_MS = 30000;
 // Alias "-latest": apunta siempre al flash-lite vigente (evita deprecaciones).
 const GEN_MODEL = 'gemini-flash-lite-latest';
-// El chat conversacional usa el flash (no lite): mejor seguimiento de instrucciones y menos
-// respuestas "a medias". La generación de recetas y la resolución de ingredientes siguen en lite.
-const CHAT_MODEL = 'gemini-flash-latest';
+// El chat usa flash-lite igual que la generación: flash (gemini-3.6-flash) tiene un límite
+// free-tier de 20 req/día que rompe el chat. Constante aparte para poder subirlo a flash cuando
+// Gemini esté en un tier de pago.
+const CHAT_MODEL = 'gemini-flash-lite-latest';
 
 export const EMBED_DIM = 768;
 
