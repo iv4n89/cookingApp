@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useSession } from '@/lib/auth';
 import { getPreferences, savePreferences } from '@/lib/preferences';
@@ -18,13 +18,22 @@ export function usePreferences() {
   const [saved, setSaved] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
 
+  // Ref de montaje: la carga se puede lanzar desde el efecto y desde el botón de reintentar;
+  // así ambos respetan el desmontaje sin depender del cleanup del efecto.
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
   const reload = useCallback(() => {
-    let active = true;
     setLoading(true);
     setLoadFailed(false);
     getPreferences()
       .then((prefs) => {
-        if (!active) return;
+        if (!mounted.current) return;
         setFood(new Set(prefs.food_prefs));
         setNeeds(new Set(prefs.special_needs));
         setNotes(prefs.notes);
@@ -32,17 +41,16 @@ export function usePreferences() {
       .catch(() => {
         // Si no se pudo cargar, la pantalla no muestra el formulario, para no sobrescribir
         // las preferencias reales con un estado vacío al guardar.
-        if (active) setLoadFailed(true);
+        if (mounted.current) setLoadFailed(true);
       })
       .finally(() => {
-        if (active) setLoading(false);
+        if (mounted.current) setLoading(false);
       });
-    return () => {
-      active = false;
-    };
   }, []);
 
-  useEffect(() => reload(), [reload]);
+  useEffect(() => {
+    reload();
+  }, [reload]);
 
   const toggle = useCallback((setter: typeof setFood) => {
     return (label: string) => {
@@ -69,6 +77,7 @@ export function usePreferences() {
   async function save() {
     if (!session || saving) return;
     setSaving(true);
+    setSaved(false);
     setSaveFailed(false);
     try {
       await savePreferences(session.user.id, {
