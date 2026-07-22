@@ -2,6 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
 
 import type { ChatMessage } from '@/lib/chat';
+import type { CanonicalMap } from '@/lib/ingredients';
 import type { PantryMatch } from '@/lib/pantry';
 
 import { ChatRecipeCard } from './chat-recipe-card';
@@ -14,10 +15,12 @@ const colors = theme.extend.colors;
 export function ChatMessageView({
   message,
   pantry,
+  canonMap,
   onPickSuggestion,
 }: {
   message: ChatMessage;
   pantry: PantryMatch | null;
+  canonMap: CanonicalMap;
   onPickSuggestion: (title: string) => void;
 }) {
   const mine = message.role === 'user';
@@ -56,7 +59,7 @@ export function ChatMessageView({
           ))}
         </View>
       ) : null}
-      {message.recipe ? <ChatRecipeCard recipe={message.recipe} pantry={pantry} /> : null}
+      {message.recipe ? <ChatRecipeCard recipe={message.recipe} pantry={pantry} canonMap={canonMap} /> : null}
     </View>
   );
 }

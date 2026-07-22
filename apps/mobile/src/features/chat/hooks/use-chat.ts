@@ -2,6 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 
 import { sendChat, type ChatMessage } from '@/lib/chat';
+import { getCanonicalMap, type CanonicalMap } from '@/lib/ingredients';
 import { getPantryMatch, type PantryMatch } from '@/lib/pantry';
 
 // Owns the chat conversation state and talking to the assistant. Also seeds a new conversation
@@ -12,6 +13,7 @@ export function useChat() {
   const [sending, setSending] = useState(false);
   const [failed, setFailed] = useState(false);
   const [pantry, setPantry] = useState<PantryMatch | null>(null);
+  const [canonMap, setCanonMap] = useState<CanonicalMap>(new Map());
   const params = useLocalSearchParams<{ q?: string; t?: string }>();
 
   useEffect(() => {
@@ -19,6 +21,11 @@ export function useChat() {
     getPantryMatch()
       .then((data) => {
         if (active) setPantry(data);
+      })
+      .catch(() => {});
+    getCanonicalMap()
+      .then((data) => {
+        if (active) setCanonMap(data);
       })
       .catch(() => {});
     return () => {
@@ -65,5 +72,5 @@ export function useChat() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.t]);
 
-  return { messages, input, setInput, sending, failed, pantry, send };
+  return { messages, input, setInput, sending, failed, pantry, canonMap, send };
 }

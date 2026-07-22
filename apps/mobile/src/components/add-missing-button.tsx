@@ -1,9 +1,10 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
 import { useSession } from '@/lib/auth';
+import { getCanonicalMap, type CanonicalMap } from '@/lib/ingredients';
 import type { RecipeIngredient } from '@/lib/recipes';
 import type { ShoppingItem } from '@/lib/shopping';
 import { applyPlan, buildPlan, loadTargets, planPending, type ShoppingTarget } from '@/lib/shopping-plan';
@@ -20,6 +21,19 @@ export function AddMissingButton({ missing }: { missing: RecipeIngredient[] }) {
   const [shopping, setShopping] = useState<ShoppingItem[]>([]);
   const [adding, setAdding] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [canonMap, setCanonMap] = useState<CanonicalMap>(new Map());
+
+  useEffect(() => {
+    let active = true;
+    getCanonicalMap()
+      .then((data) => {
+        if (active) setCanonMap(data);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Clave estable del contenido de `missing` (que se recalcula en cada render).
   const missingKey = missing
@@ -60,7 +74,7 @@ export function AddMissingButton({ missing }: { missing: RecipeIngredient[] }) {
     );
   }
 
-  const plan = targets ? buildPlan(targets, shopping) : null;
+  const plan = targets ? buildPlan(targets, shopping, canonMap) : null;
   const pending = plan ? planPending(plan) : missing.length;
   const done = plan !== null && pending === 0;
 

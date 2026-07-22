@@ -12,7 +12,7 @@ import { useChat } from '@/features/chat/hooks/use-chat';
 
 export default function ChatScreen() {
   const scrollRef = useRef<ScrollView>(null);
-  const { messages, input, setInput, sending, failed, pantry, send } = useChat();
+  const { messages, input, setInput, sending, failed, pantry, canonMap, send } = useChat();
 
   // Keep the latest message in view as the conversation grows or a reply lands.
   useEffect(() => {
@@ -36,6 +36,7 @@ export default function ChatScreen() {
                 key={i}
                 message={m}
                 pantry={pantry}
+                canonMap={canonMap}
                 onPickSuggestion={(title) => send(`Quiero la receta de "${title}"`)}
               />
             ))
