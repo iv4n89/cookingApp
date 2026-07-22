@@ -8,7 +8,8 @@ import { listCooked, uncookRecipe, type CookedEntry } from '@/lib/cooking';
 export function useCookedHistory() {
   const [entries, setEntries] = useState<CookedEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState<string | null>(null);
+  // Ids que se están borrando (permite borrar varias filas a la vez).
+  const [busy, setBusy] = useState<Set<string>>(new Set());
   const [deleteFailed, setDeleteFailed] = useState(false);
 
   const load = useCallback(() => {
@@ -29,8 +30,8 @@ export function useCookedHistory() {
   useFocusEffect(load);
 
   async function remove(id: string) {
-    if (busy) return;
-    setBusy(id);
+    if (busy.has(id)) return;
+    setBusy((prev) => new Set(prev).add(id));
     setDeleteFailed(false);
     try {
       await uncookRecipe(id);
@@ -38,7 +39,11 @@ export function useCookedHistory() {
     } catch {
       setDeleteFailed(true);
     } finally {
-      setBusy(null);
+      setBusy((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   }
 

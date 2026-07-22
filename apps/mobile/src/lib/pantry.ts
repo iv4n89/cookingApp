@@ -160,12 +160,13 @@ export function usePantry() {
   }
 
   async function remove(id: string) {
-    const snapshot = items;
     setItems((prev) => prev.filter((item) => item.id !== id));
     const { error } = await supabase.from('pantry_items').delete().eq('id', id);
     if (error) {
       setError('No se pudo eliminar el ingrediente.');
-      setItems(snapshot);
+      // Re-sincroniza desde la DB en vez de restaurar un snapshot que pudo quedar obsoleto
+      // (una escritura de cantidad concurrente lo habría revertido).
+      refresh();
     }
   }
 

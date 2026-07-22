@@ -42,7 +42,7 @@ export default function HistorialScreen() {
             <CookedEntryRow
               key={entry.id}
               entry={entry}
-              busy={busy === entry.id}
+              busy={busy.has(entry.id)}
               onOpen={() => router.push({ pathname: '/historial/[id]', params: { id: entry.id } })}
               onRemove={() => remove(entry.id)}
             />
