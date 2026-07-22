@@ -1,0 +1,2654 @@
+[
+  {
+    "id": "59737168-f436-4151-8d23-1827b731f52c",
+    "name": "Aceite de ajo",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "aceite de ajo"
+  },
+  {
+    "id": "41ecad52-47fd-4446-a9e8-aea2ec022eae",
+    "name": "Aceite de girasol",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "aceite de girasol"
+  },
+  {
+    "id": "911d5688-db17-4062-9f6c-86a6cbd3fcee",
+    "name": "Aceite de oliva suave",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "aceite de oliva"
+  },
+  {
+    "id": "12b92ef3-b7d3-49c3-b0f5-ecfe85cb77ec",
+    "name": "Aceite de oliva virgen extra",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "aceite de oliva"
+  },
+  {
+    "id": "bb871f90-1292-400a-bcc6-4538c6bd5067",
+    "name": "Aceite de sésamo",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "aceite de sésamo"
+  },
+  {
+    "id": "35c6f08b-2e8a-43ad-a493-5a8719b4b177",
+    "name": "Aceite de trufa",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "aceite de trufa"
+  },
+  {
+    "id": "03907cb3-c71a-499f-a874-1e0fc298e2c8",
+    "name": "Mayonesa",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "mayonesa"
+  },
+  {
+    "id": "174536c8-1128-4f62-be14-2b8a8458b9dc",
+    "name": "Mostaza antigua",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "mostaza"
+  },
+  {
+    "id": "bfae68d4-56c6-48a4-92ca-1038eafec4c6",
+    "name": "Mostaza de dijon",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "mostaza"
+  },
+  {
+    "id": "4e608e9c-c82c-49e0-80de-f03d5b6de1b7",
+    "name": "Reducción de vinagre balsámico",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "reducción de vinagre balsámico"
+  },
+  {
+    "id": "557577d6-dd8e-4511-a6fd-54a9f970763e",
+    "name": "Salsa agridulce",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa agridulce"
+  },
+  {
+    "id": "4a593008-e939-4c81-979c-4a9ce9ea0b6e",
+    "name": "Salsa alioli",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa alioli"
+  },
+  {
+    "id": "89e76b93-4396-4ff4-843c-90d924f0a597",
+    "name": "Salsa barbacoa",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa barbacoa"
+  },
+  {
+    "id": "27caca21-8b24-4c6c-9eaa-704acee20a54",
+    "name": "Salsa brava",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa brava"
+  },
+  {
+    "id": "58ae85f5-4751-4c57-a58a-d6e3e53f304d",
+    "name": "Salsa de soja",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa de soja"
+  },
+  {
+    "id": "e3f76dfb-afd4-4420-94d8-346a3a8ecce5",
+    "name": "Salsa de tomate frito",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa de tomate"
+  },
+  {
+    "id": "3aa27a9f-bd55-46d5-9fa4-9014b1c7269d",
+    "name": "Salsa de tomate triturado",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa de tomate"
+  },
+  {
+    "id": "cd37c8d5-1559-4e28-ab20-8b256811e6e9",
+    "name": "Salsa perrins",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa perrins"
+  },
+  {
+    "id": "b771632e-e399-439c-9601-30e4ca52f2ec",
+    "name": "Salsa pesto",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa pesto"
+  },
+  {
+    "id": "371c3e42-afaa-4ae3-b160-47eec0f2b63b",
+    "name": "Salsa picante",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa picante"
+  },
+  {
+    "id": "60d553d3-9014-4bd1-a16c-97b4a58f5168",
+    "name": "Salsa romesco",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa romesco"
+  },
+  {
+    "id": "2762bbd1-0839-4aca-9a23-b415c8d0395b",
+    "name": "Salsa tabasco",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa tabasco"
+  },
+  {
+    "id": "f7a7c647-52dc-4197-b3bb-10ae1984f4d0",
+    "name": "Salsa vizcaína",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "salsa vizcaína"
+  },
+  {
+    "id": "4f895788-7c08-4842-9dc7-e16b7e1aa332",
+    "name": "Vinagre de arroz",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "vinagre de arroz"
+  },
+  {
+    "id": "ac1cdc04-f080-492c-8385-e8782594ec84",
+    "name": "Vinagre de jerez",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "vinagre de jerez"
+  },
+  {
+    "id": "df620106-a95f-4e13-b0fa-9289514a9449",
+    "name": "Vinagre de manzana",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "vinagre de manzana"
+  },
+  {
+    "id": "db034d9e-f9d2-4cf8-818c-1253f0c69e2e",
+    "name": "Vinagre de módena",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "vinagre de módena"
+  },
+  {
+    "id": "1655d54d-eeb0-469f-b73c-2356cc1bd61f",
+    "name": "Vinagre de sidra",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "vinagre de sidra"
+  },
+  {
+    "id": "ea154aaf-03a5-4464-a950-46479b16faa4",
+    "name": "Vinagre de vino blanco",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "vinagre de vino blanco"
+  },
+  {
+    "id": "87e560ad-80ee-4fdb-8c29-20567c489b96",
+    "name": "Vinagre de vino tinto",
+    "category": "Aceites, vinagres y salsas",
+    "canonical_name": "vinagre de vino tinto"
+  },
+  {
+    "id": "1aebefde-e16a-4fc0-befd-2d020bb95a6b",
+    "name": "Alita de pollo",
+    "category": "Carnes",
+    "canonical_name": "alita de pollo"
+  },
+  {
+    "id": "d7b69c97-fda8-4ec6-8fc8-0a703c940303",
+    "name": "Callos de ternera",
+    "category": "Carnes",
+    "canonical_name": "callos de ternera"
+  },
+  {
+    "id": "565ff796-2e47-4a63-9399-0e3beaee688b",
+    "name": "Chorizo fresco",
+    "category": "Carnes",
+    "canonical_name": "chorizo fresco"
+  },
+  {
+    "id": "080972c5-c439-414c-8c7c-0df065093e53",
+    "name": "Chuletilla de cordero",
+    "category": "Carnes",
+    "canonical_name": "chuletilla de cordero"
+  },
+  {
+    "id": "0296d3b8-0cba-4ba9-b72b-08707e383f78",
+    "name": "Chuletón de ternera",
+    "category": "Carnes",
+    "canonical_name": "chuletón de ternera"
+  },
+  {
+    "id": "34d29cd4-6452-46cd-8945-5b981b43f628",
+    "name": "Codorniz",
+    "category": "Carnes",
+    "canonical_name": "codorniz"
+  },
+  {
+    "id": "2efd5f92-103f-4484-bc0a-01d10c46caa3",
+    "name": "Conejo de campo",
+    "category": "Carnes",
+    "canonical_name": "conejo"
+  },
+  {
+    "id": "d88d7898-c1c0-4efc-b91e-63d87f07da35",
+    "name": "Cordero lechal",
+    "category": "Carnes",
+    "canonical_name": "cordero lechal"
+  },
+  {
+    "id": "543a1ab8-6e15-4c51-b9d7-64d606930496",
+    "name": "Costilla de cerdo",
+    "category": "Carnes",
+    "canonical_name": "costilla de cerdo"
+  },
+  {
+    "id": "6c9040de-f00d-41bd-92d3-5cf123a35d95",
+    "name": "Jamón ibérico",
+    "category": "Carnes",
+    "canonical_name": "jamón ibérico"
+  },
+  {
+    "id": "324193eb-ca99-495d-9816-550497827856",
+    "name": "Jamón serrano",
+    "category": "Carnes",
+    "canonical_name": "jamón serrano"
+  },
+  {
+    "id": "1f6f05b9-7c9a-484d-890a-32f71af7cd69",
+    "name": "Lacón",
+    "category": "Carnes",
+    "canonical_name": "lacón"
+  },
+  {
+    "id": "71f4c4a7-de23-49af-a30f-e69d4b6d0a1f",
+    "name": "Lomo de cerdo",
+    "category": "Carnes",
+    "canonical_name": "lomo de cerdo"
+  },
+  {
+    "id": "118ef2f9-0fbf-4e7c-92bc-ec4c0c996bb7",
+    "name": "Longaniza",
+    "category": "Carnes",
+    "canonical_name": "longaniza"
+  },
+  {
+    "id": "af9b5ec7-9e8f-4a60-9789-2b34b2b0155f",
+    "name": "Magro de cerdo",
+    "category": "Carnes",
+    "canonical_name": "magro de cerdo"
+  },
+  {
+    "id": "285b6665-a4ca-472b-be39-d9fe801efca3",
+    "name": "Morcilla de arroz",
+    "category": "Carnes",
+    "canonical_name": "morcilla de arroz"
+  },
+  {
+    "id": "06849af5-f6af-45ea-8b12-0737e0ec7ec5",
+    "name": "Morcilla de cebolla",
+    "category": "Carnes",
+    "canonical_name": "morcilla de cebolla"
+  },
+  {
+    "id": "19da8d49-6909-4fd3-b017-80552cf60f2a",
+    "name": "Muslo de pollo",
+    "category": "Carnes",
+    "canonical_name": "muslo de pollo"
+  },
+  {
+    "id": "39c5b8b0-3f71-4fd8-8ab4-0bf6736bb676",
+    "name": "Paletilla de cordero",
+    "category": "Carnes",
+    "canonical_name": "paletilla de cordero"
+  },
+  {
+    "id": "0ccd56e5-7c3a-45d3-9aeb-445d28ed7f8f",
+    "name": "Panceta de cerdo",
+    "category": "Carnes",
+    "canonical_name": "panceta de cerdo"
+  },
+  {
+    "id": "96cc0f0d-ec1d-4db5-89f8-156d292ceebd",
+    "name": "Pechuga de pollo",
+    "category": "Carnes",
+    "canonical_name": "pechuga de pollo"
+  },
+  {
+    "id": "2fbf0624-7648-479b-95f3-7c19590a09dc",
+    "name": "Pluma ibérica",
+    "category": "Carnes",
+    "canonical_name": "pluma ibérica"
+  },
+  {
+    "id": "dfd680f9-6510-4960-a047-6b6c1b66f3bc",
+    "name": "Pollo entero",
+    "category": "Carnes",
+    "canonical_name": "pollo"
+  },
+  {
+    "id": "f0dd2342-1d29-41c1-998d-b17c437295b4",
+    "name": "Presa ibérica",
+    "category": "Carnes",
+    "canonical_name": "presa ibérica"
+  },
+  {
+    "id": "e5a48249-4d50-4818-9ad5-7faf2e9f5dfd",
+    "name": "Rabito de ternera",
+    "category": "Carnes",
+    "canonical_name": "rabo de ternera"
+  },
+  {
+    "id": "52a8b81b-e4f1-49d1-8df5-7ded460536c9",
+    "name": "Salchicha fresca",
+    "category": "Carnes",
+    "canonical_name": "salchicha fresca"
+  },
+  {
+    "id": "d5146e10-dd3f-459c-a990-b9f941566252",
+    "name": "Secreto ibérico",
+    "category": "Carnes",
+    "canonical_name": "secreto ibérico"
+  },
+  {
+    "id": "59b5bb85-9a93-46fe-924e-9a04f27970a5",
+    "name": "Solomillo de cerdo",
+    "category": "Carnes",
+    "canonical_name": "solomillo de cerdo"
+  },
+  {
+    "id": "6927673b-a04c-4110-a536-e00276cfbc9e",
+    "name": "Solomillo de ternera",
+    "category": "Carnes",
+    "canonical_name": "solomillo de ternera"
+  },
+  {
+    "id": "277604b6-2053-4f7d-b866-876948d426ef",
+    "name": "Tocino ibérico",
+    "category": "Carnes",
+    "canonical_name": "tocino ibérico"
+  },
+  {
+    "id": "49515c28-50c2-42f7-a465-12de8d0d2f83",
+    "name": "Arroz basmati",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "arroz"
+  },
+  {
+    "id": "d77ecb60-f121-4478-8ade-ac6f36d4090b",
+    "name": "Arroz bomba",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "arroz"
+  },
+  {
+    "id": "97e939aa-42cc-4e0e-aef4-3243459ca84d",
+    "name": "Arroz integral",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "arroz integral"
+  },
+  {
+    "id": "d1471b37-9092-44de-93a5-a370f2ed0b96",
+    "name": "Arroz redondo",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "arroz"
+  },
+  {
+    "id": "dcaef7cd-ffa4-4a28-a64b-eca635dae3b7",
+    "name": "Avena en copos",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "avena"
+  },
+  {
+    "id": "41d532f6-598a-4c73-becd-0116d2813563",
+    "name": "Bulgur",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "bulgur"
+  },
+  {
+    "id": "dcaed806-dd00-4076-ab8c-120eb41aa982",
+    "name": "Cebada perlada",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "cebada"
+  },
+  {
+    "id": "7a4c2879-086b-4dc3-91bf-3888706cfd78",
+    "name": "Cuscús",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "cuscús"
+  },
+  {
+    "id": "c018818c-7b0c-4f7e-b572-bf33b5f2d997",
+    "name": "Fideo cabellin",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "fideo"
+  },
+  {
+    "id": "0a72ce12-d1e7-49d2-bed9-8db088d8e122",
+    "name": "Harina de fuerza",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "harina de trigo"
+  },
+  {
+    "id": "e3df27ec-f9ce-4224-aaaf-2c29647a0167",
+    "name": "Harina de maiz",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "harina de maíz"
+  },
+  {
+    "id": "3b22592c-b2c5-4182-972b-b79abd5dddcc",
+    "name": "Harina de trigo",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "harina de trigo"
+  },
+  {
+    "id": "d9151a62-bfda-4fee-987c-00a18596e3c0",
+    "name": "Maiz en grano",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "maíz"
+  },
+  {
+    "id": "08a2d93b-d44d-4667-8260-2d866cdc0878",
+    "name": "Mijo",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "mijo"
+  },
+  {
+    "id": "fd35a370-a941-455e-9e19-67dfcce62504",
+    "name": "Pan de barra",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pan"
+  },
+  {
+    "id": "eb93dab2-a4f1-47d5-8b1c-f4933d1ef67e",
+    "name": "Pan de centeno",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pan de centeno"
+  },
+  {
+    "id": "bb2a9d0d-8c25-4de8-9373-25fc2f50a5cc",
+    "name": "Pan de hogaza",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pan"
+  },
+  {
+    "id": "90ba513b-1476-4799-96eb-d0839d45ca92",
+    "name": "Pan de molde",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pan de molde"
+  },
+  {
+    "id": "3ef00c7b-a714-4b5f-8710-af9af3ba1d35",
+    "name": "Pan integral",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pan integral"
+  },
+  {
+    "id": "41a238ec-be4c-4fb1-a169-eb3b9912fc7a",
+    "name": "Pan rallado",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pan rallado"
+  },
+  {
+    "id": "bbe939e2-9ab4-4a34-bb86-7294554f3e6a",
+    "name": "Pasta de sopa",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pasta"
+  },
+  {
+    "id": "5b42c38e-40f4-437f-aa9d-273d76fcc8be",
+    "name": "Pasta espagueti",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "espagueti"
+  },
+  {
+    "id": "e3091f9a-4a8e-419f-967f-29cc39470539",
+    "name": "Pasta lasana",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "lasaña"
+  },
+  {
+    "id": "97b68546-408c-4f44-8b8f-c592f7a44f02",
+    "name": "Pasta macarron",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "macarron"
+  },
+  {
+    "id": "b3d7dc74-93d0-487e-b1b4-0c497d9a22ad",
+    "name": "Pasta tallarines",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "tallarines"
+  },
+  {
+    "id": "515cd7f2-65c4-4cff-a006-f45337d76e6d",
+    "name": "Picos de pan",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "pan"
+  },
+  {
+    "id": "a87510ea-dbfe-4695-9d2c-02513e467045",
+    "name": "Quinoa",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "quinoa"
+  },
+  {
+    "id": "b72e11f9-9200-41c2-94bd-3ab5c6bd06a0",
+    "name": "Rosquilletas",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "rosquilleta"
+  },
+  {
+    "id": "4b7f1b0a-a8ee-49a0-a2d4-fadbb29a5057",
+    "name": "Tortitas de arroz",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "tortitas de arroz"
+  },
+  {
+    "id": "e7923a58-d0ef-4457-a689-67de18004407",
+    "name": "Trigo sarraceno",
+    "category": "Cereales, pan y pasta",
+    "canonical_name": "trigo sarraceno"
+  },
+  {
+    "id": "addbf990-3476-4e60-b190-9bf59241a1b6",
+    "name": "Anis estrellado",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "anis estrellado"
+  },
+  {
+    "id": "05b329d4-186d-412e-977c-c59fda3f1b07",
+    "name": "Azucar blanco",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "azucar blanco"
+  },
+  {
+    "id": "f6dfed7d-0a1d-4442-831c-6e6ad5c0d3e2",
+    "name": "Azucar moreno",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "azucar moreno"
+  },
+  {
+    "id": "c99b5389-8197-4610-9c45-c5cc548466f9",
+    "name": "Canela en polvo",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "canela en polvo"
+  },
+  {
+    "id": "a9422a5c-0372-4ade-8d5d-fa88697324a5",
+    "name": "Comino",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "comino"
+  },
+  {
+    "id": "d4c897d6-6ae9-4b88-8d21-005a54cc0178",
+    "name": "Laurel",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "laurel"
+  },
+  {
+    "id": "1ad60ef1-2d77-4cfe-bbc1-b9c632b0253d",
+    "name": "Miel de milflores",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "miel"
+  },
+  {
+    "id": "ad1e08a2-b558-4d8e-89b6-9a439a2529e4",
+    "name": "Miel de romero",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "miel"
+  },
+  {
+    "id": "cab69e31-c5f7-4d05-9e2e-f9fd959dfb17",
+    "name": "Oregano",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "oregano"
+  },
+  {
+    "id": "53545bb0-ce64-4dc0-968c-280ab9ce1c81",
+    "name": "Pasta de pimiento choricero",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "pasta de pimiento choricero"
+  },
+  {
+    "id": "a2b69b45-19b5-437f-baf7-566cd170ebbe",
+    "name": "Perejil",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "perejil"
+  },
+  {
+    "id": "924c7994-0e51-4566-b3cc-380bd13ec774",
+    "name": "Romero",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "romero"
+  },
+  {
+    "id": "6949a962-3a79-4d2c-bc1b-a6af151ad515",
+    "name": "Sal fina",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "sal"
+  },
+  {
+    "id": "424f4ce6-d852-4942-a55e-f87ebfa86ecc",
+    "name": "Tomillo",
+    "category": "Condimentos y edulcorantes",
+    "canonical_name": "tomillo"
+  },
+  {
+    "id": "a4301652-648a-4590-a1b2-7ef5634c07ea",
+    "name": "Aceituna negra",
+    "category": "Conservas y otros",
+    "canonical_name": "aceituna"
+  },
+  {
+    "id": "a79c3951-6266-4a34-80bd-dfce253ec837",
+    "name": "Aceituna verde",
+    "category": "Conservas y otros",
+    "canonical_name": "aceituna"
+  },
+  {
+    "id": "f3592bbc-f375-4c9b-83f1-b50f0904da63",
+    "name": "Alubia blanca cocida",
+    "category": "Conservas y otros",
+    "canonical_name": "alubia blanca"
+  },
+  {
+    "id": "c9ecbe5a-e158-44d0-a7a7-dee8cdf93443",
+    "name": "Anchoa en conserva",
+    "category": "Conservas y otros",
+    "canonical_name": "anchoa"
+  },
+  {
+    "id": "44d52bdd-6684-4355-831c-1868e653bad8",
+    "name": "Atún en conserva",
+    "category": "Conservas y otros",
+    "canonical_name": "atun"
+  },
+  {
+    "id": "507628fe-c588-48b7-b6cc-1f454703a0bf",
+    "name": "Berberecho al natural",
+    "category": "Conservas y otros",
+    "canonical_name": "berberecho"
+  },
+  {
+    "id": "9f8ba16b-4731-410e-b686-510aab916431",
+    "name": "Caldo de pescado",
+    "category": "Conservas y otros",
+    "canonical_name": "caldo de pescado"
+  },
+  {
+    "id": "75ccef65-0ce6-40fe-a893-7468d46bfa8d",
+    "name": "Caldo de pollo",
+    "category": "Conservas y otros",
+    "canonical_name": "caldo de pollo"
+  },
+  {
+    "id": "2f8cb9d7-b3d6-48d3-944d-7fcbe960dbba",
+    "name": "Concentrado de tomate",
+    "category": "Conservas y otros",
+    "canonical_name": "concentrado de tomate"
+  },
+  {
+    "id": "e59ac1a4-9f54-4bd0-ab61-9e3ce0534f06",
+    "name": "Espárrago blanco",
+    "category": "Conservas y otros",
+    "canonical_name": "esparrago blanco"
+  },
+  {
+    "id": "89a242af-c600-427a-ae0d-6da312b4af20",
+    "name": "Fondo de carne",
+    "category": "Conservas y otros",
+    "canonical_name": "fondo de carne"
+  },
+  {
+    "id": "8dc158ce-a49d-4984-bb2b-c1a6708ceb91",
+    "name": "Garbanzo cocido",
+    "category": "Conservas y otros",
+    "canonical_name": "garbanzo"
+  },
+  {
+    "id": "a7f8651d-3cc6-4ffb-ac36-0641dcf9df56",
+    "name": "Lenteja cocida",
+    "category": "Conservas y otros",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "1387ce8a-4140-43af-9b67-6b3c863ce522",
+    "name": "Mejillón en escabeche",
+    "category": "Conservas y otros",
+    "canonical_name": "mejillon"
+  },
+  {
+    "id": "6cf6ed2b-a457-4fcb-84d3-ba64f8b1a5cf",
+    "name": "Pimiento del piquillo",
+    "category": "Conservas y otros",
+    "canonical_name": "pimiento del piquillo"
+  },
+  {
+    "id": "f9c75a5e-3e54-4577-a6fb-7a62107eef1b",
+    "name": "Sal de mesa",
+    "category": "Conservas y otros",
+    "canonical_name": "sal"
+  },
+  {
+    "id": "3f0e560b-aea6-4edb-a984-89bca4487274",
+    "name": "Sardina en conserva",
+    "category": "Conservas y otros",
+    "canonical_name": "sardina"
+  },
+  {
+    "id": "6d290a57-593f-46de-8663-f0f77276200a",
+    "name": "Tomate frito",
+    "category": "Conservas y otros",
+    "canonical_name": "salsa de tomate"
+  },
+  {
+    "id": "54fcaec8-9b35-41f2-a192-da420d6b34f2",
+    "name": "Tomate triturado",
+    "category": "Conservas y otros",
+    "canonical_name": "salsa de tomate"
+  },
+  {
+    "id": "bf3318cd-1150-473c-88fd-b4e69a8d8bef",
+    "name": "Ajo blanco",
+    "category": "Especias y hierbas",
+    "canonical_name": "ajo"
+  },
+  {
+    "id": "815f9dd9-e2ab-4d12-9552-e97c2182da95",
+    "name": "Ajo morado",
+    "category": "Especias y hierbas",
+    "canonical_name": "ajo"
+  },
+  {
+    "id": "ccdfe45f-4f62-492b-9649-84fb1d17c52f",
+    "name": "Albahaca",
+    "category": "Especias y hierbas",
+    "canonical_name": "albahaca"
+  },
+  {
+    "id": "4e996c7f-3e3e-45b1-af5f-b27000e47951",
+    "name": "Anís en grano",
+    "category": "Especias y hierbas",
+    "canonical_name": "anís"
+  },
+  {
+    "id": "4e6a904f-b8ec-4b6c-a890-cb7f08ad197f",
+    "name": "Azafrán",
+    "category": "Especias y hierbas",
+    "canonical_name": "azafrán"
+  },
+  {
+    "id": "052c9148-34e0-4c60-b4c9-5b343b0b3e2c",
+    "name": "Azafrán en hebra",
+    "category": "Especias y hierbas",
+    "canonical_name": "azafrán"
+  },
+  {
+    "id": "348414ce-27ac-4f16-9bb7-424ed78c570d",
+    "name": "Canela en rama",
+    "category": "Especias y hierbas",
+    "canonical_name": "canela"
+  },
+  {
+    "id": "190bd89d-fadf-4423-a05c-d1f7ad23f5e8",
+    "name": "Cebollino",
+    "category": "Especias y hierbas",
+    "canonical_name": "cebollino"
+  },
+  {
+    "id": "65053f05-0586-43af-a135-21a79bd159eb",
+    "name": "Cilantro",
+    "category": "Especias y hierbas",
+    "canonical_name": "cilantro"
+  },
+  {
+    "id": "5cd55548-03e4-4f34-a4c7-066df2dc7337",
+    "name": "Clavo",
+    "category": "Especias y hierbas",
+    "canonical_name": "clavo"
+  },
+  {
+    "id": "e931f995-d452-40fe-ae0e-244abea8c850",
+    "name": "Comino molido",
+    "category": "Especias y hierbas",
+    "canonical_name": "comino"
+  },
+  {
+    "id": "da096453-697f-4b1c-ad87-6775d22ba55d",
+    "name": "Hierbabuena",
+    "category": "Especias y hierbas",
+    "canonical_name": "hierbabuena"
+  },
+  {
+    "id": "d34b243d-4c74-4223-9a24-824728442b42",
+    "name": "Laurel seco",
+    "category": "Especias y hierbas",
+    "canonical_name": "laurel"
+  },
+  {
+    "id": "7747d244-ffb2-42b6-bc3c-b49ab6b117ad",
+    "name": "Menta",
+    "category": "Especias y hierbas",
+    "canonical_name": "menta"
+  },
+  {
+    "id": "136d742c-4e65-41ec-b082-5b60b66bd75e",
+    "name": "Ñora",
+    "category": "Especias y hierbas",
+    "canonical_name": "ñora"
+  },
+  {
+    "id": "0958de43-f062-4ae4-9d02-e64e39d6979f",
+    "name": "Nuez moscada",
+    "category": "Especias y hierbas",
+    "canonical_name": "nuez moscada"
+  },
+  {
+    "id": "e44a8685-fa85-4deb-8847-fa9769fefd5e",
+    "name": "Orégano seco",
+    "category": "Especias y hierbas",
+    "canonical_name": "oregano"
+  },
+  {
+    "id": "2cc0d387-8c67-407b-97d0-872ee232d39b",
+    "name": "Perejil plano",
+    "category": "Especias y hierbas",
+    "canonical_name": "perejil"
+  },
+  {
+    "id": "b1685588-cab3-4671-a3a8-588472fa0e4b",
+    "name": "Pimentón ahumado",
+    "category": "Especias y hierbas",
+    "canonical_name": "pimentón"
+  },
+  {
+    "id": "7a061030-0ff8-4447-b2af-c41f0a87209d",
+    "name": "Pimentón dulce",
+    "category": "Especias y hierbas",
+    "canonical_name": "pimentón"
+  },
+  {
+    "id": "8ce4f75d-d1b0-407c-b73d-fe112e801068",
+    "name": "Pimentón picante",
+    "category": "Especias y hierbas",
+    "canonical_name": "pimentón"
+  },
+  {
+    "id": "2b16bb7c-8aef-4419-a11a-860dbab78adf",
+    "name": "Pimienta blanca",
+    "category": "Especias y hierbas",
+    "canonical_name": "pimienta"
+  },
+  {
+    "id": "7230d567-fb6a-4d19-9feb-8e5d0b8d8b33",
+    "name": "Pimienta de cayena",
+    "category": "Especias y hierbas",
+    "canonical_name": "pimienta"
+  },
+  {
+    "id": "ddf0c61c-8ec9-403e-a757-d4b1bfb32579",
+    "name": "Pimienta negra",
+    "category": "Especias y hierbas",
+    "canonical_name": "pimienta"
+  },
+  {
+    "id": "6964dce2-8f52-4766-8a63-762a706804ec",
+    "name": "Romero fresco",
+    "category": "Especias y hierbas",
+    "canonical_name": "romero"
+  },
+  {
+    "id": "c08ad6a3-62ae-4a31-b755-733a44c4468f",
+    "name": "Sal gorda",
+    "category": "Especias y hierbas",
+    "canonical_name": "sal"
+  },
+  {
+    "id": "49f97a9b-4ecd-46b1-8dc1-8fbcfc384fe1",
+    "name": "Sal marina",
+    "category": "Especias y hierbas",
+    "canonical_name": "sal"
+  },
+  {
+    "id": "bfb4bd55-a342-47af-97a0-d88a60ef148c",
+    "name": "Tomillo fresco",
+    "category": "Especias y hierbas",
+    "canonical_name": "tomillo"
+  },
+  {
+    "id": "82238cfa-0576-49d0-affc-85d5d23d7734",
+    "name": "Aguacate",
+    "category": "Frutas",
+    "canonical_name": "aguacate"
+  },
+  {
+    "id": "a9b87bb1-3278-4164-81d3-ee40942d9125",
+    "name": "Albaricoque",
+    "category": "Frutas",
+    "canonical_name": "albaricoque"
+  },
+  {
+    "id": "d88eaa76-fa6e-4b4b-adff-dcbe6915ac0a",
+    "name": "Breva",
+    "category": "Frutas",
+    "canonical_name": "breva"
+  },
+  {
+    "id": "fc0a9691-d526-4279-9edb-21122571b013",
+    "name": "Cereza",
+    "category": "Frutas",
+    "canonical_name": "cereza"
+  },
+  {
+    "id": "cea5e224-aed0-448b-ae1a-659bfcbd05e7",
+    "name": "Ciruela claudia",
+    "category": "Frutas",
+    "canonical_name": "ciruela"
+  },
+  {
+    "id": "f8753af8-c2c3-4555-bf70-16d653ff796d",
+    "name": "Ciruela roja",
+    "category": "Frutas",
+    "canonical_name": "ciruela"
+  },
+  {
+    "id": "d2f282c5-53dc-4654-bcd8-af3c5fe700d0",
+    "name": "Fresa",
+    "category": "Frutas",
+    "canonical_name": "fresa"
+  },
+  {
+    "id": "77a52261-7d33-43b7-8f0a-734e8dc029df",
+    "name": "Fresón",
+    "category": "Frutas",
+    "canonical_name": "fresón"
+  },
+  {
+    "id": "4f347494-e982-42dc-9e11-884fcb817e19",
+    "name": "Granada",
+    "category": "Frutas",
+    "canonical_name": "granada"
+  },
+  {
+    "id": "ce7510b8-d899-4a86-8d5f-1d6c4b798f78",
+    "name": "Higo",
+    "category": "Frutas",
+    "canonical_name": "higo"
+  },
+  {
+    "id": "75f0da0b-4a97-4402-be80-a239db5113a7",
+    "name": "Lima",
+    "category": "Frutas",
+    "canonical_name": "lima"
+  },
+  {
+    "id": "c234d854-9342-4fa8-8e0c-9198130b6b25",
+    "name": "Limón amarillo",
+    "category": "Frutas",
+    "canonical_name": "limón"
+  },
+  {
+    "id": "6fd853f9-3bfd-4cb4-99d3-a241e5033e29",
+    "name": "Mandarina clementina",
+    "category": "Frutas",
+    "canonical_name": "mandarina"
+  },
+  {
+    "id": "b36fb066-08bf-498a-ad86-00b06406919a",
+    "name": "Manzana golden",
+    "category": "Frutas",
+    "canonical_name": "manzana"
+  },
+  {
+    "id": "01c2cc34-71ea-4509-9f5e-cc0eae6c7e8b",
+    "name": "Manzana granny smith",
+    "category": "Frutas",
+    "canonical_name": "manzana"
+  },
+  {
+    "id": "57b12857-bb93-4102-9c33-372a7b32da39",
+    "name": "Melocotón amarillo",
+    "category": "Frutas",
+    "canonical_name": "melocotón"
+  },
+  {
+    "id": "1b969e4f-01ef-4ae0-935e-7256e2efd0e2",
+    "name": "Melocotón paraguayo",
+    "category": "Frutas",
+    "canonical_name": "melocotón"
+  },
+  {
+    "id": "cdc3b564-3c64-4223-b06f-a6c9bd97d3f3",
+    "name": "Melón piel de sapo",
+    "category": "Frutas",
+    "canonical_name": "melón"
+  },
+  {
+    "id": "f5aeffbe-9fa6-4835-a7aa-0029ceb05fb5",
+    "name": "Membrillo",
+    "category": "Frutas",
+    "canonical_name": "membrillo"
+  },
+  {
+    "id": "dcb7db9e-6d06-4efc-9b55-f64d67acbeed",
+    "name": "Naranja de mesa",
+    "category": "Frutas",
+    "canonical_name": "naranja"
+  },
+  {
+    "id": "e49f7604-02bc-42a8-9336-991bef7d0981",
+    "name": "Naranja de zumo",
+    "category": "Frutas",
+    "canonical_name": "naranja"
+  },
+  {
+    "id": "384d58d7-6a1e-43ce-a35a-5bc0300cf631",
+    "name": "Nectarina",
+    "category": "Frutas",
+    "canonical_name": "nectarina"
+  },
+  {
+    "id": "47f07be0-fa1d-43ee-ab46-b4e6393fe913",
+    "name": "Pera conferencia",
+    "category": "Frutas",
+    "canonical_name": "pera"
+  },
+  {
+    "id": "c8545ae3-d5c1-4c05-9b93-2751869e91cc",
+    "name": "Pera ercolina",
+    "category": "Frutas",
+    "canonical_name": "pera"
+  },
+  {
+    "id": "bb881ed6-c59f-41f6-a4bb-cb7d4bb95e21",
+    "name": "Picota",
+    "category": "Frutas",
+    "canonical_name": "picota"
+  },
+  {
+    "id": "928e1752-451e-4a38-886b-c666b27810a7",
+    "name": "Piña",
+    "category": "Frutas",
+    "canonical_name": "piña"
+  },
+  {
+    "id": "74a225d0-b7cb-479b-a678-d8c733d481a4",
+    "name": "Plátano de canarias",
+    "category": "Frutas",
+    "canonical_name": "plátano"
+  },
+  {
+    "id": "c80c4ac0-43b7-475b-8caf-85927231fa1e",
+    "name": "Sandía",
+    "category": "Frutas",
+    "canonical_name": "sandía"
+  },
+  {
+    "id": "267a3518-fed5-407a-80c2-f3ae3573a968",
+    "name": "Uva blanca",
+    "category": "Frutas",
+    "canonical_name": "uva"
+  },
+  {
+    "id": "3aea5a78-662b-4cbc-9452-0f27c86e2c2d",
+    "name": "Uva tinta",
+    "category": "Frutas",
+    "canonical_name": "uva"
+  },
+  {
+    "id": "d5a9d248-9ebe-4fd5-b25c-015ae8a6f87c",
+    "name": "Almendra cruda",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "almendra"
+  },
+  {
+    "id": "c45c902b-3208-482e-9930-b39d12b1fbb8",
+    "name": "Almendra laminada",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "almendra"
+  },
+  {
+    "id": "56355229-7145-4e42-97ec-319da5f8f304",
+    "name": "Almendra largueta",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "almendra"
+  },
+  {
+    "id": "9cbbc8ad-12fe-4a24-8032-1cf5a254cb70",
+    "name": "Almendra marcona",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "almendra"
+  },
+  {
+    "id": "9eb27437-a473-4a88-a262-4fe10139b917",
+    "name": "Almendra tostada",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "almendra"
+  },
+  {
+    "id": "cc0747a9-2437-427b-af5d-50c901a4c645",
+    "name": "Anacardo",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "anacardo"
+  },
+  {
+    "id": "50f700aa-99b2-4f03-9cbf-ab7e1020a273",
+    "name": "Avellana",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "avellana"
+  },
+  {
+    "id": "80166da2-c8b2-455a-80cb-3be08734a31b",
+    "name": "Avellana tostada",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "avellana"
+  },
+  {
+    "id": "71fe7fad-88d9-4c95-8e2e-a09b5c93af26",
+    "name": "Cacahuete",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "cacahuete"
+  },
+  {
+    "id": "f1153f37-72ea-4346-8e9f-c921f1e62f1c",
+    "name": "Cacahuete tostado",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "cacahuete"
+  },
+  {
+    "id": "9c2f8f8e-96bc-499c-86e9-2e69b69adb1a",
+    "name": "Castaña",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "castaña"
+  },
+  {
+    "id": "2053b3f9-98ca-4258-b290-9bfaed1c29e5",
+    "name": "Castaña pilonga",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "castaña"
+  },
+  {
+    "id": "e883d641-f1f1-4b19-aecc-c9ae734aa61e",
+    "name": "Nuez",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "nuez"
+  },
+  {
+    "id": "ae0141f0-1c8b-42c3-a395-297f1bc25a2b",
+    "name": "Nuez de macadamia",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "nuez de macadamia"
+  },
+  {
+    "id": "7e479636-c048-413c-8888-896610bfece3",
+    "name": "Nuez pecana",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "nuez pecana"
+  },
+  {
+    "id": "eadd4686-aa81-4d53-adfa-789db1bbc1e4",
+    "name": "Piñón",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "piñón"
+  },
+  {
+    "id": "19896b25-e449-4e21-a57d-2e6a336e26d1",
+    "name": "Pipa de calabaza tostada",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "pipa de calabaza"
+  },
+  {
+    "id": "7b847825-b133-45ee-b99f-5ddb36862566",
+    "name": "Pipa de girasol",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "pipa de girasol"
+  },
+  {
+    "id": "519149d2-1d43-42de-89e4-581b44cd4af6",
+    "name": "Pipa de girasol tostada",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "pipa de girasol"
+  },
+  {
+    "id": "5dacd6c6-4134-4586-a640-15e384c3647f",
+    "name": "Pistacho",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "pistacho"
+  },
+  {
+    "id": "045664de-8458-4a59-8ba8-10ee6ac8963b",
+    "name": "Pistacho pelado",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "pistacho"
+  },
+  {
+    "id": "85271659-7c58-4c2a-b0e3-14e5226c6b64",
+    "name": "Semilla de amapola",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "semilla de amapola"
+  },
+  {
+    "id": "92f8fb80-5cfc-4d1f-b2e3-cf90feaa34b6",
+    "name": "Semilla de calabaza",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "pipa de calabaza"
+  },
+  {
+    "id": "5b2326f2-ecdb-4025-9d1d-3b423fdc7ac3",
+    "name": "Semilla de chía",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "semilla de chía"
+  },
+  {
+    "id": "6d26880d-ed64-4ba3-b14a-7fdd2158ba39",
+    "name": "Semilla de lino",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "semilla de lino"
+  },
+  {
+    "id": "d11959ff-e470-40b3-83f1-53d591e732e7",
+    "name": "Semilla de lino dorado",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "semilla de lino"
+  },
+  {
+    "id": "1aa054fd-0be2-4ad1-8fc5-0dd7f2066271",
+    "name": "Semilla de lino marrón",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "semilla de lino"
+  },
+  {
+    "id": "52e6cc31-2dc8-4f9e-a37b-dcc02a0ba08f",
+    "name": "Sésamo blanco",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "sésamo"
+  },
+  {
+    "id": "d9364823-0faa-48d8-9d4c-f79476855f9d",
+    "name": "Sésamo negro",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "sésamo"
+  },
+  {
+    "id": "d088ef36-c2f2-489a-bc1c-7ccfe75a00eb",
+    "name": "Sésamo tostado",
+    "category": "Frutos secos y semillas",
+    "canonical_name": "sésamo"
+  },
+  {
+    "id": "9b758a8e-9dd6-4f1b-80a2-769d6f45d851",
+    "name": "Clara de huevo",
+    "category": "Lácteos y huevos",
+    "canonical_name": "clara de huevo"
+  },
+  {
+    "id": "c6c86205-8f67-4e2f-be9c-d9285bd1ceb5",
+    "name": "Cuajada",
+    "category": "Lácteos y huevos",
+    "canonical_name": "cuajada"
+  },
+  {
+    "id": "15b186b7-1bb6-4f16-bc20-4e150c1a1896",
+    "name": "Huevo de codorniz",
+    "category": "Lácteos y huevos",
+    "canonical_name": "huevo de codorniz"
+  },
+  {
+    "id": "85d4b485-7b86-4abc-9636-01b6076bade6",
+    "name": "Huevo de gallina",
+    "category": "Lácteos y huevos",
+    "canonical_name": "huevo"
+  },
+  {
+    "id": "63e12c2e-85f7-45a8-bf66-b333f09ffe1f",
+    "name": "Leche condensada",
+    "category": "Lácteos y huevos",
+    "canonical_name": "leche condensada"
+  },
+  {
+    "id": "f18418d3-fcf8-45ca-9b37-0b3ad9df4498",
+    "name": "Leche desnatada",
+    "category": "Lácteos y huevos",
+    "canonical_name": "leche desnatada"
+  },
+  {
+    "id": "1925d4ab-168f-4ec2-b7f0-a690208e6719",
+    "name": "Leche entera",
+    "category": "Lácteos y huevos",
+    "canonical_name": "leche entera"
+  },
+  {
+    "id": "e8d8772f-8e21-462f-b46e-ebefe9cee00c",
+    "name": "Leche evaporada",
+    "category": "Lácteos y huevos",
+    "canonical_name": "leche evaporada"
+  },
+  {
+    "id": "d6137573-3b88-4e6b-bc55-c32a90d26ed6",
+    "name": "Leche semidesnatada",
+    "category": "Lácteos y huevos",
+    "canonical_name": "leche semidesnatada"
+  },
+  {
+    "id": "19165ac8-b7b2-4f91-83fe-daada7fee387",
+    "name": "Mantequilla con sal",
+    "category": "Lácteos y huevos",
+    "canonical_name": "mantequilla con sal"
+  },
+  {
+    "id": "a54c5070-1b4a-48df-a424-3f8d801ac235",
+    "name": "Mantequilla sin sal",
+    "category": "Lácteos y huevos",
+    "canonical_name": "mantequilla sin sal"
+  },
+  {
+    "id": "7a957546-62be-4815-9daf-f5ca2206ec3b",
+    "name": "Nata para cocinar",
+    "category": "Lácteos y huevos",
+    "canonical_name": "nata para cocinar"
+  },
+  {
+    "id": "c890997b-7011-463c-95f4-a718942fa75f",
+    "name": "Nata para montar",
+    "category": "Lácteos y huevos",
+    "canonical_name": "nata para montar"
+  },
+  {
+    "id": "16846d35-bf82-4281-81e0-84a7ca8ef451",
+    "name": "Queso burgos",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso burgos"
+  },
+  {
+    "id": "7b804421-8e19-47c2-a1d1-507ec658b390",
+    "name": "Queso crema",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso crema"
+  },
+  {
+    "id": "19ee7f10-2c88-4dc9-b7c4-5bd955e47238",
+    "name": "Queso de cabrales",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso de cabrales"
+  },
+  {
+    "id": "cd81ff06-9593-4053-b403-71723f465f44",
+    "name": "Queso emmental",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso emmental"
+  },
+  {
+    "id": "bd3c13a4-f203-473f-970d-f97b1b16eab5",
+    "name": "Queso fresco",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso fresco"
+  },
+  {
+    "id": "869e8ace-3083-45d5-9e73-e7b76c55925b",
+    "name": "Queso idiazábal",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso idiazábal"
+  },
+  {
+    "id": "615f4bcc-76c2-4ece-909c-89cbf569350e",
+    "name": "Queso mahón",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso mahón"
+  },
+  {
+    "id": "9131c440-1a37-4708-bbee-09cd3f47ea97",
+    "name": "Queso manchego curado",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso manchego curado"
+  },
+  {
+    "id": "22d0a884-44aa-4392-807f-c89f83f42721",
+    "name": "Queso manchego semicurado",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso manchego semicurado"
+  },
+  {
+    "id": "6384814c-ce4d-444a-b9a9-9816d64eab2f",
+    "name": "Queso mozzarella",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso mozzarella"
+  },
+  {
+    "id": "f95bb286-d7fb-441c-9450-cb756c786b54",
+    "name": "Queso parmesano",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso parmesano"
+  },
+  {
+    "id": "e77610b4-6b93-4c71-b2e2-91d2353a94b1",
+    "name": "Queso rulo de cabra",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso rulo de cabra"
+  },
+  {
+    "id": "2f84c12a-1d37-4218-b424-9e353702d46d",
+    "name": "Queso tetilla",
+    "category": "Lácteos y huevos",
+    "canonical_name": "queso tetilla"
+  },
+  {
+    "id": "b07440b0-6dab-4065-9cd0-5ad7b94ddd46",
+    "name": "Requesón",
+    "category": "Lácteos y huevos",
+    "canonical_name": "requesón"
+  },
+  {
+    "id": "7ec3a9ec-c831-4b19-91ad-246d5ebb1677",
+    "name": "Yema de huevo",
+    "category": "Lácteos y huevos",
+    "canonical_name": "yema de huevo"
+  },
+  {
+    "id": "e58a9a0b-51fb-4116-9dd9-c853e0242a31",
+    "name": "Yogur griego",
+    "category": "Lácteos y huevos",
+    "canonical_name": "yogur griego"
+  },
+  {
+    "id": "db7305e6-7b1e-443a-b420-b0f31231fec3",
+    "name": "Yogur natural",
+    "category": "Lácteos y huevos",
+    "canonical_name": "yogur griego"
+  },
+  {
+    "id": "dc8ff3b9-4ae2-4a56-96cd-d843d978f116",
+    "name": "Altramuz",
+    "category": "Legumbres",
+    "canonical_name": "altramuz"
+  },
+  {
+    "id": "b9525059-e5a0-4935-830c-49a2e83d4f95",
+    "name": "Alubia arrocina",
+    "category": "Legumbres",
+    "canonical_name": "alubia blanca"
+  },
+  {
+    "id": "17a9fecb-7aa4-49c1-ad0f-782cb0fb4f89",
+    "name": "Alubia blanca alubión",
+    "category": "Legumbres",
+    "canonical_name": "alubia blanca"
+  },
+  {
+    "id": "dd52b97f-7ebd-4602-9642-c1fec46266d2",
+    "name": "Alubia blanca plancheta",
+    "category": "Legumbres",
+    "canonical_name": "alubia blanca"
+  },
+  {
+    "id": "73e60531-a36f-41f6-bf1d-ad7ead9d9cc0",
+    "name": "Alubia blanca riñón",
+    "category": "Legumbres",
+    "canonical_name": "alubia blanca"
+  },
+  {
+    "id": "727934c5-0d8f-4aa6-bfc2-4084070a6cb1",
+    "name": "Alubia carilla",
+    "category": "Legumbres",
+    "canonical_name": "alubia carilla"
+  },
+  {
+    "id": "37f3ffa5-fcf4-4dec-a1ac-9ca4cdc73d54",
+    "name": "Alubia ganxet",
+    "category": "Legumbres",
+    "canonical_name": "alubia ganxet"
+  },
+  {
+    "id": "6f58f0b0-af0a-482a-a7e4-12e1b0b4bdf8",
+    "name": "Alubia negra",
+    "category": "Legumbres",
+    "canonical_name": "alubia negra"
+  },
+  {
+    "id": "9bff3870-32bb-442b-a691-ebe3a9742cc7",
+    "name": "Alubia pinta",
+    "category": "Legumbres",
+    "canonical_name": "alubia pinta"
+  },
+  {
+    "id": "169f9ad8-bfcd-4dbc-90f6-cdfe87a1871a",
+    "name": "Alubia pocha",
+    "category": "Legumbres",
+    "canonical_name": "alubia pocha"
+  },
+  {
+    "id": "eccc31bc-cde1-4fa4-afa6-62ee5097756e",
+    "name": "Alubia roja de Tolosa",
+    "category": "Legumbres",
+    "canonical_name": "alubia roja"
+  },
+  {
+    "id": "69bfdc36-d075-4298-873d-9235125de1a3",
+    "name": "Alubia verdina",
+    "category": "Legumbres",
+    "canonical_name": "alubia verdina"
+  },
+  {
+    "id": "1a61a4a1-4698-4723-a477-85a2f2319481",
+    "name": "Garbanzo castellano",
+    "category": "Legumbres",
+    "canonical_name": "garbanzo"
+  },
+  {
+    "id": "ab9678a2-328b-48f5-9175-573e0af111eb",
+    "name": "Garbanzo garbanzuelo",
+    "category": "Legumbres",
+    "canonical_name": "garbanzo"
+  },
+  {
+    "id": "9e629b41-0634-4869-a256-2d40c7a75110",
+    "name": "Garbanzo lechoso",
+    "category": "Legumbres",
+    "canonical_name": "garbanzo"
+  },
+  {
+    "id": "b7627725-6695-4752-95b8-818bd968a813",
+    "name": "Garbanzo pedrosillano",
+    "category": "Legumbres",
+    "canonical_name": "garbanzo"
+  },
+  {
+    "id": "b7e47f95-7eba-466c-8ffa-f4ab73444308",
+    "name": "Garbanzo tolosano",
+    "category": "Legumbres",
+    "canonical_name": "garbanzo"
+  },
+  {
+    "id": "5528edb7-2c60-4efd-8834-c1158b45713e",
+    "name": "Guisante partido",
+    "category": "Legumbres",
+    "canonical_name": "guisante"
+  },
+  {
+    "id": "0daba8da-35e8-4570-a403-8e692778e08b",
+    "name": "Guisante seco",
+    "category": "Legumbres",
+    "canonical_name": "guisante"
+  },
+  {
+    "id": "3c3dfe80-c539-4e27-81e2-4f06d82abe22",
+    "name": "Haba baby",
+    "category": "Legumbres",
+    "canonical_name": "haba"
+  },
+  {
+    "id": "bbffb0e7-1658-4434-8577-de38f2fe8836",
+    "name": "Haba seca",
+    "category": "Legumbres",
+    "canonical_name": "haba"
+  },
+  {
+    "id": "c8b70c6c-7bef-4114-86dc-6a7aa496d353",
+    "name": "Habas frescas",
+    "category": "Legumbres",
+    "canonical_name": "haba"
+  },
+  {
+    "id": "f4327c13-8694-41e5-8fb7-24eb1957216e",
+    "name": "Judión de la granja",
+    "category": "Legumbres",
+    "canonical_name": "judión"
+  },
+  {
+    "id": "960c3f23-7edd-47f3-a413-9071afd43e39",
+    "name": "Lenteja beluga",
+    "category": "Legumbres",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "35fb895c-70ea-4397-a752-41769d770784",
+    "name": "Lenteja castellana",
+    "category": "Legumbres",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "2ef63e60-33df-4cf3-8e58-08aac0c4ff02",
+    "name": "Lenteja caviar",
+    "category": "Legumbres",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "8ca507c1-24bf-4a89-b50e-12dae64a955d",
+    "name": "Lenteja pardina",
+    "category": "Legumbres",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "5686a968-9640-4c5d-8299-e131bfd797cb",
+    "name": "Lenteja rubia",
+    "category": "Legumbres",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "8d768fa2-3558-477b-b574-b21ad69d9b06",
+    "name": "Lenteja verdina",
+    "category": "Legumbres",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "cdead61f-0908-4ad8-9558-bd9e8fb9d4c6",
+    "name": "Soja verde",
+    "category": "Legumbres",
+    "canonical_name": "soja"
+  },
+  {
+    "id": "1f3695c6-f396-4b0b-9a78-db954a4597b3",
+    "name": "aceite de coco",
+    "category": "Otros",
+    "canonical_name": "aceite de coco"
+  },
+  {
+    "id": "537618fc-18b9-4013-b805-d89cae2a3d2d",
+    "name": "Aceite de oliva",
+    "category": "Otros",
+    "canonical_name": "aceite de oliva"
+  },
+  {
+    "id": "e82bc4e3-66da-4363-ae0a-83376e1410e2",
+    "name": "aceitunas negras o verdes",
+    "category": "Otros",
+    "canonical_name": "aceituna"
+  },
+  {
+    "id": "eb054a29-1a73-4ad5-863a-0c91577206d3",
+    "name": "agar-agar en polvo",
+    "category": "Otros",
+    "canonical_name": "agar-agar"
+  },
+  {
+    "id": "097353d1-50de-46a4-a1a5-7ab3a6b5648a",
+    "name": "agua",
+    "category": "Otros",
+    "canonical_name": "agua"
+  },
+  {
+    "id": "82cf0bd7-ab19-4237-bb67-4db6e8525a50",
+    "name": "Agua o caldo vegetal",
+    "category": "Otros",
+    "canonical_name": "agua"
+  },
+  {
+    "id": "25bb24d3-22b3-4acc-af0f-25ef328da7d4",
+    "name": "agua para el caramelo",
+    "category": "Otros",
+    "canonical_name": "agua"
+  },
+  {
+    "id": "c39453a3-da3d-4954-b63c-f228f32594e2",
+    "name": "aguacate maduro",
+    "category": "Otros",
+    "canonical_name": "aguacate"
+  },
+  {
+    "id": "97ea50c9-33b5-4ddc-9037-645570f8ec1e",
+    "name": "aguacates maduros",
+    "category": "Otros",
+    "canonical_name": "aguacate"
+  },
+  {
+    "id": "26eb4b4f-fac7-44b4-a06b-5fed0de33a30",
+    "name": "ajo en polvo",
+    "category": "Otros",
+    "canonical_name": "ajo"
+  },
+  {
+    "id": "06a72b6d-cfe0-4a9a-ba8d-426d913b930f",
+    "name": "Alcachofas frescas",
+    "category": "Otros",
+    "canonical_name": "alcachofa"
+  },
+  {
+    "id": "bf8acc61-1b7f-455b-9b6d-afe8fff9b61f",
+    "name": "almendras laminadas",
+    "category": "Otros",
+    "canonical_name": "almendra"
+  },
+  {
+    "id": "a467c5fc-4b42-4ba2-b09b-dc9b3b304fa3",
+    "name": "Alubia roja",
+    "category": "Otros",
+    "canonical_name": "alubia roja"
+  },
+  {
+    "id": "43ce3153-aeeb-4bd1-a701-24016659cdcd",
+    "name": "alubias blancas cocidas",
+    "category": "Otros",
+    "canonical_name": "alubia blanca"
+  },
+  {
+    "id": "6ce4b3c2-5e76-426d-b10f-e46521260d88",
+    "name": "Arroz",
+    "category": "Otros",
+    "canonical_name": "arroz"
+  },
+  {
+    "id": "5d5b780e-6f57-4101-aafa-af899903963f",
+    "name": "Arroz arborio",
+    "category": "Otros",
+    "canonical_name": "arroz"
+  },
+  {
+    "id": "1b488f76-9e78-49f0-ac62-153a987d1221",
+    "name": "Arroz redondo (tipo Bomba)",
+    "category": "Otros",
+    "canonical_name": "arroz"
+  },
+  {
+    "id": "64ebe370-891c-4bc9-adcf-b6dc32564b25",
+    "name": "atún en aceite de oliva",
+    "category": "Otros",
+    "canonical_name": "atun"
+  },
+  {
+    "id": "3361fcca-8e1b-4ae6-837d-2c2b63ae6fa6",
+    "name": "Azúcar",
+    "category": "Otros",
+    "canonical_name": "azucar blanco"
+  },
+  {
+    "id": "b7518195-0faa-4f0c-997c-68b27b4856fe",
+    "name": "azúcar blanca",
+    "category": "Otros",
+    "canonical_name": "azucar blanco"
+  },
+  {
+    "id": "11ee71a7-9c1c-4752-8bb1-72c712423639",
+    "name": "azúcar para el caramelo",
+    "category": "Otros",
+    "canonical_name": "azucar blanco"
+  },
+  {
+    "id": "32c32fff-f574-4160-a569-2f24fc185cec",
+    "name": "bacon de pavo",
+    "category": "Otros",
+    "canonical_name": "bacon de pavo"
+  },
+  {
+    "id": "0198d5f2-08d6-4bed-b8a7-675979e817e2",
+    "name": "calabaza pelada y cortada en cubos",
+    "category": "Otros",
+    "canonical_name": "calabaza"
+  },
+  {
+    "id": "c14741d4-b753-4037-80ca-e14a1e42e478",
+    "name": "caldo de carne bajo en sodio",
+    "category": "Otros",
+    "canonical_name": "fondo de carne"
+  },
+  {
+    "id": "33e8f731-85f2-4c13-9e87-c3612a618c2f",
+    "name": "caldo de verduras",
+    "category": "Otros",
+    "canonical_name": "caldo de verduras"
+  },
+  {
+    "id": "9bc769b3-c40d-4102-b10c-fe61da884f21",
+    "name": "Carne de cerdo",
+    "category": "Otros",
+    "canonical_name": "carne de cerdo"
+  },
+  {
+    "id": "394a0ec2-885a-4c6a-ac00-ada1b7ea6eb4",
+    "name": "carne de ternera para estofado",
+    "category": "Otros",
+    "canonical_name": "carne de ternera"
+  },
+  {
+    "id": "9c5954ab-a237-4f1c-96b9-3fe8d029a3a6",
+    "name": "Carne picada de ternera",
+    "category": "Otros",
+    "canonical_name": "carne picada de ternera"
+  },
+  {
+    "id": "6563ce9f-5b81-4f4e-97d5-6c8be8ebc5f8",
+    "name": "Cebolla",
+    "category": "Otros",
+    "canonical_name": "cebolla"
+  },
+  {
+    "id": "bbaa3d6e-da18-48fe-be70-e9b53dc01407",
+    "name": "cebolla morada picada",
+    "category": "Otros",
+    "canonical_name": "cebolla"
+  },
+  {
+    "id": "b3a8ad1d-7d47-4dd9-82b6-56a6666bf15c",
+    "name": "cebolla roja",
+    "category": "Otros",
+    "canonical_name": "cebolla"
+  },
+  {
+    "id": "579dc2da-856d-4137-b36a-531ab804373a",
+    "name": "Cebolleta",
+    "category": "Otros",
+    "canonical_name": "cebolleta"
+  },
+  {
+    "id": "c741416d-d340-4549-bc83-6e3c687e40f1",
+    "name": "Chocolate negro",
+    "category": "Otros",
+    "canonical_name": "chocolate negro"
+  },
+  {
+    "id": "fca7c2c1-10f9-4a0d-8f4e-522b0011f636",
+    "name": "comino en polvo",
+    "category": "Otros",
+    "canonical_name": "comino"
+  },
+  {
+    "id": "a7f74c99-c6ec-462b-85aa-0c0c0cd9b7e7",
+    "name": "Cúrcuma",
+    "category": "Otros",
+    "canonical_name": "curcuma"
+  },
+  {
+    "id": "8e4c30fb-b314-4b7c-ae4e-4e591e8882bb",
+    "name": "Curry en polvo",
+    "category": "Otros",
+    "canonical_name": "curry en polvo"
+  },
+  {
+    "id": "e53f4418-0cb5-4a4c-9ddc-cf6b3a53b1a6",
+    "name": "diente de ajo",
+    "category": "Otros",
+    "canonical_name": "ajo"
+  },
+  {
+    "id": "99b1c343-e978-4adb-b5df-88e9f7f67e6f",
+    "name": "dientes de ajo",
+    "category": "Otros",
+    "canonical_name": "ajo"
+  },
+  {
+    "id": "44dc6e64-2b09-49de-ad41-503440e112b7",
+    "name": "dientes de ajo picados",
+    "category": "Otros",
+    "canonical_name": "ajo"
+  },
+  {
+    "id": "189c946a-3df2-4d65-89ae-956238957f23",
+    "name": "Eneldo",
+    "category": "Otros",
+    "canonical_name": "eneldo"
+  },
+  {
+    "id": "c17b8580-9c77-4f56-b697-0dd1c8161d3a",
+    "name": "esencia de vainilla",
+    "category": "Otros",
+    "canonical_name": "esencia de vainilla"
+  },
+  {
+    "id": "4ec14aec-c82d-43b8-9314-93ead6fc0880",
+    "name": "Espagueti",
+    "category": "Otros",
+    "canonical_name": "espagueti"
+  },
+  {
+    "id": "2c008225-83b7-42d6-8fba-bef81d422c12",
+    "name": "espinacas frescas",
+    "category": "Otros",
+    "canonical_name": "espinaca"
+  },
+  {
+    "id": "98d703c1-9738-45ac-84e8-c8967c825e56",
+    "name": "Fideo de arroz",
+    "category": "Otros",
+    "canonical_name": "fideo de arroz"
+  },
+  {
+    "id": "65b60817-8d39-4f6b-a9ae-05f7e434c85f",
+    "name": "Fideo ramen",
+    "category": "Otros",
+    "canonical_name": "fideo"
+  },
+  {
+    "id": "8dd5299b-c60e-4e52-be8e-a92d443d95e6",
+    "name": "filetes de ternera tierna",
+    "category": "Otros",
+    "canonical_name": "chuletón de ternera"
+  },
+  {
+    "id": "8a27941c-73b6-4395-9560-0e842cd59a0f",
+    "name": "Gamba",
+    "category": "Otros",
+    "canonical_name": "gamba"
+  },
+  {
+    "id": "27a1220f-0b7e-41ab-b165-6859bbd3c626",
+    "name": "Garbanzo seco",
+    "category": "Otros",
+    "canonical_name": "garbanzo"
+  },
+  {
+    "id": "22413999-225e-4479-8047-16894f8bacf6",
+    "name": "Garrofón",
+    "category": "Otros",
+    "canonical_name": "garrofon"
+  },
+  {
+    "id": "42caeb0f-472e-4fe1-ac21-4acbcebdc416",
+    "name": "Gochujang",
+    "category": "Otros",
+    "canonical_name": "gochujang"
+  },
+  {
+    "id": "dcb57a45-4f97-459c-973b-8f0dacf8296d",
+    "name": "Guindilla",
+    "category": "Otros",
+    "canonical_name": "guindilla"
+  },
+  {
+    "id": "c148bf5c-cbe0-4493-ad32-b698aaa4b3ba",
+    "name": "Harina",
+    "category": "Otros",
+    "canonical_name": "harina de trigo"
+  },
+  {
+    "id": "068bfe62-66c0-4ed5-9f4d-c85e8d27d296",
+    "name": "Hebras de azafrán",
+    "category": "Otros",
+    "canonical_name": "azafrán"
+  },
+  {
+    "id": "32691341-bd22-4d5f-ade3-8211446998ee",
+    "name": "hoja de laurel",
+    "category": "Otros",
+    "canonical_name": "laurel"
+  },
+  {
+    "id": "25644465-9400-4b12-a2df-cb3cc0d26f74",
+    "name": "huevo",
+    "category": "Otros",
+    "canonical_name": "huevo"
+  },
+  {
+    "id": "aa90625c-d757-42c0-9a0f-1ee4ae81ae8d",
+    "name": "huevos camperos",
+    "category": "Otros",
+    "canonical_name": "huevo"
+  },
+  {
+    "id": "13319433-af5c-44b1-adca-4f1b0cc530bc",
+    "name": "huevos grandes",
+    "category": "Otros",
+    "canonical_name": "huevo"
+  },
+  {
+    "id": "e5b4978d-dac3-441f-b9bd-67a378a1c3f8",
+    "name": "Huevos L",
+    "category": "Otros",
+    "canonical_name": "huevo"
+  },
+  {
+    "id": "e5a9e4bf-19ce-4e4e-9a77-ce991e2f57df",
+    "name": "jamón de pavo",
+    "category": "Otros",
+    "canonical_name": "jamón de pavo"
+  },
+  {
+    "id": "f8360024-0a95-4ca5-83a2-df449bd579fa",
+    "name": "jamón serrano en lonchas",
+    "category": "Otros",
+    "canonical_name": "jamón serrano"
+  },
+  {
+    "id": "5fff4a05-c97d-43ca-89f0-ddd68babeb3f",
+    "name": "jamón serrano en lonchas finas",
+    "category": "Otros",
+    "canonical_name": "jamón serrano"
+  },
+  {
+    "id": "de4664aa-f3bf-4148-9e2f-46e2a874479c",
+    "name": "Jamón serrano en taquitos",
+    "category": "Otros",
+    "canonical_name": "jamón serrano"
+  },
+  {
+    "id": "3e9ba693-f0ca-429c-8ca8-8c4904e92594",
+    "name": "Jengibre",
+    "category": "Otros",
+    "canonical_name": "jengibre"
+  },
+  {
+    "id": "da04598b-3739-49c4-be9b-580ea28d6b47",
+    "name": "jengibre fresco",
+    "category": "Otros",
+    "canonical_name": "jengibre"
+  },
+  {
+    "id": "1fa2c763-2e74-42f2-8b60-d18d38a6ac91",
+    "name": "jengibre fresco rallado",
+    "category": "Otros",
+    "canonical_name": "jengibre"
+  },
+  {
+    "id": "8cc58c18-2f85-4104-a3c2-e57591fd9e66",
+    "name": "jengibre rallado",
+    "category": "Otros",
+    "canonical_name": "jengibre"
+  },
+  {
+    "id": "538af920-f31d-4ea5-9f07-70da3195b857",
+    "name": "Judías verdes planas (bachoqueta)",
+    "category": "Otros",
+    "canonical_name": "judía verde"
+  },
+  {
+    "id": "1ff79e6e-991b-47cf-b32b-4f7d0a0f1374",
+    "name": "Leche",
+    "category": "Otros",
+    "canonical_name": "leche entera"
+  },
+  {
+    "id": "84c8725a-6e4b-4740-87b4-af1e67e36adc",
+    "name": "Leche de coco",
+    "category": "Otros",
+    "canonical_name": "leche de coco"
+  },
+  {
+    "id": "1f973f40-6aeb-468a-9a04-edb563c8c4c2",
+    "name": "leche de coco de lata",
+    "category": "Otros",
+    "canonical_name": "leche de coco"
+  },
+  {
+    "id": "17d8835d-c8f5-4bd8-8e10-b9245130afb1",
+    "name": "leche de coco ligera",
+    "category": "Otros",
+    "canonical_name": "leche de coco"
+  },
+  {
+    "id": "2ed2d6ed-8fb4-4eeb-99d7-03015f7694d5",
+    "name": "Lenteja",
+    "category": "Otros",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "a9a11c62-e2aa-4763-9003-fbf5e5ee3fee",
+    "name": "Lenteja roja",
+    "category": "Otros",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "11b0a916-ceb9-470f-9a3d-5834bb29f69f",
+    "name": "lentejas pardina",
+    "category": "Otros",
+    "canonical_name": "lenteja"
+  },
+  {
+    "id": "9ebb3aeb-07c1-4f13-9edb-13bacea468f3",
+    "name": "Levadura química",
+    "category": "Otros",
+    "canonical_name": "levadura química"
+  },
+  {
+    "id": "9a7adc5b-bfde-4872-894a-06841467b931",
+    "name": "Limón",
+    "category": "Otros",
+    "canonical_name": "limón"
+  },
+  {
+    "id": "2145a990-20ef-4409-b50d-dddd19c0f86a",
+    "name": "limón lima",
+    "category": "Otros",
+    "canonical_name": "limón"
+  },
+  {
+    "id": "99c23c13-9296-493c-b4dd-986382f20723",
+    "name": "Mantequilla",
+    "category": "Otros",
+    "canonical_name": "mantequilla sin sal"
+  },
+  {
+    "id": "cd2bdd12-1147-478d-88f7-8a08f19b21a4",
+    "name": "Masa de pizza",
+    "category": "Otros",
+    "canonical_name": "masa de pizza"
+  },
+  {
+    "id": "0b172958-7ef8-476f-aac8-a4a2a43d938f",
+    "name": "Mozzarella",
+    "category": "Otros",
+    "canonical_name": "queso mozzarella"
+  },
+  {
+    "id": "e99944a0-f6d2-46e0-87cf-b96bd4f2d331",
+    "name": "Pan",
+    "category": "Otros",
+    "canonical_name": "pan"
+  },
+  {
+    "id": "0cf3948a-1562-45a6-81a4-1d1ca368434b",
+    "name": "Panceta",
+    "category": "Otros",
+    "canonical_name": "panceta de cerdo"
+  },
+  {
+    "id": "2740ba9f-37a8-4148-80dd-0dc4ac37113b",
+    "name": "Pasta de miso",
+    "category": "Otros",
+    "canonical_name": "pasta de miso"
+  },
+  {
+    "id": "c6c5999d-9ab7-49a5-997c-64c3624abd13",
+    "name": "patatas",
+    "category": "Otros",
+    "canonical_name": "patata"
+  },
+  {
+    "id": "96f6909d-0402-4731-9363-b16122ba5726",
+    "name": "patatas medianas",
+    "category": "Otros",
+    "canonical_name": "patata"
+  },
+  {
+    "id": "4fcc3634-b8a0-4b41-bc99-06f59c2c46b8",
+    "name": "Pimentón",
+    "category": "Otros",
+    "canonical_name": "pimentón"
+  },
+  {
+    "id": "321cdc97-4a24-432c-a8e0-ed6a5fb720be",
+    "name": "pimienta negra molida",
+    "category": "Otros",
+    "canonical_name": "pimienta"
+  },
+  {
+    "id": "20aca884-d63b-40d9-9e88-9e1d14655d8e",
+    "name": "pimiento verde italiano",
+    "category": "Otros",
+    "canonical_name": "pimiento verde"
+  },
+  {
+    "id": "7f29a43f-7a54-4b58-9b35-ff9a65f4fe88",
+    "name": "Queso pecorino",
+    "category": "Otros",
+    "canonical_name": "queso pecorino"
+  },
+  {
+    "id": "e8cd602e-6092-4881-b4dd-45613532fc73",
+    "name": "Ras el hanout",
+    "category": "Otros",
+    "canonical_name": "ras el hanout"
+  },
+  {
+    "id": "242fbc71-f201-488a-8ec1-8a165ef51739",
+    "name": "romero seco",
+    "category": "Otros",
+    "canonical_name": "romero"
+  },
+  {
+    "id": "3f91e33f-fa15-49fc-b35f-260e3e6eb65b",
+    "name": "Sal",
+    "category": "Otros",
+    "canonical_name": "sal"
+  },
+  {
+    "id": "2750c126-c8d8-4188-bf9a-1c095645668d",
+    "name": "sal y pimienta",
+    "category": "Otros",
+    "canonical_name": "sal y pimienta"
+  },
+  {
+    "id": "faa86946-7d09-4b23-bb7e-ee62dad87fff",
+    "name": "sal y pimienta negra",
+    "category": "Otros",
+    "canonical_name": "sal y pimienta"
+  },
+  {
+    "id": "bc3d869f-4ae4-4204-903b-419a05ec6c00",
+    "name": "sal y pimienta negra molida",
+    "category": "Otros",
+    "canonical_name": "sal y pimienta"
+  },
+  {
+    "id": "f8dea756-9fc1-4373-927a-882e0461d26b",
+    "name": "Salmón",
+    "category": "Otros",
+    "canonical_name": "salmón"
+  },
+  {
+    "id": "ba04c0fd-c888-4a7b-8520-eaf325c5568c",
+    "name": "Salsa de pescado",
+    "category": "Otros",
+    "canonical_name": "salsa de pescado"
+  },
+  {
+    "id": "fe051bd5-2f5f-44b9-8895-addce2850007",
+    "name": "salsa de soja baja en sal",
+    "category": "Otros",
+    "canonical_name": "salsa de soja"
+  },
+  {
+    "id": "10d21e1a-a9a2-4913-a16f-db74c08dff68",
+    "name": "salsa de soja baja en sodio",
+    "category": "Otros",
+    "canonical_name": "salsa de soja"
+  },
+  {
+    "id": "1b45720e-6ea2-43bc-aea2-d74bfdac4b3e",
+    "name": "Sésamo",
+    "category": "Otros",
+    "canonical_name": "sésamo"
+  },
+  {
+    "id": "217aed44-4cf8-41cc-bcc5-327956cddd89",
+    "name": "Seta",
+    "category": "Otros",
+    "canonical_name": "seta"
+  },
+  {
+    "id": "7ce8b5af-7c54-49d3-88e6-63e886834e7e",
+    "name": "Tahini",
+    "category": "Otros",
+    "canonical_name": "tahini"
+  },
+  {
+    "id": "57517a56-bc93-4972-b1e3-3e94d2a349e4",
+    "name": "Tomate",
+    "category": "Otros",
+    "canonical_name": "tomate"
+  },
+  {
+    "id": "0f1a1ddc-1170-4f38-929a-ca6ad25fcc86",
+    "name": "Tomate maduro",
+    "category": "Otros",
+    "canonical_name": "tomate"
+  },
+  {
+    "id": "6f6181c5-039a-40e2-b495-542a8a1037cf",
+    "name": "Tomate maduro rallado",
+    "category": "Otros",
+    "canonical_name": "tomate"
+  },
+  {
+    "id": "d9654aba-f586-454a-bc05-700e19a41b22",
+    "name": "Tortilla de maíz",
+    "category": "Otros",
+    "canonical_name": "tortilla de maíz"
+  },
+  {
+    "id": "60af3bdc-b1a8-47c0-8336-51199b17fdcf",
+    "name": "Vinagre de vino",
+    "category": "Otros",
+    "canonical_name": "vinagre de vino tinto"
+  },
+  {
+    "id": "1f4591c0-3999-421b-bd87-0309a6542a21",
+    "name": "zanahorias",
+    "category": "Otros",
+    "canonical_name": "zanahoria"
+  },
+  {
+    "id": "494d508b-a5b2-4f0d-8217-de58961a408f",
+    "name": "zumo de lima",
+    "category": "Otros",
+    "canonical_name": "lima"
+  },
+  {
+    "id": "e3a4bb09-1c77-40fc-9091-15cc69350cc2",
+    "name": "zumo de limón",
+    "category": "Otros",
+    "canonical_name": "limón"
+  },
+  {
+    "id": "f0adfae7-45b2-4e64-a4eb-a8ae2fb10546",
+    "name": "Zumo de naranja",
+    "category": "Otros",
+    "canonical_name": "naranja"
+  },
+  {
+    "id": "1d97d459-75ec-480a-a3c1-c499ea4fd579",
+    "name": "Almeja babosa",
+    "category": "Pescados y mariscos",
+    "canonical_name": "almeja"
+  },
+  {
+    "id": "c86d528b-b8b7-4aeb-ba37-c32e42ae7e60",
+    "name": "Almeja fina",
+    "category": "Pescados y mariscos",
+    "canonical_name": "almeja"
+  },
+  {
+    "id": "e863c2f0-ce08-4a20-948b-ead1378862c2",
+    "name": "Anchoa",
+    "category": "Pescados y mariscos",
+    "canonical_name": "anchoa"
+  },
+  {
+    "id": "c777a7e2-7138-4872-a985-a3b3ea8313e9",
+    "name": "Atún rojo",
+    "category": "Pescados y mariscos",
+    "canonical_name": "atun"
+  },
+  {
+    "id": "73b89dc0-6a86-45e7-92de-e00c263b8471",
+    "name": "Bacalao desalado",
+    "category": "Pescados y mariscos",
+    "canonical_name": "bacalao"
+  },
+  {
+    "id": "c08cfde3-0986-446c-a929-bebba5073f18",
+    "name": "Bacalao fresco",
+    "category": "Pescados y mariscos",
+    "canonical_name": "bacalao"
+  },
+  {
+    "id": "cc6d7287-bb3e-49d2-97ee-33b37b3d569f",
+    "name": "Berberecho",
+    "category": "Pescados y mariscos",
+    "canonical_name": "berberecho"
+  },
+  {
+    "id": "685a53ef-a563-46d8-94b4-f4f4d9656f5b",
+    "name": "Bogavante",
+    "category": "Pescados y mariscos",
+    "canonical_name": "bogavante"
+  },
+  {
+    "id": "e6d63905-6c14-40b9-b6cf-d42cb888e214",
+    "name": "Bonito del norte",
+    "category": "Pescados y mariscos",
+    "canonical_name": "bonito"
+  },
+  {
+    "id": "63f168f1-7d85-49b5-b2e8-4a22784c82ea",
+    "name": "Boquerón",
+    "category": "Pescados y mariscos",
+    "canonical_name": "boquerón"
+  },
+  {
+    "id": "52a97256-01bb-4e35-8d48-b2bd83d67e4b",
+    "name": "Caballa",
+    "category": "Pescados y mariscos",
+    "canonical_name": "caballa"
+  },
+  {
+    "id": "a59d9588-fa04-4604-89d2-9a6d5732101c",
+    "name": "Calamar",
+    "category": "Pescados y mariscos",
+    "canonical_name": "calamar"
+  },
+  {
+    "id": "2354de75-f43e-4d08-859d-c397cdb08ccd",
+    "name": "Cigala",
+    "category": "Pescados y mariscos",
+    "canonical_name": "cigala"
+  },
+  {
+    "id": "b8ca26ff-0163-4ddd-a6f9-a8ea3d35a1d0",
+    "name": "Dorada",
+    "category": "Pescados y mariscos",
+    "canonical_name": "dorada"
+  },
+  {
+    "id": "f368a749-2bab-4a7d-be64-0c51be97aa65",
+    "name": "Gamba blanca",
+    "category": "Pescados y mariscos",
+    "canonical_name": "gamba"
+  },
+  {
+    "id": "128dbe0b-a589-4f59-9a12-fb840b62d115",
+    "name": "Gamba roja",
+    "category": "Pescados y mariscos",
+    "canonical_name": "gamba"
+  },
+  {
+    "id": "40e8796a-b23f-485b-b56e-81cb09fb2cfe",
+    "name": "Gambón",
+    "category": "Pescados y mariscos",
+    "canonical_name": "gambón"
+  },
+  {
+    "id": "947ce46a-07e0-4ab0-a79f-e5b9c337014b",
+    "name": "Langosta",
+    "category": "Pescados y mariscos",
+    "canonical_name": "langosta"
+  },
+  {
+    "id": "8fbaf8da-128e-4bb0-8dba-d6f156682d57",
+    "name": "Langostino",
+    "category": "Pescados y mariscos",
+    "canonical_name": "gambón"
+  },
+  {
+    "id": "686f9400-d1d3-407f-b9dc-35c91eb5b490",
+    "name": "Lenguado",
+    "category": "Pescados y mariscos",
+    "canonical_name": "lenguado"
+  },
+  {
+    "id": "fc212ff2-b1c8-4d74-a762-403f858e963b",
+    "name": "Lubina",
+    "category": "Pescados y mariscos",
+    "canonical_name": "lubina"
+  },
+  {
+    "id": "da36c860-3c49-41a5-9f02-cbdfb8ea43f3",
+    "name": "Mejillón",
+    "category": "Pescados y mariscos",
+    "canonical_name": "mejillon"
+  },
+  {
+    "id": "4ddea947-b944-4240-a9e7-044f4c557b2b",
+    "name": "Merluza",
+    "category": "Pescados y mariscos",
+    "canonical_name": "merluza"
+  },
+  {
+    "id": "3c7e18a6-5b91-4a49-8677-98a8cc24908a",
+    "name": "Navaja",
+    "category": "Pescados y mariscos",
+    "canonical_name": "navaja"
+  },
+  {
+    "id": "9df366c2-5eb5-46a1-a0dc-64b5f4acd34d",
+    "name": "Pulpo",
+    "category": "Pescados y mariscos",
+    "canonical_name": "pulpo"
+  },
+  {
+    "id": "6a9ef399-0045-4081-af6c-13cf60bb2796",
+    "name": "Rape",
+    "category": "Pescados y mariscos",
+    "canonical_name": "rape"
+  },
+  {
+    "id": "9c02ecab-dea9-4de6-97d9-276866b4a5be",
+    "name": "Rodaballo",
+    "category": "Pescados y mariscos",
+    "canonical_name": "rodaballo"
+  },
+  {
+    "id": "d6674cee-be44-4977-9e7f-67ccc77fa464",
+    "name": "Sardina",
+    "category": "Pescados y mariscos",
+    "canonical_name": "sardina"
+  },
+  {
+    "id": "bc90fd1d-9242-4f64-bd64-522c1892632f",
+    "name": "Sepia",
+    "category": "Pescados y mariscos",
+    "canonical_name": "sepia"
+  },
+  {
+    "id": "b037b0f8-dec1-4d98-9ee6-d92a13062699",
+    "name": "Vieira",
+    "category": "Pescados y mariscos",
+    "canonical_name": "vieira"
+  },
+  {
+    "id": "bd6216e5-f886-422a-abe0-820f7e499377",
+    "name": "Acelga",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "acelga"
+  },
+  {
+    "id": "4eb738a1-af4a-4a58-9cb1-99247de6577c",
+    "name": "Ajo",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "ajo"
+  },
+  {
+    "id": "a12a07e4-3ed5-4984-a722-9106e9b20477",
+    "name": "Alcachofa",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "alcachofa"
+  },
+  {
+    "id": "606c1482-986c-47ba-8db0-54b570c3ed82",
+    "name": "Apio",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "apio"
+  },
+  {
+    "id": "c54b35f5-d25f-458e-bff9-03f531a01904",
+    "name": "Berenjena",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "berenjena"
+  },
+  {
+    "id": "18127821-f357-4482-92e4-0331ff7fe03e",
+    "name": "Brócoli",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "brócoli"
+  },
+  {
+    "id": "169d2422-47bc-464f-995d-4b6e7d38b9a4",
+    "name": "Calabacín",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "calabacín"
+  },
+  {
+    "id": "2e1b0255-9083-4ee3-b43b-3f980b3c0183",
+    "name": "Calabaza",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "calabaza"
+  },
+  {
+    "id": "f30b2caa-9904-4053-a5fb-1a4e0bacb978",
+    "name": "Cardo",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "cardo"
+  },
+  {
+    "id": "30f61048-7900-4403-b0da-a8f7766a0472",
+    "name": "Cebolla blanca",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "cebolla"
+  },
+  {
+    "id": "aa7746d8-22eb-43af-b9eb-b77dc9d84bb6",
+    "name": "Cebolla morada",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "cebolla"
+  },
+  {
+    "id": "7a9aa56a-78cd-454b-ab55-14cf9af4a27b",
+    "name": "Champiñón",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "champiñón"
+  },
+  {
+    "id": "c416e17e-4372-476f-baa1-2484878aa16f",
+    "name": "Coliflor",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "coliflor"
+  },
+  {
+    "id": "6159bba9-65a8-488c-8f08-cc6dc4280222",
+    "name": "Espárrago triguero",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "espárrago triguero"
+  },
+  {
+    "id": "0ce35bcd-9fc5-4c29-a1f8-86d80fbe5d50",
+    "name": "Espinaca",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "espinaca"
+  },
+  {
+    "id": "21dd975c-45b9-46c1-822f-12d5966a1fca",
+    "name": "Guisante",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "guisante"
+  },
+  {
+    "id": "0008b9d1-4cbd-4e63-ba8e-b86dabcd55ed",
+    "name": "Haba",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "haba"
+  },
+  {
+    "id": "7e366df4-70b2-4027-aef9-2f25b7471aa4",
+    "name": "Judía verde plana",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "judía verde plana"
+  },
+  {
+    "id": "13b99a1c-8013-4db2-96f5-9e1176e90869",
+    "name": "Judía verde redonda",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "judía verde redonda"
+  },
+  {
+    "id": "d16a8a48-cbf2-45c6-8aad-2d238a7aad31",
+    "name": "Lechuga hoja de roble",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "lechuga hoja de roble"
+  },
+  {
+    "id": "19556c82-da52-4889-ade6-8c89fc02cd7d",
+    "name": "Lechuga romana",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "lechuga romana"
+  },
+  {
+    "id": "e34a6458-8e5a-42dc-b804-ea5db0e2a6de",
+    "name": "Patata",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "patata"
+  },
+  {
+    "id": "9c4e5b94-7bcc-40ae-b59d-d6f32dd36b32",
+    "name": "Pepino",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "pepino"
+  },
+  {
+    "id": "4fb8f30d-2c2d-464a-ac80-1fcc30e4bf1c",
+    "name": "Pimiento rojo",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "pimiento rojo"
+  },
+  {
+    "id": "4c05ae3e-7764-4f15-975e-30ebe0c24deb",
+    "name": "Pimiento verde",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "pimiento verde"
+  },
+  {
+    "id": "73ec0c0a-c6c0-4094-b1c2-a259bd091a95",
+    "name": "Puerro",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "puerro"
+  },
+  {
+    "id": "5b978437-d420-44da-95a0-155034721129",
+    "name": "Setas ostra",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "seta"
+  },
+  {
+    "id": "c8b9380a-b682-4161-b4c0-f4fb89eac7c3",
+    "name": "Tomate pera",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "tomate"
+  },
+  {
+    "id": "8c383061-1604-4b77-93ad-46416a299345",
+    "name": "Tomate rama",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "tomate"
+  },
+  {
+    "id": "516a83ef-e66b-4441-8310-eb13f7d20c93",
+    "name": "Zanahoria",
+    "category": "Verduras y hortalizas",
+    "canonical_name": "zanahoria"
+  }
+]
