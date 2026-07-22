@@ -31,8 +31,11 @@ export function RecipeHero({ recipe }: { recipe: Recipe }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recipe.id]);
 
-  const { image, pending } = useRecipeImage(recipe.id, recipe.image_url, status);
-  const showSpinner = ensuring || pending;
+  // Drive the spinner from `status` (updated in the same render as `ensuring`), not from the
+  // hook's `pending`, which only syncs in a post-render effect and would flash the placeholder
+  // for one frame during the ensuring -> pending transition.
+  const { image } = useRecipeImage(recipe.id, recipe.image_url, status);
+  const showSpinner = !image && (ensuring || status === 'pending');
 
   return (
     <View className="relative aspect-[3/2] w-full items-center justify-center bg-surface-container">
