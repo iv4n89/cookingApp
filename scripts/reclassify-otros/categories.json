@@ -1,0 +1,162 @@
+[
+  {
+    "id": "1f3695c6-f396-4b0b-9a78-db954a4597b3",
+    "name": "aceite de coco",
+    "category": "Aceites, vinagres y salsas"
+  },
+  {
+    "id": "eb054a29-1a73-4ad5-863a-0c91577206d3",
+    "name": "agar-agar en polvo",
+    "category": "Conservas y otros"
+  },
+  {
+    "id": "097353d1-50de-46a4-a1a5-7ab3a6b5648a",
+    "name": "agua",
+    "category": "Conservas y otros"
+  },
+  {
+    "id": "32c32fff-f574-4160-a569-2f24fc185cec",
+    "name": "bacon de pavo",
+    "category": "Carnes"
+  },
+  {
+    "id": "33e8f731-85f2-4c13-9e87-c3612a618c2f",
+    "name": "caldo de verduras",
+    "category": "Conservas y otros"
+  },
+  {
+    "id": "9bc769b3-c40d-4102-b10c-fe61da884f21",
+    "name": "Carne de cerdo",
+    "category": "Carnes"
+  },
+  {
+    "id": "394a0ec2-885a-4c6a-ac00-ada1b7ea6eb4",
+    "name": "carne de ternera para estofado",
+    "category": "Carnes"
+  },
+  {
+    "id": "9c5954ab-a237-4f1c-96b9-3fe8d029a3a6",
+    "name": "Carne picada de ternera",
+    "category": "Carnes"
+  },
+  {
+    "id": "579dc2da-856d-4137-b36a-531ab804373a",
+    "name": "Cebolleta",
+    "category": "Verduras y hortalizas"
+  },
+  {
+    "id": "c741416d-d340-4549-bc83-6e3c687e40f1",
+    "name": "Chocolate negro",
+    "category": "Condimentos y edulcorantes"
+  },
+  {
+    "id": "a7f74c99-c6ec-462b-85aa-0c0c0cd9b7e7",
+    "name": "Cúrcuma",
+    "category": "Especias y hierbas"
+  },
+  {
+    "id": "8e4c30fb-b314-4b7c-ae4e-4e591e8882bb",
+    "name": "Curry en polvo",
+    "category": "Especias y hierbas"
+  },
+  {
+    "id": "189c946a-3df2-4d65-89ae-956238957f23",
+    "name": "Eneldo",
+    "category": "Especias y hierbas"
+  },
+  {
+    "id": "c17b8580-9c77-4f56-b697-0dd1c8161d3a",
+    "name": "esencia de vainilla",
+    "category": "Condimentos y edulcorantes"
+  },
+  {
+    "id": "98d703c1-9738-45ac-84e8-c8967c825e56",
+    "name": "Fideo de arroz",
+    "category": "Cereales, pan y pasta"
+  },
+  {
+    "id": "22413999-225e-4479-8047-16894f8bacf6",
+    "name": "Garrofón",
+    "category": "Legumbres"
+  },
+  {
+    "id": "42caeb0f-472e-4fe1-ac21-4acbcebdc416",
+    "name": "Gochujang",
+    "category": "Aceites, vinagres y salsas"
+  },
+  {
+    "id": "dcb57a45-4f97-459c-973b-8f0dacf8296d",
+    "name": "Guindilla",
+    "category": "Verduras y hortalizas"
+  },
+  {
+    "id": "e5a9e4bf-19ce-4e4e-9a77-ce991e2f57df",
+    "name": "jamón de pavo",
+    "category": "Carnes"
+  },
+  {
+    "id": "3e9ba693-f0ca-429c-8ca8-8c4904e92594",
+    "name": "Jengibre",
+    "category": "Verduras y hortalizas"
+  },
+  {
+    "id": "538af920-f31d-4ea5-9f07-70da3195b857",
+    "name": "Judías verdes planas (bachoqueta)",
+    "category": "Verduras y hortalizas"
+  },
+  {
+    "id": "84c8725a-6e4b-4740-87b4-af1e67e36adc",
+    "name": "Leche de coco",
+    "category": "Conservas y otros"
+  },
+  {
+    "id": "9ebb3aeb-07c1-4f13-9edb-13bacea468f3",
+    "name": "Levadura química",
+    "category": "Conservas y otros"
+  },
+  {
+    "id": "cd2bdd12-1147-478d-88f7-8a08f19b21a4",
+    "name": "Masa de pizza",
+    "category": "Cereales, pan y pasta"
+  },
+  {
+    "id": "2740ba9f-37a8-4148-80dd-0dc4ac37113b",
+    "name": "Pasta de miso",
+    "category": "Aceites, vinagres y salsas"
+  },
+  {
+    "id": "7f29a43f-7a54-4b58-9b35-ff9a65f4fe88",
+    "name": "Queso pecorino",
+    "category": "Lácteos y huevos"
+  },
+  {
+    "id": "e8cd602e-6092-4881-b4dd-45613532fc73",
+    "name": "Ras el hanout",
+    "category": "Especias y hierbas"
+  },
+  {
+    "id": "2750c126-c8d8-4188-bf9a-1c095645668d",
+    "name": "sal y pimienta",
+    "category": "Condimentos y edulcorantes"
+  },
+  {
+    "id": "f8dea756-9fc1-4373-927a-882e0461d26b",
+    "name": "Salmón",
+    "category": "Pescados y mariscos"
+  },
+  {
+    "id": "ba04c0fd-c888-4a7b-8520-eaf325c5568c",
+    "name": "Salsa de pescado",
+    "category": "Aceites, vinagres y salsas"
+  },
+  {
+    "id": "7ce8b5af-7c54-49d3-88e6-63e886834e7e",
+    "name": "Tahini",
+    "category": "Aceites, vinagres y salsas"
+  },
+  {
+    "id": "d9654aba-f586-454a-bc05-700e19a41b22",
+    "name": "Tortilla de maíz",
+    "category": "Cereales, pan y pasta"
+  }
+]
