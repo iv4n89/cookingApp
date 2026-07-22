@@ -137,10 +137,17 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
       router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
       return;
     }
-    Alert.alert('¿Cocinar esta receta?', 'Se descontarán sus ingredientes de tu despensa.', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Cocinar', onPress: doCook },
-    ]);
+    // Bloquea ya (antes de abrir el diálogo) para que un doble-tap no apile dos Alert.
+    setCooking(true);
+    Alert.alert(
+      '¿Cocinar esta receta?',
+      'Se descontarán sus ingredientes de tu despensa.',
+      [
+        { text: 'Cancelar', style: 'cancel', onPress: () => setCooking(false) },
+        { text: 'Cocinar', onPress: doCook },
+      ],
+      { cancelable: true, onDismiss: () => setCooking(false) },
+    );
   }
 
   const scaledIngredients = recipe ? scaleIngredients(recipe.ingredients, recipe.servings, servings) : [];
