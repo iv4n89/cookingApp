@@ -5,8 +5,9 @@
 --    si cambia allí, actualízalo aquí.
 --  * Pasada A "casi completo": recetas a las que faltan <=2 ingredientes NO-staple de la
 --    despensa (staples = especias/condimentos/aceites-vinagres-salsas, se asumen en casa).
---  * Pasada B (fallback): si A no llena el cupo, completa por preferencias+franja ignorando
---    la despensa.
+--  * Pasada B (fallback): si A no llena el cupo, completa por preferencias ignorando la despensa.
+--  * La franja (p_meal_type) NO es filtro duro: ordena primero (slot_match desc) en ambas
+--    pasadas, así manda pero nunca vacía el feed si la franja tiene pocas recetas.
 --  * Mantiene el dedup por variedad (similitud coseno > 0,9).
 drop function if exists recommended_recipes(int);
 drop function if exists recommended_recipes(int, text, uuid[]);
@@ -86,6 +87,7 @@ begin
     scored as (
       select rec.id, rec.title, rec.description, rec.image_url, rec.prep_time_min,
              rec.cook_time_min, rec.tags, rec.embedding, rec.created_at,
+             (p_meal_type is not null and rec.meal_types @> array[p_meal_type]) as slot_match,
              count(distinct x.iid) filter (where pantry.ingredient_id is not null)::int as mc,
              count(distinct x.iid) filter (where pantry.ingredient_id is null and staple.id is null)::int as missing
       from recipes rec
@@ -95,7 +97,6 @@ begin
       left join staple on staple.id = x.iid
       where x.iid is not null
         and rec.reusable
-        and (p_meal_type is null or rec.meal_types @> array[p_meal_type])
         and (cardinality(v_exclude_allergens) = 0
              or (rec.allergens is not null and not (rec.allergens && v_exclude_allergens)))
         and (cardinality(v_require_diet) = 0
@@ -105,7 +106,7 @@ begin
     )
     select * from scored
     where missing <= 2 and mc >= 1
-    order by missing asc, mc desc, created_at desc
+    order by slot_match desc, missing asc, mc desc, created_at desc
   loop
     exit when n >= p_limit;
     too_similar := false;
@@ -139,6 +140,7 @@ begin
       scored as (
         select rec.id, rec.title, rec.description, rec.image_url, rec.prep_time_min,
                rec.cook_time_min, rec.tags, rec.embedding, rec.created_at,
+               (p_meal_type is not null and rec.meal_types @> array[p_meal_type]) as slot_match,
                count(distinct x.iid) filter (where pantry.ingredient_id is not null)::int as mc,
                count(distinct x.iid) filter (where pantry.ingredient_id is null and staple.id is null)::int as missing
         from recipes rec
@@ -147,7 +149,6 @@ begin
         left join pantry on pantry.ingredient_id = x.iid
         left join staple on staple.id = x.iid
         where rec.reusable
-          and (p_meal_type is null or rec.meal_types @> array[p_meal_type])
           and (cardinality(v_exclude_allergens) = 0
                or (rec.allergens is not null and not (rec.allergens && v_exclude_allergens)))
           and (cardinality(v_require_diet) = 0
@@ -157,7 +158,7 @@ begin
         group by rec.id
       )
       select * from scored
-      order by created_at desc
+      order by slot_match desc, created_at desc
     loop
       exit when n >= p_limit;
       too_similar := false;
