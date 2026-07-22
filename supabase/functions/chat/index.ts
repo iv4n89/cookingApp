@@ -19,6 +19,10 @@ const RATE_LIMIT_MESSAGE =
 
 const RECIPE_ERROR_NOTE = 'No he podido preparar la receta ahora mismo. Inténtalo de nuevo en un momento.';
 
+const EMPTY_PANTRY_NOTE =
+  'No tienes ingredientes guardados en tu despensa, así que no puedo proponerte una receta solo con lo que ' +
+  'tienes en casa. Añade lo que tengas y te busco algo al momento.';
+
 interface HistoryRecipe {
   title?: string;
   ingredients?: { name?: string; quantity?: unknown; unit?: string }[];
@@ -145,6 +149,11 @@ Deno.serve(async (req) => {
     let recipe: Record<string, unknown> | null = null;
     const query = typeof recipe_query === 'string' ? recipe_query.trim() : '';
     if (query) {
+      // "Solo con lo que tengo" sin nada en la despensa: sé honesto en vez de generar una receta
+      // con ingredientes arbitrarios que contradice lo que el usuario pide.
+      if (pantry_only === true && !pantryNames.length) {
+        return json({ message: EMPTY_PANTRY_NOTE, recipe: null });
+      }
       try {
         const resolved = await resolveRecipe(
           supabase,
