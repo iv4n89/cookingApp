@@ -155,7 +155,8 @@ begin
       where user_id = v_uid and ingredient_id is not null
     ),
     staple as (
-      select id from ingredients
+      -- ingredients.id cualificado: `id` es OUT param de la función y colisiona con la columna.
+      select ingredients.id from ingredients
       where category in ('Especias y hierbas', 'Condimentos y edulcorantes', 'Aceites, vinagres y salsas')
     ),
     scored as (
@@ -207,7 +208,8 @@ begin
         where user_id = v_uid and ingredient_id is not null
       ),
       staple as (
-        select id from ingredients
+        -- ingredients.id cualificado: `id` es OUT param de la función y colisiona con la columna.
+        select ingredients.id from ingredients
         where category in ('Especias y hierbas', 'Condimentos y edulcorantes', 'Aceites, vinagres y salsas')
       ),
       scored as (
