@@ -31,25 +31,42 @@ const SCHEMA = {
   required: ['meal_types'],
 };
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Reintenta ante el 429 del free-tier (15 req/min) respetando el retryDelay que sugiere Gemini.
+async function geminiWithRetry(prompt) {
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${GEN_MODEL}:generateContent`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiKey },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: 'application/json', responseSchema: SCHEMA },
+        }),
+      },
+    );
+    if (res.status === 429) {
+      const body = await res.text();
+      const secs = Number(body.match(/retryDelay"?:\s*"?(\d+(?:\.\d+)?)s/)?.[1]) || 20;
+      console.warn(`  429 (límite free-tier), esperando ${Math.ceil(secs)}s...`);
+      await sleep(Math.ceil(secs) * 1000 + 500);
+      continue;
+    }
+    if (!res.ok) throw new Error(`Gemini ${res.status}: ${await res.text()}`);
+    return res.json();
+  }
+  throw new Error('Gemini sigue en 429 tras varios reintentos');
+}
+
 async function classify(recipe) {
   const prompt =
     `Clasifica en qué momentos del día encaja este plato español. Usa SOLO estas claves ` +
     `(una receta puede valer para varias): desayuno, almuerzo, merienda, cena.\n` +
     `Título: ${recipe.title}\nDescripción: ${recipe.description ?? ''}\n` +
     `Etiquetas: ${(recipe.tags ?? []).join(', ')}`;
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${GEN_MODEL}:generateContent`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiKey },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { responseMimeType: 'application/json', responseSchema: SCHEMA },
-      }),
-    },
-  );
-  if (!res.ok) throw new Error(`Gemini ${res.status}: ${await res.text()}`);
-  const data = await res.json();
+  const data = await geminiWithRetry(prompt);
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
   const parsed = JSON.parse(text);
   const seen = new Set(MEAL_TYPE_KEYS);
@@ -73,6 +90,8 @@ let ok = 0;
 let failed = 0;
 for (const recipe of recipes) {
   try {
+    // Ritmo bajo el límite del free-tier (15 req/min).
+    await sleep(4500);
     const meal_types = await classify(recipe);
     const patch = await fetch(`${rest}/recipes?id=eq.${recipe.id}`, {
       method: 'PATCH',
