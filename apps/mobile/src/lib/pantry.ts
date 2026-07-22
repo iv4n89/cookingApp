@@ -100,6 +100,10 @@ export function usePantry() {
   const writes = useRef<Record<string, Promise<unknown>>>({});
 
   const refresh = useCallback(async () => {
+    // Espera las escrituras en vuelo (cola del stepper) antes de leer, para no traer un estado
+    // previo y pisar el valor optimista al volver a la pestaña.
+    const pending = Object.values(writes.current);
+    if (pending.length) await Promise.allSettled(pending);
     const { data, error } = await supabase.from('pantry_items').select(COLUMNS).order('name');
     if (error) setError('No se pudieron cargar los ingredientes.');
     else {

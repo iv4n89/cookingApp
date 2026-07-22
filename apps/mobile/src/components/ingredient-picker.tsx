@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -71,6 +71,7 @@ export function IngredientPicker({
   onAdd: (item: PickedIngredient) => void;
 }) {
   const [items, setItems] = useState<CatalogIngredient[]>([]);
+  const [loadError, setLoadError] = useState(false);
   const [query, setQuery] = useState('');
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Selected | null>(null);
@@ -85,9 +86,16 @@ export function IngredientPicker({
     setMin(item.default_min_stock != null ? String(item.default_min_stock) : '');
   }
 
+  const loadCatalog = useCallback(() => {
+    setLoadError(false);
+    listIngredients()
+      .then(setItems)
+      .catch(() => setLoadError(true));
+  }, []);
+
   useEffect(() => {
-    if (visible && items.length === 0) listIngredients().then(setItems).catch(() => {});
-  }, [visible, items.length]);
+    if (visible && items.length === 0 && !loadError) loadCatalog();
+  }, [visible, items.length, loadError, loadCatalog]);
 
   function back() {
     setSelected(null);
@@ -232,7 +240,16 @@ export function IngredientPicker({
             </View>
 
             <ScrollView className="flex-1" contentContainerClassName="pb-section-gap">
-              {q ? (
+              {loadError ? (
+                <View className="items-center gap-stack-md px-container-padding py-stack-lg">
+                  <Text className="text-center font-sans text-body-md text-on-surface-variant">
+                    No se pudo cargar el catálogo de ingredientes.
+                  </Text>
+                  <Pressable onPress={loadCatalog} className="rounded-lg bg-primary px-gutter py-stack-md">
+                    <Text className="font-mono-medium text-label-md text-on-primary">REINTENTAR</Text>
+                  </Pressable>
+                </View>
+              ) : q ? (
                 filtered.length === 0 ? (
                   <Pressable
                     onPress={() =>
