@@ -33,6 +33,8 @@ export default function RecipeDetailScreen() {
     pantry,
     canonMap,
     cooking,
+    cooked,
+    cookFailed,
     startCooking,
   } = useRecipeDetail(id, servingsParam);
 
@@ -81,11 +83,17 @@ export default function RecipeDetailScreen() {
                 </View>
 
                 <RecipeStats recipe={recipe} servings={servings} />
+
+                {cookFailed ? (
+                  <Text className="font-sans text-body-md text-error">
+                    No se pudo descontar de la despensa. Inténtalo de nuevo.
+                  </Text>
+                ) : null}
               </View>
             </View>
           </ScrollView>
 
-          <StartCookingButton cooking={cooking} onPress={startCooking} />
+          <StartCookingButton cooking={cooking} cooked={cooked} onPress={startCooking} />
         </View>
       )}
     </SafeAreaView>
