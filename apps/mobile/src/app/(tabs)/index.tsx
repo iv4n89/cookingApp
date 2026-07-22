@@ -19,6 +19,7 @@ export default function InicioScreen() {
   const [askVisible, setAskVisible] = useState(false);
   const {
     suggestions,
+    buySuggestions,
     loadingSuggestions,
     refreshing,
     refresh,
@@ -31,6 +32,8 @@ export default function InicioScreen() {
     toggleSave,
     addLowToShopping,
   } = useHome();
+
+  const openRecipe = (id: string) => router.push({ pathname: '/receta/[id]', params: { id } });
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
@@ -72,9 +75,22 @@ export default function InicioScreen() {
             suggestions={suggestions}
             saved={saved}
             onToggleSave={toggleSave}
-            onOpen={(id) => router.push({ pathname: '/receta/[id]', params: { id } })}
+            onOpen={openRecipe}
           />
         </View>
+
+        {!loadingSuggestions && buySuggestions.length > 0 ? (
+          <View>
+            <HomeSectionHeader title="Para comprar algo más" />
+            <HomeSuggestions
+              loading={false}
+              suggestions={buySuggestions}
+              saved={saved}
+              onToggleSave={toggleSave}
+              onOpen={openRecipe}
+            />
+          </View>
+        ) : null}
       </ScrollView>
 
       <AskAiModal

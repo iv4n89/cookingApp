@@ -124,7 +124,10 @@ export function useHome() {
   }
 
   return {
-    suggestions,
+    // Sección principal (cocinables/a falta de 1, o ideas si la despensa no da nada).
+    suggestions: suggestions.filter((recipe) => recipe.bucket !== 'buy'),
+    // Sección "para comprar algo más" (faltan 2-4).
+    buySuggestions: suggestions.filter((recipe) => recipe.bucket === 'buy'),
     loadingSuggestions,
     refreshing,
     refresh,
