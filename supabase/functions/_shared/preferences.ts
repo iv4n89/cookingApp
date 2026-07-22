@@ -72,3 +72,20 @@ export function excludedAllergens(specialNeeds: string[]): string[] {
 export function requiredDiet(foodPrefs: string[]): string[] {
   return [...new Set(foodPrefs.flatMap((p) => PREF_TO_DIET[p] ?? []))];
 }
+
+// Categorías controladas del catálogo de ingredientes (el seed 0007). El resolver del
+// pipeline solo puede asignar una de estas; nunca 'Otros'.
+export const CATALOG_CATEGORIES = [
+  'Aceites, vinagres y salsas',
+  'Carnes',
+  'Cereales, pan y pasta',
+  'Condimentos y edulcorantes',
+  'Conservas y otros',
+  'Especias y hierbas',
+  'Frutas',
+  'Frutos secos y semillas',
+  'Lácteos y huevos',
+  'Legumbres',
+  'Pescados y mariscos',
+  'Verduras y hortalizas',
+];
