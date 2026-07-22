@@ -29,12 +29,30 @@ entrada nueva en "Otros" en vez de mapear a la controlada.
 Que la despensa case con las recetas resolviendo los ingredientes a un **canónico** común,
 sin depender del `id` concreto de cada fila del catálogo.
 
+## Hallazgo que acota el alcance
+
+El match despensa↔receta NO está roto en los tres sitios. El equipo ya se topó con el
+desajuste de ids (migración `0017_apply_cook.sql` lo dice: "los ids de receta y de despensa
+casi nunca coinciden") y lo resolvió **en el cliente**: `apps/mobile/src/lib/pantry-match.ts`
+casa por **nombre** (tolerante a plurales/subcadena). Ese matcher lo usan hoy:
+
+- el "lo que falta" del detalle de receta,
+- el añadir-a-compra,
+- el auto-descuento al cocinar (`computeCookDeltas` + `apply_cook`).
+
+El **único sitio genuinamente roto es `recommended_recipes`** (sugeridas de la Home), porque
+es SQL puro en el servidor y no puede hacer ese match por nombre. Por eso la Home sale vacía.
+
 ## Alcance de este spec
 
-Modelo canónico (esquema) + migración de agrupación (datos) + match a nivel canónico en los
-tres sitios que comparan ingredientes: sugeridas, auto-descuento al cocinar y lista de compra.
+Modelo canónico (esquema) + migración de agrupación (datos) + match a nivel canónico **solo
+en `recommended_recipes`** (la RPC de la Home). Con eso se resuelve el dolor visible con el
+mínimo cambio, y `canonical_id` queda disponible para unificar el resto más adelante.
 
-Fuera de alcance (specs aparte):
+Fuera de alcance (specs aparte / iteraciones futuras):
+- Sustituir el matcher por nombre del cliente (`pantry-match.ts`) por match canónico en
+  detalle/compra/cocinar. Hoy funciona (con algún falso positivo tipo "leche" satisfaciendo
+  "leche de coco"); unificarlo a canónico es una mejora de precisión posterior.
 - Endurecer el pipeline de generación para que no vuelva a crear entradas "Otros".
 - Limpiar el picker (ocultar duplicados, reclasificar "Otros" a su categoría fina).
 - Tabla de alias **por nombre**: se siembra desde el mapeo de este spec, pero su consumo
@@ -84,21 +102,18 @@ Script one-off en `scripts/` (dos pasos, ambos versionados):
 - Si el grupo solo tiene entradas "Otros", esa es el canónico. (Reclasificar su categoría
   fina se deja para el spec del picker; no afecta al match.)
 
-## Match a nivel canónico (tres sitios)
+## Match a nivel canónico (solo `recommended_recipes`)
 
-Todos comparan por `canon` en vez de por `ingredient_id` directo:
+`recommended_recipes` (nueva migración que reescribe la vigente de la rama de la Home):
+las CTE `pantry` y `staple` y el `ingredient_id` de la receta se resuelven a `canon` antes de
+comparar. Un ingrediente de receta cuenta como "en despensa" si
+`canon(recipe_iid) ∈ { canon(pantry_iid) }`; staple si `canon(recipe_iid) ∈ { canon(staple_id) }`.
 
-1. **Sugeridas** — `recommended_recipes` (nueva migración que reescribe la vigente de la
-   rama de la Home): las CTE `pantry` y `staple` y el `ingredient_id` de la receta se
-   resuelven a `canon` antes de comparar. Un ingrediente de receta cuenta como "en despensa"
-   si `canon(recipe_iid) ∈ { canon(pantry_iid) }`; staple si `canon(recipe_iid) ∈
-   { canon(staple_id) }`.
-2. **Auto-descuento al cocinar** — la lógica de `cooked_recipes` (migración 0009): al cocinar,
-   descuenta de la despensa el ítem cuyo `canon` coincide con el `canon` del ingrediente de
-   la receta (no solo `ingredient_id` exacto).
-3. **Lista de compra** — al añadir "lo que falta" de una receta, excluir los ingredientes
-   cuyo `canon` ya está en la despensa (evita añadir a la compra algo que sí tienes en otra
-   variante).
+Concretamente, en las CTE de la función:
+- `pantry` pasa a seleccionar `coalesce(i.canonical_id, i.id)` (join a `ingredients i`).
+- `staple` pasa a seleccionar `coalesce(i.canonical_id, i.id)` de las categorías staple.
+- el `iid` de la receta se resuelve a `coalesce(i.canonical_id, i.id)` (join a `ingredients i`)
+  antes de comparar contra `pantry`/`staple`.
 
 ## Despensa sin cambios
 
@@ -116,7 +131,6 @@ Home (`feat/home-recetas-sugeridas`, PR #69). Esta iniciativa va apilada sobre e
 - Migración de esquema aplicada; `canonical_id` presente e indexado.
 - `mapping.json` generado y revisado; `apply-mapping` setea `canonical_id` sin dejar grupos
   huérfanos.
-- Tras aplicar: repetir el diagnóstico para el usuario de prueba (23 items de despensa) y
-  comprobar que suben las recetas cocinables (match ≥1 real → varias con `missing <= 1`).
-- Auto-descuento y compra: cocinar/consultar una receta y ver que descuenta/excluye por
-  canónico.
+- Tras aplicar: repetir el diagnóstico para el usuario de prueba (23 items de despensa) con
+  la RPC `recommended_recipes` y comprobar que suben las recetas cocinables (varias con
+  `missing <= 1` / `match_count` mayor que antes).
