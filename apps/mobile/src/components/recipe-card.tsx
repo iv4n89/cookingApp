@@ -1,6 +1,9 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+
+import { useRecipeImage } from '@/lib/recipe-image';
+import type { ImageStatus } from '@/lib/recipes';
 
 const { theme } = require('@recetas/theme/tailwind-preset');
 const colors = theme.extend.colors;
@@ -10,6 +13,7 @@ type IconName = keyof typeof MaterialIcons.glyphMap;
 export interface RecipeCardData {
   id: string;
   image: string | null;
+  imageStatus: ImageStatus;
   badgeIcon: IconName;
   badge: string;
   title: string;
@@ -28,18 +32,17 @@ export function RecipeCard({
   saved?: boolean;
   onToggleSave?: () => void;
 }) {
+  const { image, pending } = useRecipeImage(recipe.id, recipe.image, recipe.imageStatus);
   return (
     <Pressable
       onPress={onPress}
       disabled={!onPress}
       className="bg-card border border-card-border rounded-xl overflow-hidden">
       <View className="h-56 w-full items-center justify-center bg-surface-container">
-        {recipe.image ? (
-          <Image
-            source={recipe.image}
-            style={{ width: '100%', height: '100%' }}
-            contentFit="cover"
-          />
+        {image ? (
+          <Image source={image} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+        ) : pending ? (
+          <ActivityIndicator color={colors.primary} />
         ) : (
           <MaterialIcons name="restaurant-menu" size={40} color={colors['outline-variant']} />
         )}
