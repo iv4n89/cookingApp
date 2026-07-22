@@ -9,11 +9,12 @@ const colors = theme.extend.colors;
 
 function toCardData(recipe: RecommendedRecipe): RecipeCardData {
   const total = recipe.prep_time_min + recipe.cook_time_min;
+  const cookable = recipe.missing_count === 0;
   return {
     id: recipe.id,
     image: recipe.image_url,
-    badgeIcon: 'kitchen',
-    badge: `${recipe.match_count} EN TU DESPENSA`,
+    badgeIcon: cookable ? 'check-circle' : 'shopping-cart',
+    badge: cookable ? 'LISTA PARA COCINAR' : `TE FALTAN ${recipe.missing_count}`,
     title: recipe.title,
     description: recipe.description,
     tags: [...recipe.tags.slice(0, 2).map((t) => t.toUpperCase()), `${total} MIN`],
