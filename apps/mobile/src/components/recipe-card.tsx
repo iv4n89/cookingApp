@@ -33,28 +33,33 @@ export function RecipeCard({
   onToggleSave?: () => void;
 }) {
   const { image, pending } = useRecipeImage(recipe.id, recipe.image, recipe.imageStatus);
+  // Only reserve the image area when there's an image or one is being generated; otherwise
+  // collapse it and move the badge into the body so cards without an image show no empty slot.
+  const showImageSlot = Boolean(image) || pending;
+  const badge = (
+    <View className="flex-row items-center gap-stack-sm bg-tertiary-fixed px-stack-md py-stack-sm">
+      <MaterialIcons name={recipe.badgeIcon} size={14} color={colors['on-tertiary-fixed']} />
+      <Text className="font-mono-medium text-label-sm text-on-tertiary-fixed">{recipe.badge}</Text>
+    </View>
+  );
   return (
     <Pressable
       onPress={onPress}
       disabled={!onPress}
       className="bg-card border border-card-border rounded-xl overflow-hidden">
-      <View className="h-56 w-full items-center justify-center bg-surface-container">
-        {image ? (
-          <Image source={image} style={{ width: '100%', height: '100%' }} contentFit="cover" />
-        ) : pending ? (
-          <ActivityIndicator color={colors.primary} />
-        ) : (
-          <MaterialIcons name="restaurant-menu" size={40} color={colors['outline-variant']} />
-        )}
-        <View className="absolute top-stack-md left-stack-md flex-row items-center gap-stack-sm bg-tertiary-fixed px-stack-md py-stack-sm">
-          <MaterialIcons name={recipe.badgeIcon} size={14} color={colors['on-tertiary-fixed']} />
-          <Text className="font-mono-medium text-label-sm text-on-tertiary-fixed">
-            {recipe.badge}
-          </Text>
+      {showImageSlot ? (
+        <View className="h-56 w-full items-center justify-center bg-surface-container">
+          {image ? (
+            <Image source={image} style={{ width: '100%', height: '100%' }} contentFit="cover" />
+          ) : (
+            <ActivityIndicator color={colors.primary} />
+          )}
+          <View className="absolute top-stack-md left-stack-md">{badge}</View>
         </View>
-      </View>
+      ) : null}
 
       <View className="p-stack-lg">
+        {showImageSlot ? null : <View className="mb-stack-md self-start">{badge}</View>}
         <View className="mb-stack-sm flex-row items-start justify-between">
           <Text className="flex-1 pr-stack-md font-sans-semibold text-headline-sm text-on-surface">
             {recipe.title}
