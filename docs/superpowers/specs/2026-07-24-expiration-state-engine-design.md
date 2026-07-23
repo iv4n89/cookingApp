@@ -58,8 +58,8 @@ Una migración añadirá:
 
 - `expiration_profiles`: identificador estable del perfil, `min_days`,
   `max_days`, confianza, elegibilidad y trazabilidad.
-- `ingredient_expiration_profiles`: relación uno a uno entre ingrediente
-  canónico y perfil, incluyendo el tipo de correspondencia.
+- `ingredient_expiration_profiles`: relación uno a uno entre cada ingrediente
+  controlado del seed y su perfil, incluyendo el tipo de correspondencia.
 
 Las restricciones de tabla copiarán las invariantes del dataset: rangos
 positivos y ordenados para perfiles prioritizables; ambos rangos nulos para
@@ -82,6 +82,12 @@ en Postgres.
 
 No se mantendrá una segunda copia manual de los 331 mapeos.
 
+La canonicalización operativa puede apuntar una variante a un ingrediente
+creado fuera del seed y, por tanto, sin perfil versionado. El snapshot buscará
+primero el perfil del destino canónico y, si no existe, usará el perfil directo
+del ingrediente del lote. Nunca omitirá una variante directamente mapeada solo
+porque su destino canónico no esté cubierto.
+
 ### Cálculo
 
 Una función SQL privada y determinista evaluará perfil, fecha de adquisición y
@@ -93,7 +99,9 @@ Una función pública de solo lectura:
 
 1. resolverá el hogar desde `auth.uid()`;
 2. seleccionará únicamente lotes con `remaining_quantity > 0`;
-3. resolverá primero `coalesce(ingredient.canonical_id, ingredient.id)`;
+3. buscará primero el perfil de
+   `coalesce(ingredient.canonical_id, ingredient.id)` y después el perfil
+   directo de `ingredient.id`;
 4. aplicará el perfil y el reloj del servidor;
 5. devolverá solo filas con estado accionable.
 
@@ -106,7 +114,7 @@ El contrato compartido del snapshot incluirá, como mínimo:
 
 - `batchId` y `pantryItemId`;
 - ingrediente canónico, nombre, cantidad restante y unidad;
-- instante de adquisición y edad decimal;
+- instante de adquisición, instante de evaluación y edad decimal;
 - `status`: `fresh`, `consume_soon` o `priority`;
 - confianza y tipo de correspondencia;
 - ventana estimada `minDays`/`maxDays`;
@@ -123,6 +131,8 @@ La traducción y presentación se diseñarán cuando Home consuma el DTO.
 ## Ausencias y errores
 
 - Lote sin ingrediente: se omite.
+- Lote sin `pantry_item_id`: se omite para conservar la propiedad
+  lote-proyección que exige el consumidor de inventario.
 - Ingrediente sin perfil: se omite.
 - Cantidad nula, cero o negativa: se omite.
 - Perfil no prioritizable o indefinido: se omite.
@@ -163,6 +173,7 @@ el alimento sea seguro, inseguro o esté caducado.
 - Fecha futura tratada como edad cero.
 - Uso de `purchased_at` y fallback a `created_at`.
 - Variante que resuelve el perfil de su ingrediente canónico.
+- Variante cuyo destino canónico no tiene perfil y usa su mapeo directo.
 - Solo lotes con cantidad positiva.
 
 ### Autorización
