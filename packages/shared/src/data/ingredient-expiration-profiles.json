@@ -790,10 +790,10 @@
     },
     "broth-shelf": {
       "minDays": 3,
-      "maxDays": 7,
+      "maxDays": 4,
       "confidence": "low",
       "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128 Products 485-486: caldos comerciales; rango conservador refrigerado/después de abrir",
+      "sourceRef": "FoodKeeper ES v128 Products 485-486: caldos comerciales; rango conservador después de abrir",
       "priorityEligible": true
     }
   },

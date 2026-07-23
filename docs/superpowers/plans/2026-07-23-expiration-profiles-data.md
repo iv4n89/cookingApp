@@ -63,7 +63,8 @@ estado.
 
 **Verificar:** `node --check scripts/validate-expiration-profiles.mjs`; probar
 funciones puras del validador con JSON reformateado y fixtures negativos para
-claves duplicadas, ausentes, extras y referencias incompatibles.
+claves duplicadas raíz/internas, metadatos, rangos, referencias incompatibles
+y acumulación de varios diagnósticos.
 
 **Guardas:** no instalar Ajv, Zod, Jest ni Vitest; no importar el JSON desde
 TypeScript; no depender del directorio de ejecución; no copiar manualmente otra

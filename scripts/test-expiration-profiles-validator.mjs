@@ -46,6 +46,18 @@ try {
     'Clave duplicada sin formato canónico',
   );
 
+  const nestedDuplicateFixture = join(fixtureDirectory, 'nested-duplicate.json');
+  const nestedDuplicateText = datasetText.replace(
+    '"minDays": 28,',
+    '"minDays":28,"minDays":28,',
+  );
+  await writeFile(nestedDuplicateFixture, nestedDuplicateText);
+  requireFailure(
+    runValidator(nestedDuplicateFixture),
+    'Clave JSON duplicada: minDays',
+    'Clave duplicada dentro de un perfil minificado',
+  );
+
   const invalidReferenceFixture = join(fixtureDirectory, 'invalid-reference.json');
   const invalidReferenceDataset = JSON.parse(datasetText);
   invalidReferenceDataset.profiles['fruit-apple'].sourceRef = 'referencia libre no verificable';
@@ -56,7 +68,25 @@ try {
     'Referencia incompatible en JSON minificado',
   );
 
-  console.log('Pruebas negativas del validador de caducidad: 2 escenarios correctos.');
+  const accumulatedErrorsFixture = join(fixtureDirectory, 'accumulated-errors.json');
+  const accumulatedErrorsDataset = JSON.parse(datasetText);
+  accumulatedErrorsDataset.sources['foodkeeper-es'].retrievedAt = '';
+  accumulatedErrorsDataset.profiles['fruit-apple'].minDays = 50;
+  accumulatedErrorsDataset.profiles['fruit-apple'].maxDays = 10;
+  await writeFile(accumulatedErrorsFixture, JSON.stringify(accumulatedErrorsDataset));
+  const accumulatedResult = runValidator(accumulatedErrorsFixture);
+  requireFailure(
+    accumulatedResult,
+    'Fuente foodkeeper-es: retrievedAt debe ser un texto no vacío',
+    'Metadatos inválidos',
+  );
+  requireFailure(
+    accumulatedResult,
+    'Perfil fruit-apple: rango inválido',
+    'Acumulación de un rango inválido junto al error de metadatos',
+  );
+
+  console.log('Pruebas negativas del validador de caducidad: 4 escenarios correctos.');
 } finally {
   await rm(fixtureDirectory, { recursive: true, force: true });
 }
