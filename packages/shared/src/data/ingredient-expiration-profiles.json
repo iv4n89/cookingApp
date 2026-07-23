@@ -423,6 +423,14 @@
       "sourceRef": "FoodKeeper ES v128 Product 3: Quesos duros",
       "priorityEligible": true
     },
+    "cheese-semi-hard": {
+      "minDays": 21,
+      "maxDays": 28,
+      "confidence": "low",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "Fallback editorial: FoodKeeper ES v128 Product 3, queso duro después de abrir (3-4 semanas), aplicado conservadoramente a semiduros",
+      "priorityEligible": true
+    },
     "cheese-soft": {
       "minDays": 7,
       "maxDays": 14,
@@ -1270,8 +1278,8 @@
       "match": "direct"
     },
     "queso manchego semicurado": {
-      "profileId": "cheese-soft",
-      "match": "family"
+      "profileId": "cheese-semi-hard",
+      "match": "fallback"
     },
     "queso manchego curado": {
       "profileId": "cheese-hard",
@@ -1294,8 +1302,8 @@
       "match": "direct"
     },
     "queso mahon": {
-      "profileId": "cheese-soft",
-      "match": "family"
+      "profileId": "cheese-semi-hard",
+      "match": "fallback"
     },
     "queso burgos": {
       "profileId": "cheese-fresh",
