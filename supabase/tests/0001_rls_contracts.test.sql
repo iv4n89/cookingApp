@@ -1,13 +1,13 @@
 begin;
 
-select plan(6);
+select plan(7);
 
 select has_table('public', 'pantry_items', 'La despensa está expuesta como read model protegido');
 select policies_are(
   'public',
   'pantry_items',
-  array['pantry_all_own'],
-  'La despensa actual conserva una única política de titularidad'
+  array['pantry_select_household'],
+  'La despensa solo expone lectura a miembros del hogar'
 );
 
 insert into auth.users (
@@ -51,10 +51,26 @@ values
     now()
   );
 
-insert into public.pantry_items (user_id, name, quantity, unit)
-values
-  ('00000000-0000-0000-0000-000000000101', 'Lentejas', 1, 'bote'),
-  ('00000000-0000-0000-0000-000000000202', 'Arroz', 1, 'kg');
+select results_eq(
+  $$ select count(*)::int from public.household_members
+     where user_id in ('00000000-0000-0000-0000-000000000101', '00000000-0000-0000-0000-000000000202') $$,
+  $$ values (2::int) $$,
+  'El trigger crea un hogar personal para cada usuario nuevo'
+);
+
+insert into public.pantry_items (user_id, household_id, name, quantity, unit)
+select hm.user_id, hm.household_id,
+       case when hm.user_id = '00000000-0000-0000-0000-000000000101'::uuid then 'Lentejas' else 'Arroz' end,
+       1,
+       case when hm.user_id = '00000000-0000-0000-0000-000000000101'::uuid then 'bote' else 'kg' end
+from public.household_members hm
+where hm.user_id in ('00000000-0000-0000-0000-000000000101', '00000000-0000-0000-0000-000000000202');
+
+select set_config(
+  'test.other_household_id',
+  (select household_id::text from public.household_members where user_id = '00000000-0000-0000-0000-000000000202'),
+  true
+);
 
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000101', true);
 select set_config('request.jwt.claim.role', 'authenticated', true);
@@ -66,22 +82,24 @@ select results_eq(
   'RLS no expone la despensa de otro usuario'
 );
 
-select is_empty(
+select throws_ok(
   $$ update public.pantry_items set quantity = 2 where name = 'Arroz' returning id $$,
-  'RLS no permite modificar la despensa de otro usuario'
+  '42501', null,
+  'El rol autenticado no puede modificar la proyección de despensa'
 );
 
 select throws_ok(
-  $$ insert into public.pantry_items (user_id, name, quantity, unit)
-     values ('00000000-0000-0000-0000-000000000202', 'Harina', 1, 'kg') $$,
+  $$ insert into public.pantry_items (user_id, household_id, name, quantity, unit)
+     values ('00000000-0000-0000-0000-000000000202', current_setting('test.other_household_id')::uuid, 'Harina', 1, 'kg') $$,
   '42501',
   null,
-  'RLS rechaza crear stock para otro usuario'
+  'RLS rechaza crear stock para otro hogar'
 );
 
-select is_empty(
+select throws_ok(
   $$ delete from public.pantry_items where name = 'Arroz' returning id $$,
-  'RLS no permite borrar la despensa de otro usuario'
+  '42501', null,
+  'El rol autenticado no puede borrar la proyección de despensa'
 );
 
 reset role;

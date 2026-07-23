@@ -1,4 +1,5 @@
 import { getCatalogDefaults, type CanonicalMap, type CatalogDefault } from './ingredients';
+import { createIdempotencyKey } from './idempotency';
 import { sameIngredient, normalizeUnit } from './pantry-match';
 import type { RecipeIngredient } from './recipes';
 import { getShoppingItems, type ShoppingItem } from './shopping';
@@ -82,23 +83,26 @@ export async function loadTargets(
 }
 
 // Inserta lo que no está y sube las cantidades de lo que está corto.
-export async function applyPlan(userId: string, plan: ShoppingPlan): Promise<void> {
+export async function applyPlan(plan: ShoppingPlan): Promise<void> {
   if (plan.toInsert.length) {
-    const rows = plan.toInsert.map((t) => ({
-      user_id: userId,
-      name: t.name,
-      quantity: t.quantity,
-      unit: t.unit,
-      ingredient_id: t.ingredient_id,
+    await Promise.all(plan.toInsert.map(async (target) => {
+      const { error } = await supabase.rpc('add_shopping_item', {
+        p_name: target.name,
+        p_quantity: target.quantity,
+        p_unit: target.unit,
+        p_ingredient_id: target.ingredient_id,
+        p_recipe_id: null,
+        p_idempotency_key: createIdempotencyKey(),
+      });
+      if (error) throw error;
     }));
-    const { error } = await supabase.from('shopping_list_items').insert(rows);
-    if (error) throw error;
   }
   for (const bump of plan.toBump) {
-    const { error } = await supabase
-      .from('shopping_list_items')
-      .update({ quantity: bump.quantity })
-      .eq('id', bump.id);
+    const { error } = await supabase.rpc('update_shopping_item', {
+      p_item_id: bump.id,
+      p_quantity: bump.quantity,
+      p_unit: null,
+    });
     if (error) throw error;
   }
 }

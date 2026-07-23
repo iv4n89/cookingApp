@@ -2,6 +2,7 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 
 import { useSession } from './auth';
+import { createIdempotencyKey } from './idempotency';
 import { supabase } from './supabase';
 
 // Lo que hay en la despensa, para saber qué ingredientes de una receta faltan (item-based:
@@ -123,23 +124,31 @@ export function usePantry() {
 
   async function add(input: NewPantryItem) {
     if (!session) return;
-    const { data, error } = await supabase
-      .from('pantry_items')
-      .insert({ ...input, user_id: session.user.id })
-      .select(COLUMNS)
-      .single();
+    const { data, error } = await supabase.rpc('add_pantry_item', {
+      p_name: input.name,
+      p_quantity: input.quantity,
+      p_unit: input.unit,
+      p_category: input.category,
+      p_ingredient_id: input.ingredient_id,
+      p_min_stock: input.min_stock,
+      p_idempotency_key: createIdempotencyKey(),
+    });
     if (error) {
       setError('No se pudo añadir el ingrediente.');
       return;
     }
-    if (data) setItems((prev) => [...prev, toItem(data)].sort((a, b) => a.name.localeCompare(b.name)));
+    if (data) await refresh();
   }
 
   function setQuantity(id: string, quantity: number) {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
     const previous = writes.current[id] ?? Promise.resolve();
     writes.current[id] = previous.then(async () => {
-      const { error } = await supabase.from('pantry_items').update({ quantity }).eq('id', id);
+      const { error } = await supabase.rpc('set_pantry_quantity', {
+        p_item_id: id,
+        p_quantity: quantity,
+        p_idempotency_key: createIdempotencyKey(),
+      });
       if (error) {
         setError('No se pudo guardar la cantidad.');
         refresh();
@@ -151,7 +160,10 @@ export function usePantry() {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, min_stock: min } : item)));
     const previous = writes.current[id] ?? Promise.resolve();
     writes.current[id] = previous.then(async () => {
-      const { error } = await supabase.from('pantry_items').update({ min_stock: min }).eq('id', id);
+      const { error } = await supabase.rpc('set_pantry_min_stock', {
+        p_item_id: id,
+        p_min_stock: min,
+      });
       if (error) {
         setError('No se pudo guardar el mínimo.');
         refresh();
@@ -161,7 +173,10 @@ export function usePantry() {
 
   async function remove(id: string) {
     setItems((prev) => prev.filter((item) => item.id !== id));
-    const { error } = await supabase.from('pantry_items').delete().eq('id', id);
+    const { error } = await supabase.rpc('remove_pantry_item', {
+      p_item_id: id,
+      p_idempotency_key: createIdempotencyKey(),
+    });
     if (error) {
       setError('No se pudo eliminar el ingrediente.');
       // Re-sincroniza desde la DB en vez de restaurar un snapshot que pudo quedar obsoleto

@@ -112,7 +112,6 @@ export function useHome() {
     setAddingLow(true);
     try {
       await addIngredientsToShopping(
-        session.user.id,
         pantry.low.map((item) => ({ name: item.name, quantity: null, unit: item.unit, substitutions: [] })),
       );
       setAddedLow(true);
