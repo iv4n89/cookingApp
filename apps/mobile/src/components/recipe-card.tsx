@@ -5,8 +5,7 @@ import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { useRecipeImage } from '@/lib/recipe-image';
 import type { ImageStatus } from '@/lib/recipes';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 type IconName = keyof typeof MaterialIcons.glyphMap;
 

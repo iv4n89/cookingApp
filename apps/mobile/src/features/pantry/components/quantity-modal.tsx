@@ -2,8 +2,7 @@ import { Modal, Pressable, Text, TextInput, View } from 'react-native';
 
 import type { PantryItem } from '@/lib/pantry';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Modal to edit an item's exact quantity (allows decimals). The +/- stepper only nudges by whole
 // units, which is useless for fractional units like litres; tapping the amount opens this.

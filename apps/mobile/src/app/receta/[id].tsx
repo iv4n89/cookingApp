@@ -14,8 +14,7 @@ import { RecipeTopBar } from '@/features/recipe-detail/components/recipe-top-bar
 import { StartCookingButton } from '@/features/recipe-detail/components/start-cooking-button';
 import { useRecipeDetail } from '@/features/recipe-detail/hooks/use-recipe-detail';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function RecipeDetailScreen() {
   const { id, servings: servingsParam } = useLocalSearchParams<{ id: string; servings?: string }>();
@@ -51,7 +50,7 @@ export default function RecipeDetailScreen() {
       ) : (
         <View className="flex-1">
           <ScrollView className="flex-1" contentContainerClassName="pb-40">
-            <RecipeHero recipe={recipe} />
+            <RecipeHero key={recipe.id} recipe={recipe} />
             <View className="-mt-8 px-container-padding">
               <View className="gap-section-gap border border-outline-variant bg-surface-container-lowest p-stack-lg">
                 <View className="gap-stack-md border-b border-outline-variant pb-stack-lg">

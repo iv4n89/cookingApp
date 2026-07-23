@@ -1,8 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { ActivityIndicator, Pressable } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Delete (uncook) button shown in the cooked-recipe detail header.
 export function DeleteCookedButton({ deleting, onPress }: { deleting: boolean; onPress: () => void }) {

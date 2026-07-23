@@ -4,8 +4,7 @@ import { Pressable, Text } from 'react-native';
 import { Checkbox } from '@/components/checkbox';
 import type { ShoppingItem } from '@/lib/shopping';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 function detailLine(item: ShoppingItem) {
   const parts = [item.quantity, item.unit].filter((value) => value !== null && value !== '');

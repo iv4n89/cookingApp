@@ -7,8 +7,7 @@ import { PreferenceGroup } from '@/features/preferences/components/preference-gr
 import { usePreferences } from '@/features/preferences/hooks/use-preferences';
 import { PREFERENCE_GROUPS } from '@/lib/preferences';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function PreferenciasScreen() {
   const {

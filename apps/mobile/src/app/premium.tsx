@@ -10,8 +10,7 @@ import { PremiumHero } from '@/features/premium/components/premium-hero';
 import { PremiumPlans } from '@/features/premium/components/premium-plans';
 import { BENEFITS, type Plan } from '@/features/premium/premium-content';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function PremiumScreen() {
   const [plan, setPlan] = useState<Plan>('yearly');

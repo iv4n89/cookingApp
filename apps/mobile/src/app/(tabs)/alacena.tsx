@@ -12,8 +12,7 @@ import { PantryList } from '@/features/pantry/components/pantry-list';
 import { PantrySegmentedFilter } from '@/features/pantry/components/pantry-segmented-filter';
 import { usePantryScreen } from '@/features/pantry/hooks/use-pantry-screen';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function AlacenaScreen() {
   const {

@@ -1,15 +1,15 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { type ColorValue } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 type IconName = keyof typeof MaterialIcons.glyphMap;
 
 function tabIcon(name: IconName) {
-  return ({ color, size }: { color: string; size: number }) => (
-    <MaterialIcons name={name} size={size} color={color} />
-  );
+  return function TabIcon({ color, size }: { color: ColorValue; size: number }) {
+    return <MaterialIcons name={name} size={size} color={color} />;
+  };
 }
 
 export default function TabsLayout() {

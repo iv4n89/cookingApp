@@ -9,8 +9,7 @@ import type { RecipeIngredient } from '@/lib/recipes';
 import type { ShoppingItem } from '@/lib/shopping';
 import { applyPlan, buildPlan, loadTargets, planPending, type ShoppingTarget } from '@/lib/shopping-plan';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Botón de "añadir lo que falta" con estado según la lista de la compra actual: queda como
 // "Añadido" si todo lo que falta ya está en la lista (con cantidad suficiente); si no, al

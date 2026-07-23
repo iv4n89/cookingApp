@@ -25,12 +25,9 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
   const [pantry, setPantry] = useState<CookPantryItem[] | null>(null);
   const [canonMap, setCanonMap] = useState<CanonicalMap>(new Map());
   const [cooking, setCooking] = useState(false);
-  const [cooked, setCooked] = useState(false);
   const [cookFailed, setCookFailed] = useState(false);
-
-  useEffect(() => {
-    setCooked(recipe ? cookedThisSession.has(recipe.id) : false);
-  }, [recipe?.id]);
+  const recipeId = recipe?.id;
+  const cooked = recipeId ? cookedThisSession.has(recipeId) : false;
 
   const reload = useCallback(() => {
     let active = true;
@@ -57,12 +54,35 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     };
   }, [id, servingsParam]);
 
-  useEffect(() => reload(), [reload]);
+  useEffect(() => {
+    let active = true;
+    async function load() {
+      setLoading(true);
+      setFailed(false);
+      try {
+        const data = await getRecipe(id);
+        if (!active) return;
+        setRecipe(data);
+        if (data) {
+          const requested = Number(servingsParam);
+          setServings(requested > 0 ? requested : data.servings > 0 ? data.servings : 1);
+        }
+      } catch {
+        if (active) setFailed(true);
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+    void load();
+    return () => {
+      active = false;
+    };
+  }, [id, servingsParam]);
 
   useEffect(() => {
-    if (!recipe) return;
+    if (!recipeId) return;
     let active = true;
-    getUserRecipe(recipe.id)
+    getUserRecipe(recipeId)
       .then((data) => {
         if (active) setMeta(data);
       })
@@ -70,7 +90,7 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     return () => {
       active = false;
     };
-  }, [recipe?.id]);
+  }, [recipeId]);
 
   useEffect(() => {
     let active = true;
@@ -120,7 +140,6 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
       const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
       await cookRecipe(recipe.id, servings, computeCookDeltas(scaled, items, canonMap));
       cookedThisSession.add(recipe.id);
-      setCooked(true);
       router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
     } catch {
       setCookFailed(true);

@@ -31,7 +31,25 @@ export function useCooking(id: string) {
     };
   }, [id]);
 
-  useEffect(() => reload(), [reload]);
+  useEffect(() => {
+    let active = true;
+    async function load() {
+      setLoading(true);
+      setFailed(false);
+      try {
+        const data = await getRecipe(id);
+        if (active) setRecipe(data);
+      } catch {
+        if (active) setFailed(true);
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+    void load();
+    return () => {
+      active = false;
+    };
+  }, [id]);
 
   function toggleDone(index: number) {
     setDone((prev) => {

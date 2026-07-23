@@ -5,8 +5,7 @@ import type { FavoriteRecipe } from '@/lib/user-recipes';
 
 import { FavoriteStars } from './favorite-stars';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // A favorite recipe row: title, total time and rating; opens the recipe on tap.
 export function FavoriteRow({ recipe, onPress }: { recipe: FavoriteRecipe; onPress: () => void }) {

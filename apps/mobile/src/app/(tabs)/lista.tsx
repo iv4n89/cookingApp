@@ -10,8 +10,7 @@ import { QuantityEditorModal } from '@/features/shopping/components/quantity-edi
 import { ShoppingItemRow } from '@/features/shopping/components/shopping-item-row';
 import { useShoppingScreen } from '@/features/shopping/hooks/use-shopping-screen';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function ListaScreen() {
   const {

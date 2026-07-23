@@ -7,8 +7,7 @@ import { BackHeader } from '@/components/back-header';
 import { CookedEntryRow } from '@/features/history/components/cooked-entry-row';
 import { useCookedHistory } from '@/features/history/hooks/use-cooked-history';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function HistorialScreen() {
   const { entries, loading, busy, deleteFailed, remove } = useCookedHistory();

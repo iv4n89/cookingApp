@@ -3,8 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import type { SettingItem } from '@/features/profile/profile-content';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // A tappable account settings row with an icon, title and subtitle.
 export function SettingsRow({ icon, title, subtitle, onPress }: SettingItem) {

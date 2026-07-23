@@ -11,8 +11,7 @@ import type { PantryMatch } from '@/lib/pantry';
 import { isMissing } from '@/lib/pantry-match';
 import { formatQuantity, scaleIngredients, type Recipe, type RecipeIngredient } from '@/lib/recipes';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 function MetaChip({ icon, text }: { icon: 'schedule' | 'restaurant'; text: string }) {
   return (

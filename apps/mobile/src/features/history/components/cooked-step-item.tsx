@@ -3,8 +3,7 @@ import { Text, View } from 'react-native';
 
 import type { RecipeStep } from '@/lib/recipes';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // A read-only numbered step with an optional duration, for the cooked-recipe detail.
 export function CookedStepItem({ step, index }: { step: RecipeStep; index: number }) {

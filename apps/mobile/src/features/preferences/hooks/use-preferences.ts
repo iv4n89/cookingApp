@@ -49,8 +49,20 @@ export function usePreferences() {
   }, []);
 
   useEffect(() => {
-    reload();
-  }, [reload]);
+    getPreferences()
+      .then((prefs) => {
+        if (!mounted.current) return;
+        setFood(new Set(prefs.food_prefs));
+        setNeeds(new Set(prefs.special_needs));
+        setNotes(prefs.notes);
+      })
+      .catch(() => {
+        if (mounted.current) setLoadFailed(true);
+      })
+      .finally(() => {
+        if (mounted.current) setLoading(false);
+      });
+  }, []);
 
   const toggle = useCallback((setter: typeof setFood) => {
     return (label: string) => {

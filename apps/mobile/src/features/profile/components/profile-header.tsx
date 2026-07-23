@@ -4,8 +4,7 @@ import { Text, View } from 'react-native';
 
 import { AVATAR } from '@/features/profile/profile-content';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Avatar with edit badge, name and email at the top of the profile.
 export function ProfileHeader() {

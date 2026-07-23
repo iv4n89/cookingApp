@@ -8,8 +8,7 @@ import { InsightChip } from '@/features/subscription/components/insight-chip';
 import { PaymentCard } from '@/features/subscription/components/payment-card';
 import { SubscriptionFooter } from '@/features/subscription/components/subscription-footer';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function ManageSubscriptionScreen() {
   return (

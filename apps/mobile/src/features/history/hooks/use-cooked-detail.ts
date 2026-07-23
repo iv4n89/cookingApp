@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { getCooked, uncookRecipe, type CookedEntry } from '@/lib/cooking';
 import { getRecipe, type Recipe } from '@/lib/recipes';
@@ -14,10 +14,8 @@ export function useCookedDetail(id: string) {
   const [deleting, setDeleting] = useState(false);
   const [deleteFailed, setDeleteFailed] = useState(false);
 
-  const reload = useCallback(() => {
+  useEffect(() => {
     let active = true;
-    setLoading(true);
-    setFailed(false);
     getCooked(id)
       .then(async (cooked) => {
         if (!cooked) {
@@ -40,8 +38,6 @@ export function useCookedDetail(id: string) {
       active = false;
     };
   }, [id]);
-
-  useEffect(() => reload(), [reload]);
 
   async function remove() {
     if (deleting || !entry) return;

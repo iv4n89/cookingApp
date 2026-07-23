@@ -7,8 +7,7 @@ import type { PantryMatch } from '@/lib/pantry';
 
 import { ChatRecipeCard } from './chat-recipe-card';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // A single chat message: role label, text bubble, optional suggestion chips and, for assistant
 // replies, the recipe card.

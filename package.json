@@ -8,6 +8,16 @@
   },
   "scripts": {
     "mobile": "pnpm --filter @recetas/mobile",
-    "api": "pnpm --filter @recetas/api"
+    "api": "pnpm --filter @recetas/api",
+    "lint": "eslint apps packages",
+    "typecheck": "pnpm --filter @recetas/mobile exec tsc --noEmit -p tsconfig.json && pnpm --filter @recetas/shared exec tsc --noEmit -p tsconfig.json && pnpm --filter @recetas/theme exec tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^9.39.5",
+    "eslint-config-expo": "~57.0.0",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "globals": "^17.7.0",
+    "typescript-eslint": "^8.65.0"
   }
 }

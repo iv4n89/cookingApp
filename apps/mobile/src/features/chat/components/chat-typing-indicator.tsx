@@ -1,7 +1,6 @@
 import { ActivityIndicator, Text, View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Placeholder assistant bubble shown while waiting for a reply.
 export function ChatTypingIndicator() {

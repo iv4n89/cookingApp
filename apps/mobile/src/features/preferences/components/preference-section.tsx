@@ -4,8 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import { PreferenceChip } from './preference-chip';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Collapsible group of preference chips with a selected count.
 export function PreferenceSection({

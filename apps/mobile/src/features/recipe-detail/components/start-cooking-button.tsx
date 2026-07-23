@@ -1,8 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Floating action button: discounts the pantry (with confirmation) and enters cooking mode.
 // When the recipe was already cooked this session, it just re-enters without discounting again.

@@ -2,8 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 function formatTime(totalSeconds: number) {
   const mins = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
@@ -15,21 +14,18 @@ function formatTime(totalSeconds: number) {
 export function StepTimer({ seconds }: { seconds: number }) {
   const [remaining, setRemaining] = useState(seconds);
   const [running, setRunning] = useState(false);
+  const done = remaining === 0;
+  const isRunning = running && !done;
 
   useEffect(() => {
-    if (!running) return;
+    if (!isRunning) return;
     const interval = setInterval(() => {
       setRemaining((s) => (s <= 1 ? 0 : s - 1));
     }, 1000);
     return () => clearInterval(interval);
-  }, [running]);
+  }, [isRunning]);
 
-  useEffect(() => {
-    if (remaining === 0) setRunning(false);
-  }, [remaining]);
-
-  const done = remaining === 0;
-  const icon = done ? 'check' : running ? 'pause' : 'play-arrow';
+  const icon = done ? 'check' : isRunning ? 'pause' : 'play-arrow';
 
   return (
     <View className="flex-row items-center gap-gutter self-start rounded-xl bg-primary px-stack-lg py-gutter">
@@ -44,7 +40,7 @@ export function StepTimer({ seconds }: { seconds: number }) {
       <Pressable
         onPress={() => !done && setRunning((r) => !r)}
         accessibilityRole="button"
-        accessibilityLabel={running ? 'Pausar temporizador' : 'Iniciar temporizador'}
+        accessibilityLabel={isRunning ? 'Pausar temporizador' : 'Iniciar temporizador'}
         className="h-12 w-12 items-center justify-center rounded-full bg-surface-container-lowest">
         <MaterialIcons name={icon} size={24} color={colors.primary} />
       </Pressable>

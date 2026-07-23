@@ -1,8 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Read-only five-star rating display, tolerating a null rating.
 export function FavoriteStars({ rating }: { rating: number | null }) {

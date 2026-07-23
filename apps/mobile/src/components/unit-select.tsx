@@ -2,8 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Unidades controladas (líquidos en brick/botella, secos en g/paquete, especias en bote, etc.).
 export const UNITS = [

@@ -3,8 +3,7 @@ import { Text, View } from 'react-native';
 
 import type { Benefit } from '@/features/premium/premium-content';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // A single premium benefit card: icon, title, description and a tag.
 export function BenefitCard({ icon, title, text, tag }: Benefit) {
