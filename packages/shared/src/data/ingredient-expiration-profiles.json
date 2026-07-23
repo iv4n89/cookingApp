@@ -423,14 +423,6 @@
       "sourceRef": "FoodKeeper ES v128 Product 3: Quesos duros",
       "priorityEligible": true
     },
-    "cheese-semi-hard": {
-      "minDays": 21,
-      "maxDays": 28,
-      "confidence": "medium",
-      "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128 Product 5: queso rallado; perfil conservador para semiduros",
-      "priorityEligible": true
-    },
     "cheese-soft": {
       "minDays": 7,
       "maxDays": 14,
@@ -1278,7 +1270,7 @@
       "match": "direct"
     },
     "queso manchego semicurado": {
-      "profileId": "cheese-semi-hard",
+      "profileId": "cheese-soft",
       "match": "family"
     },
     "queso manchego curado": {
@@ -1291,18 +1283,18 @@
     },
     "queso de cabrales": {
       "profileId": "cheese-soft",
-      "match": "direct"
+      "match": "family"
     },
     "queso tetilla": {
       "profileId": "cheese-soft",
-      "match": "direct"
+      "match": "family"
     },
     "queso idiazabal": {
       "profileId": "cheese-hard",
       "match": "direct"
     },
     "queso mahon": {
-      "profileId": "cheese-semi-hard",
+      "profileId": "cheese-soft",
       "match": "family"
     },
     "queso burgos": {
@@ -1355,7 +1347,7 @@
     },
     "queso mozzarella": {
       "profileId": "cheese-soft",
-      "match": "direct"
+      "match": "family"
     },
     "leche evaporada": {
       "profileId": "milk-canned",
