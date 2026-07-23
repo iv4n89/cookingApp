@@ -1,6 +1,6 @@
 # Estado del proyecto y punto de reanudación
 
-Última actualización: 23 de julio de 2026.
+Última actualización: 24 de julio de 2026.
 
 Este documento es la memoria operativa del roadmap. Al retomar el trabajo en
 otro chat o editor, debe leerse antes del plan maestro:
@@ -12,14 +12,15 @@ otro chat o editor, debe leerse antes del plan maestro:
 | --- | --- | --- |
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
-| Fase 2 — Caducidad y decisión reproducible | Siguiente; no iniciada | Sin rama ni PR |
+| Fase 2 — Caducidad y decisión reproducible | En curso | Primer slice en PR #90 |
 | Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Aplazada | Solo con infraestructura remota |
 | Fase 6 — Integraciones y escala | Aplazada | Solo con evidencia de necesidad |
 
-No hay una feature en desarrollo después de la PR #88. El siguiente trabajo
-de producto debe comenzar en una rama nueva desde `main`.
+El primer slice de la Fase 2 construye el dataset trazable de perfiles
+aproximados de caducidad y su validador offline en la PR #90. No incluye aún el
+motor de estados ni cambios en la base de datos o la interfaz.
 
 ## Decisiones vigentes
 
@@ -77,15 +78,15 @@ se corrige primero en una rama `fix/*`, con PR y revisión.
 
 ## Siguiente trabajo
 
-La próxima fase es la Fase 2 del plan maestro: caducidad y decisión
-reproducible. Antes de implementar:
+La Fase 2 está iniciada con el dataset de perfiles aproximados de la PR #90.
+Después de fusionar y validar este slice:
 
-1. Actualizar `main` y crear una rama propia para el primer slice.
-2. Cerrar la política de caducidad: almacenamiento, apertura, formato,
-   incertidumbre y estados `fresh`, `consume_soon` y `priority`.
-3. Diseñar ese slice y sus fixtures reproducibles.
+1. Actualizar `main` y crear una rama propia para el motor de estados.
+2. Diseñar cómo la edad del lote y el perfil producen `fresh`,
+   `consume_soon` y `priority` con confianza y explicación.
+3. Definir sus fixtures reproducibles y el DTO de salida.
 4. Implementarlo, abrir PR y obtener una revisión sin bloqueantes.
-5. Solo entonces continuar con el siguiente slice de Fase 2.
+5. Solo entonces continuar con la decisión reproducible de recomendaciones.
 
 No se debe abordar todavía el rediseño de Home/chat, Realtime, tickets ni
 infraestructura cloud.
