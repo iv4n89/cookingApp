@@ -6,8 +6,8 @@ select has_table('public', 'pantry_items', 'La despensa está expuesta como read
 select policies_are(
   'public',
   'pantry_items',
-  array['pantry_all_household'],
-  'La despensa usa la política de pertenencia al hogar'
+  array['pantry_select_household'],
+  'La despensa solo expone lectura a miembros del hogar'
 );
 
 insert into auth.users (
@@ -82,9 +82,10 @@ select results_eq(
   'RLS no expone la despensa de otro usuario'
 );
 
-select is_empty(
+select throws_ok(
   $$ update public.pantry_items set quantity = 2 where name = 'Arroz' returning id $$,
-  'RLS no permite modificar la despensa de otro hogar'
+  '42501', null,
+  'El rol autenticado no puede modificar la proyección de despensa'
 );
 
 select throws_ok(
@@ -95,9 +96,10 @@ select throws_ok(
   'RLS rechaza crear stock para otro hogar'
 );
 
-select is_empty(
+select throws_ok(
   $$ delete from public.pantry_items where name = 'Arroz' returning id $$,
-  'RLS no permite borrar la despensa de otro hogar'
+  '42501', null,
+  'El rol autenticado no puede borrar la proyección de despensa'
 );
 
 reset role;
