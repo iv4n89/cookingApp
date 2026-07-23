@@ -1,8 +1,10 @@
 import { hasInternalSecret } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
-import { queueRecipeImage } from '../_shared/recipe-image.ts';
-import { saveRecipe, type RecipeData } from '../_shared/recipes.ts';
+import { recipeEmbedding, saveRecipe, type RecipeData } from '../_shared/recipes.ts';
+
+// Umbral de similitud coseno para considerar dos recetas del catálogo el "mismo plato".
+const DEDUP_THRESHOLD = Number(Deno.env.get('SEED_DEDUP_THRESHOLD') ?? '0.9');
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -15,11 +17,20 @@ Deno.serve(async (req) => {
 
   try {
     const supabase = serviceClient();
-    const saved = await saveRecipe(supabase, recipe);
-    // Imagen en segundo plano (fal.ai), igual que el flujo on-demand. Las semillas son
-    // reutilizables, así que sí reciben imagen.
-    queueRecipeImage(supabase, saved?.id, saved?.title);
-    return json({ recipe: saved });
+    // Embeddea una vez: sirve para el dedup y para guardar (sin re-embeddear).
+    const embedding = await recipeEmbedding(recipe);
+
+    const { data: similar, error: simError } = await supabase.rpc('find_similar_recipe', {
+      query_embedding: embedding,
+      match_threshold: DEDUP_THRESHOLD,
+    });
+    if (simError) throw simError;
+    const existing = similar?.[0];
+    if (existing) return json({ deduped: true, recipe: existing });
+
+    // Imagen diferida: no se encola aquí; se genera on-demand al abrir la receta.
+    const saved = await saveRecipe(supabase, recipe, { embedding, deferImage: true });
+    return json({ deduped: false, recipe: saved });
   } catch (e) {
     console.error('index-recipe:', e);
     return json({ error: 'No se pudo guardar la receta.' }, 500);
