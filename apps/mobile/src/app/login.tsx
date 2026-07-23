@@ -4,10 +4,22 @@ import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithProvider, type OAuthProvider } from '@/lib/oauth';
+import { supabase } from '@/lib/supabase';
 
 import { colors } from '@recetas/theme/tokens';
 
 type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
+type LoginAttempt = OAuthProvider | 'dev';
+
+const localDevCredentials =
+  __DEV__ &&
+  process.env.EXPO_PUBLIC_DEV_LOGIN_EMAIL &&
+  process.env.EXPO_PUBLIC_DEV_LOGIN_PASSWORD
+    ? {
+        email: process.env.EXPO_PUBLIC_DEV_LOGIN_EMAIL,
+        password: process.env.EXPO_PUBLIC_DEV_LOGIN_PASSWORD,
+      }
+    : null;
 
 interface Provider {
   id: OAuthProvider;
@@ -56,7 +68,7 @@ function ProviderButton({
 }
 
 export default function LoginScreen() {
-  const [pending, setPending] = useState<OAuthProvider | null>(null);
+  const [pending, setPending] = useState<LoginAttempt | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function signIn(provider: OAuthProvider) {
@@ -67,6 +79,21 @@ export default function LoginScreen() {
       await signInWithProvider(provider);
     } catch {
       setError('No se pudo iniciar sesión. Inténtalo de nuevo.');
+    } finally {
+      setPending(null);
+    }
+  }
+
+  // Solo en desarrollo local: OAuth no funciona contra Supabase local.
+  async function devLogin() {
+    if (pending || !localDevCredentials) return;
+    setPending('dev');
+    setError(null);
+    try {
+      const { error } = await supabase.auth.signInWithPassword(localDevCredentials);
+      if (error) setError('No se pudo entrar (dev).');
+    } catch {
+      setError('No se pudo entrar (dev).');
     } finally {
       setPending(null);
     }
@@ -94,6 +121,21 @@ export default function LoginScreen() {
           ))}
 
           {error ? <Text className="font-sans text-body-md text-error">{error}</Text> : null}
+
+          {localDevCredentials ? (
+            <Pressable
+              onPress={devLogin}
+              disabled={pending !== null}
+              className="mt-stack-md items-center rounded-lg border border-dashed border-outline-variant py-gutter">
+              {pending === 'dev' ? (
+                <ActivityIndicator color={colors.primary} />
+              ) : (
+                <Text className="font-mono-medium text-label-md text-on-surface-variant">
+                  ENTRAR (DEV LOCAL)
+                </Text>
+              )}
+            </Pressable>
+          ) : null}
         </View>
 
         <Text className="text-center font-mono text-label-sm text-on-surface-variant">
