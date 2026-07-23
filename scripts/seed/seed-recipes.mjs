@@ -7,7 +7,7 @@
 //   INTERNAL_FUNCTION_SECRET=<secreto> \
 //   node scripts/seed/seed-recipes.mjs
 //
-// Nota: no hay deduplicación; ejecutarlo dos veces inserta las recetas repetidas.
+// Nota: el dedup vive en index-recipe (find_similar_recipe); re-ejecutar es seguro y no duplica.
 
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
