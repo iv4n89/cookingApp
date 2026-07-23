@@ -7,7 +7,7 @@
 //   SUPABASE_URL=http://127.0.0.1:54321 \
 //   SUPABASE_ANON_KEY=<anon> \
 //   INTERNAL_FUNCTION_SECRET=<secreto> \
-//   [RECIPES_PER_CELL=3] [CUISINES="española,italiana"] \
+//   [RECIPES_PER_CELL=3] [CUISINES="española,italiana"] [THROTTLE_MS=4000] \
 //   node scripts/seed/generate-recipes.mjs
 
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
@@ -15,6 +15,10 @@ const base = process.env.SUPABASE_FUNCTIONS_URL ?? `${process.env.SUPABASE_URL ?
 const anonKey = process.env.SUPABASE_ANON_KEY;
 const secret = process.env.INTERNAL_FUNCTION_SECRET;
 const perCell = Number(process.env.RECIPES_PER_CELL ?? '3');
+// Pausa entre llamadas a Gemini para no reventar el rate limit (free tier ~15 req/min; ten en
+// cuenta que cada receta sembrada gasta llamadas extra dentro de index-recipe: embed + resolve).
+const throttleMs = Number(process.env.THROTTLE_MS ?? '4000');
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 if (!GEMINI_KEY) { console.error('Falta GEMINI_API_KEY.'); process.exit(1); }
 if (!process.env.SUPABASE_URL && !process.env.SUPABASE_FUNCTIONS_URL) {
@@ -89,19 +93,28 @@ async function generateCell(cuisine, mealType, diet, n) {
     `vegetariana y "vegan" si es vegana (una vegana es también vegetariana: incluye ambas). En "meal_types" usa ` +
     `SOLO estas claves (una receta puede valer para varias) e incluye "${mealType}": desayuno, almuerzo, merienda, cena.`;
 
-  const res = await fetch(`${GEMINI_BASE}/models/${GEN_MODEL}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_KEY },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { responseMimeType: 'application/json', responseSchema: BATCH_SCHEMA },
-    }),
-  });
-  if (!res.ok) throw new Error(`Gemini ${res.status}: ${await res.text()}`);
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (typeof text !== 'string') throw new Error('Respuesta de generación inesperada de Gemini');
-  return JSON.parse(text).recipes ?? [];
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(`${GEMINI_BASE}/models/${GEN_MODEL}:generateContent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_KEY },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: 'application/json', responseSchema: BATCH_SCHEMA },
+      }),
+    });
+    // Rate limit: espera creciente y reintenta unas pocas veces antes de rendirse en la celda.
+    if (res.status === 429 && attempt < 2) {
+      const wait = throttleMs * (attempt + 2);
+      console.error(`  429 (rate limit), reintento en ${wait}ms...`);
+      await sleep(wait);
+      continue;
+    }
+    if (!res.ok) throw new Error(`Gemini ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (typeof text !== 'string') throw new Error('Respuesta de generación inesperada de Gemini');
+    return JSON.parse(text).recipes ?? [];
+  }
 }
 
 function parseQuantity(value) {
@@ -154,7 +167,7 @@ async function seed(recipe) {
   return res.json();
 }
 
-let ok = 0, dup = 0, failed = 0;
+let ok = 0, dup = 0, failed = 0, genFailed = 0;
 for (const cuisine of CUISINES) {
   for (const mealType of MEAL_TYPES) {
     for (const diet of DIETS) {
@@ -162,6 +175,7 @@ for (const cuisine of CUISINES) {
       try {
         recipes = await generateCell(cuisine, mealType, diet, perCell);
       } catch (e) {
+        genFailed++;
         console.error(`GEN XX ${cuisine}/${mealType}/${diet} -> ${e.message}`);
         continue;
       }
@@ -174,10 +188,12 @@ for (const cuisine of CUISINES) {
           failed++;
           console.error(`XX  ${g.title} -> ${e.message}`);
         }
+        await sleep(throttleMs);
       }
+      await sleep(throttleMs);
     }
   }
 }
 
-console.log(`\n${ok} nuevas, ${dup} duplicadas, ${failed} fallidas.`);
-process.exit(failed === 0 ? 0 : 1);
+console.log(`\n${ok} nuevas, ${dup} duplicadas, ${failed} fallidas, ${genFailed} celdas sin generar.`);
+process.exit(failed === 0 && genFailed === 0 ? 0 : 1);

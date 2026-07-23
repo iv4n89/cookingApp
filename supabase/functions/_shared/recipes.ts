@@ -270,9 +270,12 @@ export async function saveRecipe(
       cook_time_min: recipe.cook_time_min ?? 0,
       calories: recipe.calories ?? null,
       tags: recipe.tags ?? [],
-      allergens: recipe.allergens ?? null,
-      diet: recipe.diet ?? null,
-      meal_types: recipe.meal_types ?? [],
+      // Saneo del vocabulario controlado en el punto de guardado, para que ninguna vía de
+      // inserción (chat, búsqueda o siembra) cuele una clave con distinta capitalización/typo
+      // que rompa el filtro exacto de alérgenos. Se preserva null (= receta sin analizar).
+      allergens: recipe.allergens ? sanitizeKeys(recipe.allergens, ALLERGEN_KEYS) : recipe.allergens ?? null,
+      diet: recipe.diet ? sanitizeKeys(recipe.diet, DIET_KEYS) : recipe.diet ?? null,
+      meal_types: recipe.meal_types ? sanitizeKeys(recipe.meal_types, MEAL_TYPE_KEYS) : [],
       ingredients,
       steps: recipe.steps ?? [],
       reusable,
