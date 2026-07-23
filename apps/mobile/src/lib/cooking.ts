@@ -43,6 +43,9 @@ export async function getCooked(cookedId: string): Promise<CookedEntry | null> {
 
 // Deshace: restaura los ingredientes a la despensa y borra la entrada.
 export async function uncookRecipe(cookedId: string) {
-  const { error } = await supabase.rpc('uncook_recipe', { p_cooked_id: cookedId });
+  const { error } = await supabase.rpc('restore_cooked_recipe', {
+    p_cooked_id: cookedId,
+    p_idempotency_key: createIdempotencyKey(),
+  });
   if (error) throw error;
 }
