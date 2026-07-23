@@ -43,6 +43,9 @@ En el tab bar, la función que construye el icono declarará `color` como
   instaladas mediante Expo CLI para conservar compatibilidad con SDK 57.
 - `typescript-eslint` como dependencia de desarrollo de la raíz, para analizar los
   archivos TypeScript de `packages/shared` y `packages/theme` fuera de Expo.
+- `@eslint/js` para las reglas JavaScript de los paquetes y
+  `eslint-import-resolver-typescript` para que ESLint resuelva los aliases `@/` de
+  la aplicación móvil.
 
 ## Verificación
 
@@ -51,3 +54,9 @@ En el tab bar, la función que construye el icono declarará `color` como
 3. `pnpm --filter @recetas/mobile lint` utiliza la misma configuración y termina
    correctamente.
 4. No se modifican los cambios locales previos del usuario.
+
+## Línea base de avisos
+
+La adopción no bloquea por patrones existentes de carga de estado desde efectos de
+React: ESLint los informa como avisos para poder tratarlos de forma aislada. Los
+errores de lint y de tipos sí bloquean los comandos de verificación.
