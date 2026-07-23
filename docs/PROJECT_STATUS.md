@@ -23,8 +23,9 @@ de producto debe comenzar en una rama nueva desde `main`.
 
 ## Decisiones vigentes
 
-- Cada usuario pertenece exactamente a un hogar; el esquema lo impone con la
-  unicidad de `household_members.user_id`.
+- Cada usuario debe pertenecer exactamente a un hogar. La unicidad de
+  `household_members.user_id` impide pertenecer a más de uno; el backfill y el
+  trigger de alta crean la membresía obligatoria.
 - Un hogar puede tener varios miembros y posee una única despensa y una única
   lista de la compra.
 - Supabase sigue siendo el backend correcto: Postgres, Auth, RLS, Realtime y
