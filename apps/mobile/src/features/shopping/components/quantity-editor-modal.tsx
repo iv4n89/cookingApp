@@ -3,8 +3,7 @@ import { Modal, Pressable, Text, TextInput, View } from 'react-native';
 import { UnitSelect } from '@/components/unit-select';
 import type { ShoppingItem } from '@/lib/shopping';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Modal to edit a shopping item's quantity and unit. Open while `item` is not null.
 export function QuantityEditorModal({

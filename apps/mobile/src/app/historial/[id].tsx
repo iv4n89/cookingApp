@@ -9,8 +9,7 @@ import { DeleteCookedButton } from '@/features/history/components/delete-cooked-
 import { formatDate } from '@/features/history/format-date';
 import { useCookedDetail } from '@/features/history/hooks/use-cooked-detail';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function CookedDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

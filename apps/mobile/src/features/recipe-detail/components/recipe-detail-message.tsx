@@ -1,8 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Centered status message for the recipe detail (load error / recipe not found), with an
 // optional retry action.

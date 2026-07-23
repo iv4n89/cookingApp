@@ -4,8 +4,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import { RecipeCard, type RecipeCardData } from '@/components/recipe-card';
 import type { RecommendedRecipe } from '@/lib/recipes';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 function badgeFor(recipe: RecommendedRecipe): Pick<RecipeCardData, 'badge' | 'badgeIcon'> {
   if (recipe.bucket === 'idea') {

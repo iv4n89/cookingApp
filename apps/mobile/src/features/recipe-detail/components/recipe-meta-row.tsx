@@ -3,8 +3,7 @@ import { Text, View } from 'react-native';
 
 import type { Recipe } from '@/lib/recipes';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Quick facts under the title: total time and number of servings.
 export function RecipeMetaRow({ recipe, servings }: { recipe: Recipe; servings: number }) {

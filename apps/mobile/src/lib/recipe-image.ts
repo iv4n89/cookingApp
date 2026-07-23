@@ -24,11 +24,6 @@ export function useRecipeImage(
   const [url, setUrl] = useState<string | null>(initialUrl);
   const [status, setStatus] = useState<ImageStatus>(initialUrl ? 'ready' : initialStatus ?? 'none');
 
-  useEffect(() => {
-    setUrl(initialUrl);
-    setStatus(initialUrl ? 'ready' : initialStatus ?? 'none');
-  }, [recipeId, initialUrl, initialStatus]);
-
   const active = useRef(true);
   useEffect(() => {
     active.current = true;

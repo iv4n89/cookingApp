@@ -7,8 +7,7 @@ import { BackHeader } from '@/components/back-header';
 import { StepCard } from '@/features/cooking/components/step-card';
 import { useCooking } from '@/features/cooking/hooks/use-cooking';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function CookingModeScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

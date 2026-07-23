@@ -1,6 +1,5 @@
-import { getCatalogDefaults, type CatalogDefault } from './ingredients';
+import { getCatalogDefaults, type CanonicalMap, type CatalogDefault } from './ingredients';
 import { sameIngredient, normalizeUnit } from './pantry-match';
-import type { CanonicalMap } from './ingredients';
 import type { RecipeIngredient } from './recipes';
 import { getShoppingItems, type ShoppingItem } from './shopping';
 import { supabase } from './supabase';

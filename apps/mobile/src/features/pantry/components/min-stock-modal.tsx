@@ -2,8 +2,7 @@ import { Modal, Pressable, Text, TextInput, View } from 'react-native';
 
 import type { PantryItem } from '@/lib/pantry';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Modal to edit an item's minimum stock (the threshold that flags it as low). Open while `item`
 // is not null; leaving the field empty disables the low-stock warning.

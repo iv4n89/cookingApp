@@ -8,8 +8,7 @@ import { listIngredients, normalize, type CatalogIngredient } from '@/lib/ingred
 
 import { UnitSelect } from './unit-select';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export interface PickedIngredient {
   ingredientId: string | null;
@@ -94,8 +93,19 @@ export function IngredientPicker({
   }, []);
 
   useEffect(() => {
-    if (visible && items.length === 0 && !loadError) loadCatalog();
-  }, [visible, items.length, loadError, loadCatalog]);
+    if (!visible || items.length > 0 || loadError) return;
+    let active = true;
+    listIngredients()
+      .then((catalog) => {
+        if (active) setItems(catalog);
+      })
+      .catch(() => {
+        if (active) setLoadError(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, [visible, items.length, loadError]);
 
   function back() {
     setSelected(null);

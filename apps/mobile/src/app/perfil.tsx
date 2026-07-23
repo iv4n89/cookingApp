@@ -9,8 +9,7 @@ import { SettingsRow } from '@/features/profile/components/settings-row';
 import { SubscriptionCard } from '@/features/profile/components/subscription-card';
 import { SETTINGS } from '@/features/profile/profile-content';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function PerfilScreen() {
   return (

@@ -1,11 +1,18 @@
 import js from '@eslint/js';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import expoConfig from 'eslint-config-expo/flat.js';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 const mobileFiles = ['apps/mobile/**/*.{js,jsx,ts,tsx}'];
 const packageTypeScriptFiles = ['packages/shared/**/*.ts', 'packages/theme/**/*.ts'];
 const packageJavaScriptFiles = ['packages/shared/**/*.js', 'packages/theme/**/*.js'];
+const commonJsFiles = [
+  'apps/mobile/metro.config.js',
+  'apps/mobile/tailwind.config.js',
+  'apps/mobile/scripts/reset-project.js',
+  'packages/theme/tailwind-preset.js',
+];
 
 function scopeConfig(configs, files, prefixPatterns = false) {
   return configs.map((config) => {
@@ -33,6 +40,15 @@ export default defineConfig([
     'supabase/.temp/**',
   ]),
   ...scopeConfig(expoConfig, mobileFiles, true),
+  {
+    files: commonJsFiles,
+    languageOptions: {
+      globals: globals.node,
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
   {
     files: mobileFiles,
     settings: {

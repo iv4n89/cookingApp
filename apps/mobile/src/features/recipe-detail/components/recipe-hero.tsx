@@ -6,8 +6,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { ensureRecipeImage, useRecipeImage } from '@/lib/recipe-image';
 import type { ImageStatus, Recipe } from '@/lib/recipes';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Hero image at the top of the recipe detail. Unlike list cards, the detail always wants an
 // image: if the recipe has none (e.g. chat recipes, which aren't generated up front), it asks

@@ -1,8 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable, Text } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Dashed card that jumps to the pantry to add an ingredient.
 export function QuickAddCard({ onPress }: { onPress: () => void }) {

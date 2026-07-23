@@ -3,8 +3,7 @@ import { Text, View } from 'react-native';
 
 import type { RecipeStep } from '@/lib/recipes';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 function stepDuration(seconds: number | null): string | null {
   if (!seconds || seconds <= 0) return null;

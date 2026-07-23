@@ -1,8 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Pressable, Text, View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Banner that moves the checked items into the pantry when confirmed.
 export function BuyCheckedBanner({ count, onBuy }: { count: number; onBuy: () => void }) {

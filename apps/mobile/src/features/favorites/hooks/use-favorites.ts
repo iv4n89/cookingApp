@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { listFavorites, type FavoriteRecipe } from '@/lib/user-recipes';
 
@@ -7,9 +7,8 @@ export function useFavorites() {
   const [entries, setEntries] = useState<FavoriteRecipe[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const load = useCallback(() => {
+  useEffect(() => {
     let active = true;
-    setLoading(true);
     listFavorites()
       .then((data) => {
         if (active) setEntries(data);
@@ -22,8 +21,6 @@ export function useFavorites() {
       active = false;
     };
   }, []);
-
-  useEffect(() => load(), [load]);
 
   return { entries, loading };
 }

@@ -3,8 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import type { PantrySummary } from '@/lib/pantry';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 function formatAmount(item: PantrySummary['low'][number]): string {
   return item.unit ? `${item.quantity} ${item.unit}` : String(item.quantity);

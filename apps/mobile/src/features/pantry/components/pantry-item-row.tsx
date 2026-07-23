@@ -4,8 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 import { detailLine, isLowStock } from '@/features/pantry/pantry-item';
 import type { PantryItem } from '@/lib/pantry';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 function Stepper({
   item,

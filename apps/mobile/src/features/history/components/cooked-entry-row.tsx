@@ -4,8 +4,7 @@ import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { formatDate } from '@/features/history/format-date';
 import type { CookedEntry } from '@/lib/cooking';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // A cooked-history row: tap to open its detail, or delete (uncook) with the close button.
 export function CookedEntryRow({

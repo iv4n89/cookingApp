@@ -2,8 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { type ColorValue } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 type IconName = keyof typeof MaterialIcons.glyphMap;
 

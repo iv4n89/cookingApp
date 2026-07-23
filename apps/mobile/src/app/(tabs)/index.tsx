@@ -12,8 +12,7 @@ import { PantrySummaryCard } from '@/features/home/components/pantry-summary-car
 import { QuickAddCard } from '@/features/home/components/quick-add-card';
 import { useHome } from '@/features/home/hooks/use-home';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function InicioScreen() {
   const [askVisible, setAskVisible] = useState(false);

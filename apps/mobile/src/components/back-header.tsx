@@ -3,8 +3,7 @@ import { router } from 'expo-router';
 import type { ReactNode } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Simple screen header: a back button, a title and an optional right-aligned slot.
 export function BackHeader({ title, right }: { title: string; right?: ReactNode }) {

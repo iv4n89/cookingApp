@@ -31,7 +31,22 @@ export function useCooking(id: string) {
     };
   }, [id]);
 
-  useEffect(() => reload(), [reload]);
+  useEffect(() => {
+    let active = true;
+    getRecipe(id)
+      .then((data) => {
+        if (active) setRecipe(data);
+      })
+      .catch(() => {
+        if (active) setFailed(true);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [id]);
 
   function toggleDone(index: number) {
     setDone((prev) => {

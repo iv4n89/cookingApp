@@ -3,8 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import { supabase } from '@/lib/supabase';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 // Bottom account actions: sign out and help & support.
 export function ProfileActions() {

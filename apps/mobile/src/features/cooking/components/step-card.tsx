@@ -5,8 +5,7 @@ import type { RecipeStep } from '@/lib/recipes';
 
 import { StepTimer } from './step-timer';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export type StepStatus = 'done' | 'active' | 'upcoming';
 

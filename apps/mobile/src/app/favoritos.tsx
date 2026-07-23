@@ -7,8 +7,7 @@ import { BackHeader } from '@/components/back-header';
 import { FavoriteRow } from '@/features/favorites/components/favorite-row';
 import { useFavorites } from '@/features/favorites/hooks/use-favorites';
 
-const { theme } = require('@recetas/theme/tailwind-preset');
-const colors = theme.extend.colors;
+import { colors } from '@recetas/theme/tokens';
 
 export default function FavoritosScreen() {
   const { entries, loading } = useFavorites();
