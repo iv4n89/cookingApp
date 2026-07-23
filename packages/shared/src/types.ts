@@ -57,6 +57,20 @@ export interface HouseholdMembership {
 }
 
 export type InventoryEventType = "purchase" | "consume" | "adjustment" | "waste" | "restore";
+export type InventoryEventSource = "shopping_list" | "recipe" | "manual" | "ticket" | "system";
+
+export interface InventoryEvent {
+  id: string;
+  householdId: string;
+  type: InventoryEventType;
+  ingredientId: string | null;
+  pantryBatchId: string | null;
+  quantity: number;
+  unit: string | null;
+  source: InventoryEventSource;
+  commandIdempotencyKey: string;
+  occurredAt: string;
+}
 
 export interface CommandMetadata {
   idempotencyKey: string;
@@ -66,6 +80,27 @@ export interface CommandMetadata {
 export interface CompleteShoppingCommand extends CommandMetadata {
   householdId: string;
   shoppingItemIds: string[];
+}
+
+export interface RegisterPurchaseItem {
+  ingredientId: string | null;
+  name: string;
+  quantity: number;
+  unit: string | null;
+}
+
+export interface RegisterPurchaseCommand extends CommandMetadata {
+  householdId: string;
+  items: RegisterPurchaseItem[];
+}
+
+export interface AddShoppingItemCommand extends CommandMetadata {
+  householdId: string;
+  ingredientId: string | null;
+  name: string;
+  quantity: number | null;
+  unit: string | null;
+  recipeId: string | null;
 }
 
 export interface CookRecipeCommand extends CommandMetadata {
@@ -80,6 +115,12 @@ export interface AdjustInventoryCommand extends CommandMetadata {
   name: string;
   quantity: number;
   unit: string | null;
+  reason: string;
+}
+
+export interface RestoreInventoryCommand extends CommandMetadata {
+  householdId: string;
+  inventoryEventId: string;
   reason: string;
 }
 

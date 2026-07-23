@@ -7,8 +7,8 @@ Esta PR prepara la Fase 0 sin cambiar el comportamiento de la aplicación ni el 
 ## Diseño
 
 - `docs/adr/0001-household-owns-shared-kitchen.md` fija que un `Household` posee una despensa y una lista. Es la premisa de las migraciones posteriores.
-- `@recetas/shared` expone los DTOs de hogar, membresía, eventos de inventario y comandos. Los comandos llevan `idempotencyKey` y `occurredAt`; no incluyen deltas calculados por el cliente.
-- `supabase/tests/0001_rls_contracts.test.sql` usa pgTAP y dos usuarios de Auth para demostrar que RLS permite leer solo la despensa propia. En Fase 1 se sustituirá el criterio de usuario por membresía de hogar.
+- `@recetas/shared` expone los DTOs de hogar, membresía, eventos de inventario y comandos de compra, lista, cocinado, ajuste y restauración. Los comandos llevan `idempotencyKey` y `occurredAt`; no incluyen deltas calculados por el cliente.
+- `supabase/tests/0001_rls_contracts.test.sql` usa pgTAP y dos usuarios de Auth para demostrar que RLS permite leer y modificar solo la despensa propia. En Fase 1 se sustituirá el criterio de usuario por membresía de hogar.
 - `pnpm test:db` es el único punto de entrada para ejecutar esta base local de pruebas.
 
 ## Flujo de datos futuro

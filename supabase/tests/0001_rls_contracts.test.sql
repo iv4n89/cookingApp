@@ -1,6 +1,6 @@
 begin;
 
-select plan(3);
+select plan(6);
 
 select has_table('public', 'pantry_items', 'La despensa está expuesta como read model protegido');
 select policies_are(
@@ -64,6 +64,24 @@ select results_eq(
   $$ select array_agg(name order by name) from public.pantry_items $$,
   $$ values (array['Lentejas']::text[]) $$,
   'RLS no expone la despensa de otro usuario'
+);
+
+select is_empty(
+  $$ update public.pantry_items set quantity = 2 where name = 'Arroz' returning id $$,
+  'RLS no permite modificar la despensa de otro usuario'
+);
+
+select throws_ok(
+  $$ insert into public.pantry_items (user_id, name, quantity, unit)
+     values ('00000000-0000-0000-0000-000000000202', 'Harina', 1, 'kg') $$,
+  '42501',
+  null,
+  'RLS rechaza crear stock para otro usuario'
+);
+
+select is_empty(
+  $$ delete from public.pantry_items where name = 'Arroz' returning id $$,
+  'RLS no permite borrar la despensa de otro usuario'
 );
 
 reset role;
