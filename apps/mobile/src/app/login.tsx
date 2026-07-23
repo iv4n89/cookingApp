@@ -9,6 +9,17 @@ import { supabase } from '@/lib/supabase';
 import { colors } from '@recetas/theme/tokens';
 
 type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
+type LoginAttempt = OAuthProvider | 'dev';
+
+const localDevCredentials =
+  __DEV__ &&
+  process.env.EXPO_PUBLIC_DEV_LOGIN_EMAIL &&
+  process.env.EXPO_PUBLIC_DEV_LOGIN_PASSWORD
+    ? {
+        email: process.env.EXPO_PUBLIC_DEV_LOGIN_EMAIL,
+        password: process.env.EXPO_PUBLIC_DEV_LOGIN_PASSWORD,
+      }
+    : null;
 
 interface Provider {
   id: OAuthProvider;
@@ -57,7 +68,7 @@ function ProviderButton({
 }
 
 export default function LoginScreen() {
-  const [pending, setPending] = useState<OAuthProvider | null>(null);
+  const [pending, setPending] = useState<LoginAttempt | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function signIn(provider: OAuthProvider) {
@@ -73,15 +84,19 @@ export default function LoginScreen() {
     }
   }
 
-  // Solo en desarrollo: entra con el usuario de prueba (OAuth no funciona contra Supabase local).
+  // Solo en desarrollo local: OAuth no funciona contra Supabase local.
   async function devLogin() {
-    if (pending) return;
+    if (pending || !localDevCredentials) return;
+    setPending('dev');
     setError(null);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: 'servings@test.local',
-      password: 'recetas123',
-    });
-    if (error) setError('No se pudo entrar (dev).');
+    try {
+      const { error } = await supabase.auth.signInWithPassword(localDevCredentials);
+      if (error) setError('No se pudo entrar (dev).');
+    } catch {
+      setError('No se pudo entrar (dev).');
+    } finally {
+      setPending(null);
+    }
   }
 
   return (
@@ -107,14 +122,18 @@ export default function LoginScreen() {
 
           {error ? <Text className="font-sans text-body-md text-error">{error}</Text> : null}
 
-          {__DEV__ ? (
+          {localDevCredentials ? (
             <Pressable
               onPress={devLogin}
               disabled={pending !== null}
               className="mt-stack-md items-center rounded-lg border border-dashed border-outline-variant py-gutter">
-              <Text className="font-mono-medium text-label-md text-on-surface-variant">
-                ENTRAR (DEV)
-              </Text>
+              {pending === 'dev' ? (
+                <ActivityIndicator color={colors.primary} />
+              ) : (
+                <Text className="font-mono-medium text-label-md text-on-surface-variant">
+                  ENTRAR (DEV LOCAL)
+                </Text>
+              )}
             </Pressable>
           ) : null}
         </View>
