@@ -33,16 +33,19 @@ export function useCooking(id: string) {
 
   useEffect(() => {
     let active = true;
-    getRecipe(id)
-      .then((data) => {
+    async function load() {
+      setLoading(true);
+      setFailed(false);
+      try {
+        const data = await getRecipe(id);
         if (active) setRecipe(data);
-      })
-      .catch(() => {
+      } catch {
         if (active) setFailed(true);
-      })
-      .finally(() => {
+      } finally {
         if (active) setLoading(false);
-      });
+      }
+    }
+    void load();
     return () => {
       active = false;
     };

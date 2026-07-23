@@ -56,21 +56,24 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
 
   useEffect(() => {
     let active = true;
-    getRecipe(id)
-      .then((data) => {
+    async function load() {
+      setLoading(true);
+      setFailed(false);
+      try {
+        const data = await getRecipe(id);
         if (!active) return;
         setRecipe(data);
         if (data) {
           const requested = Number(servingsParam);
           setServings(requested > 0 ? requested : data.servings > 0 ? data.servings : 1);
         }
-      })
-      .catch(() => {
+      } catch {
         if (active) setFailed(true);
-      })
-      .finally(() => {
+      } finally {
         if (active) setLoading(false);
-      });
+      }
+    }
+    void load();
     return () => {
       active = false;
     };

@@ -24,6 +24,14 @@ export function useRecipeImage(
   const [url, setUrl] = useState<string | null>(initialUrl);
   const [status, setStatus] = useState<ImageStatus>(initialUrl ? 'ready' : initialStatus ?? 'none');
 
+  // El mismo componente puede recibir otra receta o una versión actualizada de la actual.
+  // Reseteamos el estado de sondeo a sus props de entrada para no mostrar una imagen obsoleta.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sincroniza un cambio de identidad externo.
+    setUrl(initialUrl);
+    setStatus(initialUrl ? 'ready' : initialStatus ?? 'none');
+  }, [recipeId, initialUrl, initialStatus]);
+
   const active = useRef(true);
   useEffect(() => {
     active.current = true;
