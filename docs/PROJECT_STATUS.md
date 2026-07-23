@@ -12,15 +12,17 @@ otro chat o editor, debe leerse antes del plan maestro:
 | --- | --- | --- |
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
-| Fase 2 — Caducidad y decisión reproducible | En curso | Primer slice en PR #90 |
+| Fase 2 — Caducidad y decisión reproducible | En curso | Dataset en PR #90; motor de estados en desarrollo |
 | Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Aplazada | Solo con infraestructura remota |
 | Fase 6 — Integraciones y escala | Aplazada | Solo con evidencia de necesidad |
 
-El primer slice de la Fase 2 construye el dataset trazable de perfiles
-aproximados de caducidad y su validador offline en la PR #90. No incluye aún el
-motor de estados ni cambios en la base de datos o la interfaz.
+El primer slice de la Fase 2 construyó el dataset trazable de perfiles
+aproximados de caducidad y su validador offline en la PR #90, fusionada como
+`3dfb64a`. El segundo slice, en `feat/expiration-state-engine`, carga esos datos
+en Postgres y calcula el snapshot de estados por hogar. No modifica todavía la
+interfaz ni el ranking.
 
 ## Decisiones vigentes
 
@@ -78,15 +80,15 @@ se corrige primero en una rama `fix/*`, con PR y revisión.
 
 ## Siguiente trabajo
 
-La Fase 2 está iniciada con el dataset de perfiles aproximados de la PR #90.
-Después de fusionar y validar este slice:
+La Fase 2 continúa con el motor de estados aproximados. Después de fusionar y
+validar este segundo slice:
 
-1. Actualizar `main` y crear una rama propia para el motor de estados.
-2. Diseñar cómo la edad del lote y el perfil producen `fresh`,
-   `consume_soon` y `priority` con confianza y explicación.
-3. Definir sus fixtures reproducibles y el DTO de salida.
-4. Implementarlo, abrir PR y obtener una revisión sin bloqueantes.
-5. Solo entonces continuar con la decisión reproducible de recomendaciones.
+1. Actualizar `main` y crear una rama para `RecommendationDecision`.
+2. Diseñar el snapshot de entrada, candidatos, desglose de score, razones y
+   versión de política.
+3. Integrar disponibilidad y estados de caducidad después de alergias y
+   restricciones.
+4. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
 
 No se debe abordar todavía el rediseño de Home/chat, Realtime, tickets ni
 infraestructura cloud.

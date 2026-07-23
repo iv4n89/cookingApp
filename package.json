@@ -13,6 +13,9 @@
     "typecheck": "pnpm --filter @recetas/mobile exec tsc --noEmit -p tsconfig.json && pnpm --filter @recetas/shared exec tsc --noEmit -p tsconfig.json && pnpm --filter @recetas/theme exec tsc --noEmit -p tsconfig.json",
     "validate:expiration-profiles": "node scripts/validate-expiration-profiles.mjs",
     "test:expiration-profiles": "node scripts/test-expiration-profiles-validator.mjs",
+    "generate:expiration-migration": "node scripts/generate-expiration-state-migration.mjs",
+    "check:expiration-migration": "node scripts/generate-expiration-state-migration.mjs --check",
+    "test:expiration-migration": "node scripts/test-expiration-state-generator.mjs",
     "test:db": "supabase test db --local supabase/tests"
   },
   "devDependencies": {
