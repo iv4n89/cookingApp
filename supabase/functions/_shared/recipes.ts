@@ -234,9 +234,29 @@ async function withIngredientIds(
   return ingredients.map((i) => ({ ...i, ingredient_id: resolved.get(normalizeName(i.name)) ?? null }));
 }
 
-export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
-  const embedding = await embedText(embeddingText(recipe), 'RETRIEVAL_DOCUMENT');
+// Embedding representativo de la receta (mismo texto que usa el índice semántico).
+export async function recipeEmbedding(recipe: RecipeData): Promise<number[]> {
+  return embedText(embeddingText(recipe), 'RETRIEVAL_DOCUMENT');
+}
+
+export interface SaveOptions {
+  // Reutiliza un embedding ya calculado (evita re-embeddear cuando el llamador ya lo hizo,
+  // p. ej. index-recipe para el dedup).
+  embedding?: number[];
+  // Imagen diferida: image_status='none' aunque sea reusable, y el llamador NO encola imagen.
+  // La generación on-demand (ensure-recipe-image) la crea al abrir la receta.
+  deferImage?: boolean;
+}
+
+export async function saveRecipe(
+  supabase: SupabaseClient,
+  recipe: RecipeData,
+  options: SaveOptions = {},
+) {
+  const embedding = options.embedding ?? (await recipeEmbedding(recipe));
   const ingredients = await withIngredientIds(supabase, recipe.ingredients ?? []);
+  const reusable = recipe.reusable ?? true;
+  const imageStatus = options.deferImage ? 'none' : reusable ? 'pending' : 'none';
   const { data, error } = await supabase
     .from('recipes')
     .insert({
@@ -250,13 +270,16 @@ export async function saveRecipe(supabase: SupabaseClient, recipe: RecipeData) {
       cook_time_min: recipe.cook_time_min ?? 0,
       calories: recipe.calories ?? null,
       tags: recipe.tags ?? [],
-      allergens: recipe.allergens ?? null,
-      diet: recipe.diet ?? null,
-      meal_types: recipe.meal_types ?? [],
+      // Saneo del vocabulario controlado en el punto de guardado, para que ninguna vía de
+      // inserción (chat, búsqueda o siembra) cuele una clave con distinta capitalización/typo
+      // que rompa el filtro exacto de alérgenos. Se preserva null (= receta sin analizar).
+      allergens: recipe.allergens ? sanitizeKeys(recipe.allergens, ALLERGEN_KEYS) : recipe.allergens ?? null,
+      diet: recipe.diet ? sanitizeKeys(recipe.diet, DIET_KEYS) : recipe.diet ?? null,
+      meal_types: recipe.meal_types ? sanitizeKeys(recipe.meal_types, MEAL_TYPE_KEYS) : [],
       ingredients,
       steps: recipe.steps ?? [],
-      reusable: recipe.reusable ?? true,
-      image_status: (recipe.reusable ?? true) ? 'pending' : 'none',
+      reusable,
+      image_status: imageStatus,
       embedding,
     })
     .select(RETURN_COLUMNS)
