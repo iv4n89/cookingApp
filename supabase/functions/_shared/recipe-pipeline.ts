@@ -94,14 +94,14 @@ export async function resolveRecipe(
   constraints: Constraints = {},
   options: ResolveOptions = {},
 ): Promise<{ recipe: Record<string, unknown> | null; origin: RecipeOrigin }> {
-  const exclude_allergens = unique([
-    ...(prefs ? excludedAllergens(prefs.special_needs) : []),
-    ...(constraints.excludeAllergens ?? []),
-  ]);
-  const require_diet = unique([
-    ...(prefs ? requiredDiet(prefs.food_prefs) : []),
-    ...(constraints.requireDiet ?? []),
-  ]);
+  const [prefAllergens, prefDiet] = prefs
+    ? await Promise.all([
+        excludedAllergens(supabase, prefs.special_needs),
+        requiredDiet(supabase, prefs.food_prefs),
+      ])
+    : [[], []];
+  const exclude_allergens = unique([...prefAllergens, ...(constraints.excludeAllergens ?? [])]);
+  const require_diet = unique([...prefDiet, ...(constraints.requireDiet ?? [])]);
 
   if (!options.skipCache) {
     const embedding = await embedText(query, 'RETRIEVAL_QUERY');
