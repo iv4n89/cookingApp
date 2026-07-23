@@ -50,7 +50,11 @@ and Inspection Service del USDA:
 
 FoodKeeper es un dataset público CC0 y ofrece rangos, en lugar de una falsa
 fecha exacta. La versión consultada figura como actualizada el 22 de enero de
-2025.
+2025 en Data.gov. El contenido español inspeccionado identifica su versión
+interna como 128, generada desde `FMA-Data-v128.xlsx`, con fecha de modificación
+declarada 6 de septiembre de 2018. Ambos metadatos se conservarán por separado
+para no presentar una actualización del catálogo como una revisión científica
+del contenido.
 
 El mapeo se realizará con esta prioridad:
 
@@ -112,7 +116,10 @@ ocurrir con un producto congelado.
 ### Reglas del esquema
 
 - Las claves de `ingredients` son los `normalized_name` exactos del catálogo.
-- `minDays` y `maxDays` son enteros positivos y `minDays <= maxDays`.
+- En perfiles prioritizables, `minDays` y `maxDays` son enteros positivos y
+  `minDays <= maxDays`.
+- Si la fuente indica una duración indefinida, ambos rangos son `null` y
+  `priorityEligible` debe ser `false`. No se inventa un número finito.
 - `confidence` admite `high`, `medium` o `low`.
 - `match` admite `direct`, `family` o `fallback`.
 - `sourceId` debe existir en `sources`.
