@@ -4,6 +4,7 @@ import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithProvider, type OAuthProvider } from '@/lib/oauth';
+import { supabase } from '@/lib/supabase';
 
 import { colors } from '@recetas/theme/tokens';
 
@@ -72,6 +73,17 @@ export default function LoginScreen() {
     }
   }
 
+  // Solo en desarrollo: entra con el usuario de prueba (OAuth no funciona contra Supabase local).
+  async function devLogin() {
+    if (pending) return;
+    setError(null);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: 'servings@test.local',
+      password: 'recetas123',
+    });
+    if (error) setError('No se pudo entrar (dev).');
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-background">
       <View className="flex-1 justify-center gap-section-gap px-container-padding">
@@ -94,6 +106,17 @@ export default function LoginScreen() {
           ))}
 
           {error ? <Text className="font-sans text-body-md text-error">{error}</Text> : null}
+
+          {__DEV__ ? (
+            <Pressable
+              onPress={devLogin}
+              disabled={pending !== null}
+              className="mt-stack-md items-center rounded-lg border border-dashed border-outline-variant py-gutter">
+              <Text className="font-mono-medium text-label-md text-on-surface-variant">
+                ENTRAR (DEV)
+              </Text>
+            </Pressable>
+          ) : null}
         </View>
 
         <Text className="text-center font-mono text-label-sm text-on-surface-variant">
