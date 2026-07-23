@@ -95,11 +95,11 @@ export async function resolveRecipe(
   options: ResolveOptions = {},
 ): Promise<{ recipe: Record<string, unknown> | null; origin: RecipeOrigin }> {
   const exclude_allergens = unique([
-    ...(prefs ? excludedAllergens(prefs.special_needs) : []),
+    ...(prefs ? await excludedAllergens(supabase, prefs.special_needs) : []),
     ...(constraints.excludeAllergens ?? []),
   ]);
   const require_diet = unique([
-    ...(prefs ? requiredDiet(prefs.food_prefs) : []),
+    ...(prefs ? await requiredDiet(supabase, prefs.food_prefs) : []),
     ...(constraints.requireDiet ?? []),
   ]);
 

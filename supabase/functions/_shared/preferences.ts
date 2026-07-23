@@ -1,3 +1,5 @@
+import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
 // Vocabulario controlado para etiquetar recetas y filtrar la caché por preferencias.
 // allergens: lo que la receta CONTIENE. diet: lo que la receta ES (cumple).
 // Aviso: el etiquetado de allergens lo hace la IA al generar; no es infalible. El filtro
@@ -26,51 +28,35 @@ export const DIET_KEYS = ['vegan', 'vegetarian'];
 
 export const MEAL_TYPE_KEYS = ['desayuno', 'almuerzo', 'merienda', 'cena'];
 
-// Necesidad especial (etiqueta del catálogo del perfil) -> alérgenos a excluir de la caché.
-// Solo las de exclusión determinista; condiciones vagas (ostomía, diabetes, hipertensión...)
-// no se pueden mapear a un "contiene X" y se atienden por guía de generación.
-// Halal/Kosher: se excluyen sus violaciones inequívocas (cerdo/alcohol/marisco); no implica
-// certificación completa, que va por la generación.
-const NEED_TO_ALLERGENS: Record<string, string[]> = {
-  'Frutos secos': ['nuts'],
-  Cacahuete: ['peanut'],
-  Marisco: ['crustaceans', 'molluscs'],
-  Pescado: ['fish'],
-  Huevo: ['egg'],
-  Leche: ['milk'],
-  Soja: ['soy'],
-  Sésamo: ['sesame'],
-  Mostaza: ['mustard'],
-  Apio: ['celery'],
-  Lactosa: ['milk'],
-  'Gluten / celiaquía': ['gluten'],
-  Fructosa: ['fructose'],
-  Histamina: ['histamine'],
-  Sorbitol: ['sorbitol'],
-  'Sin cerdo': ['pork'],
-  'Sin alcohol': ['alcohol'],
-  Halal: ['pork', 'alcohol'],
-  Kosher: ['pork', 'crustaceans', 'molluscs'],
-};
-
-// Preferencia dietética -> dieta que la receta debe cumplir.
-const PREF_TO_DIET: Record<string, string[]> = {
-  Vegana: ['vegan', 'vegetarian'],
-  Vegetariana: ['vegetarian'],
-};
-
 // Deja solo las claves reconocidas del vocabulario (defensa ante lo que devuelva la IA).
 export function sanitizeKeys(values: string[] | undefined, allowed: string[]): string[] {
   const set = new Set(allowed);
   return [...new Set((values ?? []).map((v) => v.toLowerCase().trim()).filter((v) => set.has(v)))];
 }
 
-export function excludedAllergens(specialNeeds: string[]): string[] {
-  return [...new Set(specialNeeds.flatMap((n) => NEED_TO_ALLERGENS[n] ?? []))];
+// El mapa necesidad->alérgeno / preferencia->dieta vive en la BD (tablas need_allergen_map y
+// pref_diet_map, fuente única compartida con recommended_recipes). Ver migración 0033.
+// Solo mapean exclusiones deterministas; condiciones vagas (ostomía, diabetes...) se atienden
+// por guía de generación, no por filtro.
+export async function excludedAllergens(
+  supabase: SupabaseClient,
+  specialNeeds: string[],
+): Promise<string[]> {
+  if (!specialNeeds.length) return [];
+  const { data } = await supabase
+    .from('need_allergen_map')
+    .select('allergen')
+    .in('need', specialNeeds);
+  return [...new Set((data ?? []).map((row) => row.allergen as string))];
 }
 
-export function requiredDiet(foodPrefs: string[]): string[] {
-  return [...new Set(foodPrefs.flatMap((p) => PREF_TO_DIET[p] ?? []))];
+export async function requiredDiet(
+  supabase: SupabaseClient,
+  foodPrefs: string[],
+): Promise<string[]> {
+  if (!foodPrefs.length) return [];
+  const { data } = await supabase.from('pref_diet_map').select('diet').in('pref', foodPrefs);
+  return [...new Set((data ?? []).map((row) => row.diet as string))];
 }
 
 // Categorías controladas del catálogo de ingredientes (el seed 0007). El resolver del
