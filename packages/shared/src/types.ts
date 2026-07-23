@@ -124,6 +124,32 @@ export interface RestoreInventoryCommand extends CommandMetadata {
   reason: string;
 }
 
+export type ExpirationStatus = "fresh" | "consume_soon" | "priority";
+export type ExpirationConfidence = "high" | "medium" | "low";
+export type ExpirationMatchType = "direct" | "family" | "fallback";
+export type ExpirationReasonCode =
+  | "within_estimated_window"
+  | "approaching_estimated_window"
+  | "inside_priority_window";
+
+export interface ExpirationBatchSnapshot {
+  batchId: string;
+  pantryItemId: string;
+  canonicalIngredientId: string;
+  ingredientName: string;
+  remainingQuantity: number;
+  unit: string | null;
+  acquiredAt: string;
+  evaluatedAt: string;
+  ageDays: number;
+  status: ExpirationStatus;
+  confidence: ExpirationConfidence;
+  matchType: ExpirationMatchType;
+  minDays: number;
+  maxDays: number;
+  reasonCode: ExpirationReasonCode;
+}
+
 export interface ShoppingListItem {
   id: string;
   userId: string;
