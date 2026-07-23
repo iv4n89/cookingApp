@@ -1,6 +1,6 @@
 begin;
 
-select plan(23);
+select plan(26);
 
 select throws_ok(
   $$ insert into public.expiration_profiles (
@@ -79,6 +79,21 @@ select is(
   (select status from public.evaluate_expiration_state(null, null, false, '2026-07-01 00:00:00+00', '2026-07-15 00:00:00+00')),
   null::text,
   'Un perfil indefinido no genera estado'
+);
+select is(
+  (select reason_code from public.evaluate_expiration_state(4, 6, true, '2026-07-01 00:00:00+00', '2026-07-02 00:00:00+00')),
+  'within_estimated_window',
+  'Fresh explica que el lote sigue dentro de la ventana estimada'
+);
+select is(
+  (select reason_code from public.evaluate_expiration_state(4, 6, true, '2026-07-01 00:00:00+00', '2026-07-04 00:00:00+00')),
+  'approaching_estimated_window',
+  'Consume soon explica que el lote se acerca a la ventana estimada'
+);
+select is(
+  (select reason_code from public.evaluate_expiration_state(4, 6, true, '2026-07-01 00:00:00+00', '2026-07-05 00:00:00+00')),
+  'inside_priority_window',
+  'Priority explica que el lote está dentro de la ventana prioritaria'
 );
 
 insert into auth.users (
