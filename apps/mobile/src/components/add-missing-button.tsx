@@ -82,7 +82,7 @@ export function AddMissingButton({ missing }: { missing: RecipeIngredient[] }) {
     setAdding(true);
     setFailed(false);
     try {
-      await applyPlan(session.user.id, plan);
+      await applyPlan(plan);
       const data = await loadTargets(missing);
       setTargets(data.targets);
       setShopping(data.shopping);

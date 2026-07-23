@@ -6,7 +6,6 @@ import { useSession } from '@/lib/auth';
 import { cookRecipe } from '@/lib/cooking';
 import { getCanonicalMap, type CanonicalMap } from '@/lib/ingredients';
 import { getPantryForCook, type CookPantryItem } from '@/lib/pantry';
-import { computeCookDeltas } from '@/lib/pantry-match';
 import { getRecipe, scaleIngredients, type Recipe } from '@/lib/recipes';
 import { getUserRecipe, setFavorite, setRating, type UserRecipeMeta } from '@/lib/user-recipes';
 
@@ -136,9 +135,7 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     setCooking(true);
     setCookFailed(false);
     try {
-      const items = await getPantryForCook();
-      const scaled = scaleIngredients(recipe.ingredients, recipe.servings, servings);
-      await cookRecipe(recipe.id, servings, computeCookDeltas(scaled, items, canonMap));
+      await cookRecipe(recipe.id, servings);
       cookedThisSession.add(recipe.id);
       router.push({ pathname: '/cocinar/[id]', params: { id: recipe.id } });
     } catch {

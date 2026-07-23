@@ -2,6 +2,7 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 
 import { useSession } from './auth';
+import { createIdempotencyKey } from './idempotency';
 import { supabase } from './supabase';
 
 export interface ShoppingItem {
@@ -60,22 +61,25 @@ export function useShoppingList() {
 
   async function add(input: NewShoppingItem) {
     if (!session) return;
-    const { data, error } = await supabase
-      .from('shopping_list_items')
-      .insert({ ...input, user_id: session.user.id })
-      .select(COLUMNS)
-      .single();
+    const { data, error } = await supabase.rpc('add_shopping_item', {
+      p_name: input.name,
+      p_quantity: input.quantity,
+      p_unit: input.unit,
+      p_ingredient_id: input.ingredient_id,
+      p_recipe_id: null,
+      p_idempotency_key: createIdempotencyKey(),
+    });
     if (error) {
       setError('No se pudo añadir el item.');
       return;
     }
-    if (data) setItems((prev) => [...prev, data]);
+    if (data) await refresh();
   }
 
   async function toggle(id: string, checked: boolean) {
     const snapshot = items;
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, checked } : item)));
-    const { error } = await supabase.from('shopping_list_items').update({ checked }).eq('id', id);
+    const { error } = await supabase.rpc('set_shopping_checked', { p_item_id: id, p_checked: checked });
     if (error) {
       setError('No se pudo actualizar el item.');
       setItems(snapshot);
@@ -85,7 +89,11 @@ export function useShoppingList() {
   async function editItem(id: string, quantity: number | null, unit: string | null) {
     const snapshot = items;
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity, unit } : item)));
-    const { error } = await supabase.from('shopping_list_items').update({ quantity, unit }).eq('id', id);
+    const { error } = await supabase.rpc('update_shopping_item', {
+      p_item_id: id,
+      p_quantity: quantity,
+      p_unit: unit,
+    });
     if (error) {
       setError('No se pudo guardar el cambio.');
       setItems(snapshot);
@@ -98,7 +106,10 @@ export function useShoppingList() {
     if (ids.length === 0) return;
     const snapshot = items;
     setItems((prev) => prev.filter((item) => !item.checked));
-    const { error } = await supabase.rpc('buy_shopping_items', { p_ids: ids });
+    const { error } = await supabase.rpc('complete_shopping_items', {
+      p_ids: ids,
+      p_idempotency_key: createIdempotencyKey(),
+    });
     if (error) {
       setError('No se pudo mover a la despensa.');
       setItems(snapshot);

@@ -10,7 +10,7 @@ La visión de producto requiere que una familia comparta una sola despensa y una
 
 ## Decisión
 
-Se introducirá `Household` como propietario de una despensa y de una lista de compra compartidas. Cada usuario tendrá una o más `HouseholdMembership` con rol `owner` o `member`.
+Se introducirá `Household` como propietario de una despensa y de una lista de compra compartidas. En esta etapa cada usuario pertenece a un único `HouseholdMembership` con rol `owner` o `member`.
 
 Al migrar el esquema en la Fase 1, cada usuario existente recibirá un hogar personal para preservar su experiencia actual. Los recursos de inventario y compra se autorizarán por pertenencia al hogar, no por titularidad individual.
 

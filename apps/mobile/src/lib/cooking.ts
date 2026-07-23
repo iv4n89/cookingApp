@@ -1,4 +1,4 @@
-import type { CookDelta } from './pantry-match';
+import { createIdempotencyKey } from './idempotency';
 import { supabase } from './supabase';
 
 export interface CookedEntry {
@@ -13,11 +13,11 @@ const COOKED_COLUMNS = 'id, recipe_id, title, servings, cooked_at';
 
 // Marca la receta como cocinada y descuenta de la despensa los items indicados.
 // El matching (por nombre/id) se calcula en el cliente; la RPC solo aplica los deltas.
-export async function cookRecipe(recipeId: string, servings: number, deltas: CookDelta[]) {
-  const { error } = await supabase.rpc('apply_cook', {
+export async function cookRecipe(recipeId: string, servings: number) {
+  const { error } = await supabase.rpc('cook_recipe_for_household', {
     p_recipe_id: recipeId,
     p_servings: servings,
-    p_deltas: deltas,
+    p_idempotency_key: createIdempotencyKey(),
   });
   if (error) throw error;
 }

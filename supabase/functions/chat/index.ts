@@ -88,7 +88,17 @@ function recipeContext(recipe: HistoryRecipe): string {
 }
 
 async function fetchPantryNames(supabase: SupabaseClient, userId: string): Promise<string[]> {
-  const { data } = await supabase.from('pantry_items').select('name').eq('user_id', userId).limit(100);
+  const { data: membership } = await supabase
+    .from('household_members')
+    .select('household_id')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (!membership) return [];
+  const { data } = await supabase
+    .from('pantry_items')
+    .select('name')
+    .eq('household_id', membership.household_id)
+    .limit(100);
   return (data ?? []).map((p) => p.name as string).filter(Boolean);
 }
 

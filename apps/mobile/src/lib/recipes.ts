@@ -1,4 +1,5 @@
 import { getCatalogDefaults } from './ingredients';
+import { createIdempotencyKey } from './idempotency';
 import { supabase } from './supabase';
 
 export interface RecipeIngredient {
@@ -111,18 +112,18 @@ export async function getRecipe(id: string): Promise<Recipe | null> {
 // Añade a la compra en unidades de compra: si el ingrediente está en el catálogo, usa su
 // unidad y cantidad de referencia (default_unit/default_min_stock, p.ej. aceite -> 1 botella)
 // en vez de la de la receta (1 cucharada). Si no, deja la de la receta.
-export async function addIngredientsToShopping(userId: string, ingredients: RecipeIngredient[]) {
+export async function addIngredientsToShopping(ingredients: RecipeIngredient[]) {
   const defaults = await getCatalogDefaults(ingredients.map((i) => i.ingredient_id ?? ''));
-  const rows = ingredients.map((item) => {
+  await Promise.all(ingredients.map(async (item) => {
     const preset = item.ingredient_id ? defaults.get(item.ingredient_id) : undefined;
-    return {
-      user_id: userId,
-      name: item.name,
-      quantity: preset?.min ?? item.quantity,
-      unit: preset?.unit ?? item.unit,
-      ingredient_id: item.ingredient_id ?? null,
-    };
-  });
-  const { error } = await supabase.from('shopping_list_items').insert(rows);
-  if (error) throw error;
+    const { error } = await supabase.rpc('add_shopping_item', {
+      p_name: item.name,
+      p_quantity: preset?.min ?? item.quantity,
+      p_unit: preset?.unit ?? item.unit,
+      p_ingredient_id: item.ingredient_id ?? null,
+      p_recipe_id: null,
+      p_idempotency_key: createIdempotencyKey(),
+    });
+    if (error) throw error;
+  }));
 }
