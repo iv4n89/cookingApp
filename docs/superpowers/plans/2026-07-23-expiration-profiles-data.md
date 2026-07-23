@@ -14,7 +14,9 @@ modelo canónico de `0006_ingredients.sql` y
 `https://catalog.data.gov/dataset/fsis-foodkeeper-data`; JSON español oficial
 `https://www.fsis.usda.gov/shared/data/ES/foodkeeper.json`; instantánea
 consultable de 2025-07-02 del mismo recurso oficial; tabla
-`https://www.foodsafety.gov/food-safety-charts/cold-food-storage-charts`.
+`https://www.foodsafety.gov/food-safety-charts/cold-food-storage-charts`; guía
+específica de FSIS para ajo en aceite
+`https://ask.fsis.usda.gov/article/Can-you-get-botulism-from-garlic-in-oil`.
 
 **Hallazgos:** el seed contiene 331 `normalized_name` únicos. Este slice cubre
 esas 331 entradas controladas, no todas las raíces dinámicas con
@@ -52,14 +54,16 @@ estado.
    por línea. Fallar si cambia el formato, si hay duplicados o si el recuento
    deja de ser 331.
 4. Validar forma raíz, metadatos, cobertura exacta, referencias, enums,
-   rangos condicionales y perfiles sin uso. Acumular todos los diagnósticos
-   antes de devolver código distinto de cero.
+   rangos condicionales, perfiles sin uso y claves duplicadas en cualquier
+   objeto sin depender de la indentación. Acumular todos los diagnósticos antes
+   de devolver código distinto de cero.
 5. Añadir a `package.json`
-   `"validate:expiration-profiles": "node scripts/validate-expiration-profiles.mjs"`.
+   `"validate:expiration-profiles": "node scripts/validate-expiration-profiles.mjs"`
+   y una prueba negativa offline del validador.
 
-**Verificar:** `node --check scripts/validate-expiration-profiles.mjs`; ejecutar
-el comando contra una estructura mínima o el dataset en construcción y
-comprobar que enumera ausentes, extras y referencias inválidas.
+**Verificar:** `node --check scripts/validate-expiration-profiles.mjs`; probar
+funciones puras del validador con JSON reformateado y fixtures negativos para
+claves duplicadas, ausentes, extras y referencias incompatibles.
 
 **Guardas:** no instalar Ajv, Zod, Jest ni Vitest; no importar el JSON desde
 TypeScript; no depender del directorio de ejecución; no copiar manualmente otra
@@ -129,6 +133,7 @@ runtime; no asignar conservas a su equivalente fresco.
 1. Ejecutar:
    - `node --check scripts/validate-expiration-profiles.mjs`
    - `pnpm validate:expiration-profiles`
+   - `pnpm test:expiration-profiles`
    - `pnpm lint`
    - `pnpm typecheck`
    - `git diff --check`

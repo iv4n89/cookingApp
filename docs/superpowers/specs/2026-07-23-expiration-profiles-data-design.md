@@ -47,6 +47,8 @@ and Inspection Service del USDA:
   <https://www.fsis.usda.gov/shared/data/ES/foodkeeper.json>
 - Tabla oficial de conservación en frío:
   <https://www.foodsafety.gov/food-safety-charts/cold-food-storage-charts>
+- Guía específica de FSIS para ajo en aceite:
+  <https://ask.fsis.usda.gov/article/Can-you-get-botulism-from-garlic-in-oil>
 
 FoodKeeper es un dataset público CC0 y ofrece rangos, en lugar de una falsa
 fecha exacta. La versión consultada figura como actualizada el 22 de enero de
@@ -124,7 +126,7 @@ ocurrir con un producto congelado.
 - `match` admite `direct`, `family` o `fallback`.
 - `sourceId` debe existir en `sources`.
 - `sourceRef` identifica la entrada o regla de la fuente que justifica el
-  perfil.
+  perfil y debe seguir el formato verificable de su `sourceId`.
 - `priorityEligible` evita que productos estables como la sal generen
   recomendaciones absurdas por antigüedad. Esos productos siguen presentes en
   el catálogo y conservan un perfil trazable.
@@ -157,6 +159,10 @@ La validación automatizada debe comprobar:
 4. Todos los ingredientes apuntan a un perfil existente.
 5. Todos los perfiles cumplen sus invariantes de rango, confianza y fuente.
 6. Todo perfil está referenciado por al menos un ingrediente.
+7. No existe ninguna clave JSON duplicada en ningún nivel, con independencia
+   del espaciado o formato del archivo.
+8. Las referencias siguen un formato específico de cada fuente; una referencia
+   libre o atribuida a otra fuente hace fallar el validador.
 
 Se implementará como
 `scripts/validate-expiration-profiles.mjs` y se ejecutará mediante un script

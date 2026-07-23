@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const EXPECTED_CANONICAL_COUNT = 331;
@@ -33,10 +33,9 @@ const TUPLE_PATTERN =
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, '..');
 const migrationPath = join(repoRoot, 'supabase/migrations/0007_ingredients_seed.sql');
-const datasetPath = join(
-  repoRoot,
-  'packages/shared/src/data/ingredient-expiration-profiles.json',
-);
+const datasetPath = process.env.EXPIRATION_PROFILES_PATH
+  ? resolve(process.env.EXPIRATION_PROFILES_PATH)
+  : join(repoRoot, 'packages/shared/src/data/ingredient-expiration-profiles.json');
 
 function isRecord(value) {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -52,23 +51,51 @@ function validateAllowedFields(errors, record, allowedFields, path) {
   }
 }
 
-function findDuplicateMapKeys(jsonText, sectionName) {
-  const lines = jsonText.split(/\r?\n/);
-  const start = lines.findIndex((line) => line === `  "${sectionName}": {`);
-  if (start === -1) return [];
-
-  const seen = new Set();
-  const duplicates = new Set();
-  for (const line of lines.slice(start + 1)) {
-    if (/^  }[,]?$/.test(line)) break;
-    const match = line.match(/^    ("(?:[^"\\]|\\.)+"): \{$/);
-    if (!match) continue;
-
-    const key = JSON.parse(match[1]);
-    if (seen.has(key)) duplicates.add(key);
-    seen.add(key);
+function jsonStringEnd(jsonText, start) {
+  for (let index = start + 1; index < jsonText.length; index += 1) {
+    if (jsonText[index] === '\\') {
+      index += 1;
+    } else if (jsonText[index] === '"') {
+      return index;
+    }
   }
-  return [...duplicates];
+  return -1;
+}
+
+export function findDuplicateJsonKeys(jsonText) {
+  const objectScopes = [];
+  const duplicates = [];
+
+  for (let index = 0; index < jsonText.length; index += 1) {
+    const character = jsonText[index];
+    if (character === '{') {
+      objectScopes.push(new Set());
+      continue;
+    }
+    if (character === '[') {
+      objectScopes.push(null);
+      continue;
+    }
+    if (character === '}' || character === ']') {
+      objectScopes.pop();
+      continue;
+    }
+    if (character !== '"') continue;
+
+    const end = jsonStringEnd(jsonText, index);
+    if (end === -1) break;
+
+    let next = end + 1;
+    while (/\s/.test(jsonText[next] ?? '')) next += 1;
+    const scope = objectScopes.at(-1);
+    if (jsonText[next] === ':' && scope instanceof Set) {
+      const key = JSON.parse(jsonText.slice(index, end + 1));
+      if (scope.has(key)) duplicates.push(key);
+      scope.add(key);
+    }
+    index = end;
+  }
+  return duplicates;
 }
 
 function parseCanonicalNames(migrationText) {
@@ -139,6 +166,19 @@ function validateProfiles(errors, profiles, sources) {
       typeof profile.sourceRef === 'string' && profile.sourceRef.trim() !== '',
       `Perfil ${profileId}: sourceRef debe ser un texto no vacío`,
     );
+    if (typeof profile.sourceRef === 'string') {
+      const referencePatterns = {
+        'foodkeeper-es': /^FoodKeeper ES v128 (Product|Products|Category) /,
+        'foodsafety-cold-storage': /^FoodSafety\.gov Cold Food Storage Chart: /,
+        'fsis-garlic-oil': /^USDA FSIS Garlic in Oil: /,
+      };
+      const pattern = referencePatterns[profile.sourceId];
+      requireCondition(
+        errors,
+        pattern instanceof RegExp && pattern.test(profile.sourceRef),
+        `Perfil ${profileId}: sourceRef incompatible con ${profile.sourceId}`,
+      );
+    }
     requireCondition(
       errors,
       typeof profile.priorityEligible === 'boolean',
@@ -216,10 +256,8 @@ const ingredients = isRecord(root.ingredients) ? root.ingredients : {};
 
 validateAllowedFields(errors, root, ROOT_FIELDS, 'Raíz');
 validateAllowedFields(errors, catalog, CATALOG_FIELDS, 'Catálogo');
-for (const sectionName of ['sources', 'profiles', 'ingredients']) {
-  for (const key of findDuplicateMapKeys(datasetText, sectionName)) {
-    errors.push(`${sectionName}: clave JSON duplicada ${key}`);
-  }
+for (const key of findDuplicateJsonKeys(datasetText)) {
+  errors.push(`Clave JSON duplicada: ${key}`);
 }
 
 requireCondition(errors, root.schemaVersion === 1, 'schemaVersion debe ser 1');

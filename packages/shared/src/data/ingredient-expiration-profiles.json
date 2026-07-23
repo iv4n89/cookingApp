@@ -20,6 +20,11 @@
       "title": "FoodSafety.gov Cold Food Storage Chart",
       "url": "https://www.foodsafety.gov/food-safety-charts/cold-food-storage-charts",
       "retrievedAt": "2026-07-23"
+    },
+    "fsis-garlic-oil": {
+      "title": "USDA FSIS: Can you get botulism from garlic in oil?",
+      "url": "https://ask.fsis.usda.gov/article/Can-you-get-botulism-from-garlic-in-oil",
+      "retrievedAt": "2026-07-24"
     }
   },
   "profiles": {
@@ -299,40 +304,40 @@
       "minDays": 1,
       "maxDays": 2,
       "confidence": "high",
-      "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128: salchicha cruda fresca; FoodSafety.gov Cold Food Storage Chart",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: raw sausage, 1-2 days refrigerated",
       "priorityEligible": true
     },
     "meat-offal": {
       "minDays": 1,
       "maxDays": 2,
       "confidence": "high",
-      "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128: vísceras frescas; FoodSafety.gov Cold Food Storage Chart",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: variety meats, 1-2 days refrigerated",
       "priorityEligible": true
     },
     "meat-bacon": {
       "minDays": 7,
       "maxDays": 7,
       "confidence": "high",
-      "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128: tocino; FoodSafety.gov Cold Food Storage Chart",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: bacon, 1 week refrigerated",
       "priorityEligible": true
     },
     "meat-cured-ham": {
       "minDays": 60,
       "maxDays": 90,
       "confidence": "high",
-      "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128: Jamón serrano/prosciutto cortado; FoodSafety.gov Cold Food Storage Chart",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: prosciutto or Serrano ham cut, 2-3 months refrigerated",
       "priorityEligible": true
     },
     "meat-cured-short": {
       "minDays": 5,
       "maxDays": 7,
       "confidence": "medium",
-      "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128: carne curada refrigerada",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: refrigerated cured meat; conservative family range",
       "priorityEligible": true
     },
     "fish-lean": {
@@ -428,7 +433,7 @@
       "maxDays": 28,
       "confidence": "low",
       "sourceId": "foodkeeper-es",
-      "sourceRef": "Fallback editorial: FoodKeeper ES v128 Product 3, queso duro después de abrir (3-4 semanas), aplicado conservadoramente a semiduros",
+      "sourceRef": "FoodKeeper ES v128 Product 3: queso duro después de abrir (3-4 semanas), fallback conservador para semiduros",
       "priorityEligible": true
     },
     "cheese-soft": {
@@ -711,6 +716,30 @@
       "sourceRef": "FoodKeeper ES v128 Category 6: salsas refrigeradas; familia",
       "priorityEligible": true
     },
+    "sauce-aioli": {
+      "minDays": 3,
+      "maxDays": 4,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 670: Alioli hecho en casa; rango refrigerado",
+      "priorityEligible": true
+    },
+    "sauce-pesto": {
+      "minDays": 3,
+      "maxDays": 3,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 354: Pesto envasado; rango conservador después de abrir",
+      "priorityEligible": true
+    },
+    "garlic-oil-refrigerated": {
+      "minDays": 1,
+      "maxDays": 7,
+      "confidence": "high",
+      "sourceId": "fsis-garlic-oil",
+      "sourceRef": "USDA FSIS Garlic in Oil: fresco, refrigerado a 4 °C o menos, máximo 7 días",
+      "priorityEligible": true
+    },
     "sauce-shelf": {
       "minDays": 180,
       "maxDays": 365,
@@ -760,11 +789,11 @@
       "priorityEligible": true
     },
     "broth-shelf": {
-      "minDays": 180,
-      "maxDays": 365,
-      "confidence": "medium",
+      "minDays": 3,
+      "maxDays": 7,
+      "confidence": "low",
       "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128 Product 372: sopas y caldos no perecederos",
+      "sourceRef": "FoodKeeper ES v128 Products 485-486: caldos comerciales; rango conservador refrigerado/después de abrir",
       "priorityEligible": true
     }
   },
@@ -1882,8 +1911,8 @@
       "match": "family"
     },
     "salsa alioli": {
-      "profileId": "sauce-refrigerated",
-      "match": "family"
+      "profileId": "sauce-aioli",
+      "match": "fallback"
     },
     "salsa romesco": {
       "profileId": "sauce-refrigerated",
@@ -1946,11 +1975,11 @@
       "match": "family"
     },
     "salsa pesto": {
-      "profileId": "sauce-refrigerated",
-      "match": "family"
+      "profileId": "sauce-pesto",
+      "match": "fallback"
     },
     "aceite de ajo": {
-      "profileId": "oil-general",
+      "profileId": "garlic-oil-refrigerated",
       "match": "direct"
     },
     "vinagre de sidra": {
@@ -2079,15 +2108,15 @@
     },
     "caldo de pollo": {
       "profileId": "broth-shelf",
-      "match": "family"
+      "match": "fallback"
     },
     "caldo de pescado": {
       "profileId": "broth-shelf",
-      "match": "family"
+      "match": "fallback"
     },
     "fondo de carne": {
       "profileId": "broth-shelf",
-      "match": "family"
+      "match": "fallback"
     },
     "sal de mesa": {
       "profileId": "salt-indefinite",
