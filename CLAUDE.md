@@ -2,6 +2,10 @@
 
 App móvil de recetas con IA. Ver `ARCHITECTURE.md` para el stack.
 
+Antes de continuar el roadmap, leer `docs/PROJECT_STATUS.md`: contiene las
+fases completadas, decisiones vigentes, validaciones pendientes y el siguiente
+trabajo autorizado.
+
 ## Flujo de trabajo (obligatorio)
 
 Una rama por feature y PR con revisión antes de mergear. **Nunca commitear directo a `main`.**

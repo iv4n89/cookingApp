@@ -2,7 +2,9 @@
 
 ## Household
 
-El grupo familiar que posee una única despensa y una única lista de la compra. Un usuario puede pertenecer a uno o más hogares mediante una membresía.
+El grupo familiar que posee una única despensa y una única lista de la compra.
+Un hogar puede tener varios miembros, pero cada usuario pertenece exactamente
+a un hogar mediante una membresía.
 
 ## Pantry
 

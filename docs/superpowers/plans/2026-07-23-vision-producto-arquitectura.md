@@ -1,5 +1,8 @@
 # Plan: evolución hacia el copiloto de cocina
 
+> Estado de ejecución y punto de reanudación:
+> [`docs/PROJECT_STATUS.md`](../../PROJECT_STATUS.md).
+
 **Objetivo:** convertir la aplicación de recetas en un sistema de decisión doméstica: qué consumir, qué cocinar y qué comprar, con el backend como fuente de verdad y el LLM como intérprete y explicador.
 
 **Decisión arquitectónica:** mantener Supabase (Postgres, Auth, RLS, Storage, Realtime y Edge Functions) como backend durante las fases de producto. No introducir microservicios ni una infraestructura cloud adicional hasta que existan trabajos durables, integraciones externas o carga que lo requieran.
