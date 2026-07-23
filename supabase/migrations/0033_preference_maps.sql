@@ -1,7 +1,7 @@
 -- Mapa preferencia/necesidad -> clave de alérgeno/dieta como DATOS (fuente única).
 -- Antes estaba duplicado en TS (_shared/preferences.ts) y embebido como VALUES en el SQL de
--- recommended_recipes (0028), con riesgo de divergencia silenciosa. Ahora ambos leen de estas
--- tablas: cambiar un mapeo = editar solo el seed de abajo.
+-- recommended_recipes (0028/0032), con riesgo de divergencia silenciosa. Ahora ambos leen de
+-- estas tablas: cambiar un mapeo = editar solo el seed de abajo.
 
 create table need_allergen_map (
   need text not null,
@@ -58,8 +58,8 @@ create policy "pref_diet_map_select_authenticated" on pref_diet_map
 grant select on pref_diet_map to authenticated;
 grant select on pref_diet_map to service_role;
 
--- Reescribe recommended_recipes (0028) para leer el mapa de las tablas en vez de VALUES
--- embebidos. El resto del cuerpo es idéntico.
+-- Reescribe recommended_recipes (0032) para leer el mapa de las tablas en vez de VALUES
+-- embebidos. El resto del cuerpo (incluida image_status de 0032) es idéntico.
 drop function if exists recommended_recipes(int, int, text, uuid[]);
 create function recommended_recipes(
   p_limit int default 6,
@@ -72,6 +72,7 @@ returns table (
   title text,
   description text,
   image_url text,
+  image_status text,
   prep_time_min int,
   cook_time_min int,
   tags text[],
@@ -130,7 +131,7 @@ begin
       where i.category in ('Especias y hierbas', 'Condimentos y edulcorantes', 'Aceites, vinagres y salsas')
     ),
     scored as (
-      select rec.id, rec.title, rec.description, rec.image_url, rec.prep_time_min,
+      select rec.id, rec.title, rec.description, rec.image_url, rec.image_status, rec.prep_time_min,
              rec.cook_time_min, rec.tags, rec.embedding, rec.created_at,
              (p_meal_type is not null and rec.meal_types @> array[p_meal_type]) as slot_match,
              count(distinct x.iid) filter (where pantry.cid is not null)::int as mc,
@@ -170,6 +171,7 @@ begin
     if r.embedding is not null then picked := picked || r.embedding; end if;
 
     id := r.id; title := r.title; description := r.description; image_url := r.image_url;
+    image_status := r.image_status;
     prep_time_min := r.prep_time_min; cook_time_min := r.cook_time_min; tags := r.tags;
     match_count := r.mc; missing_count := r.missing; bucket := b;
     v_picked := v_picked || r.id;
@@ -180,7 +182,7 @@ begin
   -- Idea: solo si la despensa no dio nada para la sección principal.
   if n_main = 0 then
     for r in
-      select rec.id, rec.title, rec.description, rec.image_url, rec.prep_time_min,
+      select rec.id, rec.title, rec.description, rec.image_url, rec.image_status, rec.prep_time_min,
              rec.cook_time_min, rec.tags, rec.embedding, rec.created_at,
              (p_meal_type is not null and rec.meal_types @> array[p_meal_type]) as slot_match
       from recipes rec
@@ -203,6 +205,7 @@ begin
       if too_similar then continue; end if;
       if r.embedding is not null then picked := picked || r.embedding; end if;
       id := r.id; title := r.title; description := r.description; image_url := r.image_url;
+      image_status := r.image_status;
       prep_time_min := r.prep_time_min; cook_time_min := r.cook_time_min; tags := r.tags;
       match_count := 0; missing_count := 0; bucket := 'idea';
       n_main := n_main + 1;

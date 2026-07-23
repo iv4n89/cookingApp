@@ -43,10 +43,13 @@ export async function excludedAllergens(
   specialNeeds: string[],
 ): Promise<string[]> {
   if (!specialNeeds.length) return [];
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('need_allergen_map')
     .select('allergen')
     .in('need', specialNeeds);
+  // Es un filtro de seguridad (alérgenos): ante un fallo, propagar en vez de devolver [] y
+  // acabar sirviendo recetas sin excluir.
+  if (error) throw error;
   return [...new Set((data ?? []).map((row) => row.allergen as string))];
 }
 
@@ -55,7 +58,11 @@ export async function requiredDiet(
   foodPrefs: string[],
 ): Promise<string[]> {
   if (!foodPrefs.length) return [];
-  const { data } = await supabase.from('pref_diet_map').select('diet').in('pref', foodPrefs);
+  const { data, error } = await supabase
+    .from('pref_diet_map')
+    .select('diet')
+    .in('pref', foodPrefs);
+  if (error) throw error;
   return [...new Set((data ?? []).map((row) => row.diet as string))];
 }
 
