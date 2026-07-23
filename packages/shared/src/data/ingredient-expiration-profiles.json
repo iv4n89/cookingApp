@@ -1,0 +1,2081 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "source": "supabase/migrations/0007_ingredients_seed.sql",
+    "canonicalCount": 331
+  },
+  "sources": {
+    "foodkeeper-es": {
+      "title": "FSIS FoodKeeper Data, español, versión interna 128 (FMA-Data-v128.xlsx)",
+      "url": "https://www.fsis.usda.gov/shared/data/ES/foodkeeper.json",
+      "archivedUrl": "https://web.archive.org/web/20250702182320id_/https://www.fsis.usda.gov/shared/data/ES/foodkeeper.json",
+      "license": "CC0-1.0",
+      "contentVersion": 128,
+      "contentModifiedAt": "2018-09-06",
+      "catalogUpdatedAt": "2025-01-22",
+      "retrievedAt": "2026-07-23",
+      "sha256": "2a25209edc1d578f1f0002a0a896c54c26611a4d986c46ebcdc156554190687b"
+    },
+    "foodsafety-cold-storage": {
+      "title": "FoodSafety.gov Cold Food Storage Chart",
+      "url": "https://www.foodsafety.gov/food-safety-charts/cold-food-storage-charts",
+      "retrievedAt": "2026-07-23"
+    }
+  },
+  "profiles": {
+    "fruit-apple": {
+      "minDays": 21,
+      "maxDays": 42,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 248: Manzanas",
+      "priorityEligible": true
+    },
+    "fruit-pear-stone": {
+      "minDays": 3,
+      "maxDays": 5,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 266: Melocotones, Nectarinas, Ciruelas, Peras, Zapote",
+      "priorityEligible": true
+    },
+    "fruit-banana": {
+      "minDays": 3,
+      "maxDays": 5,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 268: Plátano; rango refrigerado tras madurar",
+      "priorityEligible": true
+    },
+    "fruit-citrus": {
+      "minDays": 10,
+      "maxDays": 21,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 256: Frutas cítricas",
+      "priorityEligible": true
+    },
+    "fruit-grape": {
+      "minDays": 7,
+      "maxDays": 7,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 261: Uvas",
+      "priorityEligible": true
+    },
+    "fruit-berries": {
+      "minDays": 2,
+      "maxDays": 3,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 481: fresas, fresón, frutilla",
+      "priorityEligible": true
+    },
+    "fruit-melon": {
+      "minDays": 5,
+      "maxDays": 15,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 264, 496: Melón",
+      "priorityEligible": true
+    },
+    "fruit-cherry": {
+      "minDays": 2,
+      "maxDays": 7,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 252, 483: Cerezas",
+      "priorityEligible": true
+    },
+    "fruit-delicate": {
+      "minDays": 2,
+      "maxDays": 5,
+      "confidence": "low",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 18: Frutas frescas delicadas; fallback conservador",
+      "priorityEligible": true
+    },
+    "fruit-pomegranate": {
+      "minDays": 30,
+      "maxDays": 90,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 269: Granada",
+      "priorityEligible": true
+    },
+    "fruit-firm": {
+      "minDays": 14,
+      "maxDays": 30,
+      "confidence": "low",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 18: Frutas frescas firmes; fallback conservador",
+      "priorityEligible": true
+    },
+    "fruit-pineapple": {
+      "minDays": 5,
+      "maxDays": 7,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 267: Piña madura",
+      "priorityEligible": true
+    },
+    "fruit-avocado": {
+      "minDays": 3,
+      "maxDays": 4,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 250: Aguacates; tras madurar",
+      "priorityEligible": true
+    },
+    "vegetable-potato": {
+      "minDays": 30,
+      "maxDays": 60,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 297: Papas",
+      "priorityEligible": true
+    },
+    "vegetable-onion": {
+      "minDays": 30,
+      "maxDays": 60,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 294: Cebolla seca",
+      "priorityEligible": true
+    },
+    "vegetable-garlic": {
+      "minDays": 30,
+      "maxDays": 30,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 285: Ajo, bulbos sin romper",
+      "priorityEligible": true
+    },
+    "vegetable-tomato": {
+      "minDays": 5,
+      "maxDays": 10,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 306, 600: Tomates",
+      "priorityEligible": true
+    },
+    "vegetable-pepper": {
+      "minDays": 4,
+      "maxDays": 14,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 296: Pimientos",
+      "priorityEligible": true
+    },
+    "vegetable-summer-squash": {
+      "minDays": 4,
+      "maxDays": 7,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 19: Vegetales frescos; calabacín y berenjena",
+      "priorityEligible": true
+    },
+    "vegetable-root": {
+      "minDays": 14,
+      "maxDays": 21,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 279: Zanahorias, chirivía",
+      "priorityEligible": true
+    },
+    "vegetable-green-bean": {
+      "minDays": 3,
+      "maxDays": 5,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 273: Frijoles y guisantes frescos",
+      "priorityEligible": true
+    },
+    "vegetable-asparagus": {
+      "minDays": 3,
+      "maxDays": 4,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 271: Espárragos",
+      "priorityEligible": true
+    },
+    "vegetable-artichoke": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 270: Alcachofas completas",
+      "priorityEligible": true
+    },
+    "vegetable-leafy": {
+      "minDays": 3,
+      "maxDays": 7,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 291: Lechuga de hoja, espinacas",
+      "priorityEligible": true
+    },
+    "vegetable-crucifer": {
+      "minDays": 3,
+      "maxDays": 5,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 276: Brócoli y grelo; familia crucíferas",
+      "priorityEligible": true
+    },
+    "vegetable-pumpkin": {
+      "minDays": 60,
+      "maxDays": 90,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 298: Calabaza",
+      "priorityEligible": true
+    },
+    "vegetable-cucumber": {
+      "minDays": 4,
+      "maxDays": 6,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 283: Pepinos",
+      "priorityEligible": true
+    },
+    "vegetable-lettuce": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 290: Lechuga común y romana",
+      "priorityEligible": true
+    },
+    "vegetable-allium-green": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 295: cebollas verdes o cebollines",
+      "priorityEligible": true
+    },
+    "vegetable-celery": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 19: Vegetales frescos; apio",
+      "priorityEligible": true
+    },
+    "vegetable-mushroom": {
+      "minDays": 3,
+      "maxDays": 7,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 19: Vegetales frescos; hongos",
+      "priorityEligible": true
+    },
+    "meat-red-fresh": {
+      "minDays": 3,
+      "maxDays": 5,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 34-41, 44-51, 60-69: cortes frescos de res, cordero y cerdo",
+      "priorityEligible": true
+    },
+    "meat-poultry-fresh": {
+      "minDays": 1,
+      "maxDays": 2,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 113, 116-118: pollo entero y partes",
+      "priorityEligible": true
+    },
+    "meat-sausage-fresh": {
+      "minDays": 1,
+      "maxDays": 2,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128: salchicha cruda fresca; FoodSafety.gov Cold Food Storage Chart",
+      "priorityEligible": true
+    },
+    "meat-offal": {
+      "minDays": 1,
+      "maxDays": 2,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128: vísceras frescas; FoodSafety.gov Cold Food Storage Chart",
+      "priorityEligible": true
+    },
+    "meat-bacon": {
+      "minDays": 7,
+      "maxDays": 7,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128: tocino; FoodSafety.gov Cold Food Storage Chart",
+      "priorityEligible": true
+    },
+    "meat-cured-ham": {
+      "minDays": 60,
+      "maxDays": 90,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128: Jamón serrano/prosciutto cortado; FoodSafety.gov Cold Food Storage Chart",
+      "priorityEligible": true
+    },
+    "meat-cured-short": {
+      "minDays": 5,
+      "maxDays": 7,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128: carne curada refrigerada",
+      "priorityEligible": true
+    },
+    "fish-lean": {
+      "minDays": 1,
+      "maxDays": 2,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 144-145: Pescado magro",
+      "priorityEligible": true
+    },
+    "fish-fatty": {
+      "minDays": 1,
+      "maxDays": 2,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 146: Pescado graso",
+      "priorityEligible": true
+    },
+    "fish-desalted": {
+      "minDays": 2,
+      "maxDays": 3,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 20: pescado fresco; bacalao desalado",
+      "priorityEligible": true
+    },
+    "shellfish-crustacean": {
+      "minDays": 3,
+      "maxDays": 5,
+      "confidence": "high",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: Shrimp, Crayfish",
+      "priorityEligible": true
+    },
+    "shellfish-live": {
+      "minDays": 5,
+      "maxDays": 10,
+      "confidence": "high",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: live clams, mussels, oysters and scallops",
+      "priorityEligible": true
+    },
+    "shellfish-lobster": {
+      "minDays": 1,
+      "maxDays": 2,
+      "confidence": "medium",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: live lobster",
+      "priorityEligible": true
+    },
+    "seafood-cephalopod": {
+      "minDays": 1,
+      "maxDays": 3,
+      "confidence": "high",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: squid; familia cefalópodos",
+      "priorityEligible": true
+    },
+    "dairy-milk": {
+      "minDays": 7,
+      "maxDays": 10,
+      "confidence": "low",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 27: Leche (fecha de uso); fallback numérico de familia",
+      "priorityEligible": true
+    },
+    "dairy-cream": {
+      "minDays": 3,
+      "maxDays": 10,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 13-15: Crema",
+      "priorityEligible": true
+    },
+    "dairy-butter": {
+      "minDays": 30,
+      "maxDays": 60,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 1: Mantequilla",
+      "priorityEligible": true
+    },
+    "cheese-hard": {
+      "minDays": 180,
+      "maxDays": 180,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 3: Quesos duros",
+      "priorityEligible": true
+    },
+    "cheese-semi-soft": {
+      "minDays": 21,
+      "maxDays": 28,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 5-7: quesos rallados y suaves",
+      "priorityEligible": true
+    },
+    "cheese-fresh": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 7, 9: quesos suaves y requesón",
+      "priorityEligible": true
+    },
+    "cheese-cream": {
+      "minDays": 14,
+      "maxDays": 14,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 10: Queso crema",
+      "priorityEligible": true
+    },
+    "dairy-yogurt": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 33: Yogur",
+      "priorityEligible": true
+    },
+    "egg-shell": {
+      "minDays": 21,
+      "maxDays": 35,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 21: Huevos en el cascarón",
+      "priorityEligible": true
+    },
+    "egg-raw-parts": {
+      "minDays": 2,
+      "maxDays": 4,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 22: Yemas de huevo crudo; claras y yemas",
+      "priorityEligible": true
+    },
+    "milk-canned": {
+      "minDays": 365,
+      "maxDays": 365,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 383: Leche evaporada o condensada enlatada",
+      "priorityEligible": true
+    },
+    "dairy-curd": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 9, 33: lácteos frescos fermentados",
+      "priorityEligible": true
+    },
+    "grain-rice-white": {
+      "minDays": 730,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 338: Arroz blanco o mixto",
+      "priorityEligible": true
+    },
+    "grain-rice-brown": {
+      "minDays": 365,
+      "maxDays": 365,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 339: Arroz marrón",
+      "priorityEligible": true
+    },
+    "bread-fresh": {
+      "minDays": 3,
+      "maxDays": 7,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 195, 451: productos de pan y panes caseros",
+      "priorityEligible": true
+    },
+    "bread-packaged": {
+      "minDays": 14,
+      "maxDays": 18,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 195: Productos de pan comerciales",
+      "priorityEligible": true
+    },
+    "pasta-dry": {
+      "minDays": 730,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 335: Pasta seca sin huevo",
+      "priorityEligible": true
+    },
+    "grain-dry": {
+      "minDays": 365,
+      "maxDays": 730,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 9: granos secos",
+      "priorityEligible": true
+    },
+    "flour-white": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 222: Harina blanca",
+      "priorityEligible": true
+    },
+    "flour-corn": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 218: Harina de maíz",
+      "priorityEligible": true
+    },
+    "bread-dry": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 23: pan rallado y productos secos de pan",
+      "priorityEligible": true
+    },
+    "legume-dry": {
+      "minDays": 365,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 333: Frijoles secos",
+      "priorityEligible": true
+    },
+    "legume-fresh": {
+      "minDays": 3,
+      "maxDays": 5,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 273: Frijoles y guisantes frescos",
+      "priorityEligible": true
+    },
+    "nuts-raw": {
+      "minDays": 90,
+      "maxDays": 180,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 23: frutos secos; rango conservador de calidad",
+      "priorityEligible": true
+    },
+    "seeds-general": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 604-608: semillas de calabaza y girasol",
+      "priorityEligible": true
+    },
+    "seeds-long": {
+      "minDays": 548,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 503, 573: linaza y chía",
+      "priorityEligible": true
+    },
+    "chestnut-fresh": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "low",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 18/23: castaña fresca; fallback conservador",
+      "priorityEligible": true
+    },
+    "herb-fresh": {
+      "minDays": 7,
+      "maxDays": 10,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 288: Hierbas frescas",
+      "priorityEligible": true
+    },
+    "herb-dry": {
+      "minDays": 365,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 236: Hierbas secas",
+      "priorityEligible": true
+    },
+    "spice-ground": {
+      "minDays": 730,
+      "maxDays": 1095,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 238: Especias molidas",
+      "priorityEligible": true
+    },
+    "spice-whole": {
+      "minDays": 1095,
+      "maxDays": 1460,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 237: Especias completas",
+      "priorityEligible": true
+    },
+    "salt-indefinite": {
+      "minDays": null,
+      "maxDays": null,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 468: Sal; indefinidamente",
+      "priorityEligible": false
+    },
+    "sugar-long": {
+      "minDays": 730,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 239-241: Azúcar; recomendación de calidad de 2 años",
+      "priorityEligible": false
+    },
+    "honey-long": {
+      "minDays": 730,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 345: Miel",
+      "priorityEligible": false
+    },
+    "oil-general": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 227: Aceites de oliva y vegetal",
+      "priorityEligible": true
+    },
+    "oil-nut-seed": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 228, 522: aceites de nueces y girasol",
+      "priorityEligible": true
+    },
+    "vinegar-long": {
+      "minDays": 730,
+      "maxDays": 1825,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 361, 669: Vinagre y vinagre balsámico",
+      "priorityEligible": false
+    },
+    "sauce-tomato-shelf": {
+      "minDays": 365,
+      "maxDays": 548,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 373: productos enlatados altos en ácido",
+      "priorityEligible": true
+    },
+    "sauce-refrigerated": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 6: salsas refrigeradas; familia",
+      "priorityEligible": true
+    },
+    "sauce-shelf": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Products 340-351: salsas y condimentos envasados",
+      "priorityEligible": true
+    },
+    "soy-sauce": {
+      "minDays": 730,
+      "maxDays": 730,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Category 6: salsa de soja envasada",
+      "priorityEligible": true
+    },
+    "mayonnaise": {
+      "minDays": 90,
+      "maxDays": 180,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 350: Mayonesa comercial",
+      "priorityEligible": true
+    },
+    "mustard": {
+      "minDays": 365,
+      "maxDays": 730,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 351: Mostaza",
+      "priorityEligible": true
+    },
+    "canned-low-acid": {
+      "minDays": 730,
+      "maxDays": 1825,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 372: Productos enlatados bajos en ácido",
+      "priorityEligible": true
+    },
+    "canned-high-acid": {
+      "minDays": 365,
+      "maxDays": 548,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 373: Productos enlatados altos en ácido",
+      "priorityEligible": true
+    },
+    "broth-shelf": {
+      "minDays": 180,
+      "maxDays": 365,
+      "confidence": "medium",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 372: sopas y caldos no perecederos",
+      "priorityEligible": true
+    }
+  },
+  "ingredients": {
+    "manzana golden": {
+      "profileId": "fruit-apple",
+      "match": "direct"
+    },
+    "manzana granny smith": {
+      "profileId": "fruit-apple",
+      "match": "direct"
+    },
+    "pera conferencia": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "pera ercolina": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "platano de canarias": {
+      "profileId": "fruit-banana",
+      "match": "direct"
+    },
+    "naranja de mesa": {
+      "profileId": "fruit-citrus",
+      "match": "direct"
+    },
+    "naranja de zumo": {
+      "profileId": "fruit-citrus",
+      "match": "direct"
+    },
+    "mandarina clementina": {
+      "profileId": "fruit-citrus",
+      "match": "direct"
+    },
+    "limon amarillo": {
+      "profileId": "fruit-citrus",
+      "match": "direct"
+    },
+    "lima": {
+      "profileId": "fruit-citrus",
+      "match": "direct"
+    },
+    "uva blanca": {
+      "profileId": "fruit-grape",
+      "match": "direct"
+    },
+    "uva tinta": {
+      "profileId": "fruit-grape",
+      "match": "direct"
+    },
+    "melocoton amarillo": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "melocoton paraguayo": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "nectarina": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "albaricoque": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "ciruela claudia": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "ciruela roja": {
+      "profileId": "fruit-pear-stone",
+      "match": "family"
+    },
+    "cereza": {
+      "profileId": "fruit-cherry",
+      "match": "direct"
+    },
+    "picota": {
+      "profileId": "fruit-cherry",
+      "match": "direct"
+    },
+    "fresa": {
+      "profileId": "fruit-berries",
+      "match": "direct"
+    },
+    "freson": {
+      "profileId": "fruit-berries",
+      "match": "direct"
+    },
+    "melon piel de sapo": {
+      "profileId": "fruit-melon",
+      "match": "family"
+    },
+    "sandia": {
+      "profileId": "fruit-melon",
+      "match": "family"
+    },
+    "higo": {
+      "profileId": "fruit-delicate",
+      "match": "fallback"
+    },
+    "breva": {
+      "profileId": "fruit-delicate",
+      "match": "fallback"
+    },
+    "granada": {
+      "profileId": "fruit-pomegranate",
+      "match": "direct"
+    },
+    "membrillo": {
+      "profileId": "fruit-firm",
+      "match": "fallback"
+    },
+    "pina": {
+      "profileId": "fruit-pineapple",
+      "match": "direct"
+    },
+    "aguacate": {
+      "profileId": "fruit-avocado",
+      "match": "direct"
+    },
+    "patata": {
+      "profileId": "vegetable-potato",
+      "match": "direct"
+    },
+    "cebolla blanca": {
+      "profileId": "vegetable-onion",
+      "match": "direct"
+    },
+    "cebolla morada": {
+      "profileId": "vegetable-onion",
+      "match": "direct"
+    },
+    "ajo": {
+      "profileId": "vegetable-garlic",
+      "match": "family"
+    },
+    "tomate pera": {
+      "profileId": "vegetable-tomato",
+      "match": "family"
+    },
+    "tomate rama": {
+      "profileId": "vegetable-tomato",
+      "match": "family"
+    },
+    "pimiento verde": {
+      "profileId": "vegetable-pepper",
+      "match": "family"
+    },
+    "pimiento rojo": {
+      "profileId": "vegetable-pepper",
+      "match": "family"
+    },
+    "calabacin": {
+      "profileId": "vegetable-summer-squash",
+      "match": "family"
+    },
+    "berenjena": {
+      "profileId": "vegetable-summer-squash",
+      "match": "family"
+    },
+    "zanahoria": {
+      "profileId": "vegetable-root",
+      "match": "direct"
+    },
+    "judia verde plana": {
+      "profileId": "vegetable-green-bean",
+      "match": "family"
+    },
+    "judia verde redonda": {
+      "profileId": "vegetable-green-bean",
+      "match": "family"
+    },
+    "esparrago triguero": {
+      "profileId": "vegetable-asparagus",
+      "match": "family"
+    },
+    "alcachofa": {
+      "profileId": "vegetable-artichoke",
+      "match": "family"
+    },
+    "espinaca": {
+      "profileId": "vegetable-leafy",
+      "match": "family"
+    },
+    "acelga": {
+      "profileId": "vegetable-leafy",
+      "match": "family"
+    },
+    "coliflor": {
+      "profileId": "vegetable-crucifer",
+      "match": "direct"
+    },
+    "brocoli": {
+      "profileId": "vegetable-crucifer",
+      "match": "direct"
+    },
+    "calabaza": {
+      "profileId": "vegetable-pumpkin",
+      "match": "family"
+    },
+    "pepino": {
+      "profileId": "vegetable-cucumber",
+      "match": "family"
+    },
+    "lechuga romana": {
+      "profileId": "vegetable-lettuce",
+      "match": "direct"
+    },
+    "lechuga hoja de roble": {
+      "profileId": "vegetable-lettuce",
+      "match": "direct"
+    },
+    "puerro": {
+      "profileId": "vegetable-allium-green",
+      "match": "family"
+    },
+    "apio": {
+      "profileId": "vegetable-celery",
+      "match": "family"
+    },
+    "guisante": {
+      "profileId": "vegetable-green-bean",
+      "match": "family"
+    },
+    "haba": {
+      "profileId": "vegetable-green-bean",
+      "match": "family"
+    },
+    "cardo": {
+      "profileId": "vegetable-artichoke",
+      "match": "family"
+    },
+    "champinon": {
+      "profileId": "vegetable-mushroom",
+      "match": "family"
+    },
+    "setas ostra": {
+      "profileId": "vegetable-mushroom",
+      "match": "family"
+    },
+    "solomillo de cerdo": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "lomo de cerdo": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "secreto iberico": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "presa iberica": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "pluma iberica": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "panceta de cerdo": {
+      "profileId": "meat-bacon",
+      "match": "family"
+    },
+    "costilla de cerdo": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "chorizo fresco": {
+      "profileId": "meat-sausage-fresh",
+      "match": "family"
+    },
+    "morcilla de arroz": {
+      "profileId": "meat-sausage-fresh",
+      "match": "family"
+    },
+    "morcilla de cebolla": {
+      "profileId": "meat-sausage-fresh",
+      "match": "family"
+    },
+    "jamon serrano": {
+      "profileId": "meat-cured-ham",
+      "match": "family"
+    },
+    "jamon iberico": {
+      "profileId": "meat-cured-ham",
+      "match": "family"
+    },
+    "chuleton de ternera": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "solomillo de ternera": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "rabito de ternera": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "callos de ternera": {
+      "profileId": "meat-offal",
+      "match": "family"
+    },
+    "pollo entero": {
+      "profileId": "meat-poultry-fresh",
+      "match": "direct"
+    },
+    "pechuga de pollo": {
+      "profileId": "meat-poultry-fresh",
+      "match": "direct"
+    },
+    "muslo de pollo": {
+      "profileId": "meat-poultry-fresh",
+      "match": "direct"
+    },
+    "alita de pollo": {
+      "profileId": "meat-poultry-fresh",
+      "match": "direct"
+    },
+    "conejo de campo": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "codorniz": {
+      "profileId": "meat-poultry-fresh",
+      "match": "direct"
+    },
+    "cordero lechal": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "chuletilla de cordero": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "paletilla de cordero": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "magro de cerdo": {
+      "profileId": "meat-red-fresh",
+      "match": "family"
+    },
+    "tocino iberico": {
+      "profileId": "meat-bacon",
+      "match": "family"
+    },
+    "salchicha fresca": {
+      "profileId": "meat-sausage-fresh",
+      "match": "family"
+    },
+    "longaniza": {
+      "profileId": "meat-sausage-fresh",
+      "match": "family"
+    },
+    "lacon": {
+      "profileId": "meat-cured-short",
+      "match": "family"
+    },
+    "merluza": {
+      "profileId": "fish-lean",
+      "match": "direct"
+    },
+    "bacalao fresco": {
+      "profileId": "fish-lean",
+      "match": "direct"
+    },
+    "bacalao desalado": {
+      "profileId": "fish-desalted",
+      "match": "family"
+    },
+    "rape": {
+      "profileId": "fish-lean",
+      "match": "direct"
+    },
+    "lenguado": {
+      "profileId": "fish-lean",
+      "match": "direct"
+    },
+    "dorada": {
+      "profileId": "fish-lean",
+      "match": "direct"
+    },
+    "lubina": {
+      "profileId": "fish-lean",
+      "match": "direct"
+    },
+    "rodaballo": {
+      "profileId": "fish-lean",
+      "match": "direct"
+    },
+    "atun rojo": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "bonito del norte": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "boqueron": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "sardina": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "caballa": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "anchoa": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "gambon": {
+      "profileId": "shellfish-crustacean",
+      "match": "family"
+    },
+    "gamba blanca": {
+      "profileId": "shellfish-crustacean",
+      "match": "family"
+    },
+    "gamba roja": {
+      "profileId": "shellfish-crustacean",
+      "match": "family"
+    },
+    "langostino": {
+      "profileId": "shellfish-crustacean",
+      "match": "family"
+    },
+    "cigala": {
+      "profileId": "shellfish-crustacean",
+      "match": "family"
+    },
+    "bogavante": {
+      "profileId": "shellfish-lobster",
+      "match": "family"
+    },
+    "langosta": {
+      "profileId": "shellfish-lobster",
+      "match": "family"
+    },
+    "mejillon": {
+      "profileId": "shellfish-live",
+      "match": "family"
+    },
+    "almeja babosa": {
+      "profileId": "shellfish-live",
+      "match": "family"
+    },
+    "almeja fina": {
+      "profileId": "shellfish-live",
+      "match": "family"
+    },
+    "berberecho": {
+      "profileId": "shellfish-live",
+      "match": "family"
+    },
+    "navaja": {
+      "profileId": "shellfish-live",
+      "match": "family"
+    },
+    "vieira": {
+      "profileId": "shellfish-live",
+      "match": "family"
+    },
+    "pulpo": {
+      "profileId": "seafood-cephalopod",
+      "match": "family"
+    },
+    "calamar": {
+      "profileId": "seafood-cephalopod",
+      "match": "family"
+    },
+    "sepia": {
+      "profileId": "seafood-cephalopod",
+      "match": "family"
+    },
+    "leche entera": {
+      "profileId": "dairy-milk",
+      "match": "fallback"
+    },
+    "leche semidesnatada": {
+      "profileId": "dairy-milk",
+      "match": "fallback"
+    },
+    "leche desnatada": {
+      "profileId": "dairy-milk",
+      "match": "fallback"
+    },
+    "nata para montar": {
+      "profileId": "dairy-cream",
+      "match": "family"
+    },
+    "nata para cocinar": {
+      "profileId": "dairy-cream",
+      "match": "family"
+    },
+    "mantequilla con sal": {
+      "profileId": "dairy-butter",
+      "match": "direct"
+    },
+    "mantequilla sin sal": {
+      "profileId": "dairy-butter",
+      "match": "direct"
+    },
+    "queso manchego semicurado": {
+      "profileId": "cheese-semi-soft",
+      "match": "family"
+    },
+    "queso manchego curado": {
+      "profileId": "cheese-hard",
+      "match": "direct"
+    },
+    "queso fresco": {
+      "profileId": "cheese-fresh",
+      "match": "family"
+    },
+    "queso de cabrales": {
+      "profileId": "cheese-semi-soft",
+      "match": "family"
+    },
+    "queso tetilla": {
+      "profileId": "cheese-semi-soft",
+      "match": "family"
+    },
+    "queso idiazabal": {
+      "profileId": "cheese-hard",
+      "match": "direct"
+    },
+    "queso mahon": {
+      "profileId": "cheese-semi-soft",
+      "match": "family"
+    },
+    "queso burgos": {
+      "profileId": "cheese-fresh",
+      "match": "family"
+    },
+    "requeson": {
+      "profileId": "cheese-fresh",
+      "match": "family"
+    },
+    "yogur natural": {
+      "profileId": "dairy-yogurt",
+      "match": "direct"
+    },
+    "yogur griego": {
+      "profileId": "dairy-yogurt",
+      "match": "direct"
+    },
+    "huevo de gallina": {
+      "profileId": "egg-shell",
+      "match": "direct"
+    },
+    "huevo de codorniz": {
+      "profileId": "egg-shell",
+      "match": "direct"
+    },
+    "clara de huevo": {
+      "profileId": "egg-raw-parts",
+      "match": "direct"
+    },
+    "yema de huevo": {
+      "profileId": "egg-raw-parts",
+      "match": "direct"
+    },
+    "queso rulo de cabra": {
+      "profileId": "cheese-fresh",
+      "match": "family"
+    },
+    "queso crema": {
+      "profileId": "cheese-cream",
+      "match": "direct"
+    },
+    "queso parmesano": {
+      "profileId": "cheese-hard",
+      "match": "direct"
+    },
+    "queso emmental": {
+      "profileId": "cheese-hard",
+      "match": "direct"
+    },
+    "queso mozzarella": {
+      "profileId": "cheese-semi-soft",
+      "match": "family"
+    },
+    "leche evaporada": {
+      "profileId": "milk-canned",
+      "match": "direct"
+    },
+    "leche condensada": {
+      "profileId": "milk-canned",
+      "match": "direct"
+    },
+    "cuajada": {
+      "profileId": "dairy-curd",
+      "match": "family"
+    },
+    "arroz bomba": {
+      "profileId": "grain-rice-white",
+      "match": "direct"
+    },
+    "arroz basmati": {
+      "profileId": "grain-rice-white",
+      "match": "direct"
+    },
+    "arroz integral": {
+      "profileId": "grain-rice-brown",
+      "match": "direct"
+    },
+    "arroz redondo": {
+      "profileId": "grain-rice-white",
+      "match": "direct"
+    },
+    "pan de hogaza": {
+      "profileId": "bread-fresh",
+      "match": "family"
+    },
+    "pan de barra": {
+      "profileId": "bread-fresh",
+      "match": "family"
+    },
+    "pan integral": {
+      "profileId": "bread-fresh",
+      "match": "family"
+    },
+    "pan de centeno": {
+      "profileId": "bread-fresh",
+      "match": "family"
+    },
+    "pan de molde": {
+      "profileId": "bread-packaged",
+      "match": "direct"
+    },
+    "pasta espagueti": {
+      "profileId": "pasta-dry",
+      "match": "direct"
+    },
+    "pasta macarron": {
+      "profileId": "pasta-dry",
+      "match": "direct"
+    },
+    "pasta tallarines": {
+      "profileId": "pasta-dry",
+      "match": "direct"
+    },
+    "pasta de sopa": {
+      "profileId": "pasta-dry",
+      "match": "direct"
+    },
+    "pasta lasana": {
+      "profileId": "pasta-dry",
+      "match": "direct"
+    },
+    "avena en copos": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "cebada perlada": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "quinoa": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "cuscus": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "harina de trigo": {
+      "profileId": "flour-white",
+      "match": "direct"
+    },
+    "harina de fuerza": {
+      "profileId": "flour-white",
+      "match": "direct"
+    },
+    "harina de maiz": {
+      "profileId": "flour-corn",
+      "match": "direct"
+    },
+    "maiz en grano": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "pan rallado": {
+      "profileId": "bread-dry",
+      "match": "family"
+    },
+    "picos de pan": {
+      "profileId": "bread-dry",
+      "match": "family"
+    },
+    "rosquilletas": {
+      "profileId": "bread-dry",
+      "match": "family"
+    },
+    "tortitas de arroz": {
+      "profileId": "bread-dry",
+      "match": "family"
+    },
+    "bulgur": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "mijo": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "trigo sarraceno": {
+      "profileId": "grain-dry",
+      "match": "family"
+    },
+    "fideo cabellin": {
+      "profileId": "pasta-dry",
+      "match": "direct"
+    },
+    "garbanzo castellano": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "garbanzo pedrosillano": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "garbanzo lechoso": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "lenteja pardina": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "lenteja verdina": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "lenteja castellana": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "lenteja caviar": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia blanca rinon": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia blanca plancheta": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia blanca alubion": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia pinta": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia roja de tolosa": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia carilla": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia pocha": {
+      "profileId": "legume-fresh",
+      "match": "direct"
+    },
+    "alubia ganxet": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "habas frescas": {
+      "profileId": "legume-fresh",
+      "match": "direct"
+    },
+    "haba seca": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "soja verde": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "altramuz": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "guisante seco": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "guisante partido": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "garbanzo garbanzuelo": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "lenteja rubia": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia arrocina": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia verdina": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "haba baby": {
+      "profileId": "legume-fresh",
+      "match": "direct"
+    },
+    "lenteja beluga": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "garbanzo tolosano": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "alubia negra": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "judion de la granja": {
+      "profileId": "legume-dry",
+      "match": "direct"
+    },
+    "almendra cruda": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "almendra tostada": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "almendra laminada": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "avellana": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "nuez": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "pistacho": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "pinon": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "cacahuete": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "anacardo": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "nuez de macadamia": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "pipa de girasol": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "semilla de calabaza": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "sesamo blanco": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "sesamo negro": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "semilla de chia": {
+      "profileId": "seeds-long",
+      "match": "family"
+    },
+    "semilla de lino": {
+      "profileId": "seeds-long",
+      "match": "family"
+    },
+    "semilla de amapola": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "castana": {
+      "profileId": "chestnut-fresh",
+      "match": "fallback"
+    },
+    "castana pilonga": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "nuez pecana": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "almendra marcona": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "almendra largueta": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "avellana tostada": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "pipa de girasol tostada": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "pipa de calabaza tostada": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "sesamo tostado": {
+      "profileId": "seeds-general",
+      "match": "family"
+    },
+    "semilla de lino dorado": {
+      "profileId": "seeds-long",
+      "match": "family"
+    },
+    "semilla de lino marron": {
+      "profileId": "seeds-long",
+      "match": "family"
+    },
+    "pistacho pelado": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "cacahuete tostado": {
+      "profileId": "nuts-raw",
+      "match": "family"
+    },
+    "azafran": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "pimenton dulce": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "pimenton picante": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "pimenton ahumado": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "oregano seco": {
+      "profileId": "herb-dry",
+      "match": "direct"
+    },
+    "tomillo fresco": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "romero fresco": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "perejil plano": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "laurel seco": {
+      "profileId": "herb-dry",
+      "match": "direct"
+    },
+    "comino molido": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "clavo": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "canela en rama": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "nuez moscada": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "pimienta negra": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "pimienta blanca": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "pimienta de cayena": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "ajo morado": {
+      "profileId": "vegetable-garlic",
+      "match": "family"
+    },
+    "ajo blanco": {
+      "profileId": "vegetable-garlic",
+      "match": "family"
+    },
+    "cebollino": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "menta": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "hierbabuena": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "albahaca": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "anis en grano": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "cilantro": {
+      "profileId": "herb-fresh",
+      "match": "direct"
+    },
+    "sal marina": {
+      "profileId": "salt-indefinite",
+      "match": "family"
+    },
+    "sal gorda": {
+      "profileId": "salt-indefinite",
+      "match": "family"
+    },
+    "azafran en hebra": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "nora": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "aceite de oliva virgen extra": {
+      "profileId": "oil-general",
+      "match": "direct"
+    },
+    "aceite de oliva suave": {
+      "profileId": "oil-general",
+      "match": "direct"
+    },
+    "aceite de girasol": {
+      "profileId": "oil-general",
+      "match": "direct"
+    },
+    "vinagre de jerez": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "vinagre de vino blanco": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "vinagre de vino tinto": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "vinagre de manzana": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "vinagre de modena": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "salsa de tomate frito": {
+      "profileId": "sauce-tomato-shelf",
+      "match": "family"
+    },
+    "salsa de tomate triturado": {
+      "profileId": "sauce-tomato-shelf",
+      "match": "family"
+    },
+    "salsa alioli": {
+      "profileId": "sauce-refrigerated",
+      "match": "family"
+    },
+    "salsa romesco": {
+      "profileId": "sauce-refrigerated",
+      "match": "family"
+    },
+    "salsa brava": {
+      "profileId": "sauce-refrigerated",
+      "match": "family"
+    },
+    "salsa vizcaina": {
+      "profileId": "sauce-refrigerated",
+      "match": "family"
+    },
+    "salsa de soja": {
+      "profileId": "soy-sauce",
+      "match": "family"
+    },
+    "mayonesa": {
+      "profileId": "mayonnaise",
+      "match": "direct"
+    },
+    "mostaza antigua": {
+      "profileId": "mustard",
+      "match": "direct"
+    },
+    "mostaza de dijon": {
+      "profileId": "mustard",
+      "match": "direct"
+    },
+    "salsa perrins": {
+      "profileId": "sauce-shelf",
+      "match": "family"
+    },
+    "salsa tabasco": {
+      "profileId": "sauce-shelf",
+      "match": "family"
+    },
+    "aceite de sesamo": {
+      "profileId": "oil-nut-seed",
+      "match": "family"
+    },
+    "vinagre de arroz": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "salsa agridulce": {
+      "profileId": "sauce-shelf",
+      "match": "family"
+    },
+    "reduccion de vinagre balsamico": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "aceite de trufa": {
+      "profileId": "oil-nut-seed",
+      "match": "family"
+    },
+    "salsa barbacoa": {
+      "profileId": "sauce-shelf",
+      "match": "family"
+    },
+    "salsa pesto": {
+      "profileId": "sauce-refrigerated",
+      "match": "family"
+    },
+    "aceite de ajo": {
+      "profileId": "oil-general",
+      "match": "direct"
+    },
+    "vinagre de sidra": {
+      "profileId": "vinegar-long",
+      "match": "direct"
+    },
+    "salsa picante": {
+      "profileId": "sauce-shelf",
+      "match": "family"
+    },
+    "sal fina": {
+      "profileId": "salt-indefinite",
+      "match": "family"
+    },
+    "azucar blanco": {
+      "profileId": "sugar-long",
+      "match": "family"
+    },
+    "azucar moreno": {
+      "profileId": "sugar-long",
+      "match": "family"
+    },
+    "miel de milflores": {
+      "profileId": "honey-long",
+      "match": "family"
+    },
+    "miel de romero": {
+      "profileId": "honey-long",
+      "match": "family"
+    },
+    "laurel": {
+      "profileId": "herb-dry",
+      "match": "direct"
+    },
+    "oregano": {
+      "profileId": "herb-dry",
+      "match": "direct"
+    },
+    "tomillo": {
+      "profileId": "herb-dry",
+      "match": "direct"
+    },
+    "romero": {
+      "profileId": "herb-dry",
+      "match": "direct"
+    },
+    "perejil": {
+      "profileId": "herb-dry",
+      "match": "direct"
+    },
+    "comino": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "canela en polvo": {
+      "profileId": "spice-ground",
+      "match": "direct"
+    },
+    "pasta de pimiento choricero": {
+      "profileId": "sauce-refrigerated",
+      "match": "family"
+    },
+    "anis estrellado": {
+      "profileId": "spice-whole",
+      "match": "direct"
+    },
+    "aceituna verde": {
+      "profileId": "canned-high-acid",
+      "match": "direct"
+    },
+    "aceituna negra": {
+      "profileId": "canned-high-acid",
+      "match": "direct"
+    },
+    "anchoa en conserva": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "atun en conserva": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "sardina en conserva": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "mejillon en escabeche": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "berberecho al natural": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "esparrago blanco": {
+      "profileId": "canned-high-acid",
+      "match": "direct"
+    },
+    "pimiento del piquillo": {
+      "profileId": "canned-high-acid",
+      "match": "direct"
+    },
+    "tomate triturado": {
+      "profileId": "canned-high-acid",
+      "match": "direct"
+    },
+    "tomate frito": {
+      "profileId": "canned-high-acid",
+      "match": "direct"
+    },
+    "concentrado de tomate": {
+      "profileId": "canned-high-acid",
+      "match": "direct"
+    },
+    "garbanzo cocido": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "lenteja cocida": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "alubia blanca cocida": {
+      "profileId": "canned-low-acid",
+      "match": "direct"
+    },
+    "caldo de pollo": {
+      "profileId": "broth-shelf",
+      "match": "family"
+    },
+    "caldo de pescado": {
+      "profileId": "broth-shelf",
+      "match": "family"
+    },
+    "fondo de carne": {
+      "profileId": "broth-shelf",
+      "match": "family"
+    },
+    "sal de mesa": {
+      "profileId": "salt-indefinite",
+      "match": "family"
+    }
+  }
+}

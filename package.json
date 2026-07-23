@@ -11,6 +11,7 @@
     "api": "pnpm --filter @recetas/api",
     "lint": "eslint apps packages",
     "typecheck": "pnpm --filter @recetas/mobile exec tsc --noEmit -p tsconfig.json && pnpm --filter @recetas/shared exec tsc --noEmit -p tsconfig.json && pnpm --filter @recetas/theme exec tsc --noEmit -p tsconfig.json",
+    "validate:expiration-profiles": "node scripts/validate-expiration-profiles.mjs",
     "test:db": "supabase test db --local supabase/tests"
   },
   "devDependencies": {
