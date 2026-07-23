@@ -24,11 +24,11 @@
   },
   "profiles": {
     "fruit-apple": {
-      "minDays": 21,
+      "minDays": 28,
       "maxDays": 42,
       "confidence": "high",
       "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128 Product 248: Manzanas",
+      "sourceRef": "FoodKeeper ES v128 Product 248: Manzanas; rango refrigerado",
       "priorityEligible": true
     },
     "fruit-pear-stone": {
@@ -71,12 +71,12 @@
       "sourceRef": "FoodKeeper ES v128 Product 481: fresas, fresón, frutilla",
       "priorityEligible": true
     },
-    "fruit-melon": {
-      "minDays": 5,
-      "maxDays": 15,
-      "confidence": "medium",
+    "fruit-large-melon": {
+      "minDays": 3,
+      "maxDays": 4,
+      "confidence": "high",
       "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128 Products 264, 496: Melón",
+      "sourceRef": "FoodKeeper ES v128 Products 495, 497: Sandía y melón de pulpa verde",
       "priorityEligible": true
     },
     "fruit-cherry": {
@@ -137,10 +137,10 @@
     },
     "vegetable-onion": {
       "minDays": 30,
-      "maxDays": 60,
+      "maxDays": 30,
       "confidence": "high",
       "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128 Product 294: Cebolla seca",
+      "sourceRef": "FoodKeeper ES v128 Product 294: Cebolla seca; rango de despensa",
       "priorityEligible": true
     },
     "vegetable-garlic": {
@@ -287,6 +287,14 @@
       "sourceRef": "FoodKeeper ES v128 Products 113, 116-118: pollo entero y partes",
       "priorityEligible": true
     },
+    "meat-rabbit-fresh": {
+      "minDays": 2,
+      "maxDays": 2,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 595: Conejo entero, fresco",
+      "priorityEligible": true
+    },
     "meat-sausage-fresh": {
       "minDays": 1,
       "maxDays": 2,
@@ -415,12 +423,20 @@
       "sourceRef": "FoodKeeper ES v128 Product 3: Quesos duros",
       "priorityEligible": true
     },
-    "cheese-semi-soft": {
+    "cheese-semi-hard": {
       "minDays": 21,
       "maxDays": 28,
       "confidence": "medium",
       "sourceId": "foodkeeper-es",
-      "sourceRef": "FoodKeeper ES v128 Products 5-7: quesos rallados y suaves",
+      "sourceRef": "FoodKeeper ES v128 Product 5: queso rallado; perfil conservador para semiduros",
+      "priorityEligible": true
+    },
+    "cheese-soft": {
+      "minDays": 7,
+      "maxDays": 14,
+      "confidence": "high",
+      "sourceId": "foodkeeper-es",
+      "sourceRef": "FoodKeeper ES v128 Product 7: quesos suaves como brie y cabra",
       "priorityEligible": true
     },
     "cheese-fresh": {
@@ -842,12 +858,12 @@
       "match": "direct"
     },
     "melon piel de sapo": {
-      "profileId": "fruit-melon",
-      "match": "family"
+      "profileId": "fruit-large-melon",
+      "match": "direct"
     },
     "sandia": {
-      "profileId": "fruit-melon",
-      "match": "family"
+      "profileId": "fruit-large-melon",
+      "match": "direct"
     },
     "higo": {
       "profileId": "fruit-delicate",
@@ -1074,8 +1090,8 @@
       "match": "direct"
     },
     "conejo de campo": {
-      "profileId": "meat-red-fresh",
-      "match": "family"
+      "profileId": "meat-rabbit-fresh",
+      "match": "direct"
     },
     "codorniz": {
       "profileId": "meat-poultry-fresh",
@@ -1262,7 +1278,7 @@
       "match": "direct"
     },
     "queso manchego semicurado": {
-      "profileId": "cheese-semi-soft",
+      "profileId": "cheese-semi-hard",
       "match": "family"
     },
     "queso manchego curado": {
@@ -1274,19 +1290,19 @@
       "match": "family"
     },
     "queso de cabrales": {
-      "profileId": "cheese-semi-soft",
-      "match": "family"
+      "profileId": "cheese-soft",
+      "match": "direct"
     },
     "queso tetilla": {
-      "profileId": "cheese-semi-soft",
-      "match": "family"
+      "profileId": "cheese-soft",
+      "match": "direct"
     },
     "queso idiazabal": {
       "profileId": "cheese-hard",
       "match": "direct"
     },
     "queso mahon": {
-      "profileId": "cheese-semi-soft",
+      "profileId": "cheese-semi-hard",
       "match": "family"
     },
     "queso burgos": {
@@ -1338,8 +1354,8 @@
       "match": "direct"
     },
     "queso mozzarella": {
-      "profileId": "cheese-semi-soft",
-      "match": "family"
+      "profileId": "cheese-soft",
+      "match": "direct"
     },
     "leche evaporada": {
       "profileId": "milk-canned",

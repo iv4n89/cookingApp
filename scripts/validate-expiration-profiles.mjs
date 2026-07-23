@@ -5,6 +5,28 @@ import { fileURLToPath } from 'node:url';
 const EXPECTED_CANONICAL_COUNT = 331;
 const MATCH_TYPES = new Set(['direct', 'family', 'fallback']);
 const CONFIDENCE_LEVELS = new Set(['high', 'medium', 'low']);
+const ROOT_FIELDS = new Set(['schemaVersion', 'catalog', 'sources', 'profiles', 'ingredients']);
+const CATALOG_FIELDS = new Set(['source', 'canonicalCount']);
+const SOURCE_FIELDS = new Set([
+  'title',
+  'url',
+  'archivedUrl',
+  'license',
+  'contentVersion',
+  'contentModifiedAt',
+  'catalogUpdatedAt',
+  'retrievedAt',
+  'sha256',
+]);
+const PROFILE_FIELDS = new Set([
+  'minDays',
+  'maxDays',
+  'confidence',
+  'sourceId',
+  'sourceRef',
+  'priorityEligible',
+]);
+const INGREDIENT_FIELDS = new Set(['profileId', 'match']);
 const TUPLE_PATTERN =
   /^\s*\('(?:[^']|'')*',\s*'((?:[^']|'')*)',\s*'(?:[^']|'')*'\)[,;]?\s*$/;
 
@@ -22,6 +44,31 @@ function isRecord(value) {
 
 function requireCondition(errors, condition, message) {
   if (!condition) errors.push(message);
+}
+
+function validateAllowedFields(errors, record, allowedFields, path) {
+  for (const field of Object.keys(record)) {
+    requireCondition(errors, allowedFields.has(field), `${path}: campo no permitido ${field}`);
+  }
+}
+
+function findDuplicateMapKeys(jsonText, sectionName) {
+  const lines = jsonText.split(/\r?\n/);
+  const start = lines.findIndex((line) => line === `  "${sectionName}": {`);
+  if (start === -1) return [];
+
+  const seen = new Set();
+  const duplicates = new Set();
+  for (const line of lines.slice(start + 1)) {
+    if (/^  }[,]?$/.test(line)) break;
+    const match = line.match(/^    ("(?:[^"\\]|\\.)+"): \{$/);
+    if (!match) continue;
+
+    const key = JSON.parse(match[1]);
+    if (seen.has(key)) duplicates.add(key);
+    seen.add(key);
+  }
+  return [...duplicates];
 }
 
 function parseCanonicalNames(migrationText) {
@@ -43,6 +90,7 @@ function validateSources(errors, sources) {
   for (const [sourceId, source] of Object.entries(sources)) {
     requireCondition(errors, isRecord(source), `Fuente inválida: ${sourceId}`);
     if (!isRecord(source)) continue;
+    validateAllowedFields(errors, source, SOURCE_FIELDS, `Fuente ${sourceId}`);
 
     for (const field of ['title', 'url', 'retrievedAt']) {
       requireCondition(
@@ -58,6 +106,7 @@ function validateProfiles(errors, profiles, sources) {
   for (const [profileId, profile] of Object.entries(profiles)) {
     requireCondition(errors, isRecord(profile), `Perfil inválido: ${profileId}`);
     if (!isRecord(profile)) continue;
+    validateAllowedFields(errors, profile, PROFILE_FIELDS, `Perfil ${profileId}`);
 
     const hasNumericRange =
       Number.isInteger(profile.minDays) &&
@@ -114,6 +163,7 @@ function validateIngredients(errors, ingredients, profiles, canonicalNames) {
   for (const [name, ingredient] of Object.entries(ingredients)) {
     requireCondition(errors, isRecord(ingredient), `Ingrediente inválido: ${name}`);
     if (!isRecord(ingredient)) continue;
+    validateAllowedFields(errors, ingredient, INGREDIENT_FIELDS, `Ingrediente ${name}`);
 
     const profileExists =
       typeof ingredient.profileId === 'string' && Object.hasOwn(profiles, ingredient.profileId);
@@ -145,8 +195,10 @@ if (
 }
 
 let dataset;
+let datasetText;
 try {
-  dataset = JSON.parse(await readFile(datasetPath, 'utf8'));
+  datasetText = await readFile(datasetPath, 'utf8');
+  dataset = JSON.parse(datasetText);
 } catch (error) {
   console.error(`No se pudo leer ${datasetPath}: ${error.message}`);
   process.exitCode = 1;
@@ -161,6 +213,14 @@ const catalog = isRecord(root.catalog) ? root.catalog : {};
 const sources = isRecord(root.sources) ? root.sources : {};
 const profiles = isRecord(root.profiles) ? root.profiles : {};
 const ingredients = isRecord(root.ingredients) ? root.ingredients : {};
+
+validateAllowedFields(errors, root, ROOT_FIELDS, 'Raíz');
+validateAllowedFields(errors, catalog, CATALOG_FIELDS, 'Catálogo');
+for (const sectionName of ['sources', 'profiles', 'ingredients']) {
+  for (const key of findDuplicateMapKeys(datasetText, sectionName)) {
+    errors.push(`${sectionName}: clave JSON duplicada ${key}`);
+  }
+}
 
 requireCondition(errors, root.schemaVersion === 1, 'schemaVersion debe ser 1');
 requireCondition(errors, isRecord(root.catalog), 'catalog debe ser un objeto');
