@@ -139,7 +139,8 @@ clasifica `fructose`, `histamine` ni `sorbitol`, y no certifica halal o kosher.
 
 - No usar UUID de ingredientes o recetas de una base viva en migraciones
   portables.
-- No derivar seguridad de `recipes.allergens` ni de una respuesta IA.
+- No derivar seguridad ni compatibilidad dietética de `recipes.allergens`,
+  `recipes.diet` o una respuesta IA.
 - No convertir ausencia de perfil en una lista vacía.
 - No usar `scripts/canonicalize/mapping.json` como catálogo autoritativo.
 - No ampliar vocabularios regulatorios de forma incidental.
@@ -175,9 +176,12 @@ El JSON tendrá:
 schemaVersion
 datasetVersion
 supportedExclusions
+supportedDiets
 sources
 ingredients[normalized_name]
   allergens
+  incompatibleDiets
+  compositionStatus
   sourceIds
   sourceRef
   reviewKind
@@ -190,13 +194,19 @@ gluten, crustaceans, molluscs, egg, fish, peanut, soy,
 milk, nuts, celery, mustard, sesame, pork, alcohol
 ```
 
-Cada uno de los 331 nombres del seed debe tener perfil. `allergens: []`
-significa revisado sin coincidencias; una clave ausente es inválida.
+Cada uno de los 331 nombres del seed debe tener perfil. En
+`exact_reviewed`, `allergens: []` o `incompatibleDiets: []` significa revisado
+sin coincidencias; una clave ausente es inválida. En `variable_unknown`, los
+arrays solo documentan coincidencias conocidas y nunca cobertura exhaustiva.
 
-Para alimentos simples, copiar la categoría regulatoria de EUR-Lex/AESAN. Para
-preparados variables —salsas, caldos, embutidos, conservas— usar una unión
-conservadora de alérgenos plausibles documentada como
-`reviewKind: "compound_conservative"`. No marcar vacío por conveniencia.
+Para alimentos simples, copiar la categoría regulatoria de EUR-Lex/AESAN y
+derivar de su composición las incompatibilidades `vegan`/`vegetarian`. Para
+preparados variables —salsas, caldos, embutidos, panes o conservas sin
+formulación concreta— usar `compositionStatus: "variable_unknown"`. Se pueden
+registrar coincidencias conocidas como defensa adicional, pero nunca usar una
+unión de elementos plausibles para afirmar exhaustividad. Solo una composición
+concreta con referencia verificable usa `exact_reviewed`; únicamente entonces
+se permiten arrays vacíos como evidencia revisada.
 
 ### Referencias
 
@@ -211,12 +221,15 @@ conservadora de alérgenos plausibles documentada como
 
 - 331 claves y 331 nombres del seed.
 - Todas las filas tienen `allergens`, fuente y revisión.
+- Todas tienen `incompatibleDiets` y `compositionStatus`.
+- Ningún preparado genérico variable se marca `exact_reviewed`.
 - Las condiciones no soportadas no aparecen en `supportedExclusions`.
 - Revisión humana específica de compuestos y de los siete básicos asumidos.
 
 ### Guardas
 
 - No usar IA para declarar seguridad.
+- No convertir una lista conservadora plausible en prueba de ausencia.
 - No tratar los 17 valores actuales como equivalentes regulatorios.
 - No afirmar cobertura de sulfitos o altramuces; todavía no existen como
   preferencias estructuradas.
@@ -237,6 +250,11 @@ El validador debe copiar el parser de seed y:
 - exigir campos permitidos y rechazar campos extra;
 - comprobar cobertura exacta 331 ↔ 331;
 - exigir `allergens` array no nulo, sin duplicados;
+- exigir `incompatibleDiets` no nulo, limitado a `vegan`/`vegetarian`;
+- exigir `compositionStatus` cerrado a `exact_reviewed` o
+  `variable_unknown`;
+- conservar el estado `variable_unknown` aunque sus arrays estén vacíos, sin
+  reinterpretarlo como cobertura concluyente;
 - cerrar el vocabulario a `supportedExclusions`;
 - validar `sourceIds`, `sourceRef`, `reviewKind` y referencias existentes;
 - distinguir perfil vacío de perfil ausente.
@@ -251,7 +269,10 @@ Fixtures negativos mínimos:
 6. alérgeno duplicado;
 7. alérgeno desconocido;
 8. fuente desconocida;
-9. campo extra.
+9. campo extra;
+10. dieta incompatible desconocida;
+11. composición desconocida;
+12. preparado variable tratado como cobertura exacta.
 
 Añadir scripts raíz:
 
@@ -299,13 +320,14 @@ Crear:
 Copiar el modo escribir/`--check`, overrides de rutas y SHA-256 exacto de
 `generate-expiration-state-migration.mjs`.
 
-La migración crea tres tablas:
+La migración crea cuatro tablas:
 
 ```text
 ingredient_allergen_datasets
   version PK
   sha256
   supported_exclusions[]
+  supported_diets[]
 
 ingredient_allergen_profiles
   ingredient_id PK → ingredients
@@ -313,19 +335,26 @@ ingredient_allergen_profiles
   source_ids[]
   source_ref
   review_kind
+  composition_status
 
 ingredient_allergen_entries
   ingredient_id → ingredient_allergen_profiles
   allergen
   PK (ingredient_id, allergen)
+
+ingredient_diet_entries
+  ingredient_id → ingredient_allergen_profiles
+  incompatible_diet
+  PK (ingredient_id, incompatible_diet)
 ```
 
 Insertar perfiles mediante `ingredients.normalized_name`, nunca UUID. Un padre
-sin hijos representa vacío explícito. Añadir `CHECK` para vocabulario,
-versiones y campos cerrados, y un bloque final que exija exactamente 331
-perfiles.
+exacto sin hijos representa vacío explícito; un padre `variable_unknown` sigue
+siendo cobertura desconocida aunque tenga entries defensivas. Añadir `CHECK`
+para vocabularios, estados, versiones y campos cerrados, y un bloque final que
+exija exactamente 331 perfiles.
 
-Aplicar RLS global a las tres tablas:
+Aplicar RLS global a las cuatro tablas:
 
 - `SELECT` para `authenticated`;
 - DML solo para `service_role`;
@@ -340,6 +369,8 @@ Tests del generador:
 5. escape de comilla;
 6. ausencia de UUID hardcodeado;
 7. presencia de 331 perfiles aunque existan listas vacías.
+8. estados exacto y variable renderizados sin perder su semántica;
+9. incompatibilidades dietéticas renderizadas con vocabulario cerrado.
 
 Añadir:
 
@@ -372,6 +403,7 @@ git diff --check
 - No hardcodear UUID.
 - No almacenar `allergens text[]` en el perfil y perder la distinción
   padre/entries.
+- No interpretar un padre `variable_unknown` sin entries como revisado vacío.
 - No conceder DML a clientes.
 
 ## Fase 1.4 — Contratos pgTAP y cierre de la PR
@@ -384,6 +416,8 @@ Cubrir:
 
 - tablas, constraints y recuento de 331 perfiles;
 - perfil padre sin entries devuelve `[]`;
+- `exact_reviewed` vacío se distingue de `variable_unknown` vacío;
+- incompatibilidades `vegan`/`vegetarian` se persisten y validan;
 - ausencia de padre permanece ausencia;
 - entry duplicada y vocabulario desconocido fallan;
 - `authenticated` lee y no escribe;
@@ -470,6 +504,14 @@ Revocar `EXECUTE` a `PUBLIC`, `anon` y `authenticated`; concederlo solo a
 `service_role` si el `CHECK` lo requiere. RLS global: lectura autenticada, DML
 solo `service_role`.
 
+La misma migración crea la función privada
+`upsert_recipe_season_profile(...)`. Debe usar una única sentencia
+`INSERT ... ON CONFLICT DO UPDATE ... WHERE` para imponer atómicamente
+`curated > generated/backfill`, aceptar reintentos idempotentes y evitar que
+dos ingresos concurrentes decidan la precedencia en TypeScript. Revocar
+`EXECUTE` a `PUBLIC`, `anon` y `authenticated`, y concederlo únicamente a
+`service_role`.
+
 El módulo puro exporta:
 
 ```text
@@ -498,6 +540,8 @@ La confianza no la decide Gemini:
 - Copiar `immutable`, `search_path` y revokes de
   `supabase/migrations/0050_expiration_state_engine.sql:4-61`.
 - Copiar RLS global de `0049_expiration_profiles.sql`.
+- Copiar el patrón de funciones privadas y grants explícitos de
+  `0050_expiration_state_engine.sql`.
 
 ### Verificación
 
@@ -509,11 +553,17 @@ pnpm test:db
 git diff --check
 ```
 
+El pgTAP demuestra la matriz completa de precedencia, los reintentos y que la
+función solo es ejecutable por `service_role`. Una prueba de integración con
+dos conexiones simultáneas cubre la carrera `curated` frente a
+`generated/backfill`.
+
 ### Guardas
 
 - No guardar tags libres como estación.
 - No añadir GIN sin consulta real.
 - No permitir `source`, versión o fecha desde IA.
+- No implementar precedencia con `select` + `upsert` separados.
 - Perfil ausente sigue siendo neutral.
 
 ## Fase 2.2 — Catálogo base versionado
@@ -602,12 +652,17 @@ Ampliar `RecipeData` con `seasonProfile?: RecipeSeasonProfileInput`.
 `recipeFromGenerated()` usa el sanitizer puro. Crear:
 
 ```ts
-saveRecipeSeasonProfile(
+upsertRecipeSeasonProfile(
   supabase: SupabaseClient,
   recipeId: string,
   profile: RecipeSeasonProfileInput | null | undefined,
 ): Promise<void>
 ```
+
+El helper TypeScript llama una función SQL privada
+`upsert_recipe_season_profile(...)`; no hace `select` seguido de `upsert`.
+Esa función ejecuta un único `INSERT ... ON CONFLICT DO UPDATE ... WHERE` y
+aplica la precedencia dentro de PostgreSQL.
 
 Reglas de precedencia:
 
@@ -615,6 +670,10 @@ Reglas de precedencia:
 - ningún `backfill` sustituye un perfil existente;
 - `generated` no sustituye `curated`;
 - mismo origen y versión puede reintentarse idempotentemente.
+
+Revocar `EXECUTE` a `PUBLIC`, `anon` y `authenticated`; concederlo solo a
+`service_role`. Probar que escrituras concurrentes o reintentadas no permiten
+que `generated`/`backfill` sobrescriban `curated`.
 
 Llamar al helper:
 
@@ -633,6 +692,9 @@ neutral; no borra una receta ya insertada.
   `recipes.ts:46-73` y `recipes.ts:273-279`.
 - Copiar `upsert(..., { onConflict })` de
   `recipes.ts:184-230`.
+- Copiar el patrón de función privada y grants explícitos de
+  `0050_expiration_state_engine.sql`; mantener la precedencia en el `WHERE`
+  del `ON CONFLICT`, no en el cliente.
 - Leer el retorno dedup antes de tocar
   `supabase/functions/index-recipe/index.ts`.
 
@@ -658,13 +720,16 @@ Prueba local sin cloud:
 1. insertar/sembrar una receta con perfil;
 2. repetir la misma entrada para activar dedup;
 3. comprobar que el UUID devuelto conserva el perfil curado;
-4. insertar una receta sin perfil y comprobar que sigue válida.
+4. lanzar escrituras concurrentes `curated` y `generated/backfill` sobre la
+   misma receta y comprobar que gana `curated`;
+5. insertar una receta sin perfil y comprobar que sigue válida.
 
 ### Guardas
 
 - No confiar solo en `saveRecipe`: dedup tiene retorno temprano.
 - No hacer transacción ficticia entre dos llamadas Supabase.
 - No sobrescribir curación con backfill.
+- No decidir precedencia con lectura y escritura separadas en TypeScript.
 - No convertir un fallo blando en borrado de receta.
 
 ## Fase 2.4 — Backfill build/review/apply y cierre
@@ -859,7 +924,8 @@ El helper:
 7. resuelve ingrediente canónico;
 8. evalúa caducidad con el mismo `evaluated_at`;
 9. carga recetas reutilizables y normaliza su JSON;
-10. adjunta perfiles de seguridad canonical-first/direct fallback;
+10. adjunta alérgenos, dietas incompatibles y estado de composición
+    canonical-first/direct fallback;
 11. adjunta perfil estacional o valores nulos;
 12. devuelve el snapshot camelCase del DTO.
 
@@ -903,6 +969,9 @@ Con fixtures fijos, inspeccionar que el snapshot:
 - marca condición o notas no soportadas sin exponerlas;
 - incluye lotes sin urgencia con `expirationStatus: null`;
 - distingue perfil de seguridad vacío de ausente;
+- distingue composición exacta de preparada/variable;
+- conserva incompatibilidades dietéticas curadas aunque `recipes.diet` sea
+  falsa o nula;
 - conserva versión de seguridad y estacionalidad.
 
 ### Guardas
@@ -921,9 +990,10 @@ Completar `evaluate_recommendation_snapshot(...)`.
 
 Para cada receta:
 
-1. aplicar filtros de seguridad por mapa de ingredientes y
-   `recipes.allergens`;
-2. aplicar dieta requerida;
+1. aplicar filtros de seguridad por atributos curados de ingredientes y
+   `recipes.allergens` como defensa adicional;
+2. aplicar dieta requerida exclusivamente desde `incompatibleDiets` curadas;
+   no usar `recipes.diet` como evidencia positiva;
 3. agrupar líneas compatibles por ingrediente canónico;
 4. excluir básicos de faltantes y urgencia;
 5. simular asignación FEFO sin `FOR UPDATE` ni escrituras;
@@ -1027,7 +1097,7 @@ Fixtures:
 - owner, member y externo;
 - preferencias híbridas;
 - recetas verano/invierno, dietas y alérgenos;
-- ingrediente con perfil vacío, con alérgeno y sin perfil;
+- ingrediente con perfil exacto vacío, con alérgeno, variable y sin perfil;
 - lotes con unidades, cantidades y estados distintos;
 - básicos y aceite específico.
 
@@ -1036,6 +1106,10 @@ Demostrar:
 - alergia de otro miembro excluye;
 - etiqueta de receta es defensa adicional;
 - dieta de otro miembro no filtra y la del solicitante sí;
+- `recipes.diet` falsamente positiva no habilita una receta incompatible;
+- `recipes.diet = null` no bloquea una receta compatible demostrada por
+  ingredientes exactos;
+- un preparado `variable_unknown` se excluye con dieta o alergia activa;
 - perfil de seguridad ausente excluye con restricciones;
 - nota/condición no soportada devuelve decisión vacía;
 - owner y member comparten inventario;

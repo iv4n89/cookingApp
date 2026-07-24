@@ -54,6 +54,12 @@ dieta. El resto de preferencias blandas —objetivos, sabores, estilo y tipo de
 cocina— no participa hasta disponer de metadatos de receta y reglas
 deterministas. No se interpreta mediante prompts.
 
+La preferencia del solicitante determina la dieta requerida, pero
+`recipes.diet` no demuestra que una receta la cumpla: hoy esa etiqueta puede
+proceder de IA. La compatibilidad se deriva de atributos curados de todos los
+ingredientes obligatorios. La etiqueta de receta se conserva en el snapshot
+solo como metadato defensivo y nunca habilita una candidata.
+
 Una necesidad médica sin mapeo o cualquier nota libre del hogar se considera
 una restricción no soportada y activa el fallo cerrado descrito más adelante.
 
@@ -76,6 +82,11 @@ Los modos son:
 - sin selección: no existe ninguna candidata segura.
 
 Una receta que requiere compras nunca se presenta como cocinable.
+
+En este documento, “segura” es una abreviatura interna de “compatible con las
+restricciones modeladas y con cobertura exacta revisada”. No garantiza ausencia
+de contaminación cruzada, trazas, cambios de fabricante ni idoneidad clínica,
+y el producto no debe presentarla como certificación alimentaria.
 
 ### Disponibilidad estricta y básicos asumidos
 
@@ -132,6 +143,8 @@ El motor permanece en el monolito modular de Supabase.
 Un dataset versionado cubre cada ingrediente exacto del catálogo y declara:
 
 - alérgenos controlados que contiene;
+- dietas con las que es incompatible;
+- si su composición es exacta y verificable o variable/desconocida;
 - lista vacía explícita cuando fue revisado y no contiene ninguno;
 - fuente y referencia;
 - versión del dataset.
@@ -163,10 +176,24 @@ y de la
 El producto no amplía silenciosamente ese marco: sulfitos y altramuces exigen
 una futura ampliación del vocabulario y de la captura de preferencias.
 
+Las incompatibilidades dietéticas no se atribuyen a esas fuentes regulatorias:
+se documentan desde la naturaleza del ingrediente o desde la formulación
+concreta referenciada. Si esa composición no puede demostrarse, permanece
+`variable_unknown`.
+
 La ausencia de una fila significa “sin revisar”, no “sin alérgenos”. El
 generador de la migración exige cobertura exacta del seed, rechaza duplicados,
 valores desconocidos y referencias a ingredientes inexistentes, e incluye un
 checksum del dataset.
+
+Un preparado genérico de composición variable —por ejemplo, una salsa, caldo,
+embutido o pan sin formulación concreta— se marca `variable_unknown`. Puede
+registrar alérgenos o incompatibilidades conocidos como defensa adicional,
+pero una lista parcial nunca demuestra ausencia. Con cualquier exclusión o
+dieta obligatoria activa, ese estado excluye la receta. Solo una composición
+concreta y respaldada por una referencia verificable puede marcarse
+`exact_reviewed`; por tanto, `allergens: []` e `incompatibleDiets: []` solo
+significan ausencia revisada cuando el estado es exacto.
 
 La tabla global, conceptualmente `ingredient_allergen_profiles`, se relaciona
 con el ingrediente exacto. En ejecución se intenta primero el ingrediente
@@ -175,10 +202,17 @@ canónico y después el ingrediente directo, como en los perfiles de caducidad.
 Cuando el hogar tenga exclusiones:
 
 1. todos los ingredientes obligatorios de la receta deben resolverse;
-2. todos deben tener un perfil curado, incluso si su lista está vacía;
+2. todos deben tener un perfil curado y composición `exact_reviewed`, incluso
+   si su lista está vacía;
 3. la unión de alérgenos de ingredientes y `recipes.allergens` se compara con
    las exclusiones efectivas;
 4. cualquier falta de cobertura excluye la receta.
+
+Cuando el solicitante requiera dieta, todos los ingredientes deben tener
+composición `exact_reviewed` y ninguna de sus `incompatibleDiets` puede
+intersectar la dieta requerida. `recipes.diet` no participa como evidencia
+positiva. Así, una etiqueta IA falsa, ausente o nula no puede atravesar el
+filtro obligatorio.
 
 El mapa cubre alérgenos y exclusiones de ingredientes representables, como
 cerdo o alcohol. No equivale a una certificación halal o kosher ni interpreta
@@ -206,6 +240,11 @@ estaciones concretas sin duplicados.
 
 La clasificación puede usar IA como herramienta de catalogación, pero el
 ranking nunca consulta a la IA. Solo consume el resultado persistido.
+
+La precedencia de procedencia se aplica atómicamente en PostgreSQL:
+`curated > generated/backfill`. El pipeline no implementa una secuencia
+lectura-escritura en TypeScript, porque dos ingresos concurrentes podrían
+sobrescribir un perfil curado.
 
 ### Evaluador privado
 
@@ -263,12 +302,12 @@ Para reducir exposición, las restricciones del hogar no incluyen la identidad
 del miembro que las declaró. El snapshot no incluye campos de perfil que no
 participen en la política.
 
-Las entradas de receta incluyen ingredientes, cantidades, unidades,
-alérgenos, dieta, franjas y perfil estacional. Junto con los lotes, fecha y
-política permiten reproducir la evaluación aunque esos registros cambien
-después. Este snapshot completo es aceptable para el catálogo local inicial;
-si el catálogo crece hasta hacerlo costoso, su persistencia o paginación se
-diseñará sin cambiar el evaluador.
+Las entradas de receta incluyen ingredientes, cantidades, unidades, atributos
+curados de seguridad y dieta, etiquetas defensivas de receta, franjas y perfil
+estacional. Junto con los lotes, fecha y política permiten reproducir la
+evaluación aunque esos registros cambien después. Este snapshot completo es
+aceptable para el catálogo local inicial; si el catálogo crece hasta hacerlo
+costoso, su persistencia o paginación se diseñará sin cambiar el evaluador.
 
 ## Filtros obligatorios
 
@@ -281,10 +320,11 @@ El filtrado ocurre antes del scoring:
    `cook_now`.
 
 Si existen restricciones relevantes y una receta carece de cobertura completa
-de ingredientes, perfil curado de alérgenos o metadatos de dieta, la receta se
-excluye. También se excluye cuando el mapa por ingrediente o la etiqueta
-defensiva de la receta intersectan una exclusión efectiva. Un fallo al obtener
-los mapas de restricciones aborta toda la decisión: el sistema falla cerrado.
+de ingredientes, composición exacta revisada o atributos curados de
+alérgenos/dieta, la receta se excluye. También se excluye cuando el mapa por
+ingrediente o la etiqueta defensiva de la receta intersectan una exclusión
+efectiva. `recipes.diet` no habilita compatibilidad. Un fallo al obtener los
+mapas de restricciones aborta toda la decisión: el sistema falla cerrado.
 
 Una necesidad médica declarada que no tenga traducción determinista no se
 ignora. Produce una decisión válida sin candidatas y la razón
@@ -422,6 +462,8 @@ interface RecommendationRecipeIngredientInput {
   requiredQuantity: number | null;
   unit: string | null;
   safetyAllergens: string[] | null;
+  safetyIncompatibleDiets: string[] | null;
+  safetyCompositionStatus: "exact_reviewed" | "variable_unknown" | null;
   safetyProfileVersion: string | null;
 }
 
@@ -480,6 +522,10 @@ cambiar este contrato.
 - Usuario sin hogar o sin membresía: abortar.
 - Necesidad médica no mapeable: decisión vacía y explicable.
 - Metadatos de seguridad incompletos con restricciones activas: excluir receta.
+- Composición variable/desconocida con exclusión o dieta activa: excluir
+  receta.
+- `recipes.diet` falsa, ausente o nula: nunca habilitar una receta; decidir
+  solo con atributos curados por ingrediente.
 - Ingrediente o unidad no resoluble: degradar a `shop_then_cook`.
 - Perfil estacional ausente: afinidad neutra.
 - Perfil de caducidad ausente o lote fuera de ventana: no aporta urgencia.
@@ -513,6 +559,8 @@ disponibilidad.
 
 - Dataset con cobertura exacta del seed y checksum reproducible.
 - Lista vacía explícita diferenciada de perfil ausente.
+- Preparado variable diferenciado de composición exacta; falla cerrado con
+  restricciones o dieta.
 - Rechazo de ingrediente, alérgeno o clave JSON duplicados.
 - Preferencia canónica y fallback directo.
 - DML global reservado a `service_role`.
@@ -525,6 +573,8 @@ disponibilidad.
 - Perfil de seguridad ausente excluye cuando hay restricciones.
 - Dieta de otro miembro no afecta al solicitante.
 - Dieta del solicitante sí filtra.
+- Etiqueta `recipes.diet` falsa positiva y `diet = null` no evitan el filtro
+  derivado de ingredientes.
 - Metadatos de seguridad nulos fallan cerrado cuando corresponde.
 - Dos miembros comparten inventario sin exponer otro hogar.
 - Usuario externo no obtiene datos ni decisiones del hogar.
