@@ -13,7 +13,7 @@ export function FeaturedRecipeCard({ recipe, onPress }: { recipe: TodayRecipeCar
   const ready = recipe.mode === 'cook_now';
   const reasons = reasonLabels(recipe.reasons);
   return (
-    <Pressable onPress={onPress} className="mx-container-padding overflow-hidden rounded-xl border border-card-border bg-card">
+    <Pressable onPress={onPress} className="overflow-hidden rounded-xl border border-card-border bg-card">
       {image || pending ? (
         <View className="h-64 w-full items-center justify-center bg-surface-container">
           {image ? (

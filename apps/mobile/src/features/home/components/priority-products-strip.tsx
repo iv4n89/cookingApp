@@ -7,7 +7,7 @@ import { colors } from '@recetas/theme/tokens';
 // Horizontal strip of products to consume soon. Red dot = priority, amber = consume_soon.
 export function PriorityProductsStrip({ products }: { products: TodayPriorityProduct[] }) {
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="gap-stack-md px-container-padding">
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="gap-stack-md pr-container-padding">
       {products.map((product, i) => (
         <View
           key={i}

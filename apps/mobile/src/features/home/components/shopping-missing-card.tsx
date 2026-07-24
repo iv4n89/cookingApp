@@ -17,7 +17,7 @@ export function ShoppingMissingCard({
   onAdd: () => void;
 }) {
   return (
-    <View className="mx-container-padding gap-stack-md border border-outline-variant bg-surface-container-lowest p-stack-lg">
+    <View className="gap-stack-md border border-outline-variant bg-surface-container-lowest p-stack-lg">
       {items.map((item, i) => (
         <View key={i} className="flex-row items-center justify-between">
           <Text className="font-sans text-body-lg text-on-surface">{item.name}</Text>

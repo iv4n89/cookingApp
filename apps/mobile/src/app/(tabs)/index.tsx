@@ -1,38 +1,73 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, RefreshControl, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import type { TodayDecision, TodayRecipeCard } from '@recetas/shared';
 import { AppHeader } from '@/components/app-header';
 import { AskAiModal } from '@/components/ask-ai-modal';
+import { RecipeCard, type RecipeCardData } from '@/components/recipe-card';
+import { FeaturedRecipeCard } from '@/features/home/components/featured-recipe-card';
 import { HomeAskInput } from '@/features/home/components/home-ask-input';
 import { HomeSectionHeader } from '@/features/home/components/home-section-header';
-import { HomeSuggestions } from '@/features/home/components/home-suggestions';
-import { PantrySummaryCard } from '@/features/home/components/pantry-summary-card';
-import { QuickAddCard } from '@/features/home/components/quick-add-card';
+import { PriorityProductsStrip } from '@/features/home/components/priority-products-strip';
+import { ShoppingMissingCard } from '@/features/home/components/shopping-missing-card';
 import { useHome } from '@/features/home/hooks/use-home';
 
 import { colors } from '@recetas/theme/tokens';
 
+// Maps a recommendation card to the shared RecipeCard shape used for the smaller alternatives.
+function toCardData(card: TodayRecipeCard): RecipeCardData {
+  const badge =
+    card.mode === 'cook_now'
+      ? { badge: 'LISTA PARA COCINAR', badgeIcon: 'check-circle' as const }
+      : {
+          badge: card.missingIngredientCount === 1 ? 'TE FALTA 1' : `TE FALTAN ${card.missingIngredientCount}`,
+          badgeIcon: 'shopping-cart' as const,
+        };
+  return {
+    id: card.recipeId,
+    image: card.imageUrl,
+    imageStatus: card.imageStatus,
+    ...badge,
+    title: card.title,
+    description: '',
+    tags: [],
+  };
+}
+
+// Message shown when there is no recipe to feature, tailored to why the engine could not pick one.
+function emptyMessage(reason: TodayDecision['decisionReason'] | undefined): string {
+  if (reason === 'unsupported_household_restriction') {
+    return 'Tienes una restricción que aún no sabemos manejar; revisa tus preferencias.';
+  }
+  if (reason === 'no_safe_candidate') {
+    return 'No encontramos una receta segura con tu despensa y preferencias.';
+  }
+  return 'Añade ingredientes a tu despensa para ver qué puedes cocinar.';
+}
+
 export default function InicioScreen() {
   const [askVisible, setAskVisible] = useState(false);
   const {
-    suggestions,
-    buySuggestions,
-    loadingSuggestions,
+    decision,
+    loading,
     refreshing,
     refresh,
     meal,
     greetingText,
-    pantry,
-    addingLow,
-    addedLow,
     saved,
     toggleSave,
-    addLowToShopping,
+    addingShopping,
+    addedShopping,
+    addShoppingMissing,
   } = useHome();
 
   const openRecipe = (id: string) => router.push({ pathname: '/receta/[id]', params: { id } });
+  const priority = decision?.priorityProducts ?? [];
+  const featured = decision?.featured ?? null;
+  const alternatives = decision?.alternatives ?? [];
+  const shopping = decision?.shoppingMissing ?? [];
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
@@ -52,41 +87,53 @@ export default function InicioScreen() {
 
         <HomeAskInput onPress={() => setAskVisible(true)} />
 
-        <View>
-          <HomeSectionHeader title="Tu despensa" action="VER TODO" onAction={() => router.push('/alacena')} />
-          <View className="gap-gutter">
-            {pantry ? (
-              <PantrySummaryCard
-                summary={pantry}
-                onAddToShopping={addLowToShopping}
-                adding={addingLow}
-                added={addedLow}
-              />
-            ) : null}
-            <QuickAddCard onPress={() => router.push('/alacena')} />
-          </View>
-        </View>
-
-        <View>
-          <HomeSectionHeader title={`Ideas para tu ${meal}`} />
-          <HomeSuggestions
-            loading={loadingSuggestions}
-            suggestions={suggestions}
-            saved={saved}
-            onToggleSave={toggleSave}
-            onOpen={openRecipe}
-          />
-        </View>
-
-        {!loadingSuggestions && buySuggestions.length > 0 ? (
+        {priority.length > 0 ? (
           <View>
-            <HomeSectionHeader title="Para comprar algo más" />
-            <HomeSuggestions
-              loading={false}
-              suggestions={buySuggestions}
-              saved={saved}
-              onToggleSave={toggleSave}
-              onOpen={openRecipe}
+            <HomeSectionHeader title="Productos a consumir" action="VER TODO" onAction={() => router.push('/alacena')} />
+            <PriorityProductsStrip products={priority} />
+          </View>
+        ) : null}
+
+        <View>
+          <HomeSectionHeader title={priority.length > 0 ? 'Cocina esto hoy' : `Ideas para tu ${meal}`} />
+          {loading ? (
+            <ActivityIndicator color={colors.primary} className="py-stack-lg" />
+          ) : featured ? (
+            <FeaturedRecipeCard recipe={featured} onPress={() => openRecipe(featured.recipeId)} />
+          ) : (
+            <View className="items-center gap-stack-md rounded-xl border border-dashed border-card-border bg-card p-stack-lg">
+              <Text className="text-center font-sans text-body-md text-on-surface-variant">
+                {emptyMessage(decision?.decisionReason)}
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {alternatives.length > 0 ? (
+          <View>
+            <HomeSectionHeader title="Otras ideas" />
+            <View className="gap-gutter">
+              {alternatives.map((card) => (
+                <RecipeCard
+                  key={card.recipeId}
+                  recipe={toCardData(card)}
+                  saved={saved.has(card.recipeId)}
+                  onToggleSave={() => toggleSave(card.recipeId)}
+                  onPress={() => openRecipe(card.recipeId)}
+                />
+              ))}
+            </View>
+          </View>
+        ) : null}
+
+        {shopping.length > 0 ? (
+          <View>
+            <HomeSectionHeader title="Te falta para cocinar" />
+            <ShoppingMissingCard
+              items={shopping}
+              adding={addingShopping}
+              added={addedShopping}
+              onAdd={addShoppingMissing}
             />
           </View>
         ) : null}
