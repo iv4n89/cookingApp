@@ -1,6 +1,6 @@
 begin;
 
-select plan(37);
+select plan(38);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -197,6 +197,17 @@ select is(
     'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'wrong-unit-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'wrong-unit', 'canonicalIngredientId', 'wrong-unit-canonical', 'name', 'Unidad incompatible', 'requiredQuantity', 1, 'unit', 'g'))))
   ), 0)->'candidates'->0->'missingIngredients'->0->>'reason',
   'unsupported_unit', 'Una unidad incompatible se marca como unsupported_unit'
+);
+
+select is(
+  public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', jsonb_build_array(jsonb_build_object('batchId', 'mixed-unit-stock', 'canonicalIngredientId', 'mixed-unit-canonical', 'remainingQuantity', 1, 'unit', 'kg', 'acquiredAt', '2026-07-01T00:00:00Z', 'expirationStatus', 'fresh')),
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'mixed-unit-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'mixed-a', 'canonicalIngredientId', 'mixed-unit-canonical', 'name', 'Ingrediente mixto', 'requiredQuantity', 100, 'unit', 'g'), jsonb_build_object('ingredientId', 'mixed-b', 'canonicalIngredientId', 'mixed-unit-canonical', 'name', 'Ingrediente mixto', 'requiredQuantity', 0.9, 'unit', 'kg'))))
+  ), 0)->'candidates'->0->>'mode',
+  'cook_now', 'La cobertura canónica normaliza unidades compatibles'
 );
 
 select ok(

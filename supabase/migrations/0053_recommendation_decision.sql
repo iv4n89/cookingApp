@@ -80,6 +80,9 @@ declare
   v_group_unit text;
   v_required_group numeric;
   v_covered_line numeric;
+  v_covered_group numeric;
+  v_priority_group numeric;
+  v_consume_soon_group numeric;
   v_already_consumed numeric;
   v_take_batch numeric;
   v_group_key text;
@@ -238,8 +241,11 @@ begin
         end if;
       end loop;
 
+      v_covered_group := public.convert_inventory_quantity(v_covered_line, v_unit, v_group_unit);
+      v_priority_group := public.convert_inventory_quantity(v_group_priority, v_unit, v_group_unit);
+      v_consume_soon_group := public.convert_inventory_quantity(v_group_consume_soon, v_unit, v_group_unit);
       if v_need <= 0 then
-        v_group := jsonb_set(v_group, '{covered}', to_jsonb((v_group->>'covered')::numeric + v_covered_line));
+        v_group := jsonb_set(v_group, '{covered}', to_jsonb((v_group->>'covered')::numeric + coalesce(v_covered_group, 0)));
       else
         v_missing_count := v_missing_count + 1;
         v_reason := case when not v_matching_batch then 'missing' when not v_supported_unit then 'unsupported_unit' else 'insufficient_quantity' end;
@@ -250,8 +256,8 @@ begin
         ));
       end if;
       v_group := jsonb_set(v_group, '{required}', to_jsonb((v_group->>'required')::numeric + v_required_group));
-      v_group := jsonb_set(v_group, '{priority}', to_jsonb((v_group->>'priority')::numeric + v_group_priority));
-      v_group := jsonb_set(v_group, '{consumeSoon}', to_jsonb((v_group->>'consumeSoon')::numeric + v_group_consume_soon));
+      v_group := jsonb_set(v_group, '{priority}', to_jsonb((v_group->>'priority')::numeric + coalesce(v_priority_group, 0)));
+      v_group := jsonb_set(v_group, '{consumeSoon}', to_jsonb((v_group->>'consumeSoon')::numeric + coalesce(v_consume_soon_group, 0)));
       v_groups := jsonb_set(v_groups, array[v_group_key], v_group, true);
     end loop;
     if not v_recipe_safe then continue; end if;
