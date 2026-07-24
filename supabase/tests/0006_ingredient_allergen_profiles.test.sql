@@ -1,6 +1,6 @@
 begin;
 
-select plan(29);
+select plan(30);
 
 select has_table(
   'public',
@@ -95,6 +95,17 @@ select is(
   ),
   'variable_unknown',
   'Un queso sin cuajo especificado no acredita dieta vegetariana'
+);
+
+select is(
+  (
+    select p.composition_status
+    from public.ingredient_allergen_profiles p
+    join public.ingredients i on i.id = p.ingredient_id
+    where i.normalized_name = 'nata para cocinar'
+  ),
+  'variable_unknown',
+  'Un lácteo formulado sin composición concreta falla cerrado'
 );
 
 select results_eq(

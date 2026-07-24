@@ -813,12 +813,13 @@
         "vegan",
         "vegetarian"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
-        "catalog-name-review"
+        "catalog-name-review",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: jamon serrano",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: jamon serrano",
+      "reviewKind": "compound_formula_unknown"
     },
     "jamon iberico": {
       "allergens": [
@@ -828,12 +829,13 @@
         "vegan",
         "vegetarian"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
-        "catalog-name-review"
+        "catalog-name-review",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: jamon iberico",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: jamon iberico",
+      "reviewKind": "compound_formula_unknown"
     },
     "chuleton de ternera": {
       "allergens": [],
@@ -1027,12 +1029,13 @@
         "vegan",
         "vegetarian"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
-        "catalog-name-review"
+        "catalog-name-review",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: tocino iberico",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: tocino iberico",
+      "reviewKind": "compound_formula_unknown"
     },
     "salchicha fresca": {
       "allergens": [
@@ -1074,12 +1077,13 @@
         "vegan",
         "vegetarian"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
-        "catalog-name-review"
+        "catalog-name-review",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lacon",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: lacon",
+      "reviewKind": "compound_formula_unknown"
     },
     "merluza": {
       "allergens": [
@@ -1123,14 +1127,15 @@
         "vegan",
         "vegetarian"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: bacalao desalado",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: bacalao desalado",
+      "reviewKind": "compound_formula_unknown"
     },
     "rape": {
       "allergens": [
@@ -1598,14 +1603,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche entera",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: leche entera",
+      "reviewKind": "compound_formula_unknown"
     },
     "leche semidesnatada": {
       "allergens": [
@@ -1614,14 +1620,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche semidesnatada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: leche semidesnatada",
+      "reviewKind": "compound_formula_unknown"
     },
     "leche desnatada": {
       "allergens": [
@@ -1630,14 +1637,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche desnatada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: leche desnatada",
+      "reviewKind": "compound_formula_unknown"
     },
     "nata para montar": {
       "allergens": [
@@ -1646,14 +1654,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nata para montar",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: nata para montar",
+      "reviewKind": "compound_formula_unknown"
     },
     "nata para cocinar": {
       "allergens": [
@@ -1662,14 +1671,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nata para cocinar",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: nata para cocinar",
+      "reviewKind": "compound_formula_unknown"
     },
     "mantequilla con sal": {
       "allergens": [
@@ -1678,14 +1688,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: mantequilla con sal",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: mantequilla con sal",
+      "reviewKind": "compound_formula_unknown"
     },
     "mantequilla sin sal": {
       "allergens": [
@@ -1694,14 +1705,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: mantequilla sin sal",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: mantequilla sin sal",
+      "reviewKind": "compound_formula_unknown"
     },
     "queso manchego semicurado": {
       "allergens": [
@@ -1863,14 +1875,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: yogur natural",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: yogur natural",
+      "reviewKind": "compound_formula_unknown"
     },
     "yogur griego": {
       "allergens": [
@@ -1879,14 +1892,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: yogur griego",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: yogur griego",
+      "reviewKind": "compound_formula_unknown"
     },
     "huevo de gallina": {
       "allergens": [
@@ -2044,14 +2058,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche evaporada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: leche evaporada",
+      "reviewKind": "compound_formula_unknown"
     },
     "leche condensada": {
       "allergens": [
@@ -2060,14 +2075,15 @@
       "incompatibleDiets": [
         "vegan"
       ],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche condensada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: leche condensada",
+      "reviewKind": "compound_formula_unknown"
     },
     "cuajada": {
       "allergens": [
@@ -2804,14 +2820,15 @@
         "nuts"
       ],
       "incompatibleDiets": [],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almendra tostada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: almendra tostada",
+      "reviewKind": "compound_formula_unknown"
     },
     "almendra laminada": {
       "allergens": [
@@ -3078,48 +3095,52 @@
         "nuts"
       ],
       "incompatibleDiets": [],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: avellana tostada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: avellana tostada",
+      "reviewKind": "compound_formula_unknown"
     },
     "pipa de girasol tostada": {
       "allergens": [],
       "incompatibleDiets": [],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
-        "catalog-name-review"
+        "catalog-name-review",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pipa de girasol tostada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: pipa de girasol tostada",
+      "reviewKind": "compound_formula_unknown"
     },
     "pipa de calabaza tostada": {
       "allergens": [],
       "incompatibleDiets": [],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
-        "catalog-name-review"
+        "catalog-name-review",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pipa de calabaza tostada",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: pipa de calabaza tostada",
+      "reviewKind": "compound_formula_unknown"
     },
     "sesamo tostado": {
       "allergens": [
         "sesame"
       ],
       "incompatibleDiets": [],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sesamo tostado",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: sesamo tostado",
+      "reviewKind": "compound_formula_unknown"
     },
     "semilla de lino dorado": {
       "allergens": [],
@@ -3160,14 +3181,15 @@
         "peanut"
       ],
       "incompatibleDiets": [],
-      "compositionStatus": "exact_reviewed",
+      "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
         "eu-1169-annex-ii",
-        "aesan-allergen-guide"
+        "aesan-allergen-guide",
+        "variable-composition-policy"
       ],
-      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cacahuete tostado",
-      "reviewKind": "intrinsic_named_ingredient"
+      "sourceRef": "Nombre genérico sin formulación verificable: cacahuete tostado",
+      "reviewKind": "compound_formula_unknown"
     },
     "azafran": {
       "allergens": [],

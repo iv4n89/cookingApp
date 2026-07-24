@@ -44,11 +44,11 @@ El slice en curso:
 
 Validaciones implementadas hasta ahora:
 
-- dataset válido con 331 perfiles, 73 de composición variable y 4 fuentes;
-- 12 pruebas negativas del validador;
+- dataset válido con 331 perfiles, 95 de composición variable y 4 fuentes;
+- 13 pruebas negativas del validador;
 - 9 contratos del generador reproducible;
 - migración local `0051` aplicada;
-- `pnpm test:db`: 6 archivos y 85 pruebas;
+- `pnpm test:db`: 6 archivos y 86 pruebas;
 - `pnpm lint`, `pnpm typecheck` y `git diff --check`.
 
 Este slice todavía no está autorizado para fusionarse hasta completar todas

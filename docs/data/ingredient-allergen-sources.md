@@ -57,9 +57,10 @@ otros, sulfitos, altramuces ni contaminación cruzada.
 
 ### `variable_unknown`
 
-Se usa para preparados sin formulación concreta: embutidos, panes, pastas,
-quesos cuyo cuajo no está especificado, salsas, aceites aromatizados,
-conservas y caldos genéricos.
+Se usa para preparados sin formulación concreta: embutidos y curados, panes,
+pastas, lácteos formulados, quesos cuyo cuajo no está especificado, frutos
+secos o semillas tostados, salsas, aceites aromatizados, conservas y caldos
+genéricos.
 
 Sus arrays recogen coincidencias explícitas conocidas por el nombre, pero no
 son exhaustivos. Con cualquier exclusión o dieta obligatoria activa, el motor
@@ -91,7 +92,10 @@ fabricante o tolerancias individuales.
 Una modificación del catálogo exige:
 
 1. añadir un perfil explícito;
-2. revisar si la composición es exacta o variable;
-3. adjuntar sus fuentes;
-4. incrementar `datasetVersion` si cambia la semántica publicada;
-5. regenerar y verificar la migración.
+2. clasificarlo también en una de las allowlists independientes de
+   `scripts/lib/ingredient-safety-policy.mjs`; un nombre nuevo falla cerrado
+   mientras no aparezca en una de ellas;
+3. revisar si la composición es exacta o variable;
+4. adjuntar sus fuentes;
+5. incrementar `datasetVersion` si cambia la semántica publicada;
+6. regenerar y verificar la migración.

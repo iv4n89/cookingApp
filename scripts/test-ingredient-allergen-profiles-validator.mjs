@@ -132,9 +132,19 @@ try {
     },
     {
       name: 'variable-treated-as-exact',
-      expected: 'Ingrediente salsa barbacoa: el preparado genérico debe ser variable_unknown',
+      expected: 'Ingrediente salsa barbacoa: compositionStatus debe ser variable_unknown',
       mutate(dataset) {
         const profile = dataset.ingredients['salsa barbacoa'];
+        profile.compositionStatus = 'exact_reviewed';
+        profile.reviewKind = 'intrinsic_named_ingredient';
+        profile.sourceIds = ['catalog-name-review'];
+      },
+    },
+    {
+      name: 'omitted-processed-product',
+      expected: 'Ingrediente nata para cocinar: compositionStatus debe ser variable_unknown',
+      mutate(dataset) {
+        const profile = dataset.ingredients['nata para cocinar'];
         profile.compositionStatus = 'exact_reviewed';
         profile.reviewKind = 'intrinsic_named_ingredient';
         profile.sourceIds = ['catalog-name-review'];
@@ -149,7 +159,7 @@ try {
     expectFailure(runValidator(path), scenario.expected, scenario.name);
   }
 
-  console.log('Pruebas negativas del dataset de seguridad: 12 escenarios correctos.');
+  console.log('Pruebas negativas del dataset de seguridad: 13 escenarios correctos.');
 } finally {
   await rm(fixtureDirectory, { recursive: true, force: true });
 }

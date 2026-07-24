@@ -2,6 +2,10 @@ import { readFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findDuplicateJsonKeys } from './lib/find-duplicate-json-keys.mjs';
+import {
+  EXACT_REVIEWED_INGREDIENTS,
+  VARIABLE_INGREDIENTS,
+} from './lib/ingredient-safety-policy.mjs';
 
 const EXPECTED_INGREDIENT_COUNT = 331;
 const EXPECTED_EXCLUSIONS = [
@@ -40,81 +44,8 @@ const INGREDIENT_FIELDS = new Set([
   'sourceRef',
   'reviewKind',
 ]);
-const REQUIRED_VARIABLE_INGREDIENTS = new Set([
-  'chorizo fresco',
-  'morcilla de arroz',
-  'morcilla de cebolla',
-  'salchicha fresca',
-  'longaniza',
-  'pan de hogaza',
-  'pan de barra',
-  'pan integral',
-  'pan de centeno',
-  'pan de molde',
-  'pasta espagueti',
-  'pasta macarron',
-  'pasta tallarines',
-  'pasta de sopa',
-  'pasta lasana',
-  'pan rallado',
-  'picos de pan',
-  'rosquilletas',
-  'tortitas de arroz',
-  'fideo cabellin',
-  'queso manchego semicurado',
-  'queso manchego curado',
-  'queso fresco',
-  'queso de cabrales',
-  'queso tetilla',
-  'queso idiazabal',
-  'queso mahon',
-  'queso burgos',
-  'requeson',
-  'queso rulo de cabra',
-  'queso crema',
-  'queso parmesano',
-  'queso emmental',
-  'queso mozzarella',
-  'cuajada',
-  'salsa de tomate frito',
-  'salsa de tomate triturado',
-  'salsa alioli',
-  'salsa romesco',
-  'salsa brava',
-  'salsa vizcaina',
-  'salsa de soja',
-  'mayonesa',
-  'mostaza antigua',
-  'mostaza de dijon',
-  'salsa perrins',
-  'salsa tabasco',
-  'salsa agridulce',
-  'reduccion de vinagre balsamico',
-  'aceite de trufa',
-  'salsa barbacoa',
-  'salsa pesto',
-  'aceite de ajo',
-  'salsa picante',
-  'pasta de pimiento choricero',
-  'aceituna verde',
-  'aceituna negra',
-  'anchoa en conserva',
-  'atun en conserva',
-  'sardina en conserva',
-  'mejillon en escabeche',
-  'berberecho al natural',
-  'esparrago blanco',
-  'pimiento del piquillo',
-  'tomate triturado',
-  'tomate frito',
-  'concentrado de tomate',
-  'garbanzo cocido',
-  'lenteja cocida',
-  'alubia blanca cocida',
-  'caldo de pollo',
-  'caldo de pescado',
-  'fondo de carne',
-]);
+const EXACT_REVIEWED_SET = new Set(EXACT_REVIEWED_INGREDIENTS);
+const VARIABLE_SET = new Set(VARIABLE_INGREDIENTS);
 const TUPLE_PATTERN =
   /^\s*\('(?:[^']|'')*',\s*'((?:[^']|'')*)',\s*'(?:[^']|'')*'\)[,;]?\s*$/;
 
@@ -252,6 +183,21 @@ function validateIngredient(errors, name, profile, sources) {
   }
 
   const isVariable = profile.compositionStatus === 'variable_unknown';
+  const expectedStatus = EXACT_REVIEWED_SET.has(name)
+    ? 'exact_reviewed'
+    : VARIABLE_SET.has(name)
+      ? 'variable_unknown'
+      : null;
+  addError(
+    errors,
+    expectedStatus !== null,
+    `Ingrediente ${name}: sin clasificación en la allowlist de seguridad`,
+  );
+  addError(
+    errors,
+    expectedStatus === null || profile.compositionStatus === expectedStatus,
+    `Ingrediente ${name}: compositionStatus debe ser ${String(expectedStatus)}`,
+  );
   addError(
     errors,
     !isVariable || profile.reviewKind === 'compound_formula_unknown',
@@ -269,11 +215,6 @@ function validateIngredient(errors, name, profile, sources) {
     !isVariable ||
       (Array.isArray(sourceIds) && sourceIds.includes('variable-composition-policy')),
     `Ingrediente ${name}: variable_unknown requiere variable-composition-policy`,
-  );
-  addError(
-    errors,
-    !REQUIRED_VARIABLE_INGREDIENTS.has(name) || isVariable,
-    `Ingrediente ${name}: el preparado genérico debe ser variable_unknown`,
   );
 }
 
@@ -295,12 +236,25 @@ try {
 const errors = duplicateKeys.map((key) => `Clave JSON duplicada: ${key}`);
 const seedNames = parseSeedNames(seedText);
 const seedSet = new Set(seedNames);
+const policyNames = [...EXACT_REVIEWED_INGREDIENTS, ...VARIABLE_INGREDIENTS];
+const policySet = new Set(policyNames);
 
 addError(
   errors,
   seedNames.length === EXPECTED_INGREDIENT_COUNT && seedSet.size === seedNames.length,
   'El seed debe contener 331 normalized_name únicos',
 );
+addError(
+  errors,
+  policyNames.length === EXPECTED_INGREDIENT_COUNT && policySet.size === policyNames.length,
+  'Las allowlists deben clasificar 331 ingredientes únicos y sin solapamientos',
+);
+for (const name of seedNames) {
+  addError(errors, policySet.has(name), `Ingrediente sin política de seguridad: ${name}`);
+}
+for (const name of policyNames) {
+  addError(errors, seedSet.has(name), `Ingrediente de política fuera del seed: ${name}`);
+}
 addError(errors, isRecord(dataset), 'La raíz debe ser un objeto');
 
 const root = isRecord(dataset) ? dataset : {};
