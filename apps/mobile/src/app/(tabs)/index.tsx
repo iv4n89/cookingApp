@@ -52,8 +52,9 @@ export default function InicioScreen() {
 
   const openRecipe = (id: string) => router.push({ pathname: '/receta/[id]', params: { id } });
   const priority = decision?.priorityProducts ?? [];
-  const featured = decision?.featured ?? null;
-  const alternatives = decision?.alternatives ?? [];
+  const featured = decision?.pantry.featured ?? null;
+  const alternatives = decision?.pantry.alternatives ?? [];
+  const discover = decision?.discover ?? [];
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
@@ -97,9 +98,26 @@ export default function InicioScreen() {
 
         {alternatives.length > 0 ? (
           <View>
-            <HomeSectionHeader title="Otras ideas" />
+            <HomeSectionHeader title="Más con tu despensa" />
             <View className="gap-gutter">
               {alternatives.map((card) => (
+                <RecipeCard
+                  key={card.recipeId}
+                  recipe={toCardData(card)}
+                  saved={saved.has(card.recipeId)}
+                  onToggleSave={() => toggleSave(card.recipeId)}
+                  onPress={() => openRecipe(card.recipeId)}
+                />
+              ))}
+            </View>
+          </View>
+        ) : null}
+
+        {discover.length > 0 ? (
+          <View>
+            <HomeSectionHeader title="Descubre" />
+            <View className="gap-gutter">
+              {discover.map((card) => (
                 <RecipeCard
                   key={card.recipeId}
                   recipe={toCardData(card)}

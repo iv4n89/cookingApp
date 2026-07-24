@@ -33,8 +33,11 @@ export function useHome() {
     };
     return {
       ...data,
-      featured: mark(data.featured),
-      alternatives: data.alternatives.map((card) => mark(card) as TodayRecipeCard),
+      pantry: {
+        featured: mark(data.pantry.featured),
+        alternatives: data.pantry.alternatives.map((card) => mark(card) as TodayRecipeCard),
+      },
+      discover: data.discover.map((card) => mark(card) as TodayRecipeCard),
     };
   }, []);
 
