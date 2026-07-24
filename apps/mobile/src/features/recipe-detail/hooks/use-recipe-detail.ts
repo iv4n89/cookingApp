@@ -166,6 +166,13 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     );
   }
 
+  // Swaps in the AI-modified recipe (a new row in `recipes`) and re-bases servings on it.
+  // Everything keyed by recipe id (user meta, hero image, cooking) follows the new recipe.
+  function applyRecipe(next: Recipe) {
+    setRecipe(next);
+    setServings(next.servings > 0 ? next.servings : 1);
+  }
+
   const scaledIngredients = recipe ? scaleIngredients(recipe.ingredients, recipe.servings, servings) : [];
 
   return {
@@ -185,5 +192,6 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     cooked,
     cookFailed,
     startCooking,
+    applyRecipe,
   };
 }
