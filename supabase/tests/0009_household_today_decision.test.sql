@@ -1,6 +1,6 @@
 begin;
 
-select plan(9);
+select plan(13);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -83,6 +83,27 @@ begin
 end;
 $$;
 
+-- Segunda receta reusable, candidata shop_then_cook: su ingrediente ('arroz bomba')
+-- no tiene lote en la despensa del hogar, así que aporta a shoppingMissing y
+-- queda por detrás de la destacada (cook_now) entre las alternativas.
+insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
+values (
+  '00000000-0000-0000-0000-000000009302', 'Arroz con verduras', 'generated', true, 'none',
+  jsonb_build_array(jsonb_build_object(
+    'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+    'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+  )),
+  array['cena']
+);
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009302', array['summer'], 'high', 'curated', 'test-v1'
+  );
+end;
+$$;
+
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000901', true);
 select set_config('request.jwt.claim.role', 'authenticated', true);
 
@@ -114,6 +135,24 @@ select is(
   jsonb_typeof(public.household_today_decision('cena', 5)->'shoppingMissing'),
   'array',
   'shoppingMissing es siempre un array'
+);
+select ok(
+  public.household_today_decision('cena', 5)->'alternatives' @> jsonb_build_array(jsonb_build_object(
+    'recipeId', '00000000-0000-0000-0000-000000009302', 'mode', 'shop_then_cook'
+  )),
+  'La receta cuyo ingrediente no está en despensa aparece como alternativa shop_then_cook'
+);
+select ok(
+  jsonb_array_length(public.household_today_decision('cena', 5)->'alternatives') >= 1,
+  'Hay al menos una alternativa cuando existe una segunda candidata'
+);
+select ok(
+  public.household_today_decision('cena', 5)->'shoppingMissing' @> jsonb_build_array(jsonb_build_object('name', 'Arroz bomba')),
+  'El ingrediente que falta de la alternativa aparece en la lista de compra'
+);
+select ok(
+  jsonb_array_length(public.household_today_decision('cena', 5)->'shoppingMissing') >= 1,
+  'shoppingMissing no está vacío cuando hay una candidata shop_then_cook'
 );
 
 update public.user_preferences set special_needs = array['Halal'] where user_id = '00000000-0000-0000-0000-000000000901';
