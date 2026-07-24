@@ -250,6 +250,8 @@ export interface RecommendationInventoryBatchInput {
 export interface RecommendationRecipeIngredientInput {
   ingredientId: string | null;
   canonicalIngredientId: string | null;
+  /** Nombre normalizado del ingrediente canónico; nunca procede del texto de la receta. */
+  canonicalName: string | null;
   name: string;
   requiredQuantity: number | null;
   unit: string | null;
