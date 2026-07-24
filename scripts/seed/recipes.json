@@ -5209,5 +5209,394 @@
         "timerSeconds": null
       }
     ]
+  },
+  {
+    "title": "Tostada con tomate y aceite",
+    "description": "Tostada crujiente con tomate rallado y aceite de oliva, el desayuno mediterráneo de toda la vida.",
+    "servings": 2,
+    "prep_time_min": 5,
+    "cook_time_min": 5,
+    "calories": 180,
+    "tags": [
+      "española",
+      "rápida",
+      "vegana"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "desayuno",
+      "merienda"
+    ],
+    "ingredients": [
+      {
+        "name": "Pan",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Tuesta el pan hasta que quede crujiente.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 2,
+        "instruction": "Ralla el tomate y repártelo sobre las tostadas.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Aliña con aceite de oliva y una pizca de sal.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Tostada de aguacate",
+    "description": "Tostada de pan con aguacate machacado, sal y aceite de oliva, sencilla y saludable.",
+    "servings": 2,
+    "prep_time_min": 5,
+    "cook_time_min": 5,
+    "calories": 220,
+    "tags": [
+      "rápida",
+      "vegana",
+      "saludable"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "desayuno",
+      "merienda"
+    ],
+    "ingredients": [
+      {
+        "name": "Pan",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aguacate",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 10,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Tuesta el pan hasta que quede crujiente.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 2,
+        "instruction": "Machaca el aguacate con un tenedor y sazona con sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Extiende el aguacate sobre las tostadas y aliña con un hilo de aceite de oliva.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Yogur con fruta y miel",
+    "description": "Yogur natural con fruta fresca y un toque de miel, desayuno rápido y nutritivo.",
+    "servings": 1,
+    "prep_time_min": 5,
+    "cook_time_min": 0,
+    "calories": 200,
+    "tags": [
+      "rápida",
+      "vegetariana",
+      "dulce"
+    ],
+    "allergens": [
+      "milk"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
+    "meal_types": [
+      "desayuno",
+      "merienda"
+    ],
+    "ingredients": [
+      {
+        "name": "Yogur natural",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "plátano",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Miel de milflores",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Trocea el plátano.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Mezcla el yogur con el plátano troceado.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Añade la miel por encima antes de servir.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Tortitas sencillas",
+    "description": "Tortitas caseras con solo tres ingredientes básicos, ideales para desayuno o merienda.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 10,
+    "calories": 300,
+    "tags": [
+      "dulce",
+      "vegetariana"
+    ],
+    "allergens": [
+      "gluten",
+      "milk",
+      "egg"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
+    "meal_types": [
+      "desayuno",
+      "merienda"
+    ],
+    "ingredients": [
+      {
+        "name": "Harina",
+        "quantity": 100,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Leche",
+        "quantity": 150,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Mezcla la harina, el huevo y la leche con una pizca de sal hasta obtener una masa lisa sin grumos.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Cuaja cucharones de masa en una sartén caliente hasta que salgan burbujas y dales la vuelta.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Sirve las tortitas calientes.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Bocadillo de tortilla francesa",
+    "description": "Bocadillo de pan con tortilla francesa, un clásico para desayuno, almuerzo o merienda.",
+    "servings": 1,
+    "prep_time_min": 5,
+    "cook_time_min": 5,
+    "calories": 320,
+    "tags": [
+      "española",
+      "rápida"
+    ],
+    "allergens": [
+      "gluten",
+      "egg"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
+    "meal_types": [
+      "desayuno",
+      "merienda",
+      "almuerzo"
+    ],
+    "ingredients": [
+      {
+        "name": "Pan",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 10,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Bate los huevos con una pizca de sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Cuaja la tortilla en una sartén con aceite de oliva caliente.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Coloca la tortilla dentro del pan y sirve.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Pan con chocolate",
+    "description": "Pan con chocolate fundido, la merienda clásica española.",
+    "servings": 1,
+    "prep_time_min": 5,
+    "cook_time_min": 5,
+    "calories": 250,
+    "tags": [
+      "española",
+      "dulce",
+      "merienda"
+    ],
+    "allergens": [
+      "gluten",
+      "milk"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
+    "meal_types": [
+      "desayuno",
+      "merienda"
+    ],
+    "ingredients": [
+      {
+        "name": "Pan",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Chocolate negro",
+        "quantity": 30,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Leche",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Funde el chocolate con la leche al baño maría o en el microondas.",
+        "timerSeconds": 90
+      },
+      {
+        "order": 2,
+        "instruction": "Tuesta el pan.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Unta el chocolate fundido sobre el pan y sirve.",
+        "timerSeconds": null
+      }
+    ]
   }
 ]

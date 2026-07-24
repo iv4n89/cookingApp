@@ -551,6 +551,54 @@
       ],
       "confidence": "medium",
       "source": "curated"
+    },
+    {
+      "title": "Tostada con tomate y aceite",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Tostada de aguacate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Yogur con fruta y miel",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Tortitas sencillas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Bocadillo de tortilla francesa",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Pan con chocolate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
     }
   ]
 }
