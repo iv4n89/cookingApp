@@ -132,6 +132,7 @@ begin
     v_missing_count := 0;
     v_ingredient_count := 0;
     v_ready_count := 0;
+    v_availability := 0;
     v_priority := 0;
     v_consume_soon := 0;
 
@@ -245,7 +246,7 @@ begin
       v_priority_group := public.convert_inventory_quantity(v_group_priority, v_unit, v_group_unit);
       v_consume_soon_group := public.convert_inventory_quantity(v_group_consume_soon, v_unit, v_group_unit);
       if v_need <= 0 then
-        v_group := jsonb_set(v_group, '{covered}', to_jsonb((v_group->>'covered')::numeric + coalesce(v_covered_group, 0)));
+        null;
       else
         v_missing_count := v_missing_count + 1;
         v_reason := case when not v_matching_batch then 'missing' when not v_supported_unit then 'unsupported_unit' else 'insufficient_quantity' end;
@@ -255,6 +256,7 @@ begin
           'reason', v_reason
         ));
       end if;
+      v_group := jsonb_set(v_group, '{covered}', to_jsonb((v_group->>'covered')::numeric + coalesce(v_covered_group, 0)));
       v_group := jsonb_set(v_group, '{required}', to_jsonb((v_group->>'required')::numeric + v_required_group));
       v_group := jsonb_set(v_group, '{priority}', to_jsonb((v_group->>'priority')::numeric + coalesce(v_priority_group, 0)));
       v_group := jsonb_set(v_group, '{consumeSoon}', to_jsonb((v_group->>'consumeSoon')::numeric + coalesce(v_consume_soon_group, 0)));
@@ -268,17 +270,18 @@ begin
     for v_group in select value from jsonb_each(v_groups) loop
       if (v_group->>'covered')::numeric >= (v_group->>'required')::numeric then v_ready_count := v_ready_count + 1; end if;
       if (v_group->>'required')::numeric > 0 then
+        v_availability := v_availability + least((v_group->>'covered')::numeric / (v_group->>'required')::numeric, 1);
         v_priority := v_priority + least((v_group->>'priority')::numeric / (v_group->>'required')::numeric, 1);
         v_consume_soon := v_consume_soon + least((v_group->>'consumeSoon')::numeric / (v_group->>'required')::numeric, 1);
       end if;
     end loop;
     if v_ingredient_count > 0 then
+      v_availability := v_availability / v_ingredient_count;
       v_priority := v_priority / v_ingredient_count;
       v_consume_soon := v_consume_soon / v_ingredient_count;
     end if;
 
     v_mode := case when v_missing_count = 0 then 'cook_now' else 'shop_then_cook' end;
-    v_availability := case when v_ingredient_count = 0 then 0 else v_ready_count::numeric / v_ingredient_count end;
     v_confidence := v_recipe->>'seasonConfidence';
     v_seasonal := case
       when v_season is not null and (v_recipe->'seasons') ? v_season then

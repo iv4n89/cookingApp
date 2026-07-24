@@ -1,6 +1,6 @@
 begin;
 
-select plan(39);
+select plan(40);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -219,6 +219,17 @@ select is(
     'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'mismatch-basic', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'not-salt', 'canonicalIngredientId', 'not-salt', 'name', 'Sal marina', 'requiredQuantity', 1, 'unit', 'g'))))
   ), 0)->'candidates'->0->>'mode',
   'shop_then_cook', 'El nombre de presentación no puede convertir un ingrediente en básico'
+);
+
+select is(
+  (public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', jsonb_build_array(jsonb_build_object('batchId', 'partial-stock', 'canonicalIngredientId', 'partial-canonical', 'remainingQuantity', 0.5, 'unit', 'kg', 'acquiredAt', '2026-07-01T00:00:00Z', 'expirationStatus', 'fresh')),
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'partial-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'partial', 'canonicalIngredientId', 'partial-canonical', 'name', 'Parcial', 'requiredQuantity', 1, 'unit', 'kg'))))
+  ), 0)->'candidates'->0->'score'->>'availabilityRatio')::numeric, 0.5::numeric,
+  'La cobertura parcial contribuye a availabilityRatio'
 );
 
 select ok(
