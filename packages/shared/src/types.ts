@@ -325,11 +325,9 @@ export interface TodayRecipeCard {
   reasons: string[];
 }
 
-export interface TodayShoppingItem {
-  ingredientId: string | null;
-  name: string;
-  quantity: number | null;
-  unit: string | null;
+export interface TodayPantryTrack {
+  featured: TodayRecipeCard | null;
+  alternatives: TodayRecipeCard[];
 }
 
 export interface TodayDecision {
@@ -337,7 +335,6 @@ export interface TodayDecision {
   mealType: RecommendationMealType | null;
   decisionReason: RecommendationDecision["decisionReason"];
   priorityProducts: TodayPriorityProduct[];
-  featured: TodayRecipeCard | null;
-  alternatives: TodayRecipeCard[];
-  shoppingMissing: TodayShoppingItem[];
+  pantry: TodayPantryTrack;
+  discover: TodayRecipeCard[];
 }
