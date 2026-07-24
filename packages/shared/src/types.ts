@@ -305,3 +305,39 @@ export interface RecommendationDecision {
     | "unsupported_household_restriction";
   snapshot: RecommendationSnapshot;
 }
+
+export type TodayPriorityStatus = "priority" | "consume_soon";
+
+export interface TodayPriorityProduct {
+  name: string;
+  status: TodayPriorityStatus;
+  estimatedDate: string | null;
+  confidence: "high" | "medium" | "low";
+}
+
+export interface TodayRecipeCard {
+  recipeId: string;
+  title: string;
+  imageUrl: string | null;
+  imageStatus: "pending" | "ready" | "none";
+  mode: RecommendationMode;
+  missingIngredientCount: number;
+  reasons: string[];
+}
+
+export interface TodayShoppingItem {
+  ingredientId: string | null;
+  name: string;
+  quantity: number | null;
+  unit: string | null;
+}
+
+export interface TodayDecision {
+  policyVersion: string;
+  mealType: RecommendationMealType | null;
+  decisionReason: RecommendationDecision["decisionReason"];
+  priorityProducts: TodayPriorityProduct[];
+  featured: TodayRecipeCard | null;
+  alternatives: TodayRecipeCard[];
+  shoppingMissing: TodayShoppingItem[];
+}
