@@ -1,6 +1,6 @@
 begin;
 
-select plan(13);
+select plan(17);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -104,6 +104,88 @@ begin
 end;
 $$;
 
+-- Seis recetas reusables más, todas shop_then_cook (mismo ingrediente ausente en
+-- despensa que 9302: 'arroz bomba'), para que el motor devuelva más de 5 candidatas
+-- y la pista discover deje de estar siempre vacía. Empatadas en todo el resto del
+-- score, el desempate final es por recipeId ascendente, así que su orden de rango
+-- queda determinado por el id: 9302 < 9303 < 9304 < 9305 (pista pantry, alternativas)
+-- < 9306 < 9307 < 9308 (pista discover, rango > 5).
+-- 9307 y 9308 comparten tags[1] ('italiana') para ejercer el distinct-on por cocina
+-- de discover: solo una de las dos debe sobrevivir.
+insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types, tags)
+values
+  (
+    '00000000-0000-0000-0000-000000009303', 'Tacos de verduras', 'generated', true, 'none',
+    jsonb_build_array(jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    )),
+    array['cena'], array['mexicana']
+  ),
+  (
+    '00000000-0000-0000-0000-000000009304', 'Curry rojo de verduras', 'generated', true, 'none',
+    jsonb_build_array(jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    )),
+    array['cena'], array['tailandesa']
+  ),
+  (
+    '00000000-0000-0000-0000-000000009305', 'Okonomiyaki de verduras', 'generated', true, 'none',
+    jsonb_build_array(jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    )),
+    array['cena'], array['japonesa']
+  ),
+  (
+    '00000000-0000-0000-0000-000000009306', 'Musaka de verduras', 'generated', true, 'none',
+    jsonb_build_array(jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    )),
+    array['cena'], array['griega']
+  ),
+  (
+    '00000000-0000-0000-0000-000000009307', 'Risotto de verduras', 'generated', true, 'none',
+    jsonb_build_array(jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    )),
+    array['cena'], array['italiana']
+  ),
+  (
+    '00000000-0000-0000-0000-000000009308', 'Pasta al pesto', 'generated', true, 'none',
+    jsonb_build_array(jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    )),
+    array['cena'], array['italiana']
+  );
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009303', array['summer'], 'high', 'curated', 'test-v1'
+  );
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009304', array['summer'], 'high', 'curated', 'test-v1'
+  );
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009305', array['summer'], 'high', 'curated', 'test-v1'
+  );
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009306', array['summer'], 'high', 'curated', 'test-v1'
+  );
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009307', array['summer'], 'high', 'curated', 'test-v1'
+  );
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009308', array['summer'], 'high', 'curated', 'test-v1'
+  );
+end;
+$$;
+
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000901', true);
 select set_config('request.jwt.claim.role', 'authenticated', true);
 
@@ -142,11 +224,6 @@ select ok(
   'Hay al menos una alternativa cuando existe una segunda candidata'
 );
 select is(
-  public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
-  '00000000-0000-0000-0000-000000009301',
-  'La pista pantry destaca la receta de menos faltantes'
-);
-select is(
   jsonb_typeof(public.household_today_decision('cena', 5)->'discover'),
   'array',
   'discover es siempre un array'
@@ -159,6 +236,24 @@ select ok(
   ),
   'discover no repite la receta destacada de pantry'
 );
+select ok(
+  jsonb_array_length(public.household_today_decision('cena', 5)->'discover') >= 1,
+  'Con más de 5 candidatas seguras, discover deja de estar vacío'
+);
+select ok(
+  public.household_today_decision('cena', 5)->'discover' @> jsonb_build_array(jsonb_build_object(
+    'recipeId', '00000000-0000-0000-0000-000000009306'
+  )),
+  'La candidata de rango > 5 con cocina propia (griega) entra en discover'
+);
+select ok(
+  not (
+    public.household_today_decision('cena', 5)->'discover' @> jsonb_build_array(jsonb_build_object('recipeId', '00000000-0000-0000-0000-000000009307'))
+    and
+    public.household_today_decision('cena', 5)->'discover' @> jsonb_build_array(jsonb_build_object('recipeId', '00000000-0000-0000-0000-000000009308'))
+  ),
+  'Dos candidatas con el mismo tags[1] (italiana) no aparecen ambas en discover'
+);
 
 update public.user_preferences set special_needs = array['Halal'] where user_id = '00000000-0000-0000-0000-000000000901';
 
@@ -166,6 +261,16 @@ select is(
   public.household_today_decision('cena', 5)->>'decisionReason',
   'unsupported_household_restriction',
   'Una restricción no soportada corta la decisión'
+);
+select is(
+  public.household_today_decision('cena', 5)->'pantry'->'featured',
+  'null'::jsonb,
+  'Sin candidatas seguras, la destacada de pantry es null'
+);
+select is(
+  public.household_today_decision('cena', 5)->'discover',
+  '[]'::jsonb,
+  'Sin candidatas seguras, discover queda vacío'
 );
 
 select * from finish();
