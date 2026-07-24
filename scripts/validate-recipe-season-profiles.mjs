@@ -10,7 +10,9 @@ const PROFILE_FIELDS = new Set(['title', 'seasons', 'confidence', 'source']);
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, '..');
-const recipesPath = join(repoRoot, 'scripts/seed/recipes.json');
+const recipesPath = process.env.RECIPE_SEED_PATH
+  ? resolve(process.env.RECIPE_SEED_PATH)
+  : join(repoRoot, 'scripts/seed/recipes.json');
 const profilesPath = process.env.RECIPE_SEASON_PROFILES_PATH
   ? resolve(process.env.RECIPE_SEASON_PROFILES_PATH)
   : join(repoRoot, 'scripts/seed/recipe-season-profiles.json');
@@ -31,13 +33,15 @@ function validateAllowedFields(errors, record, allowed, path) {
 
 let dataset;
 let datasetText;
+let recipesText;
 let recipes;
 try {
-  [datasetText, recipes] = await Promise.all([
+  [datasetText, recipesText] = await Promise.all([
     readFile(profilesPath, 'utf8'),
-    readFile(recipesPath, 'utf8').then(JSON.parse),
+    readFile(recipesPath, 'utf8'),
   ]);
   dataset = JSON.parse(datasetText);
+  recipes = JSON.parse(recipesText);
 } catch (error) {
   console.error(`No se pudieron leer los perfiles estacionales: ${error.message}`);
   process.exitCode = 1;
@@ -50,6 +54,9 @@ const root = isRecord(dataset) ? dataset : {};
 validateAllowedFields(errors, root, ROOT_FIELDS, 'Raíz');
 for (const key of findDuplicateJsonKeys(datasetText)) {
   errors.push(`Clave JSON duplicada: ${key}`);
+}
+for (const key of findDuplicateJsonKeys(recipesText)) {
+  errors.push(`recipes.json: clave JSON duplicada: ${key}`);
 }
 
 requireCondition(errors, root.schemaVersion === 1, 'schemaVersion debe ser 1');

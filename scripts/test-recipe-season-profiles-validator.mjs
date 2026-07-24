@@ -8,12 +8,17 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, '..');
 const validatorPath = join(here, 'validate-recipe-season-profiles.mjs');
 const datasetPath = join(here, 'seed/recipe-season-profiles.json');
+const recipesPath = join(here, 'seed/recipes.json');
 
-function runValidator(fixturePath) {
+function runValidator(fixturePath, recipeFixturePath = recipesPath) {
   return spawnSync(process.execPath, [validatorPath], {
     cwd: repoRoot,
     encoding: 'utf8',
-    env: { ...process.env, RECIPE_SEASON_PROFILES_PATH: fixturePath },
+    env: {
+      ...process.env,
+      RECIPE_SEASON_PROFILES_PATH: fixturePath,
+      RECIPE_SEED_PATH: recipeFixturePath,
+    },
   });
 }
 
@@ -31,6 +36,7 @@ const fixtureDirectory = await mkdtemp(join(tmpdir(), 'recipe-seasons-validator-
 try {
   const datasetText = await readFile(datasetPath, 'utf8');
   const dataset = JSON.parse(datasetText);
+  const recipesText = await readFile(recipesPath, 'utf8');
 
   const duplicateKeyPath = join(fixtureDirectory, 'duplicate-key.json');
   await writeFile(
@@ -41,6 +47,20 @@ try {
     runValidator(duplicateKeyPath),
     'Clave JSON duplicada: schemaVersion',
     'Clave JSON duplicada',
+  );
+
+  const duplicateRecipeKeyPath = join(fixtureDirectory, 'duplicate-recipe-key.json');
+  await writeFile(
+    duplicateRecipeKeyPath,
+    recipesText.replace(
+      '"title": "Tortilla de patatas",',
+      '"title":"Tortilla de patatas","title":"Tortilla de patatas",',
+    ),
+  );
+  requireFailure(
+    runValidator(datasetPath, duplicateRecipeKeyPath),
+    'recipes.json: clave JSON duplicada: title',
+    'Clave JSON duplicada en recipes.json',
   );
 
   const duplicateTitlePath = join(fixtureDirectory, 'duplicate-title.json');
@@ -93,7 +113,7 @@ try {
     'Versión incorrecta',
   );
 
-  console.log('Pruebas negativas del validador estacional: 6 escenarios correctos.');
+  console.log('Pruebas negativas del validador estacional: 7 escenarios correctos.');
 } finally {
   await rm(fixtureDirectory, { recursive: true, force: true });
 }

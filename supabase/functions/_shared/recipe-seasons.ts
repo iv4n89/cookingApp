@@ -37,7 +37,16 @@ export function sanitizeGeneratedSeasonProfile(
 ): RecipeSeasonProfileInput | null {
   if (!value || typeof value !== 'object') return null;
 
-  const seasons = (value as { seasons?: unknown }).seasons;
+  const { seasons, confidence } = value as {
+    seasons?: unknown;
+    confidence?: unknown;
+  };
+  if (
+    confidence !== undefined &&
+    !['high', 'medium', 'low'].includes(String(confidence))
+  ) {
+    return null;
+  }
   if (!Array.isArray(seasons) || seasons.length === 0) return null;
   if (
     seasons.some((season) => typeof season !== 'string' || !VALID_SEASONS.has(season))

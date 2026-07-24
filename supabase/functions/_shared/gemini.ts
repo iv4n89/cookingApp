@@ -65,7 +65,7 @@ export interface GeneratedRecipe {
   allergens?: string[];
   diet?: string[];
   meal_types?: string[];
-  seasons?: string[];
+  seasons: string[];
   ingredients: { name: string; quantity?: string; unit?: string }[];
   steps: { instruction: string; timer_seconds?: number }[];
 }

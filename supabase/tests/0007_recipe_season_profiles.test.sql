@@ -1,6 +1,6 @@
 begin;
 
-select plan(24);
+select plan(32);
 
 select has_table(
   'public',
@@ -140,6 +140,112 @@ select lives_ok(
     )
   $$,
   'Repetir el mismo origen y versión es idempotente'
+);
+
+delete from public.recipe_season_profiles
+where recipe_id = '00000000-0000-0000-0000-000000008001';
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000008001',
+    array['summer'],
+    'low',
+    'generated',
+    'test-v2'
+  );
+end;
+$$;
+
+select lives_ok(
+  $$
+    select public.upsert_recipe_season_profile(
+      '00000000-0000-0000-0000-000000008001',
+      array['winter'],
+      'low',
+      'backfill',
+      'test-v2'
+    )
+  $$,
+  'Backfill no falla contra generated'
+);
+
+select is(
+  (select seasons from public.recipe_season_profiles where recipe_id = '00000000-0000-0000-0000-000000008001'),
+  array['summer']::text[],
+  'Backfill no reemplaza generated'
+);
+
+select lives_ok(
+  $$
+    select public.upsert_recipe_season_profile(
+      '00000000-0000-0000-0000-000000008001',
+      array['autumn'],
+      'low',
+      'generated',
+      'test-v2'
+    )
+  $$,
+  'Generated puede actualizar generated'
+);
+
+select is(
+  (select seasons from public.recipe_season_profiles where recipe_id = '00000000-0000-0000-0000-000000008001'),
+  array['autumn']::text[],
+  'La actualización generated queda persistida'
+);
+
+delete from public.recipe_season_profiles
+where recipe_id = '00000000-0000-0000-0000-000000008001';
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000008001',
+    array['winter'],
+    'low',
+    'backfill',
+    'test-v2'
+  );
+end;
+$$;
+
+select lives_ok(
+  $$
+    select public.upsert_recipe_season_profile(
+      '00000000-0000-0000-0000-000000008001',
+      array['summer'],
+      'high',
+      'curated',
+      'test-v2'
+    )
+  $$,
+  'Curated reemplaza directamente backfill'
+);
+
+select is(
+  (select source from public.recipe_season_profiles where recipe_id = '00000000-0000-0000-0000-000000008001'),
+  'curated',
+  'Curated gana sobre backfill'
+);
+
+select lives_ok(
+  $$
+    select public.upsert_recipe_season_profile(
+      '00000000-0000-0000-0000-000000008001',
+      array['spring'],
+      'high',
+      'curated',
+      'test-v3'
+    )
+  $$,
+  'Curated puede actualizar curated'
+);
+
+select is(
+  (select seasons from public.recipe_season_profiles where recipe_id = '00000000-0000-0000-0000-000000008001'),
+  array['spring']::text[],
+  'La actualización curated queda persistida'
 );
 
 select throws_ok(

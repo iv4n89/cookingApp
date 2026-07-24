@@ -167,21 +167,23 @@ async function main() {
     );
 
     let round = 0;
-    for (let index = 0; index < ROUNDS_PER_ORDER; index += 1) {
-      round += 1;
-      await race(
-        databaseUrl,
-        { source: 'generated', season: 'winter' },
-        { source: 'curated', season: 'summer' },
-        round,
-      );
-      round += 1;
-      await race(
-        databaseUrl,
-        { source: 'curated', season: 'summer' },
-        { source: 'generated', season: 'winter' },
-        round,
-      );
+    for (const lowerSource of ['generated', 'backfill']) {
+      for (let index = 0; index < ROUNDS_PER_ORDER; index += 1) {
+        round += 1;
+        await race(
+          databaseUrl,
+          { source: lowerSource, season: 'winter' },
+          { source: 'curated', season: 'summer' },
+          round,
+        );
+        round += 1;
+        await race(
+          databaseUrl,
+          { source: 'curated', season: 'summer' },
+          { source: lowerSource, season: 'winter' },
+          round,
+        );
+      }
     }
 
     console.log(`Recipe season precedence passed ${round} overlapping races`);

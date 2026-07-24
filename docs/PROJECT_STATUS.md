@@ -30,7 +30,7 @@ seguridad por ingrediente, afinidad estacional y decisión reproducible.
 
 ## Trabajo actual — afinidad culinaria estacional
 
-Rama: `feat/recipe-season-profiles`. PR aún no abierta.
+Rama: `feat/recipe-season-profiles`. PR: #94.
 
 El slice en curso:
 
@@ -46,12 +46,13 @@ El slice en curso:
 
 Validaciones implementadas hasta ahora:
 
-- 10 pruebas Deno del sanitizador y persistencia blanda;
-- dataset válido con 24 perfiles y 6 escenarios negativos;
+- 11 pruebas Deno del sanitizador y persistencia blanda;
+- dataset válido con 24 perfiles y 7 escenarios negativos;
 - 5 pruebas del contrato de artefactos de backfill;
 - migración local `0052` aplicada;
-- `pnpm test:db`: 7 archivos y 110 pruebas;
-- 6 carreras reales entre dos conexiones, en ambos órdenes, con bloqueo
+- `pnpm test:db`: 7 archivos y 118 pruebas;
+- 12 carreras reales entre dos conexiones, en ambos órdenes y contra
+  `generated` y `backfill`, con bloqueo
   comprobado y resultado final siempre `curated`.
 
 La PR #93 de seguridad por ingrediente fue fusionada como `6dbda5e`. Este
