@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import { useSession } from '@/lib/auth';
 import { getPantrySummary, type PantrySummary } from '@/lib/pantry';
+import { ensureRecipeImage } from '@/lib/recipe-image';
 import { addIngredientsToShopping, recommendedRecipes, type MealType, type RecommendedRecipe } from '@/lib/recipes';
 import { currentMealType, greeting } from '@/features/home/meal-time';
 import { listFavorites, setFavorite } from '@/lib/user-recipes';
@@ -23,13 +24,31 @@ export function useHome() {
   const [saved, setSaved] = useState<Set<string>>(new Set());
   // In-flight save toggles, to ignore repeated taps while a request resolves.
   const savingIds = useRef<Set<string>>(new Set());
+  // Recipes whose image generation was already requested this session, so focus refetches
+  // don't re-invoke the (idempotent) edge function.
+  const imageRequested = useRef<Set<string>>(new Set());
 
-  const fetchSuggestions = useCallback((mealType: MealType, exclude: string[]) => {
-    return recommendedRecipes(mealType, exclude).then((data) => {
-      data.forEach((recipe) => seen.current.add(recipe.id));
-      return data;
+  // Kicks off image generation for recipes shown without one and marks them locally as
+  // 'pending' so RecipeCard shows the spinner slot and polls until the image arrives.
+  const queueMissingImages = useCallback((recipes: RecommendedRecipe[]) => {
+    return recipes.map((recipe) => {
+      if (recipe.image_url || recipe.image_status === 'pending') return recipe;
+      if (imageRequested.current.has(recipe.id)) return recipe;
+      imageRequested.current.add(recipe.id);
+      ensureRecipeImage(recipe.id).catch(() => {});
+      return { ...recipe, image_status: 'pending' as const };
     });
   }, []);
+
+  const fetchSuggestions = useCallback(
+    (mealType: MealType, exclude: string[]) => {
+      return recommendedRecipes(mealType, exclude).then((data) => {
+        data.forEach((recipe) => seen.current.add(recipe.id));
+        return queueMissingImages(data);
+      });
+    },
+    [queueMissingImages],
+  );
 
   const load = useCallback(() => {
     let active = true;
