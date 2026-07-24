@@ -2,29 +2,603 @@
   "schemaVersion": 1,
   "classifierVersion": "culinary-affinity-es-v1",
   "profiles": [
-    { "title": "Tortilla de patatas", "seasons": ["all_year"], "confidence": "high", "source": "curated" },
-    { "title": "Gazpacho andaluz", "seasons": ["summer"], "confidence": "high", "source": "curated" },
-    { "title": "Paella de marisco", "seasons": ["spring", "summer"], "confidence": "high", "source": "curated" },
-    { "title": "Lentejas estofadas con verduras", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Pollo al curry", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Dal de lentejas rojas", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Pad thai de pollo", "seasons": ["spring", "summer"], "confidence": "high", "source": "curated" },
-    { "title": "Ramen de miso con verduras", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Tacos al pastor", "seasons": ["spring", "summer"], "confidence": "high", "source": "curated" },
-    { "title": "Guacamole", "seasons": ["spring", "summer"], "confidence": "high", "source": "curated" },
-    { "title": "Chili con carne", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Espaguetis a la carbonara", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Risotto de setas", "seasons": ["autumn"], "confidence": "high", "source": "curated" },
-    { "title": "Pizza margarita", "seasons": ["all_year"], "confidence": "high", "source": "curated" },
-    { "title": "Ensalada César con pollo", "seasons": ["spring", "summer"], "confidence": "high", "source": "curated" },
-    { "title": "Hummus de garbanzos", "seasons": ["spring", "summer"], "confidence": "high", "source": "curated" },
-    { "title": "Falafel", "seasons": ["spring", "summer"], "confidence": "high", "source": "curated" },
-    { "title": "Shakshuka", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Cuscús de verduras", "seasons": ["spring", "autumn"], "confidence": "high", "source": "curated" },
-    { "title": "Bibimbap de verduras", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Salmón al horno con verduras", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Crema de calabaza", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
-    { "title": "Tortitas americanas", "seasons": ["all_year"], "confidence": "high", "source": "curated" },
-    { "title": "Brownie de chocolate", "seasons": ["all_year"], "confidence": "high", "source": "curated" }
+    {
+      "title": "Tortilla de patatas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Gazpacho andaluz",
+      "seasons": [
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Paella de marisco",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Lentejas estofadas con verduras",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Pollo al curry",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Dal de lentejas rojas",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Pad thai de pollo",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Ramen de miso con verduras",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Tacos al pastor",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Guacamole",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Chili con carne",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Espaguetis a la carbonara",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Risotto de setas",
+      "seasons": [
+        "autumn"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Pizza margarita",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Ensalada César con pollo",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Hummus de garbanzos",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Falafel",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Shakshuka",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Cuscús de verduras",
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Bibimbap de verduras",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Salmón al horno con verduras",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Crema de calabaza",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Tortitas americanas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Brownie de chocolate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "high",
+      "source": "curated"
+    },
+    {
+      "title": "Cerdo con patatas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Lomo de cerdo a la plancha con cebolla",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Magro con tomate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Salchichas frescas con pimientos",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Pollo al ajillo",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Pechuga de pollo a la plancha con limón",
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Muslos de pollo al horno con patatas",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Arroz con pollo sencillo",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Ternera guisada con guisantes",
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Filete de ternera a la plancha",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Albóndigas en salsa de tomate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Tortilla francesa",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Huevos fritos con patatas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Huevos rotos con jamón",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Revuelto de setas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Revuelto de ajetes",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Merluza a la plancha con verduras",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Salmón al horno con limón",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Bacalao con tomate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Sardinas a la plancha",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Ensalada de atún",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Boquerones fritos",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Lentejas estofadas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Garbanzos con espinacas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Alubias con chorizo",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Potaje de garbanzos",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Judías verdes con jamón",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Arroz a la cubana",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Arroz blanco con tomate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Macarrones con tomate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Espaguetis al ajillo",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Pasta con atún y tomate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    }
+,
+    {
+      "title": "Pisto de verduras",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Menestra de verduras",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Verduras al horno",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Puré de patata",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Crema de calabacín",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Espinacas rehogadas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Ensalada mixta",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Sopa de fideos",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Sopa de verduras",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Gazpacho de verano",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Tostada con tomate y aceite",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Tostada de aguacate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Yogur con fruta y miel",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Tortitas sencillas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Bocadillo de tortilla francesa",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Pan con chocolate",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    }
   ]
 }
