@@ -84,8 +84,8 @@ end;
 $$;
 
 -- Segunda receta reusable, candidata shop_then_cook: su ingrediente ('arroz bomba')
--- no tiene lote en la despensa del hogar, así que aporta a shoppingMissing y
--- queda por detrás de la destacada (cook_now) entre las alternativas.
+-- no tiene lote en la despensa del hogar, así que queda por detrás de la
+-- destacada (cook_now) entre las alternativas de la pista pantry.
 insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
 values (
   '00000000-0000-0000-0000-000000009302', 'Arroz con verduras', 'generated', true, 'none',
@@ -117,42 +117,47 @@ select is(
   'priorityProducts es siempre un array'
 );
 select is(
-  public.household_today_decision('cena', 5)->'featured'->>'recipeId',
+  public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
   '00000000-0000-0000-0000-000000009301',
   'La receta que usa el prioritario es la destacada'
 );
 select is(
-  public.household_today_decision('cena', 5)->'featured'->>'title',
+  public.household_today_decision('cena', 5)->'pantry'->'featured'->>'title',
   'Compota de manzana',
   'La destacada trae datos de pintado (título)'
 );
 select is(
-  public.household_today_decision('cena', 5)->'featured'->>'mode',
+  public.household_today_decision('cena', 5)->'pantry'->'featured'->>'mode',
   'cook_now',
   'Con el ingrediente en despensa la destacada es cook_now'
 );
-select is(
-  jsonb_typeof(public.household_today_decision('cena', 5)->'shoppingMissing'),
-  'array',
-  'shoppingMissing es siempre un array'
-);
 select ok(
-  public.household_today_decision('cena', 5)->'alternatives' @> jsonb_build_array(jsonb_build_object(
+  public.household_today_decision('cena', 5)->'pantry'->'alternatives' @> jsonb_build_array(jsonb_build_object(
     'recipeId', '00000000-0000-0000-0000-000000009302', 'mode', 'shop_then_cook'
   )),
   'La receta cuyo ingrediente no está en despensa aparece como alternativa shop_then_cook'
 );
 select ok(
-  jsonb_array_length(public.household_today_decision('cena', 5)->'alternatives') >= 1,
+  jsonb_array_length(public.household_today_decision('cena', 5)->'pantry'->'alternatives') >= 1,
   'Hay al menos una alternativa cuando existe una segunda candidata'
 );
-select ok(
-  public.household_today_decision('cena', 5)->'shoppingMissing' @> jsonb_build_array(jsonb_build_object('name', 'Arroz bomba')),
-  'El ingrediente que falta de la alternativa aparece en la lista de compra'
+select is(
+  public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
+  '00000000-0000-0000-0000-000000009301',
+  'La pista pantry destaca la receta de menos faltantes'
+);
+select is(
+  jsonb_typeof(public.household_today_decision('cena', 5)->'discover'),
+  'array',
+  'discover es siempre un array'
 );
 select ok(
-  jsonb_array_length(public.household_today_decision('cena', 5)->'shoppingMissing') >= 1,
-  'shoppingMissing no está vacío cuando hay una candidata shop_then_cook'
+  not exists (
+    select 1
+    from jsonb_array_elements(public.household_today_decision('cena', 5)->'discover') d
+    where d->>'recipeId' = public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId'
+  ),
+  'discover no repite la receta destacada de pantry'
 );
 
 update public.user_preferences set special_needs = array['Halal'] where user_id = '00000000-0000-0000-0000-000000000901';
