@@ -140,7 +140,7 @@ begin
       v_canonical_id := v_ingredient->>'canonicalIngredientId';
       v_required := nullif(v_ingredient->>'requiredQuantity', '')::numeric;
       v_unit := nullif(v_ingredient->>'unit', '');
-      v_basic := lower(btrim(v_name)) in (
+      v_basic := lower(btrim(coalesce(v_ingredient->>'canonicalName', ''))) in (
         'sal marina', 'sal gorda', 'sal fina', 'sal de mesa',
         'aceite de oliva virgen extra', 'aceite de oliva suave', 'aceite de girasol'
       );
@@ -480,6 +480,7 @@ begin
           select jsonb_agg(jsonb_build_object(
             'ingredientId', ing.value->>'ingredient_id',
             'canonicalIngredientId', case when ri.id is null then null else coalesce(ri.canonical_id, ri.id) end,
+            'canonicalName', case when canonical_ri.id is null then null else canonical_ri.normalized_name end,
             'name', coalesce(ing.value->>'name', 'Ingrediente sin nombre'),
             'requiredQuantity', case
               when (ing.value->>'quantity') ~ '^-?[0-9]+(\.[0-9]+)?$'
@@ -501,6 +502,7 @@ begin
             end as id
           ) raw on true
           left join public.ingredients ri on ri.id = raw.id
+          left join public.ingredients canonical_ri on canonical_ri.id = coalesce(ri.canonical_id, ri.id)
           left join public.ingredient_allergen_profiles sap on sap.ingredient_id = ri.id
           left join lateral (
             select array_agg(e.allergen order by e.allergen) as allergens

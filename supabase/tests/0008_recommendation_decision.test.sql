@@ -1,6 +1,6 @@
 begin;
 
-select plan(38);
+select plan(39);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -26,7 +26,7 @@ select is(
         'recipeId', 'recipe-cook', 'allergens', '[]'::jsonb, 'mealTypes', jsonb_build_array('cena'),
         'seasons', jsonb_build_array('summer'), 'seasonConfidence', 'high',
         'ingredients', jsonb_build_array(jsonb_build_object(
-          'ingredientId', 'ingredient-salt', 'canonicalIngredientId', null, 'name', 'Sal marina',
+          'ingredientId', 'ingredient-salt', 'canonicalIngredientId', null, 'canonicalName', 'sal marina', 'name', 'Sal marina',
           'requiredQuantity', 1, 'unit', 'g', 'safetyCompositionStatus', 'exact_reviewed',
           'safetyAllergens', '[]'::jsonb, 'safetyIncompatibleDiets', '[]'::jsonb
         ))
@@ -94,7 +94,7 @@ select is(
           'seasons', jsonb_build_array('summer'), 'seasonConfidence', 'high',
           'ingredients', jsonb_build_array(jsonb_build_object(
             'ingredientId', 'ingredient-salt', 'canonicalIngredientId', null,
-            'name', 'Sal marina', 'requiredQuantity', 1, 'unit', 'g',
+            'canonicalName', 'sal marina', 'name', 'Sal marina', 'requiredQuantity', 1, 'unit', 'g',
             'safetyCompositionStatus', 'exact_reviewed', 'safetyAllergens', '[]'::jsonb,
             'safetyIncompatibleDiets', '[]'::jsonb
           ))
@@ -172,7 +172,7 @@ select is(
     'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
     'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
     'inventoryBatches', '[]'::jsonb,
-    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'basic-missing', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'salt', 'canonicalIngredientId', null, 'name', 'Sal marina', 'requiredQuantity', 1, 'unit', 'g'), jsonb_build_object('ingredientId', 'missing', 'canonicalIngredientId', 'missing-canonical', 'name', 'Faltante', 'requiredQuantity', 1, 'unit', 'g'))))
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'basic-missing', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'salt', 'canonicalIngredientId', null, 'canonicalName', 'sal marina', 'name', 'Sal marina', 'requiredQuantity', 1, 'unit', 'g'), jsonb_build_object('ingredientId', 'missing', 'canonicalIngredientId', 'missing-canonical', 'name', 'Faltante', 'requiredQuantity', 1, 'unit', 'g'))))
   ), 0)->'candidates'->0->'score'->>'availabilityRatio')::numeric, 0::numeric,
   'Los básicos no cuentan en availabilityRatio'
 );
@@ -208,6 +208,17 @@ select is(
     'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'mixed-unit-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'mixed-a', 'canonicalIngredientId', 'mixed-unit-canonical', 'name', 'Ingrediente mixto', 'requiredQuantity', 100, 'unit', 'g'), jsonb_build_object('ingredientId', 'mixed-b', 'canonicalIngredientId', 'mixed-unit-canonical', 'name', 'Ingrediente mixto', 'requiredQuantity', 0.9, 'unit', 'kg'))))
   ), 0)->'candidates'->0->>'mode',
   'cook_now', 'La cobertura canónica normaliza unidades compatibles'
+);
+
+select is(
+  public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', '[]'::jsonb,
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'mismatch-basic', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'not-salt', 'canonicalIngredientId', 'not-salt', 'name', 'Sal marina', 'requiredQuantity', 1, 'unit', 'g'))))
+  ), 0)->'candidates'->0->>'mode',
+  'shop_then_cook', 'El nombre de presentación no puede convertir un ingrediente en básico'
 );
 
 select ok(
