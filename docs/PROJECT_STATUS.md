@@ -30,7 +30,7 @@ seguridad por ingrediente, afinidad estacional y decisión reproducible.
 
 ## Trabajo actual — seguridad por ingrediente
 
-Rama: `feat/ingredient-allergen-profiles`.
+Rama: `feat/ingredient-allergen-profiles`. PR: #93.
 
 El slice en curso:
 
@@ -51,9 +51,9 @@ Validaciones implementadas hasta ahora:
 - `pnpm test:db`: 6 archivos y 86 pruebas;
 - `pnpm lint`, `pnpm typecheck` y `git diff --check`.
 
-Este slice todavía no está autorizado para fusionarse hasta completar todas
-las validaciones, abrir PR y obtener una revisión independiente sin
-bloqueantes.
+La PR #93 superó la revisión independiente después de corregir la cobertura de
+preparados genéricos y sustituir la denylist inicial por allowlists exhaustivas.
+Está pendiente únicamente de confirmación explícita antes del merge.
 
 ## Decisiones vigentes
 
