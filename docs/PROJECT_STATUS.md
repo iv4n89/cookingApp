@@ -17,10 +17,10 @@ comprar → despensa → prioritarios → recomendar → cocinar → actualizar.
 | --- | --- | --- |
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
-| Fase 2 — Caducidad y decisión reproducible | Backend completado; falta Home "decisión de hoy" | Caducidad #90/#91; seguridad #93; estación #94; decisión #95 (`7fca4bd`) |
+| Fase 2 — Caducidad y decisión reproducible | Completada (Home + rework de recomendación) | Backend #90/#91/#93/#94/#95; Home #99/#100; rework #101-#106 |
 | Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
-| Fase 5 — Preparación cloud y operación | Aplazada | Solo con infraestructura remota |
+| Fase 5 — Preparación cloud y operación | Siguiente (adelantada con alcance de demo) | Migración a Supabase hospedado + APK |
 | Fase 6 — Integraciones y escala | Aplazada | Solo con evidencia de necesidad |
 
 El primer slice de la Fase 2 construyó el dataset trazable de perfiles
@@ -111,29 +111,42 @@ se corrige primero en una rama `fix/*`, con PR y revisión.
 
 ## Siguiente trabajo
 
-Orden acordado el 24 de julio, alineado con el ciclo diario de la visión:
+### Hecho (Fase 2 cerrada, 24 de julio)
 
-1. **Validaciones operativas pendientes** (sección anterior): db reset desde
-   cero, dos sesiones del mismo hogar, `deno check` y flujo móvil completo.
-   Home se apoyará en todo ese stack.
-2. **Cerrar la Fase 2: Home "decisión de hoy"**. Un único DTO desde
-   `household_recommendation_decision`: productos prioritarios con estado de
-   caducidad, explicación y confianza; recetas para aprovecharlos; acciones de
-   compra. Es la primera superficie que consume el motor.
+La Home "decisión de hoy" consume el motor y se refinó por completo:
+
+- Home: productos a consumir (🔴🟡) → cocina esto hoy → descubre. Backend #99,
+  móvil #100. Imágenes on-demand en Home #97; modal de modificar receta con IA #98.
+- Rework de recomendación: cobertura de caducidad de proteínas #101; DTO
+  `pantry`/`discover` #103; orden pantry-first (menos faltantes) #102; +48
+  recetas cotidianas sencillas #104; filtro por franja horaria #105; destacada
+  que aprovecha lo crítico + pimienta como básico #106.
+- Home verificada en dispositivo por el usuario.
+
+Especificaciones y planes en `docs/superpowers/{specs,plans}/2026-07-24-*`.
+
+### Siguiente prioridad: migración a Supabase cloud + APK de demo
+
+Antes de más features, llevar el backend a un proyecto Supabase hospedado y
+generar una APK instalable, para presentar una demo fuera de la red local.
+Es la Fase 5 (preparación cloud) adelantada con alcance de demo. Requiere
+credenciales y decisiones del usuario (proyecto Supabase, OAuth, EAS). Se
+diseñará y planificará antes de ejecutar.
+
+### Después (fondo de la visión)
+
 3. **Fase 3: motor conversacional delgado**. El chat ejecuta primero el motor
    y el LLM solo explica el top-N. Orden: receta existente → adaptación →
-   generación. Corrige la prioridad heredada del 21 de julio (generación LLM
-   como vía principal).
-4. **Fase 4: ciclo compartido**: Realtime de lista/despensa, plan semanal como
+   generación. Corrige la prioridad heredada del 21 de julio.
+4. **Personalización por gustos**: seguir favoritos/valoraciones y recomendar
+   del mismo estilo (base: `user_recipes` + embeddings).
+5. **Fase 4: ciclo compartido**: Realtime de lista/despensa, plan semanal como
    propuesta editable, contrato de tickets con confirmación manual.
 
-El diseño del motor está en
-`docs/superpowers/specs/2026-07-24-recommendation-decision-design.md` y el
-plan de sus tres PR en
-`docs/superpowers/plans/2026-07-24-recommendation-decision.md`.
-
-No se debe abordar todavía Realtime, tickets con OCR ni infraestructura
-cloud (Fases 5 y 6 siguen aplazadas).
+La infraestructura cloud se adelanta ahora, pero solo con alcance de demo
+(migrar backend + APK). Realtime, tickets con OCR y la operación completa de
+producción (backups, alertas, colas durables) siguen fuera de alcance hasta la
+Fase 5 completa.
 
 ## Flujo obligatorio
 
