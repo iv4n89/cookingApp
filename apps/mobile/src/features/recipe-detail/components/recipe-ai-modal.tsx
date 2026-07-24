@@ -51,12 +51,17 @@ export function RecipeAiModal({
     try {
       const reply = await sendChat(history);
       setMessages([...history, { role: 'assistant', content: reply.message, recipe: reply.recipe }]);
-      if (reply.recipe) onRecipeUpdate(reply.recipe);
+      // A reply that carries a recipe closes the modal to reveal the updated detail.
+      if (reply.recipe) {
+        onRecipeUpdate(reply.recipe);
+        setSending(false);
+        onClose();
+        return;
+      }
     } catch {
       setFailed(true);
-    } finally {
-      setSending(false);
     }
+    setSending(false);
   }
 
   return (
