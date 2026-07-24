@@ -198,6 +198,8 @@ begin
       v_group_unit := v_group->>'unit';
       v_required_group := public.convert_inventory_quantity(v_required, v_unit, v_group_unit);
       if v_required_group is null then
+        v_group := jsonb_set(v_group, '{covered}', to_jsonb(0::numeric));
+        v_groups := jsonb_set(v_groups, array[v_group_key], v_group, true);
         v_missing_count := v_missing_count + 1;
         v_missing := v_missing || jsonb_build_array(jsonb_build_object(
           'ingredientId', v_ingredient->'ingredientId', 'name', v_name,
