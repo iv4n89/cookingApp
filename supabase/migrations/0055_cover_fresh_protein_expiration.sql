@@ -4,9 +4,9 @@
 -- quedaron sin perfil, así que nunca se marcaban como próximos a caducar.
 --
 -- Se mapean a perfiles seguros YA existentes (0049), sin ampliar ningún límite de seguridad.
--- Los productos secos/curados (carne seca, chalona, katsuobushi, camarón seco, cerdo chashu,
--- pescado ahumado) se dejan fuera a propósito: no son perecederos frescos y no deben avisar
--- como críticos. La reconciliación completa del catálogo con el dataset queda pendiente.
+-- Los productos secos estables (carne seca de res machaca, chalona, katsuobushi, camarón seco
+-- molido) se dejan fuera a propósito: no son perecederos y no deben avisar como críticos.
+-- La reconciliación completa del catálogo con el dataset queda pendiente.
 
 insert into public.ingredient_expiration_profiles (ingredient_id, profile_id, match_type)
 select i.id, m.profile_id, m.match_type
@@ -20,10 +20,12 @@ from (
     ('carne picada de pollo', 'meat-poultry-fresh', 'family'),
     ('hueso de pollo', 'meat-poultry-fresh', 'fallback'),
     ('carne picada de ternera', 'meat-sausage-fresh', 'fallback'),
+    ('cerdo chashu', 'meat-red-fresh', 'fallback'),
     -- Pescados y marisco frescos
     ('salmon', 'fish-fatty', 'family'),
     ('trucha', 'fish-fatty', 'family'),
     ('cangrejo', 'shellfish-crustacean', 'family'),
+    ('pescado ahumado', 'meat-cured-short', 'fallback'),
     -- Curados/deli: ventanas largas, seguros de mapear (no generan falsos críticos)
     ('bacon de pavo', 'meat-bacon', 'family'),
     ('jamon cocido', 'meat-cured-short', 'family'),
