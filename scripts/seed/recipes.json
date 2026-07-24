@@ -6,21 +6,70 @@
     "prep_time_min": 15,
     "cook_time_min": 30,
     "calories": 330,
-    "tags": ["española", "clásica", "sartén"],
-    "allergens": ["egg"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "española",
+      "clásica",
+      "sartén"
+    ],
+    "allergens": [
+      "egg"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Patata", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Huevo", "quantity": 6, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 200, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Patata",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 6,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 200,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pela y corta las patatas en láminas finas y la cebolla en juliana.", "timerSeconds": null },
-      { "order": 2, "instruction": "Confítalas a fuego medio en el aceite hasta que estén tiernas, sin que doren.", "timerSeconds": 1200 },
-      { "order": 3, "instruction": "Escurre y mezcla con los huevos batidos y sal. Deja reposar 5 minutos.", "timerSeconds": 300 },
-      { "order": 4, "instruction": "Cuaja en una sartén con un poco de aceite, 3 minutos por cada lado dándole la vuelta con un plato.", "timerSeconds": 360 }
+      {
+        "order": 1,
+        "instruction": "Pela y corta las patatas en láminas finas y la cebolla en juliana.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Confítalas a fuego medio en el aceite hasta que estén tiernas, sin que doren.",
+        "timerSeconds": 1200
+      },
+      {
+        "order": 3,
+        "instruction": "Escurre y mezcla con los huevos batidos y sal. Deja reposar 5 minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 4,
+        "instruction": "Cuaja en una sartén con un poco de aceite, 3 minutos por cada lado dándole la vuelta con un plato.",
+        "timerSeconds": 360
+      }
     ]
   },
   {
@@ -30,22 +79,77 @@
     "prep_time_min": 15,
     "cook_time_min": 0,
     "calories": 120,
-    "tags": ["española", "frío", "sopa", "sin cocción"],
+    "tags": [
+      "española",
+      "frío",
+      "sopa",
+      "sin cocción"
+    ],
     "allergens": [],
-    "diet": ["vegan", "vegetarian"],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Tomate maduro", "quantity": 1, "unit": "kg", "substitutions": [] },
-      { "name": "Pepino", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Pimiento verde", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 60, "unit": "ml", "substitutions": [] },
-      { "name": "Vinagre de vino", "quantity": 1, "unit": "cucharada", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Tomate maduro",
+        "quantity": 1,
+        "unit": "kg",
+        "substitutions": []
+      },
+      {
+        "name": "Pepino",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento verde",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 60,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Vinagre de vino",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Trocea los tomates, el pepino y el pimiento.", "timerSeconds": null },
-      { "order": 2, "instruction": "Tritura todo con el ajo, el aceite, el vinagre y la sal hasta que quede muy fino.", "timerSeconds": null },
-      { "order": 3, "instruction": "Cuela si lo quieres más suave y enfría al menos 2 horas antes de servir.", "timerSeconds": 7200 }
+      {
+        "order": 1,
+        "instruction": "Trocea los tomates, el pepino y el pimiento.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Tritura todo con el ajo, el aceite, el vinagre y la sal hasta que quede muy fino.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Cuela si lo quieres más suave y enfría al menos 2 horas antes de servir.",
+        "timerSeconds": 7200
+      }
     ]
   },
   {
@@ -55,24 +159,89 @@
     "prep_time_min": 20,
     "cook_time_min": 35,
     "calories": 480,
-    "tags": ["española", "arroz", "marisco"],
-    "allergens": ["crustaceans", "molluscs"],
+    "tags": [
+      "española",
+      "arroz",
+      "marisco"
+    ],
+    "allergens": [
+      "crustaceans",
+      "molluscs"
+    ],
     "diet": [],
     "ingredients": [
-      { "name": "Arroz redondo", "quantity": 320, "unit": "g", "substitutions": [] },
-      { "name": "Gamba", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Mejillón", "quantity": 250, "unit": "g", "substitutions": [] },
-      { "name": "Calamar", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Tomate", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Caldo de pescado", "quantity": 800, "unit": "ml", "substitutions": [] },
-      { "name": "Azafrán", "quantity": null, "unit": null, "substitutions": ["colorante alimentario"] },
-      { "name": "Aceite de oliva", "quantity": 3, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Arroz redondo",
+        "quantity": 320,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Gamba",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Mejillón",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Calamar",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Caldo de pescado",
+        "quantity": 800,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Azafrán",
+        "quantity": null,
+        "unit": null,
+        "substitutions": [
+          "colorante alimentario"
+        ]
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 3,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Sofríe el calamar y las gambas en la paellera y reserva.", "timerSeconds": null },
-      { "order": 2, "instruction": "Sofríe el tomate rallado, añade el arroz y rehógalo 2 minutos.", "timerSeconds": 120 },
-      { "order": 3, "instruction": "Vierte el caldo caliente con el azafrán y reparte el marisco. Cuece 18 minutos sin remover.", "timerSeconds": 1080 },
-      { "order": 4, "instruction": "Sube el fuego el último minuto para el socarrat y deja reposar 5 minutos tapada.", "timerSeconds": 300 }
+      {
+        "order": 1,
+        "instruction": "Sofríe el calamar y las gambas en la paellera y reserva.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Sofríe el tomate rallado, añade el arroz y rehógalo 2 minutos.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Vierte el caldo caliente con el azafrán y reparte el marisco. Cuece 18 minutos sin remover.",
+        "timerSeconds": 1080
+      },
+      {
+        "order": 4,
+        "instruction": "Sube el fuego el último minuto para el socarrat y deja reposar 5 minutos tapada.",
+        "timerSeconds": 300
+      }
     ]
   },
   {
@@ -82,23 +251,81 @@
     "prep_time_min": 15,
     "cook_time_min": 45,
     "calories": 360,
-    "tags": ["española", "legumbre", "guiso"],
+    "tags": [
+      "española",
+      "legumbre",
+      "guiso"
+    ],
     "allergens": [],
-    "diet": ["vegan", "vegetarian"],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Lenteja", "quantity": 300, "unit": "g", "substitutions": [] },
-      { "name": "Zanahoria", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Tomate triturado", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Pimentón dulce", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Lenteja",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pimentón dulce",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pocha la cebolla, la zanahoria y el pimiento troceados en aceite.", "timerSeconds": 600 },
-      { "order": 2, "instruction": "Añade el pimentón y el tomate y cocina 2 minutos.", "timerSeconds": 120 },
-      { "order": 3, "instruction": "Incorpora las lentejas y cubre con agua. Cuece a fuego suave 40 minutos.", "timerSeconds": 2400 },
-      { "order": 4, "instruction": "Rectifica de sal y deja reposar antes de servir.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Pocha la cebolla, la zanahoria y el pimiento troceados en aceite.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el pimentón y el tomate y cocina 2 minutos.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora las lentejas y cubre con agua. Cuece a fuego suave 40 minutos.",
+        "timerSeconds": 2400
+      },
+      {
+        "order": 4,
+        "instruction": "Rectifica de sal y deja reposar antes de servir.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -108,23 +335,78 @@
     "prep_time_min": 15,
     "cook_time_min": 25,
     "calories": 450,
-    "tags": ["india", "ave", "rápido"],
+    "tags": [
+      "india",
+      "ave",
+      "rápido"
+    ],
     "allergens": [],
     "diet": [],
     "ingredients": [
-      { "name": "Pechuga de pollo", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Leche de coco", "quantity": 400, "unit": "ml", "substitutions": [] },
-      { "name": "Curry en polvo", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Jengibre", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Pechuga de pollo",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Leche de coco",
+        "quantity": 400,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Curry en polvo",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Jengibre",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Dora el pollo troceado y reserva.", "timerSeconds": null },
-      { "order": 2, "instruction": "Sofríe la cebolla, el ajo y el jengibre. Añade el curry y tuesta 1 minuto.", "timerSeconds": 60 },
-      { "order": 3, "instruction": "Vierte la leche de coco, devuelve el pollo y cuece 15 minutos a fuego suave.", "timerSeconds": 900 },
-      { "order": 4, "instruction": "Sirve con arroz basmati.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Dora el pollo troceado y reserva.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Sofríe la cebolla, el ajo y el jengibre. Añade el curry y tuesta 1 minuto.",
+        "timerSeconds": 60
+      },
+      {
+        "order": 3,
+        "instruction": "Vierte la leche de coco, devuelve el pollo y cuece 15 minutos a fuego suave.",
+        "timerSeconds": 900
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve con arroz basmati.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -134,23 +416,81 @@
     "prep_time_min": 10,
     "cook_time_min": 25,
     "calories": 300,
-    "tags": ["india", "legumbre", "vegana"],
+    "tags": [
+      "india",
+      "legumbre",
+      "vegana"
+    ],
     "allergens": [],
-    "diet": ["vegan", "vegetarian"],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Lenteja roja", "quantity": 250, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Tomate", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Cúrcuma", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Jengibre", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Lenteja roja",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cúrcuma",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Comino",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Jengibre",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Sofríe la cebolla con el comino, la cúrcuma y el jengibre.", "timerSeconds": 300 },
-      { "order": 2, "instruction": "Añade el tomate troceado y cocina 5 minutos.", "timerSeconds": 300 },
-      { "order": 3, "instruction": "Incorpora las lentejas rojas y 700 ml de agua. Cuece 18 minutos hasta que se deshagan.", "timerSeconds": 1080 },
-      { "order": 4, "instruction": "Tritura ligeramente si lo quieres más cremoso y sirve con arroz o pan naan.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Sofríe la cebolla con el comino, la cúrcuma y el jengibre.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el tomate troceado y cocina 5 minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora las lentejas rojas y 700 ml de agua. Cuece 18 minutos hasta que se deshagan.",
+        "timerSeconds": 1080
+      },
+      {
+        "order": 4,
+        "instruction": "Tritura ligeramente si lo quieres más cremoso y sirve con arroz o pan naan.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -160,23 +500,84 @@
     "prep_time_min": 20,
     "cook_time_min": 10,
     "calories": 520,
-    "tags": ["tailandesa", "wok", "fideos"],
-    "allergens": ["egg", "peanut", "fish", "soy", "gluten"],
+    "tags": [
+      "tailandesa",
+      "wok",
+      "fideos"
+    ],
+    "allergens": [
+      "egg",
+      "peanut",
+      "fish",
+      "soy",
+      "gluten"
+    ],
     "diet": [],
     "ingredients": [
-      { "name": "Fideo de arroz", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Pechuga de pollo", "quantity": 250, "unit": "g", "substitutions": [] },
-      { "name": "Huevo", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Cacahuete", "quantity": 40, "unit": "g", "substitutions": [] },
-      { "name": "Salsa de pescado", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Salsa de soja", "quantity": 1, "unit": "cucharada", "substitutions": [] },
-      { "name": "Lima", "quantity": 1, "unit": "ud", "substitutions": [] }
+      {
+        "name": "Fideo de arroz",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pechuga de pollo",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cacahuete",
+        "quantity": 40,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Salsa de pescado",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Salsa de soja",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Lima",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Hidrata los fideos en agua caliente 8 minutos y escúrrelos.", "timerSeconds": 480 },
-      { "order": 2, "instruction": "Saltea el pollo en el wok a fuego fuerte y aparta a un lado.", "timerSeconds": null },
-      { "order": 3, "instruction": "Cuaja el huevo, añade los fideos, la salsa de pescado y la de soja y saltea.", "timerSeconds": null },
-      { "order": 4, "instruction": "Sirve con cacahuete picado y un chorro de lima.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Hidrata los fideos en agua caliente 8 minutos y escúrrelos.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 2,
+        "instruction": "Saltea el pollo en el wok a fuego fuerte y aparta a un lado.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Cuaja el huevo, añade los fideos, la salsa de pescado y la de soja y saltea.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve con cacahuete picado y un chorro de lima.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -186,22 +587,79 @@
     "prep_time_min": 15,
     "cook_time_min": 20,
     "calories": 430,
-    "tags": ["japonesa", "sopa", "fideos"],
-    "allergens": ["soy", "gluten", "sesame", "egg"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "japonesa",
+      "sopa",
+      "fideos"
+    ],
+    "allergens": [
+      "soy",
+      "gluten",
+      "sesame",
+      "egg"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Fideo ramen", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Pasta de miso", "quantity": 3, "unit": "cucharada", "substitutions": [] },
-      { "name": "Huevo", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Champiñón", "quantity": 150, "unit": "g", "substitutions": [] },
-      { "name": "Cebolleta", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de sésamo", "quantity": 1, "unit": "cucharadita", "substitutions": [] }
+      {
+        "name": "Fideo ramen",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pasta de miso",
+        "quantity": 3,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Champiñón",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolleta",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de sésamo",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Cuece los huevos 7 minutos, enfría y pélalos.", "timerSeconds": 420 },
-      { "order": 2, "instruction": "Calienta 800 ml de agua, disuelve el miso sin que hierva y añade los champiñones.", "timerSeconds": 300 },
-      { "order": 3, "instruction": "Cuece los fideos aparte según el paquete y repártelos en los cuencos.", "timerSeconds": null },
-      { "order": 4, "instruction": "Vierte el caldo y remata con el huevo, la cebolleta y el aceite de sésamo.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Cuece los huevos 7 minutos, enfría y pélalos.",
+        "timerSeconds": 420
+      },
+      {
+        "order": 2,
+        "instruction": "Calienta 800 ml de agua, disuelve el miso sin que hierva y añade los champiñones.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Cuece los fideos aparte según el paquete y repártelos en los cuencos.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Vierte el caldo y remata con el huevo, la cebolleta y el aceite de sésamo.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -211,23 +669,80 @@
     "prep_time_min": 25,
     "cook_time_min": 15,
     "calories": 420,
-    "tags": ["mexicana", "cerdo", "taco"],
-    "allergens": ["pork"],
+    "tags": [
+      "mexicana",
+      "cerdo",
+      "taco"
+    ],
+    "allergens": [
+      "pork"
+    ],
     "diet": [],
     "ingredients": [
-      { "name": "Carne de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Tortilla de maíz", "quantity": 12, "unit": "ud", "substitutions": [] },
-      { "name": "Piña", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Cilantro", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Pimentón", "quantity": 2, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Zumo de naranja", "quantity": 100, "unit": "ml", "substitutions": [] }
+      {
+        "name": "Carne de cerdo",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tortilla de maíz",
+        "quantity": 12,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Piña",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cilantro",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Pimentón",
+        "quantity": 2,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Zumo de naranja",
+        "quantity": 100,
+        "unit": "ml",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Marina el cerdo en tiras con el pimentón y el zumo de naranja 20 minutos.", "timerSeconds": 1200 },
-      { "order": 2, "instruction": "Ásalo a fuego fuerte junto con trozos de piña hasta dorar.", "timerSeconds": null },
-      { "order": 3, "instruction": "Calienta las tortillas en una sartén seca.", "timerSeconds": null },
-      { "order": 4, "instruction": "Monta los tacos con la carne, la piña, cebolla y cilantro picados.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Marina el cerdo en tiras con el pimentón y el zumo de naranja 20 minutos.",
+        "timerSeconds": 1200
+      },
+      {
+        "order": 2,
+        "instruction": "Ásalo a fuego fuerte junto con trozos de piña hasta dorar.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Calienta las tortillas en una sartén seca.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Monta los tacos con la carne, la piña, cebolla y cilantro picados.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -237,21 +752,70 @@
     "prep_time_min": 10,
     "cook_time_min": 0,
     "calories": 180,
-    "tags": ["mexicana", "entrante", "sin cocción"],
+    "tags": [
+      "mexicana",
+      "entrante",
+      "sin cocción"
+    ],
     "allergens": [],
-    "diet": ["vegan", "vegetarian"],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Aguacate", "quantity": 3, "unit": "ud", "substitutions": [] },
-      { "name": "Lima", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Tomate", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 0.5, "unit": "ud", "substitutions": [] },
-      { "name": "Cilantro", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Aguacate",
+        "quantity": 3,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Lima",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 0.5,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cilantro",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Machaca la pulpa de los aguacates con un tenedor.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade el tomate y la cebolla picados finos, el cilantro y el zumo de lima.", "timerSeconds": null },
-      { "order": 3, "instruction": "Salpimenta al gusto y sirve enseguida con totopos.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Machaca la pulpa de los aguacates con un tenedor.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el tomate y la cebolla picados finos, el cilantro y el zumo de lima.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Salpimenta al gusto y sirve enseguida con totopos.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -261,23 +825,80 @@
     "prep_time_min": 15,
     "cook_time_min": 40,
     "calories": 470,
-    "tags": ["tex-mex", "ternera", "guiso"],
+    "tags": [
+      "tex-mex",
+      "ternera",
+      "guiso"
+    ],
     "allergens": [],
     "diet": [],
     "ingredients": [
-      { "name": "Carne picada de ternera", "quantity": 500, "unit": "g", "substitutions": [] },
-      { "name": "Alubia roja", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Guindilla", "quantity": 1, "unit": "ud", "substitutions": ["pimienta de cayena"] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Carne picada de ternera",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Alubia roja",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Comino",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Guindilla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": [
+          "pimienta de cayena"
+        ]
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Sofríe la cebolla y añade la carne picada hasta que dore.", "timerSeconds": null },
-      { "order": 2, "instruction": "Incorpora el comino, la guindilla y el tomate. Cocina 5 minutos.", "timerSeconds": 300 },
-      { "order": 3, "instruction": "Añade las alubias escurridas y guisa a fuego lento 30 minutos.", "timerSeconds": 1800 },
-      { "order": 4, "instruction": "Sirve con arroz blanco o nachos.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Sofríe la cebolla y añade la carne picada hasta que dore.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Incorpora el comino, la guindilla y el tomate. Cocina 5 minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Añade las alubias escurridas y guisa a fuego lento 30 minutos.",
+        "timerSeconds": 1800
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve con arroz blanco o nachos.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -287,21 +908,75 @@
     "prep_time_min": 10,
     "cook_time_min": 15,
     "calories": 600,
-    "tags": ["italiana", "pasta", "rápido"],
-    "allergens": ["egg", "milk", "pork", "gluten"],
+    "tags": [
+      "italiana",
+      "pasta",
+      "rápido"
+    ],
+    "allergens": [
+      "egg",
+      "milk",
+      "pork",
+      "gluten"
+    ],
     "diet": [],
     "ingredients": [
-      { "name": "Espagueti", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Panceta", "quantity": 120, "unit": "g", "substitutions": ["guanciale"] },
-      { "name": "Huevo", "quantity": 3, "unit": "ud", "substitutions": [] },
-      { "name": "Queso pecorino", "quantity": 60, "unit": "g", "substitutions": ["parmesano"] },
-      { "name": "Pimienta negra", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Espagueti",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Panceta",
+        "quantity": 120,
+        "unit": "g",
+        "substitutions": [
+          "guanciale"
+        ]
+      },
+      {
+        "name": "Huevo",
+        "quantity": 3,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Queso pecorino",
+        "quantity": 60,
+        "unit": "g",
+        "substitutions": [
+          "parmesano"
+        ]
+      },
+      {
+        "name": "Pimienta negra",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Cuece los espaguetis en agua con sal y reserva un poco del agua de cocción.", "timerSeconds": 540 },
-      { "order": 2, "instruction": "Dora la panceta en dados en una sartén sin aceite.", "timerSeconds": null },
-      { "order": 3, "instruction": "Bate los huevos con el pecorino y mucha pimienta.", "timerSeconds": null },
-      { "order": 4, "instruction": "Fuera del fuego, mezcla la pasta con la panceta y la crema de huevo, aflojando con agua de cocción.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Cuece los espaguetis en agua con sal y reserva un poco del agua de cocción.",
+        "timerSeconds": 540
+      },
+      {
+        "order": 2,
+        "instruction": "Dora la panceta en dados en una sartén sin aceite.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Bate los huevos con el pecorino y mucha pimienta.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Fuera del fuego, mezcla la pasta con la panceta y la crema de huevo, aflojando con agua de cocción.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -311,22 +986,78 @@
     "prep_time_min": 15,
     "cook_time_min": 30,
     "calories": 430,
-    "tags": ["italiana", "arroz", "vegetariana"],
-    "allergens": ["milk"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "italiana",
+      "arroz",
+      "vegetariana"
+    ],
+    "allergens": [
+      "milk"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Arroz arborio", "quantity": 320, "unit": "g", "substitutions": [] },
-      { "name": "Seta", "quantity": 300, "unit": "g", "substitutions": ["champiñón"] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Caldo de verduras", "quantity": 1, "unit": "l", "substitutions": [] },
-      { "name": "Queso parmesano", "quantity": 60, "unit": "g", "substitutions": [] },
-      { "name": "Mantequilla", "quantity": 30, "unit": "g", "substitutions": [] }
+      {
+        "name": "Arroz arborio",
+        "quantity": 320,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Seta",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": [
+          "champiñón"
+        ]
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Caldo de verduras",
+        "quantity": 1,
+        "unit": "l",
+        "substitutions": []
+      },
+      {
+        "name": "Queso parmesano",
+        "quantity": 60,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Mantequilla",
+        "quantity": 30,
+        "unit": "g",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Sofríe la cebolla y las setas en la mantequilla.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade el arroz, nacáralo 2 minutos y ve incorporando el caldo caliente cazo a cazo.", "timerSeconds": 120 },
-      { "order": 3, "instruction": "Remueve unos 18 minutos hasta que el arroz esté cremoso y al dente.", "timerSeconds": 1080 },
-      { "order": 4, "instruction": "Fuera del fuego, integra el parmesano y una nuez de mantequilla y deja reposar 2 minutos.", "timerSeconds": 120 }
+      {
+        "order": 1,
+        "instruction": "Sofríe la cebolla y las setas en la mantequilla.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el arroz, nacáralo 2 minutos y ve incorporando el caldo caliente cazo a cazo.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Remueve unos 18 minutos hasta que el arroz esté cremoso y al dente.",
+        "timerSeconds": 1080
+      },
+      {
+        "order": 4,
+        "instruction": "Fuera del fuego, integra el parmesano y una nuez de mantequilla y deja reposar 2 minutos.",
+        "timerSeconds": 120
+      }
     ]
   },
   {
@@ -336,21 +1067,71 @@
     "prep_time_min": 20,
     "cook_time_min": 12,
     "calories": 550,
-    "tags": ["italiana", "horno", "vegetariana"],
-    "allergens": ["gluten", "milk"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "italiana",
+      "horno",
+      "vegetariana"
+    ],
+    "allergens": [
+      "gluten",
+      "milk"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Masa de pizza", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Tomate triturado", "quantity": 150, "unit": "g", "substitutions": [] },
-      { "name": "Mozzarella", "quantity": 150, "unit": "g", "substitutions": [] },
-      { "name": "Albahaca", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Masa de pizza",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Mozzarella",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Albahaca",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Precalienta el horno al máximo (250 °C) con la bandeja dentro.", "timerSeconds": null },
-      { "order": 2, "instruction": "Estira la masa y extiende el tomate con una pizca de sal y aceite.", "timerSeconds": null },
-      { "order": 3, "instruction": "Reparte la mozzarella y hornea 10-12 minutos hasta que dore.", "timerSeconds": 660 },
-      { "order": 4, "instruction": "Añade la albahaca fresca al salir del horno.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Precalienta el horno al máximo (250 °C) con la bandeja dentro.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Estira la masa y extiende el tomate con una pizca de sal y aceite.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Reparte la mozzarella y hornea 10-12 minutos hasta que dore.",
+        "timerSeconds": 660
+      },
+      {
+        "order": 4,
+        "instruction": "Añade la albahaca fresca al salir del horno.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -360,22 +1141,77 @@
     "prep_time_min": 15,
     "cook_time_min": 10,
     "calories": 480,
-    "tags": ["americana", "ensalada", "ave"],
-    "allergens": ["egg", "milk", "fish", "gluten"],
+    "tags": [
+      "americana",
+      "ensalada",
+      "ave"
+    ],
+    "allergens": [
+      "egg",
+      "milk",
+      "fish",
+      "gluten"
+    ],
     "diet": [],
     "ingredients": [
-      { "name": "Lechuga romana", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Pechuga de pollo", "quantity": 300, "unit": "g", "substitutions": [] },
-      { "name": "Pan", "quantity": 100, "unit": "g", "substitutions": [] },
-      { "name": "Queso parmesano", "quantity": 40, "unit": "g", "substitutions": [] },
-      { "name": "Mayonesa", "quantity": 3, "unit": "cucharada", "substitutions": [] },
-      { "name": "Anchoa", "quantity": 2, "unit": "ud", "substitutions": [] }
+      {
+        "name": "Lechuga romana",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pechuga de pollo",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pan",
+        "quantity": 100,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Queso parmesano",
+        "quantity": 40,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Mayonesa",
+        "quantity": 3,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Anchoa",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Tuesta el pan en dados con un poco de aceite para los picatostes.", "timerSeconds": null },
-      { "order": 2, "instruction": "Haz el pollo a la plancha y córtalo en tiras.", "timerSeconds": null },
-      { "order": 3, "instruction": "Mezcla la mayonesa con la anchoa picada y parte del parmesano para la salsa.", "timerSeconds": null },
-      { "order": 4, "instruction": "Monta la lechuga con el pollo, los picatostes, la salsa y el resto de parmesano.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Tuesta el pan en dados con un poco de aceite para los picatostes.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Haz el pollo a la plancha y córtalo en tiras.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Mezcla la mayonesa con la anchoa picada y parte del parmesano para la salsa.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Monta la lechuga con el pollo, los picatostes, la salsa y el resto de parmesano.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -385,21 +1221,72 @@
     "prep_time_min": 10,
     "cook_time_min": 0,
     "calories": 250,
-    "tags": ["libanesa", "entrante", "vegana"],
-    "allergens": ["sesame"],
-    "diet": ["vegan", "vegetarian"],
+    "tags": [
+      "libanesa",
+      "entrante",
+      "vegana"
+    ],
+    "allergens": [
+      "sesame"
+    ],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Garbanzo cocido", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Tahini", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
-      { "name": "Comino", "quantity": 0.5, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 3, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Garbanzo cocido",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tahini",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Limón",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Comino",
+        "quantity": 0.5,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 3,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Tritura los garbanzos escurridos con el tahini, el ajo, el comino y el zumo de limón.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade agua fría poco a poco hasta que quede muy cremoso.", "timerSeconds": null },
-      { "order": 3, "instruction": "Sirve con un hilo de aceite y pimentón por encima.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Tritura los garbanzos escurridos con el tahini, el ajo, el comino y el zumo de limón.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade agua fría poco a poco hasta que quede muy cremoso.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Sirve con un hilo de aceite y pimentón por encima.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -409,23 +1296,85 @@
     "prep_time_min": 20,
     "cook_time_min": 15,
     "calories": 350,
-    "tags": ["mediterránea", "fritura", "vegana"],
-    "allergens": ["sesame"],
-    "diet": ["vegan", "vegetarian"],
+    "tags": [
+      "mediterránea",
+      "fritura",
+      "vegana"
+    ],
+    "allergens": [
+      "sesame"
+    ],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Garbanzo seco", "quantity": 250, "unit": "g", "substitutions": [] },
-      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": ["cilantro"] },
-      { "name": "Cebolla", "quantity": 0.5, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
-      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Sésamo", "quantity": 1, "unit": "cucharada", "substitutions": [] },
-      { "name": "Aceite de girasol", "quantity": 300, "unit": "ml", "substitutions": [] }
+      {
+        "name": "Garbanzo seco",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": null,
+        "unit": null,
+        "substitutions": [
+          "cilantro"
+        ]
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 0.5,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Comino",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Sésamo",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de girasol",
+        "quantity": 300,
+        "unit": "ml",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Deja los garbanzos en remojo la noche anterior (no se cuecen).", "timerSeconds": null },
-      { "order": 2, "instruction": "Tritura los garbanzos crudos con la cebolla, el ajo, las hierbas y el comino hasta una pasta.", "timerSeconds": null },
-      { "order": 3, "instruction": "Forma bolitas, rebózalas en sésamo y fríelas en aceite caliente hasta dorar.", "timerSeconds": null },
-      { "order": 4, "instruction": "Escurre sobre papel y sirve con salsa de yogur o hummus.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Deja los garbanzos en remojo la noche anterior (no se cuecen).",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Tritura los garbanzos crudos con la cebolla, el ajo, las hierbas y el comino hasta una pasta.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Forma bolitas, rebózalas en sésamo y fríelas en aceite caliente hasta dorar.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Escurre sobre papel y sirve con salsa de yogur o hummus.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -435,22 +1384,76 @@
     "prep_time_min": 10,
     "cook_time_min": 20,
     "calories": 320,
-    "tags": ["norteafricana", "huevo", "sartén"],
-    "allergens": ["egg"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "norteafricana",
+      "huevo",
+      "sartén"
+    ],
+    "allergens": [
+      "egg"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
-      { "name": "Tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Comino", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Pimentón", "quantity": 1, "unit": "cucharadita", "substitutions": [] }
+      {
+        "name": "Huevo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Comino",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Pimentón",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pocha la cebolla y el pimiento en tiras.", "timerSeconds": 480 },
-      { "order": 2, "instruction": "Añade el comino, el pimentón y el tomate y cocina 10 minutos.", "timerSeconds": 600 },
-      { "order": 3, "instruction": "Haz huecos en la salsa y casca los huevos dentro.", "timerSeconds": null },
-      { "order": 4, "instruction": "Tapa y cuece hasta que la clara cuaje y la yema quede jugosa.", "timerSeconds": 360 }
+      {
+        "order": 1,
+        "instruction": "Pocha la cebolla y el pimiento en tiras.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el comino, el pimentón y el tomate y cocina 10 minutos.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "Haz huecos en la salsa y casca los huevos dentro.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Tapa y cuece hasta que la clara cuaje y la yema quede jugosa.",
+        "timerSeconds": 360
+      }
     ]
   },
   {
@@ -460,22 +1463,79 @@
     "prep_time_min": 15,
     "cook_time_min": 20,
     "calories": 340,
-    "tags": ["marroquí", "vegana", "rápido"],
-    "allergens": ["gluten"],
-    "diet": ["vegan", "vegetarian"],
+    "tags": [
+      "marroquí",
+      "vegana",
+      "rápido"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Cuscús", "quantity": 250, "unit": "g", "substitutions": [] },
-      { "name": "Calabacín", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Zanahoria", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Garbanzo cocido", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Ras el hanout", "quantity": 1, "unit": "cucharada", "substitutions": ["comino y canela"] },
-      { "name": "Aceite de oliva", "quantity": 3, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Cuscús",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Calabacín",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Garbanzo cocido",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ras el hanout",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": [
+          "comino y canela"
+        ]
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 3,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Saltea la zanahoria y el calabacín en dados con el ras el hanout.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade los garbanzos y calienta un par de minutos.", "timerSeconds": 120 },
-      { "order": 3, "instruction": "Hidrata el cuscús con el mismo volumen de agua hirviendo y un chorro de aceite, tapa 5 minutos.", "timerSeconds": 300 },
-      { "order": 4, "instruction": "Suelta los granos con un tenedor y mezcla con las verduras.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Saltea la zanahoria y el calabacín en dados con el ras el hanout.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade los garbanzos y calienta un par de minutos.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Hidrata el cuscús con el mismo volumen de agua hirviendo y un chorro de aceite, tapa 5 minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 4,
+        "instruction": "Suelta los granos con un tenedor y mezcla con las verduras.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -485,23 +1545,84 @@
     "prep_time_min": 25,
     "cook_time_min": 15,
     "calories": 460,
-    "tags": ["coreana", "arroz", "vegetariana"],
-    "allergens": ["soy", "sesame", "egg"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "coreana",
+      "arroz",
+      "vegetariana"
+    ],
+    "allergens": [
+      "soy",
+      "sesame",
+      "egg"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Arroz", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Espinaca", "quantity": 150, "unit": "g", "substitutions": [] },
-      { "name": "Zanahoria", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Champiñón", "quantity": 150, "unit": "g", "substitutions": [] },
-      { "name": "Huevo", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Gochujang", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Aceite de sésamo", "quantity": 1, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Arroz",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Espinaca",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Champiñón",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Gochujang",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de sésamo",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Cuece el arroz y resérvalo caliente.", "timerSeconds": null },
-      { "order": 2, "instruction": "Saltea por separado la zanahoria en juliana, los champiñones y la espinaca.", "timerSeconds": null },
-      { "order": 3, "instruction": "Fríe los huevos dejando la yema líquida.", "timerSeconds": null },
-      { "order": 4, "instruction": "Monta el arroz con las verduras alrededor, el huevo encima y el gochujang con aceite de sésamo.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Cuece el arroz y resérvalo caliente.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Saltea por separado la zanahoria en juliana, los champiñones y la espinaca.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Fríe los huevos dejando la yema líquida.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Monta el arroz con las verduras alrededor, el huevo encima y el gochujang con aceite de sésamo.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -511,22 +1632,74 @@
     "prep_time_min": 10,
     "cook_time_min": 20,
     "calories": 400,
-    "tags": ["pescado", "horno", "rápido"],
-    "allergens": ["fish"],
+    "tags": [
+      "pescado",
+      "horno",
+      "rápido"
+    ],
+    "allergens": [
+      "fish"
+    ],
     "diet": [],
     "ingredients": [
-      { "name": "Salmón", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Calabacín", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Eneldo", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Salmón",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Calabacín",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Limón",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Eneldo",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Precalienta el horno a 200 °C.", "timerSeconds": null },
-      { "order": 2, "instruction": "Corta las verduras en tiras, alíñalas y extiéndelas en una bandeja.", "timerSeconds": null },
-      { "order": 3, "instruction": "Coloca el salmón encima con rodajas de limón y eneldo.", "timerSeconds": null },
-      { "order": 4, "instruction": "Hornea 18 minutos hasta que el salmón se desmigue con facilidad.", "timerSeconds": 1080 }
+      {
+        "order": 1,
+        "instruction": "Precalienta el horno a 200 °C.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Corta las verduras en tiras, alíñalas y extiéndelas en una bandeja.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Coloca el salmón encima con rodajas de limón y eneldo.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Hornea 18 minutos hasta que el salmón se desmigue con facilidad.",
+        "timerSeconds": 1080
+      }
     ]
   },
   {
@@ -536,20 +1709,64 @@
     "prep_time_min": 15,
     "cook_time_min": 30,
     "calories": 180,
-    "tags": ["sopa", "vegana", "otoño"],
+    "tags": [
+      "sopa",
+      "vegana",
+      "otoño"
+    ],
     "allergens": [],
-    "diet": ["vegan", "vegetarian"],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Calabaza", "quantity": 800, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Zanahoria", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Caldo de verduras", "quantity": 700, "unit": "ml", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] }
+      {
+        "name": "Calabaza",
+        "quantity": 800,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Caldo de verduras",
+        "quantity": 700,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pocha la cebolla y la zanahoria en aceite.", "timerSeconds": 480 },
-      { "order": 2, "instruction": "Añade la calabaza en dados y el caldo. Cuece 20 minutos.", "timerSeconds": 1200 },
-      { "order": 3, "instruction": "Tritura hasta que quede una crema fina y rectifica de sal.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Pocha la cebolla y la zanahoria en aceite.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 2,
+        "instruction": "Añade la calabaza en dados y el caldo. Cuece 20 minutos.",
+        "timerSeconds": 1200
+      },
+      {
+        "order": 3,
+        "instruction": "Tritura hasta que quede una crema fina y rectifica de sal.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -559,22 +1776,78 @@
     "prep_time_min": 10,
     "cook_time_min": 15,
     "calories": 420,
-    "tags": ["desayuno", "dulce", "vegetariana"],
-    "allergens": ["gluten", "milk", "egg"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "desayuno",
+      "dulce",
+      "vegetariana"
+    ],
+    "allergens": [
+      "gluten",
+      "milk",
+      "egg"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Harina", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Leche", "quantity": 250, "unit": "ml", "substitutions": [] },
-      { "name": "Huevo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Levadura química", "quantity": 1, "unit": "cucharadita", "substitutions": [] },
-      { "name": "Azúcar", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Mantequilla", "quantity": 20, "unit": "g", "substitutions": [] }
+      {
+        "name": "Harina",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Leche",
+        "quantity": 250,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Levadura química",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "substitutions": []
+      },
+      {
+        "name": "Azúcar",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Mantequilla",
+        "quantity": 20,
+        "unit": "g",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Mezcla la harina con la levadura y el azúcar.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade el huevo y la leche y bate hasta una masa lisa. Deja reposar 5 minutos.", "timerSeconds": 300 },
-      { "order": 3, "instruction": "Cuaja cucharones de masa en una sartén con mantequilla hasta que salgan burbujas y dales la vuelta.", "timerSeconds": null },
-      { "order": 4, "instruction": "Sirve apiladas con sirope de arce o fruta.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Mezcla la harina con la levadura y el azúcar.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el huevo y la leche y bate hasta una masa lisa. Deja reposar 5 minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Cuaja cucharones de masa en una sartén con mantequilla hasta que salgan burbujas y dales la vuelta.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve apiladas con sirope de arce o fruta.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -584,21 +1857,72 @@
     "prep_time_min": 15,
     "cook_time_min": 25,
     "calories": 380,
-    "tags": ["postre", "horno", "chocolate"],
-    "allergens": ["gluten", "egg", "milk"],
-    "diet": ["vegetarian"],
+    "tags": [
+      "postre",
+      "horno",
+      "chocolate"
+    ],
+    "allergens": [
+      "gluten",
+      "egg",
+      "milk"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
     "ingredients": [
-      { "name": "Chocolate negro", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Mantequilla", "quantity": 150, "unit": "g", "substitutions": [] },
-      { "name": "Azúcar", "quantity": 180, "unit": "g", "substitutions": [] },
-      { "name": "Huevo", "quantity": 3, "unit": "ud", "substitutions": [] },
-      { "name": "Harina", "quantity": 100, "unit": "g", "substitutions": [] }
+      {
+        "name": "Chocolate negro",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Mantequilla",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Azúcar",
+        "quantity": 180,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 3,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Harina",
+        "quantity": 100,
+        "unit": "g",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Precalienta el horno a 180 °C y forra un molde con papel.", "timerSeconds": null },
-      { "order": 2, "instruction": "Funde el chocolate con la mantequilla al baño maría o en el microondas.", "timerSeconds": null },
-      { "order": 3, "instruction": "Bate los huevos con el azúcar, integra el chocolate y por último la harina tamizada.", "timerSeconds": null },
-      { "order": 4, "instruction": "Hornea 22-25 minutos: debe quedar hecho por fuera y jugoso por dentro.", "timerSeconds": 1380 }
+      {
+        "order": 1,
+        "instruction": "Precalienta el horno a 180 °C y forra un molde con papel.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Funde el chocolate con la mantequilla al baño maría o en el microondas.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Bate los huevos con el azúcar, integra el chocolate y por último la harina tamizada.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Hornea 22-25 minutos: debe quedar hecho por fuera y jugoso por dentro.",
+        "timerSeconds": 1380
+      }
     ]
   },
   {
@@ -608,22 +1932,71 @@
     "prep_time_min": 15,
     "cook_time_min": 40,
     "calories": 480,
-    "tags": ["española", "guiso", "casera"],
+    "tags": [
+      "española",
+      "guiso",
+      "casera"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Carne de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Patata", "quantity": 500, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Carne de cerdo",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Patata",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Dora la carne de cerdo troceada con un poco de aceite.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade la cebolla y el ajo picados y pocha unos minutos.", "timerSeconds": 300 },
-      { "order": 3, "instruction": "Incorpora las patatas en trozos, cubre con agua y sal, y cuece hasta que estén tiernas.", "timerSeconds": 1500 }
+      {
+        "order": 1,
+        "instruction": "Dora la carne de cerdo troceada con un poco de aceite.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade la cebolla y el ajo picados y pocha unos minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora las patatas en trozos, cubre con agua y sal, y cuece hasta que estén tiernas.",
+        "timerSeconds": 1500
+      }
     ]
   },
   {
@@ -633,22 +2006,70 @@
     "prep_time_min": 10,
     "cook_time_min": 20,
     "calories": 380,
-    "tags": ["española", "plancha", "rápida"],
+    "tags": [
+      "española",
+      "plancha",
+      "rápida"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Lomo de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
-      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Lomo de cerdo",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Corta la cebolla en juliana fina.", "timerSeconds": null },
-      { "order": 2, "instruction": "Pocha la cebolla a fuego suave con parte del aceite hasta que quede dorada y caramelizada.", "timerSeconds": 900 },
-      { "order": 3, "instruction": "Sazona los filetes de lomo y hazlos a la plancha con el resto del aceite, 2 minutos por cada lado.", "timerSeconds": 240 },
-      { "order": 4, "instruction": "Sirve el lomo con la cebolla por encima y perejil picado.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Corta la cebolla en juliana fina.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Pocha la cebolla a fuego suave con parte del aceite hasta que quede dorada y caramelizada.",
+        "timerSeconds": 900
+      },
+      {
+        "order": 3,
+        "instruction": "Sazona los filetes de lomo y hazlos a la plancha con el resto del aceite, 2 minutos por cada lado.",
+        "timerSeconds": 240
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve el lomo con la cebolla por encima y perejil picado.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -658,22 +2079,71 @@
     "prep_time_min": 15,
     "cook_time_min": 35,
     "calories": 410,
-    "tags": ["española", "guiso", "casera"],
+    "tags": [
+      "española",
+      "guiso",
+      "casera"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Magro de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Tomate maduro", "quantity": 500, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Magro de cerdo",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate maduro",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Dora el magro troceado en una cazuela con el aceite.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade la cebolla y el ajo picados y rehoga hasta que estén blandos.", "timerSeconds": 300 },
-      { "order": 3, "instruction": "Incorpora el tomate troceado y sal, y cuece a fuego lento hasta que espese.", "timerSeconds": 1800 }
+      {
+        "order": 1,
+        "instruction": "Dora el magro troceado en una cazuela con el aceite.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade la cebolla y el ajo picados y rehoga hasta que estén blandos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora el tomate troceado y sal, y cuece a fuego lento hasta que espese.",
+        "timerSeconds": 1800
+      }
     ]
   },
   {
@@ -683,23 +2153,76 @@
     "prep_time_min": 10,
     "cook_time_min": 20,
     "calories": 420,
-    "tags": ["española", "sartén", "rápida"],
+    "tags": [
+      "española",
+      "sartén",
+      "rápida"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Salchicha fresca", "quantity": 500, "unit": "g", "substitutions": [] },
-      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Pimiento verde", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Salchicha fresca",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento verde",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Corta los pimientos y la cebolla en tiras.", "timerSeconds": null },
-      { "order": 2, "instruction": "Dora las salchichas en una sartén con el aceite y retíralas.", "timerSeconds": 600 },
-      { "order": 3, "instruction": "En la misma sartén, saltea los pimientos y la cebolla con sal hasta que estén tiernos.", "timerSeconds": 600 },
-      { "order": 4, "instruction": "Vuelve a añadir las salchichas y saltea todo junto 2 minutos más.", "timerSeconds": 120 }
+      {
+        "order": 1,
+        "instruction": "Corta los pimientos y la cebolla en tiras.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Dora las salchichas en una sartén con el aceite y retíralas.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "En la misma sartén, saltea los pimientos y la cebolla con sal hasta que estén tiernos.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 4,
+        "instruction": "Vuelve a añadir las salchichas y saltea todo junto 2 minutos más.",
+        "timerSeconds": 120
+      }
     ]
   },
   {
@@ -709,24 +2232,81 @@
     "prep_time_min": 10,
     "cook_time_min": 25,
     "calories": 350,
-    "tags": ["española", "sartén", "clásica"],
+    "tags": [
+      "española",
+      "sartén",
+      "clásica"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Pechuga de pollo", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Ajo", "quantity": 6, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 40, "unit": "ml", "substitutions": [] },
-      { "name": "vino blanco", "quantity": 100, "unit": "ml", "substitutions": [] },
-      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Pechuga de pollo",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 6,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 40,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "vino blanco",
+        "quantity": 100,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Trocea la pechuga de pollo y sazona.", "timerSeconds": null },
-      { "order": 2, "instruction": "Dora el pollo en una sartén con el aceite hasta que quede dorado por fuera.", "timerSeconds": 480 },
-      { "order": 3, "instruction": "Añade el ajo laminado y rehoga sin que se queme.", "timerSeconds": 120 },
-      { "order": 4, "instruction": "Vierte el vino blanco, deja reducir y cocina hasta que el pollo esté hecho.", "timerSeconds": 300 },
-      { "order": 5, "instruction": "Espolvorea con perejil picado antes de servir.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Trocea la pechuga de pollo y sazona.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Dora el pollo en una sartén con el aceite hasta que quede dorado por fuera.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 3,
+        "instruction": "Añade el ajo laminado y rehoga sin que se queme.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 4,
+        "instruction": "Vierte el vino blanco, deja reducir y cocina hasta que el pollo esté hecho.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 5,
+        "instruction": "Espolvorea con perejil picado antes de servir.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -736,22 +2316,71 @@
     "prep_time_min": 10,
     "cook_time_min": 15,
     "calories": 260,
-    "tags": ["española", "plancha", "ligera"],
+    "tags": [
+      "española",
+      "plancha",
+      "ligera"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Pechuga de pollo", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
-      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Pechuga de pollo",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Limón",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Sazona las pechugas y frótalas con el ajo picado.", "timerSeconds": null },
-      { "order": 2, "instruction": "Hazlas a la plancha con el aceite, unos 4 minutos por cada lado.", "timerSeconds": 480 },
-      { "order": 3, "instruction": "Riega con el zumo de limón recién exprimido y espolvorea con perejil antes de servir.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Sazona las pechugas y frótalas con el ajo picado.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Hazlas a la plancha con el aceite, unos 4 minutos por cada lado.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 3,
+        "instruction": "Riega con el zumo de limón recién exprimido y espolvorea con perejil antes de servir.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -761,22 +2390,71 @@
     "prep_time_min": 15,
     "cook_time_min": 45,
     "calories": 480,
-    "tags": ["española", "horno", "casera"],
+    "tags": [
+      "española",
+      "horno",
+      "casera"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Muslo de pollo", "quantity": 800, "unit": "g", "substitutions": [] },
-      { "name": "Patata", "quantity": 500, "unit": "g", "substitutions": [] },
-      { "name": "Ajo", "quantity": 3, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
-      { "name": "Romero", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Muslo de pollo",
+        "quantity": 800,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Patata",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 3,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Romero",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Precalienta el horno a 200 °C y corta las patatas en cuartos.", "timerSeconds": null },
-      { "order": 2, "instruction": "Coloca los muslos y las patatas en una bandeja con el ajo, el aceite, el romero y la sal.", "timerSeconds": null },
-      { "order": 3, "instruction": "Hornea hasta que el pollo esté dorado y las patatas tiernas.", "timerSeconds": 2700 }
+      {
+        "order": 1,
+        "instruction": "Precalienta el horno a 200 °C y corta las patatas en cuartos.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Coloca los muslos y las patatas en una bandeja con el ajo, el aceite, el romero y la sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Hornea hasta que el pollo esté dorado y las patatas tiernas.",
+        "timerSeconds": 2700
+      }
     ]
   },
   {
@@ -786,22 +2464,71 @@
     "prep_time_min": 15,
     "cook_time_min": 30,
     "calories": 430,
-    "tags": ["española", "arroz", "casera"],
+    "tags": [
+      "española",
+      "arroz",
+      "casera"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Pechuga de pollo", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Arroz", "quantity": 300, "unit": "g", "substitutions": [] },
-      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Pechuga de pollo",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Arroz",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Trocea el pollo y dóralo en una cazuela con el aceite.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade la cebolla y el pimiento picados y rehoga hasta que estén tiernos.", "timerSeconds": 600 },
-      { "order": 3, "instruction": "Incorpora el arroz, cubre con agua y sal, y cuece hasta que el arroz esté en su punto.", "timerSeconds": 1200 }
+      {
+        "order": 1,
+        "instruction": "Trocea el pollo y dóralo en una cazuela con el aceite.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade la cebolla y el pimiento picados y rehoga hasta que estén tiernos.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora el arroz, cubre con agua y sal, y cuece hasta que el arroz esté en su punto.",
+        "timerSeconds": 1200
+      }
     ]
   },
   {
@@ -811,23 +2538,76 @@
     "prep_time_min": 15,
     "cook_time_min": 60,
     "calories": 420,
-    "tags": ["española", "guiso", "casera"],
+    "tags": [
+      "española",
+      "guiso",
+      "casera"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "carne de ternera para estofado", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Guisante", "quantity": 200, "unit": "g", "substitutions": [] },
-      { "name": "Zanahoria", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "carne de ternera para estofado",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Guisante",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Dora la carne de ternera troceada en una cazuela con el aceite.", "timerSeconds": null },
-      { "order": 2, "instruction": "Añade la cebolla y la zanahoria picadas y rehoga unos minutos.", "timerSeconds": 300 },
-      { "order": 3, "instruction": "Cubre con agua y sal, y cuece a fuego lento hasta que la carne esté tierna.", "timerSeconds": 3000 },
-      { "order": 4, "instruction": "Incorpora los guisantes y cuece 10 minutos más.", "timerSeconds": 600 }
+      {
+        "order": 1,
+        "instruction": "Dora la carne de ternera troceada en una cazuela con el aceite.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade la cebolla y la zanahoria picadas y rehoga unos minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Cubre con agua y sal, y cuece a fuego lento hasta que la carne esté tierna.",
+        "timerSeconds": 3000
+      },
+      {
+        "order": 4,
+        "instruction": "Incorpora los guisantes y cuece 10 minutos más.",
+        "timerSeconds": 600
+      }
     ]
   },
   {
@@ -837,21 +2617,65 @@
     "prep_time_min": 5,
     "cook_time_min": 10,
     "calories": 300,
-    "tags": ["española", "plancha", "rápida"],
+    "tags": [
+      "española",
+      "plancha",
+      "rápida"
+    ],
     "allergens": [],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "filetes de ternera tierna", "quantity": 600, "unit": "g", "substitutions": [] },
-      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
-      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "filetes de ternera tierna",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Sazona los filetes de ternera y frótalos con el ajo picado.", "timerSeconds": null },
-      { "order": 2, "instruction": "Haz los filetes a la plancha bien caliente con el aceite, 2 minutos por cada lado.", "timerSeconds": 240 },
-      { "order": 3, "instruction": "Espolvorea con perejil picado antes de servir.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Sazona los filetes de ternera y frótalos con el ajo picado.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Haz los filetes a la plancha bien caliente con el aceite, 2 minutos por cada lado.",
+        "timerSeconds": 240
+      },
+      {
+        "order": 3,
+        "instruction": "Espolvorea con perejil picado antes de servir.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -861,23 +2685,79 @@
     "prep_time_min": 20,
     "cook_time_min": 35,
     "calories": 440,
-    "tags": ["española", "guiso", "casera"],
-    "allergens": ["gluten", "egg"],
+    "tags": [
+      "española",
+      "guiso",
+      "casera"
+    ],
+    "allergens": [
+      "gluten",
+      "egg"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Carne picada de ternera", "quantity": 500, "unit": "g", "substitutions": [] },
-      { "name": "Huevo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Pan rallado", "quantity": 50, "unit": "g", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
-      { "name": "Salsa de tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Carne picada de ternera",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pan rallado",
+        "quantity": 50,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Salsa de tomate triturado",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Mezcla la carne picada con el huevo, el pan rallado y sal, y forma las albóndigas.", "timerSeconds": null },
-      { "order": 2, "instruction": "Dora las albóndigas en una cazuela con el aceite y resérvalas.", "timerSeconds": 480 },
-      { "order": 3, "instruction": "Vierte la salsa de tomate en la misma cazuela y calienta.", "timerSeconds": 300 },
-      { "order": 4, "instruction": "Incorpora las albóndigas a la salsa y cuece a fuego lento hasta que estén hechas.", "timerSeconds": 1200 }
+      {
+        "order": 1,
+        "instruction": "Mezcla la carne picada con el huevo, el pan rallado y sal, y forma las albóndigas.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Dora las albóndigas en una cazuela con el aceite y resérvalas.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 3,
+        "instruction": "Vierte la salsa de tomate en la misma cazuela y calienta.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 4,
+        "instruction": "Incorpora las albóndigas a la salsa y cuece a fuego lento hasta que estén hechas.",
+        "timerSeconds": 1200
+      }
     ]
   },
   {
@@ -887,20 +2767,61 @@
     "prep_time_min": 5,
     "cook_time_min": 5,
     "calories": 220,
-    "tags": ["española", "rápida", "sartén"],
-    "allergens": ["egg"],
+    "tags": [
+      "española",
+      "rápida",
+      "sartén"
+    ],
+    "allergens": [
+      "egg"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena", "merienda"],
+    "meal_types": [
+      "almuerzo",
+      "cena",
+      "merienda"
+    ],
     "ingredients": [
-      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Huevo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Bate los huevos con una pizca de sal hasta que queden homogéneos.", "timerSeconds": null },
-      { "order": 2, "instruction": "Calienta el aceite en una sartén antiadherente a fuego medio-alto.", "timerSeconds": null },
-      { "order": 3, "instruction": "Vierte el huevo batido y cuaja los bordes moviendo la sartén.", "timerSeconds": 60 },
-      { "order": 4, "instruction": "Dobla la tortilla por la mitad y sirve inmediatamente.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Bate los huevos con una pizca de sal hasta que queden homogéneos.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Calienta el aceite en una sartén antiadherente a fuego medio-alto.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Vierte el huevo batido y cuaja los bordes moviendo la sartén.",
+        "timerSeconds": 60
+      },
+      {
+        "order": 4,
+        "instruction": "Dobla la tortilla por la mitad y sirve inmediatamente.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -910,22 +2831,71 @@
     "prep_time_min": 10,
     "cook_time_min": 20,
     "calories": 420,
-    "tags": ["española", "fritura", "clásica"],
-    "allergens": ["egg"],
+    "tags": [
+      "española",
+      "fritura",
+      "clásica"
+    ],
+    "allergens": [
+      "egg"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Patata", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 150, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Patata",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 150,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pela las patatas y córtalas en bastones finos.", "timerSeconds": null },
-      { "order": 2, "instruction": "Fríelas en abundante aceite caliente hasta que estén doradas y crujientes.", "timerSeconds": 600 },
-      { "order": 3, "instruction": "Escúrrelas sobre papel absorbente y sazona con sal.", "timerSeconds": null },
-      { "order": 4, "instruction": "En el mismo aceite, fríe los huevos hasta que la clara cuaje y la yema quede jugosa.", "timerSeconds": 180 },
-      { "order": 5, "instruction": "Sirve los huevos sobre las patatas.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Pela las patatas y córtalas en bastones finos.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Fríelas en abundante aceite caliente hasta que estén doradas y crujientes.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "Escúrrelas sobre papel absorbente y sazona con sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "En el mismo aceite, fríe los huevos hasta que la clara cuaje y la yema quede jugosa.",
+        "timerSeconds": 180
+      },
+      {
+        "order": 5,
+        "instruction": "Sirve los huevos sobre las patatas.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -935,23 +2905,77 @@
     "prep_time_min": 10,
     "cook_time_min": 20,
     "calories": 450,
-    "tags": ["española", "clásica", "sartén"],
-    "allergens": ["egg"],
+    "tags": [
+      "española",
+      "clásica",
+      "sartén"
+    ],
+    "allergens": [
+      "egg"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Patata", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
-      { "name": "Jamón serrano", "quantity": 80, "unit": "g", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 120, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Patata",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Jamón serrano",
+        "quantity": 80,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 120,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pela las patatas y córtalas en bastones.", "timerSeconds": null },
-      { "order": 2, "instruction": "Fríelas en aceite caliente hasta que estén tiernas y doradas.", "timerSeconds": 600 },
-      { "order": 3, "instruction": "Escurre las patatas y colócalas en la base del plato.", "timerSeconds": null },
-      { "order": 4, "instruction": "Fríe los huevos y colócalos sobre las patatas, rompiendo la yema con un tenedor.", "timerSeconds": 180 },
-      { "order": 5, "instruction": "Reparte el jamón serrano por encima y sirve enseguida.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Pela las patatas y córtalas en bastones.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Fríelas en aceite caliente hasta que estén tiernas y doradas.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "Escurre las patatas y colócalas en la base del plato.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Fríe los huevos y colócalos sobre las patatas, rompiendo la yema con un tenedor.",
+        "timerSeconds": 180
+      },
+      {
+        "order": 5,
+        "instruction": "Reparte el jamón serrano por encima y sirve enseguida.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -961,22 +2985,72 @@
     "prep_time_min": 10,
     "cook_time_min": 10,
     "calories": 280,
-    "tags": ["española", "sartén", "rápida"],
-    "allergens": ["egg"],
+    "tags": [
+      "española",
+      "sartén",
+      "rápida"
+    ],
+    "allergens": [
+      "egg"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
-      { "name": "Seta", "quantity": 250, "unit": "g", "substitutions": [] },
-      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Huevo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Seta",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Limpia y trocea las setas; pica el ajo.", "timerSeconds": null },
-      { "order": 2, "instruction": "Saltea el ajo en aceite hasta que empiece a dorar.", "timerSeconds": 60 },
-      { "order": 3, "instruction": "Añade las setas y saltea a fuego fuerte hasta que suelten el agua y se doren.", "timerSeconds": 300 },
-      { "order": 4, "instruction": "Bate los huevos con sal, vierte sobre las setas y cuaja removiendo sin parar.", "timerSeconds": 120 }
+      {
+        "order": 1,
+        "instruction": "Limpia y trocea las setas; pica el ajo.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Saltea el ajo en aceite hasta que empiece a dorar.",
+        "timerSeconds": 60
+      },
+      {
+        "order": 3,
+        "instruction": "Añade las setas y saltea a fuego fuerte hasta que suelten el agua y se doren.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 4,
+        "instruction": "Bate los huevos con sal, vierte sobre las setas y cuaja removiendo sin parar.",
+        "timerSeconds": 120
+      }
     ]
   },
   {
@@ -986,22 +3060,72 @@
     "prep_time_min": 8,
     "cook_time_min": 8,
     "calories": 260,
-    "tags": ["española", "sartén", "rápida"],
-    "allergens": ["egg"],
+    "tags": [
+      "española",
+      "sartén",
+      "rápida"
+    ],
+    "allergens": [
+      "egg"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 6, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
-      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Huevo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 6,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pela los ajos y córtalos en trozos no muy pequeños.", "timerSeconds": null },
-      { "order": 2, "instruction": "Saltéalos en aceite a fuego suave hasta que estén tiernos y ligeramente dorados.", "timerSeconds": 360 },
-      { "order": 3, "instruction": "Bate los huevos con sal y el perejil picado.", "timerSeconds": null },
-      { "order": 4, "instruction": "Vierte el huevo sobre los ajos y cuaja removiendo a fuego medio.", "timerSeconds": 120 }
+      {
+        "order": 1,
+        "instruction": "Pela los ajos y córtalos en trozos no muy pequeños.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Saltéalos en aceite a fuego suave hasta que estén tiernos y ligeramente dorados.",
+        "timerSeconds": 360
+      },
+      {
+        "order": 3,
+        "instruction": "Bate los huevos con sal y el perejil picado.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Vierte el huevo sobre los ajos y cuaja removiendo a fuego medio.",
+        "timerSeconds": 120
+      }
     ]
   },
   {
@@ -1011,23 +3135,78 @@
     "prep_time_min": 10,
     "cook_time_min": 15,
     "calories": 300,
-    "tags": ["española", "plancha", "saludable"],
-    "allergens": ["fish"],
+    "tags": [
+      "española",
+      "plancha",
+      "saludable"
+    ],
+    "allergens": [
+      "fish"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Merluza", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Calabacín", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Merluza",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Calabacín",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Corta el calabacín y el pimiento en tiras finas, y lamina el ajo.", "timerSeconds": null },
-      { "order": 2, "instruction": "Saltea las verduras y el ajo en aceite hasta que estén tiernas.", "timerSeconds": 480 },
-      { "order": 3, "instruction": "Salpimenta la merluza y hazla a la plancha por cada lado.", "timerSeconds": 360 },
-      { "order": 4, "instruction": "Sirve la merluza sobre las verduras salteadas.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Corta el calabacín y el pimiento en tiras finas, y lamina el ajo.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Saltea las verduras y el ajo en aceite hasta que estén tiernas.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 3,
+        "instruction": "Salpimenta la merluza y hazla a la plancha por cada lado.",
+        "timerSeconds": 360
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve la merluza sobre las verduras salteadas.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -1037,22 +3216,72 @@
     "prep_time_min": 10,
     "cook_time_min": 18,
     "calories": 340,
-    "tags": ["española", "horno", "saludable"],
-    "allergens": ["fish"],
+    "tags": [
+      "española",
+      "horno",
+      "saludable"
+    ],
+    "allergens": [
+      "fish"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Salmón", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Salmón",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Limón",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Precalienta el horno a 200 °C.", "timerSeconds": null },
-      { "order": 2, "instruction": "Coloca el salmón en una bandeja, riega con aceite y salpimenta.", "timerSeconds": null },
-      { "order": 3, "instruction": "Reparte el ajo laminado y las rodajas de limón por encima.", "timerSeconds": null },
-      { "order": 4, "instruction": "Hornea de 15 a 18 minutos hasta que esté hecho por dentro.", "timerSeconds": 1080 }
+      {
+        "order": 1,
+        "instruction": "Precalienta el horno a 200 °C.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Coloca el salmón en una bandeja, riega con aceite y salpimenta.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Reparte el ajo laminado y las rodajas de limón por encima.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Hornea de 15 a 18 minutos hasta que esté hecho por dentro.",
+        "timerSeconds": 1080
+      }
     ]
   },
   {
@@ -1062,23 +3291,78 @@
     "prep_time_min": 10,
     "cook_time_min": 25,
     "calories": 320,
-    "tags": ["española", "guiso", "tradicional"],
-    "allergens": ["fish"],
+    "tags": [
+      "española",
+      "guiso",
+      "tradicional"
+    ],
+    "allergens": [
+      "fish"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Bacalao fresco", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "Bacalao fresco",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Pica la cebolla y el ajo finamente.", "timerSeconds": null },
-      { "order": 2, "instruction": "Sofríelos en aceite hasta que la cebolla esté transparente.", "timerSeconds": 600 },
-      { "order": 3, "instruction": "Añade el tomate triturado y cocina a fuego suave.", "timerSeconds": 900 },
-      { "order": 4, "instruction": "Incorpora el bacalao y cocina hasta que esté hecho.", "timerSeconds": 300 }
+      {
+        "order": 1,
+        "instruction": "Pica la cebolla y el ajo finamente.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Sofríelos en aceite hasta que la cebolla esté transparente.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "Añade el tomate triturado y cocina a fuego suave.",
+        "timerSeconds": 900
+      },
+      {
+        "order": 4,
+        "instruction": "Incorpora el bacalao y cocina hasta que esté hecho.",
+        "timerSeconds": 300
+      }
     ]
   },
   {
@@ -1088,23 +3372,78 @@
     "prep_time_min": 10,
     "cook_time_min": 10,
     "calories": 280,
-    "tags": ["española", "plancha", "verano"],
-    "allergens": ["fish"],
+    "tags": [
+      "española",
+      "plancha",
+      "verano"
+    ],
+    "allergens": [
+      "fish"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Sardina", "quantity": 400, "unit": "g", "substitutions": [] },
-      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
-      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 15, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] }
+      {
+        "name": "Sardina",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 15,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Limón",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Limpia las sardinas y sécalas bien.", "timerSeconds": null },
-      { "order": 2, "instruction": "Calienta la plancha con un poco de aceite.", "timerSeconds": null },
-      { "order": 3, "instruction": "Cocina las sardinas por cada lado.", "timerSeconds": 300 },
-      { "order": 4, "instruction": "Pica el ajo y el perejil, espolvorea por encima y riega con limón.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Limpia las sardinas y sécalas bien.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Calienta la plancha con un poco de aceite.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Cocina las sardinas por cada lado.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 4,
+        "instruction": "Pica el ajo y el perejil, espolvorea por encima y riega con limón.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -1114,23 +3453,78 @@
     "prep_time_min": 10,
     "cook_time_min": 0,
     "calories": 260,
-    "tags": ["española", "ensalada", "rápida"],
-    "allergens": ["fish"],
+    "tags": [
+      "española",
+      "ensalada",
+      "rápida"
+    ],
+    "allergens": [
+      "fish"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "atún en aceite de oliva", "quantity": 160, "unit": "g", "substitutions": [] },
-      { "name": "Tomate", "quantity": 2, "unit": "ud", "substitutions": [] },
-      { "name": "Cebolla", "quantity": 0.5, "unit": "ud", "substitutions": [] },
-      { "name": "Lechuga romana", "quantity": 1, "unit": "ud", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+      {
+        "name": "atún en aceite de oliva",
+        "quantity": 160,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 0.5,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Lechuga romana",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 1,
+        "unit": "cucharada",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Lava y trocea la lechuga y el tomate.", "timerSeconds": null },
-      { "order": 2, "instruction": "Corta la cebolla en juliana fina.", "timerSeconds": null },
-      { "order": 3, "instruction": "Mezcla las verduras en un bol y añade el atún escurrido.", "timerSeconds": null },
-      { "order": 4, "instruction": "Aliña con aceite y sal antes de servir.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Lava y trocea la lechuga y el tomate.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Corta la cebolla en juliana fina.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Mezcla las verduras en un bol y añade el atún escurrido.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Aliña con aceite y sal antes de servir.",
+        "timerSeconds": null
+      }
     ]
   },
   {
@@ -1140,22 +3534,907 @@
     "prep_time_min": 15,
     "cook_time_min": 10,
     "calories": 380,
-    "tags": ["española", "fritura", "tapa"],
-    "allergens": ["fish", "gluten"],
+    "tags": [
+      "española",
+      "fritura",
+      "tapa"
+    ],
+    "allergens": [
+      "fish",
+      "gluten"
+    ],
     "diet": [],
-    "meal_types": ["almuerzo", "cena"],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
     "ingredients": [
-      { "name": "Boquerón", "quantity": 300, "unit": "g", "substitutions": [] },
-      { "name": "Harina", "quantity": 60, "unit": "g", "substitutions": [] },
-      { "name": "Aceite de oliva", "quantity": 200, "unit": "ml", "substitutions": [] },
-      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] },
-      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] }
+      {
+        "name": "Boquerón",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Harina",
+        "quantity": 60,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 200,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      },
+      {
+        "name": "Limón",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      }
     ],
     "steps": [
-      { "order": 1, "instruction": "Limpia los boquerones y ábrelos en libro, retirando la espina.", "timerSeconds": null },
-      { "order": 2, "instruction": "Sazona y pasa por harina, sacudiendo el exceso.", "timerSeconds": null },
-      { "order": 3, "instruction": "Fríe en aceite bien caliente hasta que estén dorados y crujientes.", "timerSeconds": 240 },
-      { "order": 4, "instruction": "Escurre sobre papel absorbente y sirve con un chorro de limón.", "timerSeconds": null }
+      {
+        "order": 1,
+        "instruction": "Limpia los boquerones y ábrelos en libro, retirando la espina.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Sazona y pasa por harina, sacudiendo el exceso.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Fríe en aceite bien caliente hasta que estén dorados y crujientes.",
+        "timerSeconds": 240
+      },
+      {
+        "order": 4,
+        "instruction": "Escurre sobre papel absorbente y sirve con un chorro de limón.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Lentejas estofadas",
+    "description": "Guiso de lentejas con verduras, sencillo y reconfortante, típico de cualquier casa española.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 40,
+    "calories": 340,
+    "tags": [
+      "española",
+      "guiso",
+      "legumbres"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Lenteja",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Patata",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 100,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Pica la cebolla y la zanahoria, y pela la patata cortándola en trozos medianos.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Sofríe la cebolla y la zanahoria en el aceite hasta que estén blandas.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Añade las lentejas, la patata y agua hasta cubrir. Sazona con sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Cuece a fuego medio hasta que las lentejas estén tiernas, removiendo de vez en cuando.",
+        "timerSeconds": 2400
+      },
+      {
+        "order": 5,
+        "instruction": "Deja reposar unos minutos antes de servir.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Garbanzos con espinacas",
+    "description": "Plato tradicional andaluz de garbanzos guisados con espinacas y ajo, ligero y sabroso.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 320,
+    "tags": [
+      "española",
+      "guiso",
+      "legumbres"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Garbanzo cocido",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Espinaca",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 100,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Lamina el ajo y dóralo en el aceite a fuego suave.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el tomate triturado y sofríe unos minutos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora las espinacas y deja que reduzcan.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 4,
+        "instruction": "Agrega los garbanzos escurridos, sazona con sal y cuece a fuego medio para que se integren los sabores.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 5,
+        "instruction": "Sirve caliente.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Alubias con chorizo",
+    "description": "Guiso casero de alubias blancas con chorizo, un clásico de cuchara para los días de frío.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 35,
+    "calories": 460,
+    "tags": [
+      "española",
+      "guiso",
+      "legumbres"
+    ],
+    "allergens": [],
+    "diet": [],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Alubia blanca alubión",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Chorizo fresco",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 100,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Pica la cebolla y el ajo, y sofríelos en el aceite hasta que estén dorados.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el chorizo troceado y rehoga un par de minutos para que suelte su sabor.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora las alubias escurridas con un poco de agua y sazona con sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Cuece a fuego medio-bajo para que se mezclen los sabores.",
+        "timerSeconds": 1200
+      },
+      {
+        "order": 5,
+        "instruction": "Deja reposar y sirve caliente.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Potaje de garbanzos",
+    "description": "Potaje casero de garbanzos con chorizo y patata, un guiso completo y sustancioso.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 35,
+    "calories": 430,
+    "tags": [
+      "española",
+      "guiso",
+      "legumbres"
+    ],
+    "allergens": [],
+    "diet": [],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Garbanzo cocido",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Chorizo fresco",
+        "quantity": 100,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Patata",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Pela la patata y córtala en trozos medianos.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Dora el ajo laminado en el aceite y añade el chorizo troceado.",
+        "timerSeconds": 180
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora la patata y cubre con agua. Sazona con sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Cuece hasta que la patata esté tierna.",
+        "timerSeconds": 900
+      },
+      {
+        "order": 5,
+        "instruction": "Añade los garbanzos escurridos y cuece unos minutos más para que se integren.",
+        "timerSeconds": 600
+      }
+    ]
+  },
+  {
+    "title": "Judías verdes con jamón",
+    "description": "Judías verdes rehogadas con ajo y jamón serrano, guarnición o plato ligero típico de la cocina casera.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 25,
+    "calories": 240,
+    "tags": [
+      "española",
+      "verduras",
+      "guarnición"
+    ],
+    "allergens": [],
+    "diet": [],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Judía verde redonda",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Patata",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Jamón serrano",
+        "quantity": 80,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Limpia las judías verdes y córtalas en trozos, y pela la patata en dados.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Cuece las judías y la patata en agua con sal hasta que estén tiernas.",
+        "timerSeconds": 1200
+      },
+      {
+        "order": 3,
+        "instruction": "Escurre bien las verduras.",
+        "timerSeconds": null
+      },
+      {
+        "order": 4,
+        "instruction": "Dora el ajo laminado en el aceite y añade el jamón troceado un par de minutos.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 5,
+        "instruction": "Incorpora las verduras escurridas y saltea todo junto un par de minutos.",
+        "timerSeconds": 120
+      }
+    ]
+  },
+  {
+    "title": "Arroz a la cubana",
+    "description": "Arroz blanco con salsa de tomate y huevo frito, plato sencillo y muy popular en casa.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 25,
+    "calories": 420,
+    "tags": [
+      "española",
+      "arroz",
+      "casero"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Arroz",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 200,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Huevo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Cuece el arroz en agua con sal hasta que esté en su punto y escúrrelo.",
+        "timerSeconds": 1080
+      },
+      {
+        "order": 2,
+        "instruction": "Dora el ajo picado en un poco de aceite y añade el tomate triturado. Sazona y cuece a fuego suave.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "Fríe los huevos en aceite bien caliente hasta que la clara esté cuajada y la yema quede jugosa.",
+        "timerSeconds": 180
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve el arroz con la salsa de tomate y un huevo frito por encima.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Arroz blanco con tomate",
+    "description": "Arroz blanco hervido acompañado de una sencilla salsa de tomate casera, plato básico y reconfortante.",
+    "servings": 4,
+    "prep_time_min": 5,
+    "cook_time_min": 25,
+    "calories": 310,
+    "tags": [
+      "española",
+      "arroz",
+      "casero"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Arroz",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 250,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 80,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 25,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Cuece el arroz en agua con sal hasta que esté en su punto y escúrrelo.",
+        "timerSeconds": 1080
+      },
+      {
+        "order": 2,
+        "instruction": "Pica la cebolla y el ajo, y sofríelos en el aceite hasta que estén blandos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Añade el tomate triturado, sazona con sal y cuece a fuego suave hasta que espese.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 4,
+        "instruction": "Sirve el arroz acompañado de la salsa de tomate.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Macarrones con tomate",
+    "description": "Macarrones con salsa de tomate casera, el plato de pasta más sencillo y habitual en casa.",
+    "servings": 4,
+    "prep_time_min": 5,
+    "cook_time_min": 20,
+    "calories": 400,
+    "tags": [
+      "española",
+      "pasta",
+      "casero"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "diet": [
+      "vegan"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Pasta macarron",
+        "quantity": 320,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 80,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 25,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Cuece los macarrones en agua con sal según el tiempo indicado en el envase.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 2,
+        "instruction": "Mientras, pica la cebolla y el ajo, y sofríelos en el aceite hasta que estén blandos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Añade el tomate triturado, sazona con sal y cuece a fuego suave hasta que espese.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 4,
+        "instruction": "Escurre la pasta y mézclala con la salsa de tomate.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Espaguetis al ajillo",
+    "description": "Espaguetis salteados con ajo, guindilla y perejil, un plato rápido y con mucho sabor.",
+    "servings": 4,
+    "prep_time_min": 5,
+    "cook_time_min": 15,
+    "calories": 380,
+    "tags": [
+      "española",
+      "pasta",
+      "rápido"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "diet": [
+      "vegan"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Espagueti",
+        "quantity": 320,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Guindilla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Perejil",
+        "quantity": 10,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 40,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Cuece los espaguetis en agua con sal según el tiempo indicado en el envase y escúrrelos.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 2,
+        "instruction": "Lamina el ajo y trocea la guindilla.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Dora el ajo y la guindilla en el aceite a fuego suave, sin que se quemen.",
+        "timerSeconds": 180
+      },
+      {
+        "order": 4,
+        "instruction": "Añade los espaguetis escurridos, saltea todo junto y espolvorea con perejil picado.",
+        "timerSeconds": 120
+      }
+    ]
+  },
+  {
+    "title": "Pasta con atún y tomate",
+    "description": "Pasta con salsa de tomate y atún, un plato completo, rápido y muy socorrido.",
+    "servings": 4,
+    "prep_time_min": 5,
+    "cook_time_min": 20,
+    "calories": 410,
+    "tags": [
+      "española",
+      "pasta",
+      "casero"
+    ],
+    "allergens": [
+      "gluten",
+      "fish"
+    ],
+    "diet": [],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Espagueti",
+        "quantity": 320,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "atún en aceite de oliva",
+        "quantity": 160,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Cuece la pasta en agua con sal según el tiempo indicado en el envase y escúrrela.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 2,
+        "instruction": "Dora el ajo picado en el aceite y añade el tomate triturado. Sazona y cuece a fuego suave.",
+        "timerSeconds": 600
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora el atún escurrido y mezcla bien con la salsa.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 4,
+        "instruction": "Añade la pasta escurrida a la salsa y mezcla todo junto antes de servir.",
+        "timerSeconds": null
+      }
     ]
   }
 ]
