@@ -12,7 +12,7 @@ otro chat o editor, debe leerse antes del plan maestro:
 | --- | --- | --- |
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
-| Fase 2 — Caducidad y decisión reproducible | En curso | Dataset en PR #90; motor de estados en PR #91 |
+| Fase 2 — Caducidad y decisión reproducible | En curso | Caducidad en PR #90/#91; diseño de decisión en PR #92 |
 | Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Aplazada | Solo con infraestructura remota |
@@ -23,6 +23,37 @@ aproximados de caducidad y su validador offline en la PR #90, fusionada como
 `3dfb64a`. El segundo slice cargó esos datos en Postgres y añadió el snapshot
 de estados por hogar en la PR #91, fusionada como `9ab6e5f`. Ninguno modificó
 la interfaz ni el ranking.
+
+La PR #92, fusionada como `078540e`, fijó el diseño y el plan del motor
+`RecommendationDecision`. La implementación se divide en tres PR secuenciales:
+seguridad por ingrediente, afinidad estacional y decisión reproducible.
+
+## Trabajo actual — seguridad por ingrediente
+
+Rama: `feat/ingredient-allergen-profiles`. PR: #93.
+
+El slice en curso:
+
+- cubre los 331 ingredientes del catálogo autoritativo
+  `0007_ingredients_seed.sql`;
+- distingue composición `exact_reviewed` de `variable_unknown`;
+- modela 14 exclusiones y las dietas `vegan`/`vegetarian`;
+- mantiene preparados genéricos sin formulación verificable en fallo cerrado;
+- genera la migración `0051` por `normalized_name`, sin UUID portables;
+- normaliza perfiles, exclusiones y dietas en cuatro tablas globales con RLS.
+
+Validaciones implementadas hasta ahora:
+
+- dataset válido con 331 perfiles, 95 de composición variable y 4 fuentes;
+- 13 pruebas negativas del validador;
+- 9 contratos del generador reproducible;
+- migración local `0051` aplicada;
+- `pnpm test:db`: 6 archivos y 86 pruebas;
+- `pnpm lint`, `pnpm typecheck` y `git diff --check`.
+
+La PR #93 superó la revisión independiente después de corregir la cobertura de
+preparados genéricos y sustituir la denylist inicial por allowlists exhaustivas.
+Está pendiente únicamente de confirmación explícita antes del merge.
 
 ## Decisiones vigentes
 
@@ -86,15 +117,13 @@ aprobado se documenta en
 El plan ejecutable de las tres PR se documenta en
 `docs/superpowers/plans/2026-07-24-recommendation-decision.md`.
 
-1. Validar y fusionar la documentación de diseño y plan.
-2. Crear una rama para el mapa curado ingrediente → alérgenos y obtener una PR
-   validada.
-3. Crear otra rama para clasificar la afinidad culinaria estacional de las
+1. Completar y fusionar la PR del mapa curado ingrediente → seguridad y dieta.
+2. Crear otra rama para clasificar la afinidad culinaria estacional de las
    recetas y obtener una PR validada.
-4. Solo después, crear una tercera rama para `RecommendationDecision`.
-5. Integrar restricciones híbridas, disponibilidad, caducidad, estación y
+3. Solo después, crear una tercera rama para `RecommendationDecision`.
+4. Integrar restricciones híbridas, disponibilidad, caducidad, estación y
    franja en una política reproducible.
-6. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
+5. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
 
 No se debe abordar todavía el rediseño de Home/chat, Realtime, tickets ni
 infraestructura cloud.

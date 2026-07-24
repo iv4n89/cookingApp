@@ -16,6 +16,11 @@
     "generate:expiration-migration": "node scripts/generate-expiration-state-migration.mjs",
     "check:expiration-migration": "node scripts/generate-expiration-state-migration.mjs --check",
     "test:expiration-migration": "node scripts/test-expiration-state-generator.mjs",
+    "validate:ingredient-allergens": "node scripts/validate-ingredient-allergen-profiles.mjs",
+    "test:ingredient-allergens": "node scripts/test-ingredient-allergen-profiles-validator.mjs",
+    "generate:ingredient-allergen-migration": "node scripts/generate-ingredient-allergen-migration.mjs",
+    "check:ingredient-allergen-migration": "node scripts/generate-ingredient-allergen-migration.mjs --check",
+    "test:ingredient-allergen-migration": "node scripts/test-ingredient-allergen-migration.mjs",
     "test:db": "supabase test db --local supabase/tests"
   },
   "devDependencies": {
