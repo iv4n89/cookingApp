@@ -1,6 +1,6 @@
 begin;
 
-select plan(20);
+select plan(24);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -304,6 +304,147 @@ select ok(
     ) e where e->>'recipeId' = '00000000-0000-0000-0000-000000009301'
   ),
   'La receta exclusiva de cena se excluye de pantry en el desayuno'
+);
+
+-- Migración 0060: household_today_decision prioriza, dentro de la franja, una
+-- candidata que usa un ingrediente crítico (priorityUsage > 0) con <=2
+-- faltantes, incluso si existe otra candidata de 0 faltantes que no usa ese
+-- crítico. Se ejercita en 'desayuno' y no en 'cena': en 'cena' ya existe
+-- 'Compota de manzana' (9301), que usa el crítico 'manzana golden' con 0
+-- faltantes -- al ser el mínimo absoluto, esa receta gana la selección tanto
+-- con la regla vieja ("menos faltantes gana") como con la nueva, y no permite
+-- distinguirlas. En 'desayuno' no hay ninguna candidata crítica con 0
+-- faltantes, así que el efecto de la regla nueva sí es observable.
+
+-- Segundo ingrediente crítico, independiente de 'manzana golden': anís
+-- estrellado (no usado por ninguna receta real del catálogo), forzado a
+-- 'priority' con el mismo perfil corto que el fixture de caducidad de arriba.
+insert into public.ingredient_expiration_profiles (ingredient_id, profile_id, match_type)
+values ((select id from public.ingredients where normalized_name = 'anis estrellado'), 'today-fresh', 'direct')
+on conflict (ingredient_id) do update set
+  profile_id = excluded.profile_id,
+  match_type = excluded.match_type;
+
+insert into public.pantry_items (id, user_id, household_id, ingredient_id, name, quantity, unit, category)
+values (
+  '00000000-0000-0000-0000-000000009102',
+  '00000000-0000-0000-0000-000000000901',
+  current_setting('test.today_household')::uuid,
+  (select id from public.ingredients where normalized_name = 'anis estrellado'),
+  'Anís estrellado', 50, 'g', 'Condimentos y edulcorantes'
+);
+
+insert into public.pantry_batches (
+  id, household_id, pantry_item_id, ingredient_id, name, category, unit,
+  initial_quantity, remaining_quantity, source, purchased_at
+) values (
+  '00000000-0000-0000-0000-000000009202',
+  current_setting('test.today_household')::uuid,
+  '00000000-0000-0000-0000-000000009102',
+  (select id from public.ingredients where normalized_name = 'anis estrellado'),
+  'Anís estrellado', 'Condimentos y edulcorantes', 'g', 50, 50, 'manual', current_timestamp - interval '30 days'
+);
+
+-- Candidata "fácil": usa el crítico (cubierto por el lote) + un ingrediente
+-- ausente de la despensa ('arroz bomba') => 1 faltante, priorityUsage > 0.
+insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
+values (
+  '00000000-0000-0000-0000-000000009501', 'Receta critica facil', 'generated', true, 'none',
+  jsonb_build_array(
+    jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'anis estrellado'),
+      'name', 'Anís estrellado', 'quantity', 5, 'unit', 'g'
+    ),
+    jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    )
+  ),
+  array['desayuno']
+);
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009501', array['summer'], 'high', 'curated', 'test-v1'
+  );
+end;
+$$;
+
+-- Candidata "difícil": mismo crítico + 3 ingredientes ausentes => 3 faltantes,
+-- por encima del umbral <=2: no debe desplazar a la candidata de 1 faltante
+-- aunque también use el crítico.
+insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
+values (
+  '00000000-0000-0000-0000-000000009502', 'Receta critica dificil', 'generated', true, 'none',
+  jsonb_build_array(
+    jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'anis estrellado'),
+      'name', 'Anís estrellado', 'quantity', 5, 'unit', 'g'
+    ),
+    jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+      'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+    ),
+    jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'harina de trigo'),
+      'name', 'Harina de trigo', 'quantity', 1, 'unit', 'kg'
+    ),
+    jsonb_build_object(
+      'ingredient_id', (select id from public.ingredients where normalized_name = 'tomate'),
+      'name', 'Tomate', 'quantity', 1, 'unit', 'ud'
+    )
+  ),
+  array['desayuno']
+);
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009502', array['summer'], 'high', 'curated', 'test-v1'
+  );
+end;
+$$;
+
+-- Candidata de 0 faltantes que NO usa el crítico (un único ingrediente básico
+-- asumido): con la regla antigua ("menos faltantes gana") sería la destacada.
+insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
+values (
+  '00000000-0000-0000-0000-000000009503', 'Receta 0 faltantes desayuno', 'generated', true, 'none',
+  jsonb_build_array(jsonb_build_object(
+    'ingredient_id', (select id from public.ingredients where normalized_name = 'sal fina'),
+    'name', 'Sal fina', 'quantity', 1, 'unit', 'g'
+  )),
+  array['desayuno']
+);
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009503', array['summer'], 'high', 'curated', 'test-v1'
+  );
+end;
+$$;
+
+select is(
+  public.household_today_decision('desayuno', 5)->'pantry'->'featured'->>'recipeId',
+  '00000000-0000-0000-0000-000000009501',
+  'La destacada del desayuno usa el crítico con <=2 faltantes, no la de 0 faltantes sin crítico'
+);
+select ok(
+  public.household_today_decision('desayuno', 5)->'pantry'->'featured'->'reasons' @> jsonb_build_array('uses_priority_ingredients'),
+  'La destacada elegida por criticidad trae el motivo uses_priority_ingredients'
+);
+select isnt(
+  public.household_today_decision('desayuno', 5)->'pantry'->'featured'->>'recipeId',
+  '00000000-0000-0000-0000-000000009502',
+  'La receta crítica con 3 faltantes (> 2) no desplaza a la de 1 faltante: entre críticas gana la de menos faltantes'
+);
+select ok(
+  public.household_today_decision('desayuno', 5)->'pantry'->'alternatives' @> jsonb_build_array(jsonb_build_object(
+    'recipeId', '00000000-0000-0000-0000-000000009503', 'mode', 'cook_now', 'missingIngredientCount', 0
+  )),
+  'La receta de 0 faltantes sin crítico queda relegada a alternativa, no destacada'
 );
 
 update public.user_preferences set special_needs = array['Halal'] where user_id = '00000000-0000-0000-0000-000000000901';

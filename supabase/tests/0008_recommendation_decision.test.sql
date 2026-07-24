@@ -1,6 +1,6 @@
 begin;
 
-select plan(46);
+select plan(47);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -450,6 +450,25 @@ select is(
   where c ->> 'recipeId' = 'recipe-menos-faltantes')::int),
   1,
   'La receta ganadora tiene exactamente 1 faltante frente a los 2 de la alternativa descartada'
+);
+
+-- Migración 0059: la pimienta negra se asume básica y no cuenta como faltante.
+select is(
+  (public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt','2026-07-24T10:00:00Z','season','summer','mealType',null,
+      'effectiveAllergens','[]'::jsonb,'requiredDiet','[]'::jsonb,
+      'unsupportedHouseholdNeeds','[]'::jsonb,'hasUnsupportedHouseholdNotes',false,
+      'inventoryBatches','[]'::jsonb,
+      'recipeInputs',jsonb_build_array(jsonb_build_object(
+        'recipeId','r-pep','allergens','[]'::jsonb,'mealTypes','[]'::jsonb,'seasons','[]'::jsonb,'seasonConfidence','low',
+        'ingredients',jsonb_build_array(jsonb_build_object(
+          'ingredientId','i-pep','canonicalIngredientId',null,'canonicalName','pimienta negra','name','Pimienta negra',
+          'requiredQuantity',1,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb))
+      ))
+    ),5)->'candidates'->0->'score'->>'missingIngredientCount'),
+  '0',
+  'La pimienta negra se asume básica y no cuenta como faltante'
 );
 
 select ok(
