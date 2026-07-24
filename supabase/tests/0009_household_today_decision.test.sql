@@ -1,6 +1,6 @@
 begin;
 
-select plan(17);
+select plan(20);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -186,6 +186,28 @@ begin
 end;
 $$;
 
+-- Séptima receta reusable, exclusiva de desayuno (meal_types = ['desayuno']), para
+-- demostrar el filtro de la pista pantry por franja horaria (migración 0058): en
+-- 'cena' esta candidata sigue siendo válida para el motor (puede salir en discover)
+-- pero queda fuera de pantry; en 'desayuno' sí es elegible para pantry.
+insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
+values (
+  '00000000-0000-0000-0000-000000009401', 'Tostada de prueba desayuno', 'generated', true, 'none',
+  jsonb_build_array(jsonb_build_object(
+    'ingredient_id', (select id from public.ingredients where normalized_name = 'arroz bomba'),
+    'name', 'Arroz bomba', 'quantity', 1, 'unit', 'kg'
+  )),
+  array['desayuno']
+);
+
+do $$
+begin
+  perform public.upsert_recipe_season_profile(
+    '00000000-0000-0000-0000-000000009401', array['summer'], 'high', 'curated', 'test-v1'
+  );
+end;
+$$;
+
 select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000901', true);
 select set_config('request.jwt.claim.role', 'authenticated', true);
 
@@ -253,6 +275,35 @@ select ok(
     public.household_today_decision('cena', 5)->'discover' @> jsonb_build_array(jsonb_build_object('recipeId', '00000000-0000-0000-0000-000000009308'))
   ),
   'Dos candidatas con el mismo tags[1] (italiana) no aparecen ambas en discover'
+);
+
+-- Filtro de la pista pantry por franja horaria (migración 0058).
+select ok(
+  not exists (
+    select 1 from jsonb_array_elements(
+      coalesce(public.household_today_decision('cena', 5)->'pantry'->'alternatives', '[]'::jsonb)
+      || jsonb_build_array(public.household_today_decision('cena', 5)->'pantry'->'featured')
+    ) e where e->>'recipeId' = '00000000-0000-0000-0000-000000009401'
+  ),
+  'La receta exclusiva de desayuno se excluye de pantry en la cena'
+);
+select ok(
+  exists (
+    select 1 from jsonb_array_elements(
+      coalesce(public.household_today_decision('desayuno', 5)->'pantry'->'alternatives', '[]'::jsonb)
+      || jsonb_build_array(public.household_today_decision('desayuno', 5)->'pantry'->'featured')
+    ) e where e->>'recipeId' = '00000000-0000-0000-0000-000000009401'
+  ),
+  'La receta exclusiva de desayuno es elegible en pantry para el desayuno'
+);
+select ok(
+  not exists (
+    select 1 from jsonb_array_elements(
+      coalesce(public.household_today_decision('desayuno', 5)->'pantry'->'alternatives', '[]'::jsonb)
+      || jsonb_build_array(public.household_today_decision('desayuno', 5)->'pantry'->'featured')
+    ) e where e->>'recipeId' = '00000000-0000-0000-0000-000000009301'
+  ),
+  'La receta exclusiva de cena se excluye de pantry en el desayuno'
 );
 
 update public.user_preferences set special_needs = array['Halal'] where user_id = '00000000-0000-0000-0000-000000000901';
