@@ -68,8 +68,8 @@ export async function askRecipe(query: string): Promise<{ recipe: Recipe | null;
 
 export type MealType = 'desayuno' | 'almuerzo' | 'merienda' | 'cena';
 
-// Decisión de hoy compuesta en backend: productos prioritarios, receta destacada,
-// alternativas y faltantes de compra. `mealType` es la franja horaria actual.
+// Decisión de hoy compuesta en backend: productos prioritarios, pista de despensa
+// (destacada + alternativas) y pista de descubrimiento. `mealType` es la franja actual.
 export async function todayDecision(mealType: MealType): Promise<TodayDecision | null> {
   const { data, error } = await supabase.rpc('household_today_decision', {
     p_meal_type: mealType,
