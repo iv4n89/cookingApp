@@ -68,43 +68,6 @@ export async function askRecipe(query: string): Promise<{ recipe: Recipe | null;
 
 export type MealType = 'desayuno' | 'almuerzo' | 'merienda' | 'cena';
 
-// pantry: cocinable ya o a falta de 1. buy: faltan 2-4 (sección "comprar algo más").
-// idea: sugerencia por preferencias cuando la despensa no da nada cocinable.
-export type RecipeBucket = 'pantry' | 'buy' | 'idea';
-
-export interface RecommendedRecipe {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string | null;
-  image_status: ImageStatus;
-  prep_time_min: number;
-  cook_time_min: number;
-  tags: string[];
-  match_count: number;
-  missing_count: number;
-  bucket: RecipeBucket;
-}
-
-// Recetas sugeridas de la Home, filtradas por la franja del día. Devuelve dos grupos vía
-// `bucket`: la sección principal (pantry/idea) y la de "comprar algo más" (buy). `exclude`
-// son ids ya mostrados, para rotar en el pull-to-refresh.
-export async function recommendedRecipes(
-  mealType: MealType,
-  exclude: string[] = [],
-  limit = 6,
-  extraLimit = 3,
-): Promise<RecommendedRecipe[]> {
-  const { data, error } = await supabase.rpc('recommended_recipes', {
-    p_limit: limit,
-    p_extra_limit: extraLimit,
-    p_meal_type: mealType,
-    p_exclude: exclude,
-  });
-  if (error) throw error;
-  return (data as RecommendedRecipe[]) ?? [];
-}
-
 // Decisión de hoy compuesta en backend: productos prioritarios, receta destacada,
 // alternativas y faltantes de compra. `mealType` es la franja horaria actual.
 export async function todayDecision(mealType: MealType): Promise<TodayDecision | null> {

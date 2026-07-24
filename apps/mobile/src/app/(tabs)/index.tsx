@@ -11,7 +11,6 @@ import { FeaturedRecipeCard } from '@/features/home/components/featured-recipe-c
 import { HomeAskInput } from '@/features/home/components/home-ask-input';
 import { HomeSectionHeader } from '@/features/home/components/home-section-header';
 import { PriorityProductsStrip } from '@/features/home/components/priority-products-strip';
-import { ShoppingMissingCard } from '@/features/home/components/shopping-missing-card';
 import { useHome } from '@/features/home/hooks/use-home';
 
 import { colors } from '@recetas/theme/tokens';
@@ -49,25 +48,12 @@ function emptyMessage(reason: TodayDecision['decisionReason'] | undefined): stri
 
 export default function InicioScreen() {
   const [askVisible, setAskVisible] = useState(false);
-  const {
-    decision,
-    loading,
-    refreshing,
-    refresh,
-    meal,
-    greetingText,
-    saved,
-    toggleSave,
-    addingShopping,
-    addedShopping,
-    addShoppingMissing,
-  } = useHome();
+  const { decision, loading, refreshing, refresh, meal, greetingText, saved, toggleSave } = useHome();
 
   const openRecipe = (id: string) => router.push({ pathname: '/receta/[id]', params: { id } });
   const priority = decision?.priorityProducts ?? [];
   const featured = decision?.featured ?? null;
   const alternatives = decision?.alternatives ?? [];
-  const shopping = decision?.shoppingMissing ?? [];
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
@@ -123,18 +109,6 @@ export default function InicioScreen() {
                 />
               ))}
             </View>
-          </View>
-        ) : null}
-
-        {shopping.length > 0 ? (
-          <View>
-            <HomeSectionHeader title="Te falta para cocinar" />
-            <ShoppingMissingCard
-              items={shopping}
-              adding={addingShopping}
-              added={addedShopping}
-              onAdd={addShoppingMissing}
-            />
           </View>
         ) : null}
       </ScrollView>
