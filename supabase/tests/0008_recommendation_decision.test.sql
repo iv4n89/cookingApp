@@ -1,6 +1,6 @@
 begin;
 
-select plan(41);
+select plan(42);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -241,6 +241,36 @@ select is(
     'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'incompatible-duplicate-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'incompatible-a', 'canonicalIngredientId', 'incompatible-duplicate', 'name', 'Mixto incompatible', 'requiredQuantity', 1, 'unit', 'g'), jsonb_build_object('ingredientId', 'incompatible-b', 'canonicalIngredientId', 'incompatible-duplicate', 'name', 'Mixto incompatible', 'requiredQuantity', 1, 'unit', 'ud'))))
   ), 0)->'candidates'->0->'score'->>'availabilityRatio')::numeric, 0::numeric,
   'Una unidad incompatible invalida la cobertura del grupo canónico'
+);
+
+select is(
+  (public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', '[]'::jsonb,
+      'recipeInputs', jsonb_build_array(
+        jsonb_build_object(
+          'recipeId', 'recipe-buy-two', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-a','canonicalIngredientId',null,'canonicalName','harina','name','Harina','requiredQuantity',1,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+            jsonb_build_object('ingredientId','ing-b','canonicalIngredientId',null,'canonicalName','tomate','name','Tomate','requiredQuantity',1,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        ),
+        jsonb_build_object(
+          'recipeId', 'recipe-ready', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-salt','canonicalIngredientId',null,'canonicalName','sal marina','name','Sal marina','requiredQuantity',1,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        )
+      )
+    ), 5
+  )->'candidates'->0->>'recipeId'),
+  'recipe-ready',
+  'La receta cocinable con básicos (0 faltantes) se ordena antes que la que exige comprar'
 );
 
 select ok(
