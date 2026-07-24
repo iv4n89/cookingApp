@@ -196,8 +196,11 @@ concreta y respaldada por una referencia verificable puede marcarse
 significan ausencia revisada cuando el estado es exacto.
 
 La tabla global, conceptualmente `ingredient_allergen_profiles`, se relaciona
-con el ingrediente exacto. En ejecución se intenta primero el ingrediente
-canónico y después el ingrediente directo, como en los perfiles de caducidad.
+con el ingrediente exacto de la línea de receta. La canonicalización culinaria
+no implica igualdad de formulación, alérgenos o dieta, por lo que un perfil
+canónico nunca sustituye al directo. Si el ingrediente exacto carece de perfil,
+la cobertura queda desconocida y la receta falla cerrado cuando haya una
+exclusión o dieta activa.
 
 Cuando el hogar tenga exclusiones:
 
@@ -562,7 +565,8 @@ disponibilidad.
 - Preparado variable diferenciado de composición exacta; falla cerrado con
   restricciones o dieta.
 - Rechazo de ingrediente, alérgeno o clave JSON duplicados.
-- Preferencia canónica y fallback directo.
+- Perfil exacto obligatorio; el perfil canónico no oculta ni sustituye al
+  directo.
 - DML global reservado a `service_role`.
 
 ### Filtros y autorización

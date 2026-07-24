@@ -423,8 +423,10 @@ Cubrir:
 - `authenticated` lee y no escribe;
 - `anon` no lee;
 - `service_role` conserva DML;
-- fixture runtime donde el perfil canónico gana al directo;
-- fixture donde un canónico sin perfil usa fallback directo.
+- fixture donde perfiles canónico y directo difieren y siempre gana el
+  ingrediente exacto;
+- fixture donde existe perfil canónico pero falta el directo y la cobertura
+  permanece desconocida.
 
 No crear una RPC pública en este slice. El fallback se probará con una consulta
 fixture equivalente a la que copiará el motor.
@@ -435,7 +437,8 @@ Actualizar `docs/PROJECT_STATUS.md` con rama, alcance y validaciones.
 
 - Copiar transacción/roles de
   `supabase/tests/0005_expiration_state_engine.test.sql`.
-- Copiar fixtures canonical-first/direct de ese mismo archivo.
+- Reutilizar la estructura de fixtures canónico/directo de ese mismo archivo,
+  invirtiendo la precedencia: seguridad usa solo el ingrediente exacto.
 - Copiar `policies_are`, `throws_ok` y claims de
   `supabase/tests/0001_rls_contracts.test.sql`.
 
@@ -478,7 +481,8 @@ Crear:
 - `supabase/migrations/0052_recipe_season_profiles.sql`;
 - `supabase/functions/_shared/recipe-seasons.ts`;
 - `supabase/functions/_shared/recipe-seasons.test.ts`;
-- `supabase/tests/0007_recipe_season_profiles.test.sql`.
+- `supabase/tests/0007_recipe_season_profiles.test.sql`;
+- `scripts/test-recipe-season-profile-concurrency.mjs`.
 
 La migración crea:
 
@@ -558,6 +562,27 @@ función solo es ejecutable por `service_role`. Una prueba de integración con
 dos conexiones simultáneas cubre la carrera `curated` frente a
 `generated/backfill`.
 
+`scripts/test-recipe-season-profile-concurrency.mjs` obtiene `DB_URL` del
+Supabase local mediante `supabase status -o env`, crea una receta fixture
+aislada y abre dos procesos `psql` simultáneos mediante `Promise.all`. Cada
+proceso usa su propia conexión y llama la función en conflicto; el harness
+repite ambas órdenes y varias rondas, consulta el perfil final, exige
+`source = curated` y limpia el fixture en `finally`. Debe fallar si Supabase
+local o `psql` no están disponibles; no se convierte en skip.
+
+Añadir al `package.json`:
+
+```json
+"test:recipe-season-concurrency": "node scripts/test-recipe-season-profile-concurrency.mjs"
+```
+
+El gate de esta fase es:
+
+```bash
+node --check scripts/test-recipe-season-profile-concurrency.mjs
+pnpm test:recipe-season-concurrency
+```
+
 ### Guardas
 
 - No guardar tags libres como estación.
@@ -622,6 +647,7 @@ node --check scripts/validate-recipe-season-profiles.mjs
 node --check scripts/test-recipe-season-profiles-validator.mjs
 pnpm validate:recipe-seasons
 pnpm test:recipe-seasons
+pnpm test:recipe-season-concurrency
 git diff --check
 ```
 
@@ -710,6 +736,7 @@ deno check \
   supabase/functions/index-recipe/index.ts
 pnpm validate:recipe-seasons
 pnpm test:recipe-seasons
+pnpm test:recipe-season-concurrency
 pnpm lint
 pnpm typecheck
 git diff --check
@@ -721,7 +748,8 @@ Prueba local sin cloud:
 2. repetir la misma entrada para activar dedup;
 3. comprobar que el UUID devuelto conserva el perfil curado;
 4. lanzar escrituras concurrentes `curated` y `generated/backfill` sobre la
-   misma receta y comprobar que gana `curated`;
+   misma receta mediante `pnpm test:recipe-season-concurrency` y comprobar que
+   gana `curated`;
 5. insertar una receta sin perfil y comprobar que sigue válida.
 
 ### Guardas
@@ -777,6 +805,7 @@ Actualizar `docs/PROJECT_STATUS.md`.
 ```bash
 pnpm validate:recipe-seasons
 pnpm test:recipe-seasons
+pnpm test:recipe-season-concurrency
 deno test supabase/functions/_shared/recipe-seasons.test.ts
 deno check \
   supabase/functions/_shared/gemini.ts \
@@ -924,8 +953,8 @@ El helper:
 7. resuelve ingrediente canónico;
 8. evalúa caducidad con el mismo `evaluated_at`;
 9. carga recetas reutilizables y normaliza su JSON;
-10. adjunta alérgenos, dietas incompatibles y estado de composición
-    canonical-first/direct fallback;
+10. adjunta alérgenos, dietas incompatibles y estado de composición del
+    ingrediente exacto; un perfil canónico no actúa como fallback;
 11. adjunta perfil estacional o valores nulos;
 12. devuelve el snapshot camelCase del DTO.
 
@@ -952,8 +981,9 @@ Seguridad:
   `0036_household_inventory_commands.sql:4-22`.
 - Copiar lote/proyección de
   `0050_expiration_state_engine.sql:95-137`.
-- Copiar canonical-first/direct de
-  `0050_expiration_state_engine.sql:120-125`.
+- Copiar la forma de join de perfiles de
+  `0050_expiration_state_engine.sql:120-125`, pero no su precedencia:
+  caducidad admite canonicalización; seguridad exige coincidencia directa.
 - Copiar preferencias de
   `0033_preference_maps.sql:101-118`, cambiando la fuente al hogar.
 - Copiar JSON de ingredientes de
@@ -1145,6 +1175,7 @@ pnpm check:ingredient-allergen-migration
 pnpm test:ingredient-allergen-migration
 pnpm validate:recipe-seasons
 pnpm test:recipe-seasons
+pnpm test:recipe-season-concurrency
 deno test supabase/functions/_shared/recipe-seasons.test.ts
 deno check \
   supabase/functions/_shared/gemini.ts \
@@ -1193,6 +1224,7 @@ pnpm check:ingredient-allergen-migration
 pnpm test:ingredient-allergen-migration
 pnpm validate:recipe-seasons
 pnpm test:recipe-seasons
+pnpm test:recipe-season-concurrency
 deno test supabase/functions/_shared/recipe-seasons.test.ts
 pnpm test:db
 pnpm lint
