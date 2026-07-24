@@ -46,8 +46,8 @@ La PR #95 se revisó de forma independiente y se fusionó como `7fca4bd` el
 - evalúa disponibilidad, FEFO simulado y ranking sin IA ni escrituras;
 - expone la RPC autenticada `household_recommendation_decision(...)`.
 
-Validaciones: 30 contratos pgTAP en `supabase/tests/0008`; `pnpm test:db` con
-8 archivos y 159 pruebas (41 de RecommendationDecision); cobertura de hogar
+Validaciones: `pnpm test:db` con 8 archivos y 159 pruebas (41 contratos pgTAP
+de RecommendationDecision en `supabase/tests/0008`); cobertura de hogar
 compartido, restricciones, estación, seguridad, RPC, selección `cook_now` y no
 mutación del inventario.
 
