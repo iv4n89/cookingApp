@@ -188,3 +188,118 @@ export interface SearchRecipesResponse {
   recipe: Recipe;
   origin: RecipeOrigin;
 }
+
+export type RecommendationMode = "cook_now" | "shop_then_cook";
+
+export type RecommendationReasonCode =
+  | "ready_from_pantry"
+  | "uses_priority_ingredients"
+  | "uses_consume_soon_ingredients"
+  | "seasonal_fit"
+  | "meal_type_fit"
+  | "requires_shopping"
+  | "unknown_ingredient"
+  | "unsupported_unit";
+
+export interface RecommendationScoreBreakdown {
+  priorityUsage: number;
+  consumeSoonUsage: number;
+  seasonalAffinity: number;
+  mealTypeMatch: number;
+  availabilityRatio: number;
+  missingIngredientCount: number;
+}
+
+export type RecommendationMissingReason =
+  | "missing"
+  | "insufficient_quantity"
+  | "unknown_ingredient"
+  | "unsupported_unit";
+
+export interface RecommendationMissingIngredient {
+  ingredientId: string | null;
+  name: string;
+  requiredQuantity: number | null;
+  unit: string | null;
+  reason: RecommendationMissingReason;
+}
+
+export interface RecommendationCandidate {
+  recipeId: string;
+  mode: RecommendationMode;
+  rank: number;
+  score: RecommendationScoreBreakdown;
+  reasonCodes: RecommendationReasonCode[];
+  usedBatchIds: string[];
+  missingIngredients: RecommendationMissingIngredient[];
+}
+
+export type RecommendationSeason = "spring" | "summer" | "autumn" | "winter";
+export type RecommendationSeasonKey = RecommendationSeason | "all_year";
+export type RecommendationMealType = "desayuno" | "almuerzo" | "merienda" | "cena";
+
+export interface RecommendationInventoryBatchInput {
+  batchId: string;
+  canonicalIngredientId: string;
+  remainingQuantity: number;
+  unit: string | null;
+  acquiredAt: string;
+  expirationStatus: "fresh" | "consume_soon" | "priority" | null;
+}
+
+export interface RecommendationRecipeIngredientInput {
+  ingredientId: string | null;
+  canonicalIngredientId: string | null;
+  name: string;
+  requiredQuantity: number | null;
+  unit: string | null;
+  safetyAllergens: string[] | null;
+  safetyIncompatibleDiets: string[] | null;
+  safetyCompositionStatus: "exact_reviewed" | "variable_unknown" | null;
+  safetyProfileVersion: string | null;
+}
+
+export interface RecommendationRecipeInput {
+  recipeId: string;
+  allergens: string[] | null;
+  diet: string[] | null;
+  mealTypes: RecommendationMealType[];
+  seasons: RecommendationSeasonKey[];
+  seasonConfidence: "high" | "medium" | "low" | null;
+  seasonSource: "curated" | "generated" | "backfill" | null;
+  seasonClassifierVersion: string | null;
+  ingredients: RecommendationRecipeIngredientInput[];
+}
+
+export interface RecommendationSnapshot {
+  householdId: string;
+  requestingUserId: string;
+  evaluatedAt: string;
+  evaluationDate: string;
+  season: RecommendationSeason;
+  mealType: RecommendationMealType | null;
+  policyVersion: string;
+  assumedBasicsVersion: string;
+  ingredientSafetyDatasetVersion: string;
+  effectiveAllergens: string[];
+  requiredDiet: string[];
+  unsupportedHouseholdNeeds: string[];
+  hasUnsupportedHouseholdNotes: boolean;
+  inventoryBatches: RecommendationInventoryBatchInput[];
+  recipeInputs: RecommendationRecipeInput[];
+}
+
+export interface RecommendationDecision {
+  policyVersion: string;
+  evaluatedAt: string;
+  season: RecommendationSeason;
+  mealType: RecommendationMealType | null;
+  selectedRecipeId: string | null;
+  candidates: RecommendationCandidate[];
+  decisionReason:
+    | "selected_cook_now"
+    | "selected_shop_then_cook"
+    | "no_safe_candidate"
+    | "unsupported_household_restriction";
+  snapshot: RecommendationSnapshot;
+}
