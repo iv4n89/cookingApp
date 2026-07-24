@@ -75,6 +75,8 @@ export default function RecipeDetailScreen() {
 
                 <IngredientList key={servings} ingredients={scaledIngredients} pantry={pantry} canonMap={canonMap} />
 
+                <RecipeAiBar onPress={() => setAiVisible(true)} />
+
                 <View>
                   <Text className="mb-stack-md font-sans-semibold text-headline-sm uppercase tracking-wider text-primary">
                     Preparación
@@ -97,7 +99,6 @@ export default function RecipeDetailScreen() {
             </View>
           </ScrollView>
 
-          <RecipeAiBar onPress={() => setAiVisible(true)} />
           <StartCookingButton cooking={cooking} cooked={cooked} onPress={startCooking} />
 
           <RecipeAiModal
