@@ -1,6 +1,6 @@
 begin;
 
-select plan(30);
+select plan(31);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -104,6 +104,23 @@ select is(
   )->>'selectedRecipeId',
   'priority-recipe',
   'El aprovechamiento prioritario domina la afinidad estacional'
+);
+
+select is(
+  public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'effectiveAllergens', jsonb_build_array('nuts'), 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', '[]'::jsonb,
+      'recipeInputs', jsonb_build_array(jsonb_build_object(
+        'recipeId', 'uncovered-recipe', 'allergens', null, 'mealTypes', '[]'::jsonb,
+        'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', '[]'::jsonb
+      ))
+    ), 0
+  )->>'decisionReason',
+  'no_safe_candidate',
+  'Una receta sin ingredientes no demuestra seguridad bajo una exclusión activa'
 );
 
 select ok(

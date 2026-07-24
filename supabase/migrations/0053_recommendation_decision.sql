@@ -99,6 +99,9 @@ begin
 
   for v_recipe in select value from jsonb_array_elements(coalesce(p_snapshot->'recipeInputs', '[]'::jsonb)) loop
     v_recipe_safe := true;
+    if v_active_restrictions and jsonb_array_length(coalesce(v_recipe->'ingredients', '[]'::jsonb)) = 0 then
+      continue;
+    end if;
     if v_active_restrictions and (
       (v_recipe->'allergens') ?| coalesce(array(select jsonb_array_elements_text(p_snapshot->'effectiveAllergens')), '{}')
     ) then
