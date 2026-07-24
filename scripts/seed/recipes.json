@@ -600,5 +600,284 @@
       { "order": 3, "instruction": "Bate los huevos con el azúcar, integra el chocolate y por último la harina tamizada.", "timerSeconds": null },
       { "order": 4, "instruction": "Hornea 22-25 minutos: debe quedar hecho por fuera y jugoso por dentro.", "timerSeconds": 1380 }
     ]
+  },
+  {
+    "title": "Cerdo con patatas",
+    "description": "Guiso sencillo de cerdo con patatas y cebolla, de toda la vida.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 40,
+    "calories": 480,
+    "tags": ["española", "guiso", "casera"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Carne de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Patata", "quantity": 500, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Dora la carne de cerdo troceada con un poco de aceite.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade la cebolla y el ajo picados y pocha unos minutos.", "timerSeconds": 300 },
+      { "order": 3, "instruction": "Incorpora las patatas en trozos, cubre con agua y sal, y cuece hasta que estén tiernas.", "timerSeconds": 1500 }
+    ]
+  },
+  {
+    "title": "Lomo de cerdo a la plancha con cebolla",
+    "description": "Filetes de lomo de cerdo a la plancha con cebolla caramelizada, plato rápido y sabroso.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 380,
+    "tags": ["española", "plancha", "rápida"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Lomo de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
+      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Corta la cebolla en juliana fina.", "timerSeconds": null },
+      { "order": 2, "instruction": "Pocha la cebolla a fuego suave con parte del aceite hasta que quede dorada y caramelizada.", "timerSeconds": 900 },
+      { "order": 3, "instruction": "Sazona los filetes de lomo y hazlos a la plancha con el resto del aceite, 2 minutos por cada lado.", "timerSeconds": 240 },
+      { "order": 4, "instruction": "Sirve el lomo con la cebolla por encima y perejil picado.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Magro con tomate",
+    "description": "Guiso de magro de cerdo con tomate, cebolla y ajo, ideal con arroz o pan.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 35,
+    "calories": 410,
+    "tags": ["española", "guiso", "casera"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Magro de cerdo", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Tomate maduro", "quantity": 500, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Dora el magro troceado en una cazuela con el aceite.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade la cebolla y el ajo picados y rehoga hasta que estén blandos.", "timerSeconds": 300 },
+      { "order": 3, "instruction": "Incorpora el tomate troceado y sal, y cuece a fuego lento hasta que espese.", "timerSeconds": 1800 }
+    ]
+  },
+  {
+    "title": "Salchichas frescas con pimientos",
+    "description": "Salchichas frescas salteadas con pimiento rojo y verde, plato rápido de sartén.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 420,
+    "tags": ["española", "sartén", "rápida"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Salchicha fresca", "quantity": 500, "unit": "g", "substitutions": [] },
+      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Pimiento verde", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Corta los pimientos y la cebolla en tiras.", "timerSeconds": null },
+      { "order": 2, "instruction": "Dora las salchichas en una sartén con el aceite y retíralas.", "timerSeconds": 600 },
+      { "order": 3, "instruction": "En la misma sartén, saltea los pimientos y la cebolla con sal hasta que estén tiernos.", "timerSeconds": 600 },
+      { "order": 4, "instruction": "Vuelve a añadir las salchichas y saltea todo junto 2 minutos más.", "timerSeconds": 120 }
+    ]
+  },
+  {
+    "title": "Pollo al ajillo",
+    "description": "Pollo troceado dorado con mucho ajo y un toque de vino blanco, receta rápida de siempre.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 25,
+    "calories": 350,
+    "tags": ["española", "sartén", "clásica"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Pechuga de pollo", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Ajo", "quantity": 6, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 40, "unit": "ml", "substitutions": [] },
+      { "name": "vino blanco", "quantity": 100, "unit": "ml", "substitutions": [] },
+      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Trocea la pechuga de pollo y sazona.", "timerSeconds": null },
+      { "order": 2, "instruction": "Dora el pollo en una sartén con el aceite hasta que quede dorado por fuera.", "timerSeconds": 480 },
+      { "order": 3, "instruction": "Añade el ajo laminado y rehoga sin que se queme.", "timerSeconds": 120 },
+      { "order": 4, "instruction": "Vierte el vino blanco, deja reducir y cocina hasta que el pollo esté hecho.", "timerSeconds": 300 },
+      { "order": 5, "instruction": "Espolvorea con perejil picado antes de servir.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Pechuga de pollo a la plancha con limón",
+    "description": "Pechuga de pollo a la plancha con un toque de limón y perejil, ligera y rápida.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 15,
+    "calories": 260,
+    "tags": ["española", "plancha", "ligera"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Pechuga de pollo", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
+      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Sazona las pechugas y frótalas con el ajo picado.", "timerSeconds": null },
+      { "order": 2, "instruction": "Hazlas a la plancha con el aceite, unos 4 minutos por cada lado.", "timerSeconds": 480 },
+      { "order": 3, "instruction": "Riega con el zumo de limón recién exprimido y espolvorea con perejil antes de servir.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Muslos de pollo al horno con patatas",
+    "description": "Muslos de pollo al horno con patatas y romero, plato jugoso de horno.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 45,
+    "calories": 480,
+    "tags": ["española", "horno", "casera"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Muslo de pollo", "quantity": 800, "unit": "g", "substitutions": [] },
+      { "name": "Patata", "quantity": 500, "unit": "g", "substitutions": [] },
+      { "name": "Ajo", "quantity": 3, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
+      { "name": "Romero", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Precalienta el horno a 200 °C y corta las patatas en cuartos.", "timerSeconds": null },
+      { "order": 2, "instruction": "Coloca los muslos y las patatas en una bandeja con el ajo, el aceite, el romero y la sal.", "timerSeconds": null },
+      { "order": 3, "instruction": "Hornea hasta que el pollo esté dorado y las patatas tiernas.", "timerSeconds": 2700 }
+    ]
+  },
+  {
+    "title": "Arroz con pollo sencillo",
+    "description": "Arroz meloso con pollo, pimiento y cebolla, receta sencilla de cuchara.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 30,
+    "calories": 430,
+    "tags": ["española", "arroz", "casera"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Pechuga de pollo", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Arroz", "quantity": 300, "unit": "g", "substitutions": [] },
+      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 30, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Trocea el pollo y dóralo en una cazuela con el aceite.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade la cebolla y el pimiento picados y rehoga hasta que estén tiernos.", "timerSeconds": 600 },
+      { "order": 3, "instruction": "Incorpora el arroz, cubre con agua y sal, y cuece hasta que el arroz esté en su punto.", "timerSeconds": 1200 }
+    ]
+  },
+  {
+    "title": "Ternera guisada con guisantes",
+    "description": "Guiso tradicional de ternera con guisantes y zanahoria, tierno y de cuchara.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 60,
+    "calories": 420,
+    "tags": ["española", "guiso", "casera"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "carne de ternera para estofado", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Guisante", "quantity": 200, "unit": "g", "substitutions": [] },
+      { "name": "Zanahoria", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Dora la carne de ternera troceada en una cazuela con el aceite.", "timerSeconds": null },
+      { "order": 2, "instruction": "Añade la cebolla y la zanahoria picadas y rehoga unos minutos.", "timerSeconds": 300 },
+      { "order": 3, "instruction": "Cubre con agua y sal, y cuece a fuego lento hasta que la carne esté tierna.", "timerSeconds": 3000 },
+      { "order": 4, "instruction": "Incorpora los guisantes y cuece 10 minutos más.", "timerSeconds": 600 }
+    ]
+  },
+  {
+    "title": "Filete de ternera a la plancha",
+    "description": "Filete de ternera a la plancha con ajo y perejil, receta mínima y rápida.",
+    "servings": 4,
+    "prep_time_min": 5,
+    "cook_time_min": 10,
+    "calories": 300,
+    "tags": ["española", "plancha", "rápida"],
+    "allergens": [],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "filetes de ternera tierna", "quantity": 600, "unit": "g", "substitutions": [] },
+      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
+      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Sazona los filetes de ternera y frótalos con el ajo picado.", "timerSeconds": null },
+      { "order": 2, "instruction": "Haz los filetes a la plancha bien caliente con el aceite, 2 minutos por cada lado.", "timerSeconds": 240 },
+      { "order": 3, "instruction": "Espolvorea con perejil picado antes de servir.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Albóndigas en salsa de tomate",
+    "description": "Albóndigas de ternera caseras cocinadas en salsa de tomate, receta de siempre.",
+    "servings": 4,
+    "prep_time_min": 20,
+    "cook_time_min": 35,
+    "calories": 440,
+    "tags": ["española", "guiso", "casera"],
+    "allergens": ["gluten", "egg"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Carne picada de ternera", "quantity": 500, "unit": "g", "substitutions": [] },
+      { "name": "Huevo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Pan rallado", "quantity": 50, "unit": "g", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
+      { "name": "Salsa de tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Mezcla la carne picada con el huevo, el pan rallado y sal, y forma las albóndigas.", "timerSeconds": null },
+      { "order": 2, "instruction": "Dora las albóndigas en una cazuela con el aceite y resérvalas.", "timerSeconds": 480 },
+      { "order": 3, "instruction": "Vierte la salsa de tomate en la misma cazuela y calienta.", "timerSeconds": 300 },
+      { "order": 4, "instruction": "Incorpora las albóndigas a la salsa y cuece a fuego lento hasta que estén hechas.", "timerSeconds": 1200 }
+    ]
   }
 ]

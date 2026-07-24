@@ -25,6 +25,17 @@
     { "title": "Salmón al horno con verduras", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
     { "title": "Crema de calabaza", "seasons": ["autumn", "winter"], "confidence": "high", "source": "curated" },
     { "title": "Tortitas americanas", "seasons": ["all_year"], "confidence": "high", "source": "curated" },
-    { "title": "Brownie de chocolate", "seasons": ["all_year"], "confidence": "high", "source": "curated" }
+    { "title": "Brownie de chocolate", "seasons": ["all_year"], "confidence": "high", "source": "curated" },
+    { "title": "Cerdo con patatas", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Lomo de cerdo a la plancha con cebolla", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Magro con tomate", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Salchichas frescas con pimientos", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Pollo al ajillo", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Pechuga de pollo a la plancha con limón", "seasons": ["spring", "summer"], "confidence": "medium", "source": "curated" },
+    { "title": "Muslos de pollo al horno con patatas", "seasons": ["autumn", "winter"], "confidence": "medium", "source": "curated" },
+    { "title": "Arroz con pollo sencillo", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Ternera guisada con guisantes", "seasons": ["autumn", "winter"], "confidence": "medium", "source": "curated" },
+    { "title": "Filete de ternera a la plancha", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Albóndigas en salsa de tomate", "seasons": ["all_year"], "confidence": "medium", "source": "curated" }
   ]
 }
