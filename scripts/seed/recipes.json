@@ -4039,7 +4039,9 @@
       "arroz",
       "casero"
     ],
-    "allergens": [],
+    "allergens": [
+      "egg"
+    ],
     "diet": [
       "vegetarian"
     ],
