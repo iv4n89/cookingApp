@@ -136,6 +136,33 @@ Un dataset versionado cubre cada ingrediente exacto del catálogo y declara:
 - fuente y referencia;
 - versión del dataset.
 
+El manifiesto declara también qué exclusiones soporta esa versión. La política
+v1 cubre las claves actuales que admiten una relación conservadora por
+ingrediente:
+
+- `gluten`, `crustaceans`, `molluscs`, `egg`, `fish`, `peanut`, `soy`;
+- `milk`, `nuts`, `celery`, `mustard`, `sesame`;
+- `pork` y `alcohol` como exclusiones de producto, no como alérgenos.
+
+`fructose`, `histamine` y `sorbitol` dependen de cantidad, procesamiento y
+tolerancia clínica, por lo que no se representarán como booleanos seguros en
+v1. Halal y kosher tampoco se tratarán como certificaciones. Esas necesidades,
+el resto de condiciones clínicas y las notas libres producen
+`unsupported_household_restriction`.
+
+Las necesidades soportadas por la política v1 son: `Frutos secos`,
+`Cacahuete`, `Marisco`, `Pescado`, `Huevo`, `Leche`, `Soja`, `Sésamo`,
+`Mostaza`, `Apio`, `Lactosa`, `Gluten / celiaquía`, `Sin cerdo` y
+`Sin alcohol`. La lista forma parte de `policyVersion`; cualquier otro valor
+falla cerrado aunque tenga un mapeo aproximado heredado.
+
+La curación regulatoria parte del
+[anexo II del Reglamento (UE) 1169/2011](https://eur-lex.europa.eu/legal-content/ES/ALL/?uri=celex%3A32011R1169)
+y de la
+[guía de alérgenos de AESAN](https://www.aesan.gob.es/AECOSAN/docs/documentos/seguridad_alimentaria/gestion_riesgos/guia_aplicacion_informacion.pdf).
+El producto no amplía silenciosamente ese marco: sulfitos y altramuces exigen
+una futura ampliación del vocabulario y de la captura de preferencias.
+
 La ausencia de una fila significa “sin revisar”, no “sin alérgenos”. El
 generador de la migración exige cobertura exacta del seed, rechaza duplicados,
 valores desconocidos y referencias a ingredientes inexistentes, e incluye un
@@ -423,6 +450,7 @@ interface RecommendationSnapshot {
   effectiveAllergens: string[];
   requiredDiet: string[];
   unsupportedHouseholdNeeds: string[];
+  hasUnsupportedHouseholdNotes: boolean;
   inventoryBatches: RecommendationInventoryBatchInput[];
   recipeInputs: RecommendationRecipeInput[];
 }

@@ -83,8 +83,10 @@ se corrige primero en una rama `fix/*`, con PR y revisión.
 La Fase 2 continúa con la decisión reproducible de recomendaciones. El diseño
 aprobado se documenta en
 `docs/superpowers/specs/2026-07-24-recommendation-decision-design.md`.
+El plan ejecutable de las tres PR se documenta en
+`docs/superpowers/plans/2026-07-24-recommendation-decision.md`.
 
-1. Diseñar el plan detallado, sin implementar todavía.
+1. Validar y fusionar la documentación de diseño y plan.
 2. Crear una rama para el mapa curado ingrediente → alérgenos y obtener una PR
    validada.
 3. Crear otra rama para clasificar la afinidad culinaria estacional de las
