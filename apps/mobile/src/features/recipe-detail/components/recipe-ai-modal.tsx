@@ -2,6 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { KeyboardStickyView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { sendChat, type ChatMessage } from '@/lib/chat';
@@ -32,6 +33,13 @@ export function RecipeAiModal({
   const [failed, setFailed] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
 
+  // Closing while a request is in flight would let the reply mutate the detail behind the
+  // user's back (even mid-cooking), so the modal stays open until the turn resolves.
+  function close() {
+    if (sending) return;
+    onClose();
+  }
+
   async function send() {
     const question = text.trim();
     if (!question || sending) return;
@@ -52,10 +60,10 @@ export function RecipeAiModal({
   }
 
   return (
-    <Modal visible={visible} transparent animationType="none" onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType="none" onRequestClose={close}>
       <BlurView intensity={28} tint="dark" style={{ flex: 1 }}>
         {/* Tocar fuera cierra. La hoja se ancla arriba para dejar sitio al teclado. */}
-        <Pressable className="flex-1" onPress={onClose}>
+        <Pressable className="flex-1" onPress={close}>
           <SafeAreaView edges={['top']} className="px-container-padding">
             <Pressable
               onPress={() => {}}
@@ -63,7 +71,7 @@ export function RecipeAiModal({
               <View className="flex-row items-center justify-between">
                 <Text className="font-sans-bold text-headline-sm text-primary">Modificar receta</Text>
                 <Pressable
-                  onPress={onClose}
+                  onPress={close}
                   hitSlop={8}
                   accessibilityRole="button"
                   accessibilityLabel="Cerrar">
@@ -89,26 +97,28 @@ export function RecipeAiModal({
                 </Text>
               ) : null}
 
-              <View className="flex-row items-end gap-stack-md">
-                <TextInput
-                  multiline
-                  value={text}
-                  onChangeText={setText}
-                  placeholder="p. ej. no tengo nata, ¿la puedo sustituir?"
-                  placeholderTextColor={colors['outline-variant']}
-                  className="max-h-28 flex-1 rounded-lg border border-outline-variant px-stack-lg py-gutter font-sans text-body-lg text-on-surface"
-                />
-                <Pressable
-                  onPress={send}
-                  disabled={!text.trim() || sending}
-                  accessibilityRole="button"
-                  accessibilityLabel="Enviar petición"
-                  className={`items-center justify-center rounded-lg bg-primary p-gutter ${
-                    !text.trim() || sending ? 'opacity-50' : ''
-                  }`}>
-                  <MaterialIcons name="arrow-upward" size={22} color={colors['on-primary']} />
-                </Pressable>
-              </View>
+              <KeyboardStickyView>
+                <View className="flex-row items-end gap-stack-md">
+                  <TextInput
+                    multiline
+                    value={text}
+                    onChangeText={setText}
+                    placeholder="p. ej. no tengo nata, ¿la puedo sustituir?"
+                    placeholderTextColor={colors['outline-variant']}
+                    className="max-h-28 flex-1 rounded-lg border border-outline-variant px-stack-lg py-gutter font-sans text-body-lg text-on-surface"
+                  />
+                  <Pressable
+                    onPress={send}
+                    disabled={!text.trim() || sending}
+                    accessibilityRole="button"
+                    accessibilityLabel="Enviar petición"
+                    className={`items-center justify-center rounded-lg bg-primary p-gutter ${
+                      !text.trim() || sending ? 'opacity-50' : ''
+                    }`}>
+                    <MaterialIcons name="arrow-upward" size={22} color={colors['on-primary']} />
+                  </Pressable>
+                </View>
+              </KeyboardStickyView>
             </Pressable>
           </SafeAreaView>
         </Pressable>
