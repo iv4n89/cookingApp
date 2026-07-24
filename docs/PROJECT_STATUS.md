@@ -12,7 +12,7 @@ otro chat o editor, debe leerse antes del plan maestro:
 | --- | --- | --- |
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
-| Fase 2 — Caducidad y decisión reproducible | En curso | Dataset en PR #90; motor de estados en desarrollo |
+| Fase 2 — Caducidad y decisión reproducible | En curso | Dataset en PR #90; motor de estados en PR #91 |
 | Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Aplazada | Solo con infraestructura remota |
@@ -20,9 +20,9 @@ otro chat o editor, debe leerse antes del plan maestro:
 
 El primer slice de la Fase 2 construyó el dataset trazable de perfiles
 aproximados de caducidad y su validador offline en la PR #90, fusionada como
-`3dfb64a`. El segundo slice, en `feat/expiration-state-engine`, carga esos datos
-en Postgres y calcula el snapshot de estados por hogar. No modifica todavía la
-interfaz ni el ranking.
+`3dfb64a`. El segundo slice cargó esos datos en Postgres y añadió el snapshot
+de estados por hogar en la PR #91, fusionada como `9ab6e5f`. Ninguno modificó
+la interfaz ni el ranking.
 
 ## Decisiones vigentes
 
@@ -80,15 +80,21 @@ se corrige primero en una rama `fix/*`, con PR y revisión.
 
 ## Siguiente trabajo
 
-La Fase 2 continúa con el motor de estados aproximados. Después de fusionar y
-validar este segundo slice:
+La Fase 2 continúa con la decisión reproducible de recomendaciones. El diseño
+aprobado se documenta en
+`docs/superpowers/specs/2026-07-24-recommendation-decision-design.md`.
+El plan ejecutable de las tres PR se documenta en
+`docs/superpowers/plans/2026-07-24-recommendation-decision.md`.
 
-1. Actualizar `main` y crear una rama para `RecommendationDecision`.
-2. Diseñar el snapshot de entrada, candidatos, desglose de score, razones y
-   versión de política.
-3. Integrar disponibilidad y estados de caducidad después de alergias y
-   restricciones.
-4. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
+1. Validar y fusionar la documentación de diseño y plan.
+2. Crear una rama para el mapa curado ingrediente → alérgenos y obtener una PR
+   validada.
+3. Crear otra rama para clasificar la afinidad culinaria estacional de las
+   recetas y obtener una PR validada.
+4. Solo después, crear una tercera rama para `RecommendationDecision`.
+5. Integrar restricciones híbridas, disponibilidad, caducidad, estación y
+   franja en una política reproducible.
+6. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
 
 No se debe abordar todavía el rediseño de Home/chat, Realtime, tickets ni
 infraestructura cloud.
