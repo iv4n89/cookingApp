@@ -1,10 +1,13 @@
 import { useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ServingsStepper } from '@/components/servings-stepper';
 import { IngredientList } from '@/features/recipe-detail/components/ingredient-list';
 import { RatingStars } from '@/features/recipe-detail/components/rating-stars';
+import { RecipeAiBar } from '@/features/recipe-detail/components/recipe-ai-bar';
+import { RecipeAiModal } from '@/features/recipe-detail/components/recipe-ai-modal';
 import { RecipeDetailMessage } from '@/features/recipe-detail/components/recipe-detail-message';
 import { RecipeHero } from '@/features/recipe-detail/components/recipe-hero';
 import { RecipeMetaRow } from '@/features/recipe-detail/components/recipe-meta-row';
@@ -35,7 +38,9 @@ export default function RecipeDetailScreen() {
     cooked,
     cookFailed,
     startCooking,
+    applyRecipe,
   } = useRecipeDetail(id, servingsParam);
+  const [aiVisible, setAiVisible] = useState(false);
 
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
@@ -70,6 +75,8 @@ export default function RecipeDetailScreen() {
 
                 <IngredientList key={servings} ingredients={scaledIngredients} pantry={pantry} canonMap={canonMap} />
 
+                <RecipeAiBar onPress={() => setAiVisible(true)} />
+
                 <View>
                   <Text className="mb-stack-md font-sans-semibold text-headline-sm uppercase tracking-wider text-primary">
                     Preparación
@@ -93,6 +100,13 @@ export default function RecipeDetailScreen() {
           </ScrollView>
 
           <StartCookingButton cooking={cooking} cooked={cooked} onPress={startCooking} />
+
+          <RecipeAiModal
+            visible={aiVisible}
+            recipe={recipe}
+            onClose={() => setAiVisible(false)}
+            onRecipeUpdate={applyRecipe}
+          />
         </View>
       )}
     </SafeAreaView>

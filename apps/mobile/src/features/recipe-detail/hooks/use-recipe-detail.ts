@@ -166,6 +166,16 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     );
   }
 
+  // Swaps in the AI-modified recipe (a new row in `recipes`) and re-bases servings on it.
+  // Everything keyed by recipe id (user meta, hero image, cooking) follows the new recipe.
+  function applyRecipe(next: Recipe) {
+    setRecipe(next);
+    setServings(next.servings > 0 ? next.servings : 1);
+    // The modified recipe is a new row with no saved favorite/rating yet; clear the previous
+    // recipe's meta so it isn't shown on the new one until getUserRecipe resolves.
+    setMeta({ is_favorite: false, rating: null });
+  }
+
   const scaledIngredients = recipe ? scaleIngredients(recipe.ingredients, recipe.servings, servings) : [];
 
   return {
@@ -185,5 +195,6 @@ export function useRecipeDetail(id: string, servingsParam?: string) {
     cooked,
     cookFailed,
     startCooking,
+    applyRecipe,
   };
 }
