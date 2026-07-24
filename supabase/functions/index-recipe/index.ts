@@ -1,6 +1,7 @@
 import { hasInternalSecret } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
+import { persistRecipeSeasonProfile } from '../_shared/recipe-seasons.ts';
 import { recipeEmbedding, saveRecipe, type RecipeData } from '../_shared/recipes.ts';
 
 // Umbral de similitud coseno para considerar dos recetas del catálogo el "mismo plato".
@@ -26,7 +27,10 @@ Deno.serve(async (req) => {
     });
     if (simError) throw simError;
     const existing = similar?.[0];
-    if (existing) return json({ deduped: true, recipe: existing });
+    if (existing) {
+      await persistRecipeSeasonProfile(supabase, existing.id, recipe.seasonProfile);
+      return json({ deduped: true, recipe: existing });
+    }
 
     // Imagen diferida: no se encola aquí; se genera on-demand al abrir la receta.
     const saved = await saveRecipe(supabase, recipe, { embedding, deferImage: true });

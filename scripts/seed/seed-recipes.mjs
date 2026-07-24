@@ -29,6 +29,23 @@ if (!anonKey || !secret) {
 }
 
 const recipes = JSON.parse(await readFile(join(here, 'recipes.json'), 'utf8'));
+const seasonDataset = JSON.parse(
+  await readFile(join(here, 'recipe-season-profiles.json'), 'utf8'),
+);
+const seasonProfiles = new Map(
+  seasonDataset.profiles.map((profile) => [profile.title, {
+    seasons: profile.seasons,
+    confidence: profile.confidence,
+    source: profile.source,
+    classifierVersion: seasonDataset.classifierVersion,
+  }]),
+);
+if (
+  seasonProfiles.size !== recipes.length ||
+  recipes.some((recipe) => !seasonProfiles.has(recipe.title))
+) {
+  throw new Error('Los perfiles estacionales no coinciden exactamente con recipes.json');
+}
 const endpoint = `${base}/index-recipe`;
 
 let ok = 0;
@@ -43,7 +60,10 @@ for (const recipe of recipes) {
         Authorization: `Bearer ${anonKey}`,
         'x-internal-secret': secret,
       },
-      body: JSON.stringify(recipe),
+      body: JSON.stringify({
+        ...recipe,
+        seasonProfile: seasonProfiles.get(recipe.title),
+      }),
     });
     if (res.ok) {
       ok++;

@@ -2,6 +2,11 @@ import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 import { embedText, resolveIngredients, type GeneratedRecipe, type ResolvedIngredient } from './gemini.ts';
 import { ALLERGEN_KEYS, CATALOG_CATEGORIES, DIET_KEYS, MEAL_TYPE_KEYS, sanitizeKeys } from './preferences.ts';
+import {
+  persistRecipeSeasonProfile,
+  type RecipeSeasonProfileInput,
+  sanitizeGeneratedSeasonProfile,
+} from './recipe-seasons.ts';
 
 export interface RecipeData {
   title: string;
@@ -17,6 +22,7 @@ export interface RecipeData {
   allergens?: string[] | null;
   diet?: string[] | null;
   meal_types?: string[] | null;
+  seasonProfile?: RecipeSeasonProfileInput | null;
   ingredients?: { name: string }[];
   steps?: unknown[];
   // false para recetas personalizadas del chat: no entran en la caché semántica compartida.
@@ -57,6 +63,7 @@ export function recipeFromGenerated(g: GeneratedRecipe): RecipeData {
     allergens: sanitizeKeys(g.allergens, ALLERGEN_KEYS),
     diet: sanitizeKeys(g.diet, DIET_KEYS),
     meal_types: sanitizeKeys(g.meal_types, MEAL_TYPE_KEYS),
+    seasonProfile: sanitizeGeneratedSeasonProfile({ seasons: g.seasons }),
     ingredients: g.ingredients.map((i) => ({
       name: i.name,
       quantity: parseQuantity(i.quantity),
@@ -285,5 +292,6 @@ export async function saveRecipe(
     .select(RETURN_COLUMNS)
     .single();
   if (error) throw error;
+  await persistRecipeSeasonProfile(supabase, data.id, recipe.seasonProfile);
   return data;
 }
