@@ -4436,5 +4436,778 @@
         "timerSeconds": null
       }
     ]
+  },
+  {
+    "title": "Pisto de verduras",
+    "description": "Verduras mediterráneas pochadas a fuego lento con tomate, un clásico vegano de la cocina española.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 35,
+    "calories": 150,
+    "tags": [
+      "española",
+      "verduras",
+      "vegano"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Calabacín",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate triturado",
+        "quantity": 400,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Corta la cebolla y el pimiento rojo en dados pequeños y rehógalos en el aceite a fuego medio.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el calabacín en dados y sofríe unos minutos más.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora el tomate triturado y sal, y cuece a fuego suave removiendo de vez en cuando.",
+        "timerSeconds": 1500
+      },
+      {
+        "order": 4,
+        "instruction": "Deja reducir hasta que las verduras estén tiernas y el conjunto quede meloso.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Menestra de verduras",
+    "description": "Verduras de temporada rehogadas con aceite de oliva, plato ligero y vegano típico de la cocina casera.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 25,
+    "calories": 160,
+    "tags": [
+      "española",
+      "verduras",
+      "vegano"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Judía verde redonda",
+        "quantity": 300,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Guisante",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Alcachofa",
+        "quantity": 4,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Limpia y trocea las judías verdes, la zanahoria y las alcachofas.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Cuece las verduras y los guisantes en agua con sal hasta que estén tiernos y escúrrelos.",
+        "timerSeconds": 900
+      },
+      {
+        "order": 3,
+        "instruction": "Rehoga las verduras cocidas en el aceite unos minutos para que se impregnen del sabor.",
+        "timerSeconds": 300
+      }
+    ]
+  },
+  {
+    "title": "Verduras al horno",
+    "description": "Calabacín, berenjena, pimiento y cebolla asados con aceite de oliva, guarnición vegana sencilla.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 35,
+    "calories": 140,
+    "tags": [
+      "española",
+      "verduras",
+      "horno",
+      "vegano"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Calabacín",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Berenjena",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento rojo",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 30,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Precalienta el horno a 200°C y corta las verduras en trozos de tamaño similar.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Colócalas en una bandeja, riega con el aceite y sazona con sal.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Asa las verduras removiendo a media cocción hasta que estén doradas y tiernas.",
+        "timerSeconds": 2100
+      }
+    ]
+  },
+  {
+    "title": "Puré de patata",
+    "description": "Puré cremoso de patata con leche y mantequilla, guarnición clásica de la cocina casera.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 25,
+    "calories": 210,
+    "tags": [
+      "española",
+      "verduras",
+      "guarnición"
+    ],
+    "allergens": [
+      "milk"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Patata",
+        "quantity": 800,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Leche",
+        "quantity": 200,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Mantequilla",
+        "quantity": 30,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Pela y trocea las patatas, y cuécelas en agua con sal hasta que estén tiernas.",
+        "timerSeconds": 1200
+      },
+      {
+        "order": 2,
+        "instruction": "Escúrrelas y cháfalas con un tenedor o pasapurés.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Añade la leche caliente y la mantequilla, y mezcla hasta obtener un puré fino y homogéneo.",
+        "timerSeconds": 180
+      }
+    ]
+  },
+  {
+    "title": "Crema de calabacín",
+    "description": "Crema suave de calabacín con un toque de nata, reconfortante y ligera.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 25,
+    "calories": 190,
+    "tags": [
+      "española",
+      "sopa",
+      "crema"
+    ],
+    "allergens": [
+      "milk"
+    ],
+    "diet": [
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Calabacín",
+        "quantity": 600,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Caldo de verduras",
+        "quantity": 500,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Nata para cocinar",
+        "quantity": 100,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Pocha la cebolla en el aceite a fuego suave.",
+        "timerSeconds": 360
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el calabacín troceado y el caldo de verduras, y cuece hasta que esté tierno.",
+        "timerSeconds": 1200
+      },
+      {
+        "order": 3,
+        "instruction": "Tritura hasta obtener una crema fina, incorpora la nata y sal, y da un último hervor.",
+        "timerSeconds": 180
+      }
+    ]
+  },
+  {
+    "title": "Espinacas rehogadas",
+    "description": "Espinacas rehogadas con ajo, cebolla y pasas, un salteado vegano rápido y sabroso.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 15,
+    "calories": 130,
+    "tags": [
+      "española",
+      "verduras",
+      "vegano"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Espinaca",
+        "quantity": 500,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "pasa sultana",
+        "quantity": 30,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Pica la cebolla y el ajo, y rehógalos en el aceite hasta que estén blandos.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 2,
+        "instruction": "Añade las pasas y rehoga un minuto más.",
+        "timerSeconds": 60
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora las espinacas y sal, y saltea hasta que se reduzcan y queden tiernas.",
+        "timerSeconds": 300
+      }
+    ]
+  },
+  {
+    "title": "Ensalada mixta",
+    "description": "Ensalada fresca de lechuga, tomate, cebolla y aceitunas, lista en pocos minutos.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 0,
+    "calories": 110,
+    "tags": [
+      "española",
+      "ensalada",
+      "vegano"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Lechuga romana",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Tomate",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Cebolla morada",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Aceituna negra",
+        "quantity": 60,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Lava y trocea la lechuga y el tomate, y corta la cebolla morada en juliana fina.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Coloca todo en una fuente junto con las aceitunas.",
+        "timerSeconds": null
+      },
+      {
+        "order": 3,
+        "instruction": "Aliña con el aceite y sal justo antes de servir.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Sopa de fideos",
+    "description": "Sopa casera de fideos en caldo de verduras, reconfortante y rápida de preparar.",
+    "servings": 4,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 180,
+    "tags": [
+      "española",
+      "sopa"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Caldo de verduras",
+        "quantity": 1000,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Fideo cabellin",
+        "quantity": 120,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 15,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Sofríe el ajo picado y la zanahoria en dados pequeños con el aceite.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el caldo de verduras y llévalo a ebullición.",
+        "timerSeconds": 300
+      },
+      {
+        "order": 3,
+        "instruction": "Incorpora los fideos y cuece hasta que estén al dente.",
+        "timerSeconds": 480
+      },
+      {
+        "order": 4,
+        "instruction": "Rectifica de sal y sirve caliente.",
+        "timerSeconds": null
+      }
+    ]
+  },
+  {
+    "title": "Sopa de verduras",
+    "description": "Sopa de verduras de temporada cocidas en su propio caldo, ligera y sin lácteos.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 30,
+    "calories": 140,
+    "tags": [
+      "española",
+      "sopa",
+      "vegano"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Puerro",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Zanahoria",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Patata",
+        "quantity": 2,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Judía verde redonda",
+        "quantity": 150,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 20,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Limpia y trocea el puerro, la zanahoria, la patata y las judías verdes.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Rehoga el puerro en el aceite unos minutos.",
+        "timerSeconds": 240
+      },
+      {
+        "order": 3,
+        "instruction": "Añade el resto de verduras, cubre con agua y sal, y cuece hasta que estén tiernas.",
+        "timerSeconds": 1500
+      }
+    ]
+  },
+  {
+    "title": "Gazpacho de verano",
+    "description": "Sopa fría de tomate, pepino y pimiento, refrescante y vegana para el verano.",
+    "servings": 4,
+    "prep_time_min": 15,
+    "cook_time_min": 0,
+    "calories": 120,
+    "tags": [
+      "española",
+      "sopa",
+      "frío",
+      "vegano"
+    ],
+    "allergens": [],
+    "diet": [
+      "vegan",
+      "vegetarian"
+    ],
+    "meal_types": [
+      "almuerzo",
+      "cena"
+    ],
+    "ingredients": [
+      {
+        "name": "Tomate maduro",
+        "quantity": 800,
+        "unit": "g",
+        "substitutions": []
+      },
+      {
+        "name": "Pepino",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Pimiento verde",
+        "quantity": 1,
+        "unit": "ud",
+        "substitutions": []
+      },
+      {
+        "name": "Ajo",
+        "quantity": 1,
+        "unit": "diente",
+        "substitutions": []
+      },
+      {
+        "name": "Aceite de oliva",
+        "quantity": 40,
+        "unit": "ml",
+        "substitutions": []
+      },
+      {
+        "name": "Sal",
+        "quantity": null,
+        "unit": null,
+        "substitutions": []
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "instruction": "Trocea el tomate, el pepino y el pimiento verde, y ponlos en el vaso de la batidora con el ajo.",
+        "timerSeconds": null
+      },
+      {
+        "order": 2,
+        "instruction": "Añade el aceite y sal, y tritura hasta obtener una crema fina.",
+        "timerSeconds": 120
+      },
+      {
+        "order": 3,
+        "instruction": "Cuela si se prefiere una textura más suave y enfría en la nevera antes de servir.",
+        "timerSeconds": null
+      }
+    ]
   }
 ]

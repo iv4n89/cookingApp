@@ -471,5 +471,86 @@
       "confidence": "medium",
       "source": "curated"
     }
+,
+    {
+      "title": "Pisto de verduras",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Menestra de verduras",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Verduras al horno",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Puré de patata",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Crema de calabacín",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Espinacas rehogadas",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Ensalada mixta",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Sopa de fideos",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Sopa de verduras",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    },
+    {
+      "title": "Gazpacho de verano",
+      "seasons": [
+        "all_year"
+      ],
+      "confidence": "medium",
+      "source": "curated"
+    }
   ]
 }
