@@ -1,0 +1,4217 @@
+{
+  "schemaVersion": 1,
+  "datasetVersion": "ingredient-allergens-es-v1",
+  "supportedExclusions": [
+    "gluten",
+    "crustaceans",
+    "molluscs",
+    "egg",
+    "fish",
+    "peanut",
+    "soy",
+    "milk",
+    "nuts",
+    "celery",
+    "mustard",
+    "sesame",
+    "pork",
+    "alcohol"
+  ],
+  "supportedDiets": [
+    "vegan",
+    "vegetarian"
+  ],
+  "sources": {
+    "eu-1169-annex-ii": {
+      "title": "Reglamento (UE) 1169/2011, anexo II",
+      "url": "https://eur-lex.europa.eu/legal-content/ES/ALL/?uri=celex%3A32011R1169",
+      "retrievedAt": "2026-07-24",
+      "scope": "Vocabulario y categorías de alérgenos de declaración obligatoria."
+    },
+    "aesan-allergen-guide": {
+      "title": "AESAN: guía sobre información de alérgenos",
+      "url": "https://www.aesan.gob.es/AECOSAN/docs/documentos/seguridad_alimentaria/gestion_riesgos/guia_aplicacion_informacion.pdf",
+      "retrievedAt": "2026-07-24",
+      "scope": "Interpretación española de la información obligatoria sobre alérgenos."
+    },
+    "catalog-name-review": {
+      "title": "Catálogo autoritativo de ingredientes de RecetasApp",
+      "url": "https://github.com/iv4n89/cookingApp/blob/main/supabase/migrations/0007_ingredients_seed.sql",
+      "retrievedAt": "2026-07-24",
+      "scope": "Naturaleza explícita del ingrediente y exclusiones de producto o dieta."
+    },
+    "variable-composition-policy": {
+      "title": "Diseño de RecommendationDecision de RecetasApp",
+      "url": "https://github.com/iv4n89/cookingApp/blob/main/docs/superpowers/specs/2026-07-24-recommendation-decision-design.md",
+      "retrievedAt": "2026-07-24",
+      "scope": "Fallo cerrado para preparados genéricos sin formulación concreta."
+    }
+  },
+  "ingredients": {
+    "manzana golden": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: manzana golden",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "manzana granny smith": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: manzana granny smith",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pera conferencia": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pera conferencia",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pera ercolina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pera ercolina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "platano de canarias": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: platano de canarias",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "naranja de mesa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: naranja de mesa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "naranja de zumo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: naranja de zumo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "mandarina clementina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: mandarina clementina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "limon amarillo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: limon amarillo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lima": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lima",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "uva blanca": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: uva blanca",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "uva tinta": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: uva tinta",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "melocoton amarillo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: melocoton amarillo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "melocoton paraguayo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: melocoton paraguayo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nectarina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nectarina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "albaricoque": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: albaricoque",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "ciruela claudia": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: ciruela claudia",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "ciruela roja": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: ciruela roja",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cereza": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cereza",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "picota": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: picota",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "fresa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: fresa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "freson": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: freson",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "melon piel de sapo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: melon piel de sapo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sandia": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sandia",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "higo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: higo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "breva": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: breva",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "granada": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: granada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "membrillo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: membrillo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "aguacate": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: aguacate",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "patata": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: patata",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cebolla blanca": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cebolla blanca",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cebolla morada": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cebolla morada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "ajo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: ajo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "tomate pera": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: tomate pera",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "tomate rama": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: tomate rama",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimiento verde": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimiento verde",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimiento rojo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimiento rojo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "calabacin": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: calabacin",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "berenjena": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: berenjena",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "zanahoria": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: zanahoria",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "judia verde plana": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: judia verde plana",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "judia verde redonda": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: judia verde redonda",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "esparrago triguero": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: esparrago triguero",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alcachofa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alcachofa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "espinaca": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: espinaca",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "acelga": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: acelga",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "coliflor": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: coliflor",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "brocoli": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: brocoli",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "calabaza": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: calabaza",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pepino": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pepino",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lechuga romana": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lechuga romana",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lechuga hoja de roble": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lechuga hoja de roble",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "puerro": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: puerro",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "apio": {
+      "allergens": [
+        "celery"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: apio",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "guisante": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: guisante",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "haba": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: haba",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cardo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cardo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "champinon": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: champinon",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "setas ostra": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: setas ostra",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "solomillo de cerdo": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: solomillo de cerdo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lomo de cerdo": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lomo de cerdo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "secreto iberico": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: secreto iberico",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "presa iberica": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: presa iberica",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pluma iberica": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pluma iberica",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "panceta de cerdo": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: panceta de cerdo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "costilla de cerdo": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: costilla de cerdo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "chorizo fresco": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: chorizo fresco",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "morcilla de arroz": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: morcilla de arroz",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "morcilla de cebolla": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: morcilla de cebolla",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "jamon serrano": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: jamon serrano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "jamon iberico": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: jamon iberico",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "chuleton de ternera": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: chuleton de ternera",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "solomillo de ternera": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: solomillo de ternera",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "rabito de ternera": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: rabito de ternera",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "callos de ternera": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: callos de ternera",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pollo entero": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pollo entero",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pechuga de pollo": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pechuga de pollo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "muslo de pollo": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: muslo de pollo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alita de pollo": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alita de pollo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "conejo de campo": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: conejo de campo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "codorniz": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: codorniz",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cordero lechal": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cordero lechal",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "chuletilla de cordero": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: chuletilla de cordero",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "paletilla de cordero": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: paletilla de cordero",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "magro de cerdo": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: magro de cerdo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "tocino iberico": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: tocino iberico",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "salchicha fresca": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salchicha fresca",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "longaniza": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: longaniza",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "lacon": {
+      "allergens": [
+        "pork"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lacon",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "merluza": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: merluza",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "bacalao fresco": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: bacalao fresco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "bacalao desalado": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: bacalao desalado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "rape": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: rape",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lenguado": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lenguado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "dorada": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: dorada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lubina": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lubina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "rodaballo": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: rodaballo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "atun rojo": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: atun rojo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "bonito del norte": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: bonito del norte",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "boqueron": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: boqueron",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sardina": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sardina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "caballa": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: caballa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "anchoa": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: anchoa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "gambon": {
+      "allergens": [
+        "crustaceans"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: gambon",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "gamba blanca": {
+      "allergens": [
+        "crustaceans"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: gamba blanca",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "gamba roja": {
+      "allergens": [
+        "crustaceans"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: gamba roja",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "langostino": {
+      "allergens": [
+        "crustaceans"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: langostino",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cigala": {
+      "allergens": [
+        "crustaceans"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cigala",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "bogavante": {
+      "allergens": [
+        "crustaceans"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: bogavante",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "langosta": {
+      "allergens": [
+        "crustaceans"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: langosta",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "mejillon": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: mejillon",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "almeja babosa": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almeja babosa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "almeja fina": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almeja fina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "berberecho": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: berberecho",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "navaja": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: navaja",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "vieira": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vieira",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pulpo": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pulpo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "calamar": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: calamar",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sepia": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sepia",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "leche entera": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche entera",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "leche semidesnatada": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche semidesnatada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "leche desnatada": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche desnatada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nata para montar": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nata para montar",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nata para cocinar": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nata para cocinar",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "mantequilla con sal": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: mantequilla con sal",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "mantequilla sin sal": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: mantequilla sin sal",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "queso manchego semicurado": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso manchego semicurado",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso manchego curado": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso manchego curado",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso fresco": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso fresco",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso de cabrales": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso de cabrales",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso tetilla": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso tetilla",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso idiazabal": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso idiazabal",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso mahon": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso mahon",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso burgos": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso burgos",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "requeson": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: requeson",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "yogur natural": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: yogur natural",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "yogur griego": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: yogur griego",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "huevo de gallina": {
+      "allergens": [
+        "egg"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: huevo de gallina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "huevo de codorniz": {
+      "allergens": [
+        "egg"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: huevo de codorniz",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "clara de huevo": {
+      "allergens": [
+        "egg"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: clara de huevo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "yema de huevo": {
+      "allergens": [
+        "egg"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: yema de huevo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "queso rulo de cabra": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso rulo de cabra",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso crema": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso crema",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso parmesano": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso parmesano",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso emmental": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso emmental",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "queso mozzarella": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: queso mozzarella",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "leche evaporada": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche evaporada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "leche condensada": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: leche condensada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cuajada": {
+      "allergens": [
+        "milk"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: cuajada",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "arroz bomba": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: arroz bomba",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "arroz basmati": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: arroz basmati",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "arroz integral": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: arroz integral",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "arroz redondo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: arroz redondo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pan de hogaza": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pan de hogaza",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pan de barra": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pan de barra",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pan integral": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pan integral",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pan de centeno": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pan de centeno",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pan de molde": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pan de molde",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pasta espagueti": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pasta espagueti",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pasta macarron": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pasta macarron",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pasta tallarines": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pasta tallarines",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pasta de sopa": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pasta de sopa",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pasta lasana": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pasta lasana",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "avena en copos": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: avena en copos",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cebada perlada": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cebada perlada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "quinoa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: quinoa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cuscus": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cuscus",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "harina de trigo": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: harina de trigo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "harina de fuerza": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: harina de fuerza",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "harina de maiz": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: harina de maiz",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "maiz en grano": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: maiz en grano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pan rallado": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pan rallado",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "picos de pan": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: picos de pan",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "rosquilletas": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: rosquilletas",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "tortitas de arroz": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: tortitas de arroz",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "bulgur": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: bulgur",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "mijo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: mijo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "trigo sarraceno": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: trigo sarraceno",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "fideo cabellin": {
+      "allergens": [
+        "gluten"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: fideo cabellin",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "garbanzo castellano": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: garbanzo castellano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "garbanzo pedrosillano": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: garbanzo pedrosillano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "garbanzo lechoso": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: garbanzo lechoso",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lenteja pardina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lenteja pardina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lenteja verdina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lenteja verdina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lenteja castellana": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lenteja castellana",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lenteja caviar": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lenteja caviar",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia blanca rinon": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia blanca rinon",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia blanca plancheta": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia blanca plancheta",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia blanca alubion": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia blanca alubion",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia pinta": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia pinta",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia roja de tolosa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia roja de tolosa",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia carilla": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia carilla",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia pocha": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia pocha",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia ganxet": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia ganxet",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "habas frescas": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: habas frescas",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "haba seca": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: haba seca",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "soja verde": {
+      "allergens": [
+        "soy"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: soja verde",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "altramuz": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: altramuz",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "guisante seco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: guisante seco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "guisante partido": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: guisante partido",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "garbanzo garbanzuelo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: garbanzo garbanzuelo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lenteja rubia": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lenteja rubia",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia arrocina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia arrocina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia verdina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia verdina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "haba baby": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: haba baby",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "lenteja beluga": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: lenteja beluga",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "garbanzo tolosano": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: garbanzo tolosano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "alubia negra": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: alubia negra",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "judion de la granja": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: judion de la granja",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "almendra cruda": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almendra cruda",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "almendra tostada": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almendra tostada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "almendra laminada": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almendra laminada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "avellana": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: avellana",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nuez": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nuez",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pistacho": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pistacho",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pinon": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pinon",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cacahuete": {
+      "allergens": [
+        "peanut"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cacahuete",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "anacardo": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: anacardo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nuez de macadamia": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nuez de macadamia",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pipa de girasol": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pipa de girasol",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "semilla de calabaza": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: semilla de calabaza",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sesamo blanco": {
+      "allergens": [
+        "sesame"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sesamo blanco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sesamo negro": {
+      "allergens": [
+        "sesame"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sesamo negro",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "semilla de chia": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: semilla de chia",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "semilla de lino": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: semilla de lino",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "semilla de amapola": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: semilla de amapola",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "castana": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: castana",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "castana pilonga": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: castana pilonga",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nuez pecana": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nuez pecana",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "almendra marcona": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almendra marcona",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "almendra largueta": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: almendra largueta",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "avellana tostada": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: avellana tostada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pipa de girasol tostada": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pipa de girasol tostada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pipa de calabaza tostada": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pipa de calabaza tostada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sesamo tostado": {
+      "allergens": [
+        "sesame"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sesamo tostado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "semilla de lino dorado": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: semilla de lino dorado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "semilla de lino marron": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: semilla de lino marron",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pistacho pelado": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pistacho pelado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cacahuete tostado": {
+      "allergens": [
+        "peanut"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cacahuete tostado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "azafran": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: azafran",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimenton dulce": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimenton dulce",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimenton picante": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimenton picante",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimenton ahumado": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimenton ahumado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "oregano seco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: oregano seco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "tomillo fresco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: tomillo fresco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "romero fresco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: romero fresco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "perejil plano": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: perejil plano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "laurel seco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: laurel seco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "comino molido": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: comino molido",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "clavo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: clavo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "canela en rama": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: canela en rama",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nuez moscada": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nuez moscada",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimienta negra": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimienta negra",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimienta blanca": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimienta blanca",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pimienta de cayena": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: pimienta de cayena",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "ajo morado": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: ajo morado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "ajo blanco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: ajo blanco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cebollino": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cebollino",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "menta": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: menta",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "hierbabuena": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: hierbabuena",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "albahaca": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: albahaca",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "anis en grano": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: anis en grano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "cilantro": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: cilantro",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sal marina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sal marina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "sal gorda": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sal gorda",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "azafran en hebra": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: azafran en hebra",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "nora": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: nora",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "aceite de oliva virgen extra": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: aceite de oliva virgen extra",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "aceite de oliva suave": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: aceite de oliva suave",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "aceite de girasol": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: aceite de girasol",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "vinagre de jerez": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vinagre de jerez",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "vinagre de vino blanco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vinagre de vino blanco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "vinagre de vino tinto": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vinagre de vino tinto",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "vinagre de manzana": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vinagre de manzana",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "vinagre de modena": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vinagre de modena",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "salsa de tomate frito": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa de tomate frito",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa de tomate triturado": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa de tomate triturado",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa alioli": {
+      "allergens": [
+        "egg"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa alioli",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa romesco": {
+      "allergens": [
+        "nuts"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa romesco",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa brava": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa brava",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa vizcaina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa vizcaina",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa de soja": {
+      "allergens": [
+        "gluten",
+        "soy"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa de soja",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "mayonesa": {
+      "allergens": [
+        "egg"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: mayonesa",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "mostaza antigua": {
+      "allergens": [
+        "mustard"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: mostaza antigua",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "mostaza de dijon": {
+      "allergens": [
+        "mustard"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: mostaza de dijon",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa perrins": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa perrins",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa tabasco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa tabasco",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "aceite de sesamo": {
+      "allergens": [
+        "sesame"
+      ],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: aceite de sesamo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "vinagre de arroz": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vinagre de arroz",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "salsa agridulce": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa agridulce",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "reduccion de vinagre balsamico": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: reduccion de vinagre balsamico",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "aceite de trufa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: aceite de trufa",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa barbacoa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa barbacoa",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "salsa pesto": {
+      "allergens": [
+        "milk",
+        "nuts"
+      ],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa pesto",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "aceite de ajo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: aceite de ajo",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "vinagre de sidra": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: vinagre de sidra",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "salsa picante": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: salsa picante",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "sal fina": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sal fina",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "azucar blanco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: azucar blanco",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "azucar moreno": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: azucar moreno",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "miel de milflores": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: miel de milflores",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "miel de romero": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan"
+      ],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: miel de romero",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "laurel": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: laurel",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "oregano": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: oregano",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "tomillo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: tomillo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "romero": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: romero",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "perejil": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: perejil",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "comino": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: comino",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "canela en polvo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: canela en polvo",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "pasta de pimiento choricero": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pasta de pimiento choricero",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "anis estrellado": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: anis estrellado",
+      "reviewKind": "intrinsic_named_ingredient"
+    },
+    "aceituna verde": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: aceituna verde",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "aceituna negra": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: aceituna negra",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "anchoa en conserva": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: anchoa en conserva",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "atun en conserva": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: atun en conserva",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "sardina en conserva": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: sardina en conserva",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "mejillon en escabeche": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: mejillon en escabeche",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "berberecho al natural": {
+      "allergens": [
+        "molluscs"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: berberecho al natural",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "esparrago blanco": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: esparrago blanco",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "pimiento del piquillo": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: pimiento del piquillo",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "tomate triturado": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: tomate triturado",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "tomate frito": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: tomate frito",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "concentrado de tomate": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: concentrado de tomate",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "garbanzo cocido": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: garbanzo cocido",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "lenteja cocida": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: lenteja cocida",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "alubia blanca cocida": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: alubia blanca cocida",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "caldo de pollo": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: caldo de pollo",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "caldo de pescado": {
+      "allergens": [
+        "fish"
+      ],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: caldo de pescado",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "fondo de carne": {
+      "allergens": [],
+      "incompatibleDiets": [
+        "vegan",
+        "vegetarian"
+      ],
+      "compositionStatus": "variable_unknown",
+      "sourceIds": [
+        "catalog-name-review",
+        "variable-composition-policy"
+      ],
+      "sourceRef": "Nombre genérico sin formulación verificable: fondo de carne",
+      "reviewKind": "compound_formula_unknown"
+    },
+    "sal de mesa": {
+      "allergens": [],
+      "incompatibleDiets": [],
+      "compositionStatus": "exact_reviewed",
+      "sourceIds": [
+        "catalog-name-review"
+      ],
+      "sourceRef": "Composición intrínseca revisada desde el nombre catalogado: sal de mesa",
+      "reviewKind": "intrinsic_named_ingredient"
+    }
+  }
+}
