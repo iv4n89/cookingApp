@@ -61,7 +61,7 @@ referencias de su slice y comprobar que siguen vigentes después de los merges.
   - `scripts/test-expiration-state-generator.mjs`;
   - `scripts/lib/find-duplicate-json-keys.mjs`;
   - `supabase/migrations/0049_expiration_profiles.sql`.
-- Canonicalización y fallback:
+- Canonicalización y fallback de inventario/caducidad —no de seguridad—:
   - `supabase/migrations/0027_ingredients_canonical.sql`;
   - `supabase/migrations/0050_expiration_state_engine.sql:95-137`;
   - `supabase/tests/0005_expiration_state_engine.test.sql`.
@@ -110,7 +110,8 @@ clasifica `fructose`, `histamine` ni `sorbitol`, y no certifica halal o kosher.
 - `node:crypto/createHash`;
 - `node:fs/promises`: `readFile`, `writeFile`, `mkdtemp`, `rm`;
 - `node:path`, `node:url/fileURLToPath`;
-- `node:child_process/spawnSync`;
+- `node:child_process/spawnSync` para comandos secuenciales;
+- `node:child_process/spawn` y `node:events/once` para procesos concurrentes;
 - `node:os/tmpdir`;
 - `findDuplicateJsonKeys(text)` del helper existente.
 
@@ -428,8 +429,9 @@ Cubrir:
 - fixture donde existe perfil canónico pero falta el directo y la cobertura
   permanece desconocida.
 
-No crear una RPC pública en este slice. El fallback se probará con una consulta
-fixture equivalente a la que copiará el motor.
+No crear una RPC pública en este slice. Una consulta fixture equivalente a la
+que copiará el motor debe demostrar explícitamente que no existe fallback
+canónico para seguridad.
 
 Actualizar `docs/PROJECT_STATUS.md` con rama, alcance y validaciones.
 
@@ -564,11 +566,15 @@ dos conexiones simultáneas cubre la carrera `curated` frente a
 
 `scripts/test-recipe-season-profile-concurrency.mjs` obtiene `DB_URL` del
 Supabase local mediante `supabase status -o env`, crea una receta fixture
-aislada y abre dos procesos `psql` simultáneos mediante `Promise.all`. Cada
-proceso usa su propia conexión y llama la función en conflicto; el harness
-repite ambas órdenes y varias rondas, consulta el perfil final, exige
+aislada y abre dos procesos `psql` con `spawn`, nunca con `spawnSync`. Cada
+proceso se envuelve en una promesa; ambos se arrancan antes de esperar
+`Promise.all`. Un proceso mantiene abierta la transacción después del primer
+upsert para que el segundo alcance el mismo conflicto y quede bloqueado. El
+harness prueba las dos órdenes —primero `generated/backfill` y primero
+`curated`—, repite varias rondas, consulta el perfil final, exige
 `source = curated` y limpia el fixture en `finally`. Debe fallar si Supabase
-local o `psql` no están disponibles; no se convierte en skip.
+local o `psql` no están disponibles, si una conexión no llega al solapamiento
+o si un proceso termina con error; no se convierte en skip.
 
 Añadir al `package.json`:
 
