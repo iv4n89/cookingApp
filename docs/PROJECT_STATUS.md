@@ -46,7 +46,7 @@ El slice en curso:
 
 Validaciones implementadas hasta ahora:
 
-- 11 pruebas Deno del sanitizador y persistencia blanda;
+- 12 pruebas Deno del sanitizador y persistencia blanda;
 - dataset válido con 24 perfiles y 7 escenarios negativos;
 - 5 pruebas del contrato de artefactos de backfill;
 - migración local `0052` aplicada;

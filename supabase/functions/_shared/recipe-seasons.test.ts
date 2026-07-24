@@ -54,6 +54,7 @@ for (
     ['all_year mixed with another season', { seasons: ['all_year', 'winter'] }],
     ['non-string season', { seasons: [42] }],
     ['invalid confidence', { seasons: ['summer'], confidence: 'certain' }],
+    ['non-string confidence', { seasons: ['summer'], confidence: ['high'] }],
   ] as const
 ) {
   Deno.test(`rejects ${name}`, () => {

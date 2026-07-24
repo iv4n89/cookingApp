@@ -43,7 +43,10 @@ export function sanitizeGeneratedSeasonProfile(
   };
   if (
     confidence !== undefined &&
-    !['high', 'medium', 'low'].includes(String(confidence))
+    (
+      typeof confidence !== 'string' ||
+      !['high', 'medium', 'low'].includes(confidence)
+    )
   ) {
     return null;
   }
