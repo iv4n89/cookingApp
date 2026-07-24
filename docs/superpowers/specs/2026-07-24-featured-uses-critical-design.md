@@ -16,8 +16,9 @@ no está en los básicos asumidos, inflando el conteo.
 Migración `0059` (`create or replace` de `evaluate_recommendation_snapshot`,
 no edita 0053): añadir a la lista de básicos asumidos —los que no cuentan como
 faltantes— los nombres canónicos `pimienta negra`, `pimienta de sichuan` y
-`sal y pimienta`. La sal y los aceites de oliva/girasol ya estaban. Subir la
-versión a `assumed-basics-es-v2`.
+`sal y pimienta`. La sal y los aceites de oliva/girasol ya estaban. (El campo
+`assumedBasicsVersion` es una etiqueta en otra función y sin impacto funcional; se
+deja en v1 para no reproducir esa función solo por un string.)
 
 ## B. Destacada que aprovecha lo crítico (composición)
 
