@@ -879,5 +879,283 @@
       { "order": 3, "instruction": "Vierte la salsa de tomate en la misma cazuela y calienta.", "timerSeconds": 300 },
       { "order": 4, "instruction": "Incorpora las albóndigas a la salsa y cuece a fuego lento hasta que estén hechas.", "timerSeconds": 1200 }
     ]
+  },
+  {
+    "title": "Tortilla francesa",
+    "description": "Tortilla batida a fuego vivo, doblada y jugosa por dentro, lista en minutos.",
+    "servings": 2,
+    "prep_time_min": 5,
+    "cook_time_min": 5,
+    "calories": 220,
+    "tags": ["española", "rápida", "sartén"],
+    "allergens": ["egg"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena", "merienda"],
+    "ingredients": [
+      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Bate los huevos con una pizca de sal hasta que queden homogéneos.", "timerSeconds": null },
+      { "order": 2, "instruction": "Calienta el aceite en una sartén antiadherente a fuego medio-alto.", "timerSeconds": null },
+      { "order": 3, "instruction": "Vierte el huevo batido y cuaja los bordes moviendo la sartén.", "timerSeconds": 60 },
+      { "order": 4, "instruction": "Dobla la tortilla por la mitad y sirve inmediatamente.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Huevos fritos con patatas",
+    "description": "Patatas fritas crujientes con huevos fritos de yema jugosa, el plato de siempre.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 420,
+    "tags": ["española", "fritura", "clásica"],
+    "allergens": ["egg"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Patata", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 150, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pela las patatas y córtalas en bastones finos.", "timerSeconds": null },
+      { "order": 2, "instruction": "Fríelas en abundante aceite caliente hasta que estén doradas y crujientes.", "timerSeconds": 600 },
+      { "order": 3, "instruction": "Escúrrelas sobre papel absorbente y sazona con sal.", "timerSeconds": null },
+      { "order": 4, "instruction": "En el mismo aceite, fríe los huevos hasta que la clara cuaje y la yema quede jugosa.", "timerSeconds": 180 },
+      { "order": 5, "instruction": "Sirve los huevos sobre las patatas.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Huevos rotos con jamón",
+    "description": "Patatas fritas con huevo frito roto por encima y virutas de jamón serrano.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 20,
+    "calories": 450,
+    "tags": ["española", "clásica", "sartén"],
+    "allergens": ["egg"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Patata", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
+      { "name": "Jamón serrano", "quantity": 80, "unit": "g", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 120, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pela las patatas y córtalas en bastones.", "timerSeconds": null },
+      { "order": 2, "instruction": "Fríelas en aceite caliente hasta que estén tiernas y doradas.", "timerSeconds": 600 },
+      { "order": 3, "instruction": "Escurre las patatas y colócalas en la base del plato.", "timerSeconds": null },
+      { "order": 4, "instruction": "Fríe los huevos y colócalos sobre las patatas, rompiendo la yema con un tenedor.", "timerSeconds": 180 },
+      { "order": 5, "instruction": "Reparte el jamón serrano por encima y sirve enseguida.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Revuelto de setas",
+    "description": "Huevos revueltos cremosos con setas salteadas y un toque de ajo.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 10,
+    "calories": 280,
+    "tags": ["española", "sartén", "rápida"],
+    "allergens": ["egg"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
+      { "name": "Seta", "quantity": 250, "unit": "g", "substitutions": [] },
+      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Limpia y trocea las setas; pica el ajo.", "timerSeconds": null },
+      { "order": 2, "instruction": "Saltea el ajo en aceite hasta que empiece a dorar.", "timerSeconds": 60 },
+      { "order": 3, "instruction": "Añade las setas y saltea a fuego fuerte hasta que suelten el agua y se doren.", "timerSeconds": 300 },
+      { "order": 4, "instruction": "Bate los huevos con sal, vierte sobre las setas y cuaja removiendo sin parar.", "timerSeconds": 120 }
+    ]
+  },
+  {
+    "title": "Revuelto de ajetes",
+    "description": "Revuelto suave de huevo con ajo tierno salteado y perejil, listo en pocos minutos.",
+    "servings": 2,
+    "prep_time_min": 8,
+    "cook_time_min": 8,
+    "calories": 260,
+    "tags": ["española", "sartén", "rápida"],
+    "allergens": ["egg"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Huevo", "quantity": 4, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 6, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
+      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pela los ajos y córtalos en trozos no muy pequeños.", "timerSeconds": null },
+      { "order": 2, "instruction": "Saltéalos en aceite a fuego suave hasta que estén tiernos y ligeramente dorados.", "timerSeconds": 360 },
+      { "order": 3, "instruction": "Bate los huevos con sal y el perejil picado.", "timerSeconds": null },
+      { "order": 4, "instruction": "Vierte el huevo sobre los ajos y cuaja removiendo a fuego medio.", "timerSeconds": 120 }
+    ]
+  },
+  {
+    "title": "Merluza a la plancha con verduras",
+    "description": "Lomos de merluza a la plancha con calabacín y pimiento salteados.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 15,
+    "calories": 300,
+    "tags": ["española", "plancha", "saludable"],
+    "allergens": ["fish"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Merluza", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Calabacín", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Pimiento rojo", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Corta el calabacín y el pimiento en tiras finas, y lamina el ajo.", "timerSeconds": null },
+      { "order": 2, "instruction": "Saltea las verduras y el ajo en aceite hasta que estén tiernas.", "timerSeconds": 480 },
+      { "order": 3, "instruction": "Salpimenta la merluza y hazla a la plancha por cada lado.", "timerSeconds": 360 },
+      { "order": 4, "instruction": "Sirve la merluza sobre las verduras salteadas.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Salmón al horno con limón",
+    "description": "Lomos de salmón al horno con rodajas de limón y ajo, jugosos y ligeros.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 18,
+    "calories": 340,
+    "tags": ["española", "horno", "saludable"],
+    "allergens": ["fish"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Salmón", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 2, "unit": "cucharada", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Precalienta el horno a 200 °C.", "timerSeconds": null },
+      { "order": 2, "instruction": "Coloca el salmón en una bandeja, riega con aceite y salpimenta.", "timerSeconds": null },
+      { "order": 3, "instruction": "Reparte el ajo laminado y las rodajas de limón por encima.", "timerSeconds": null },
+      { "order": 4, "instruction": "Hornea de 15 a 18 minutos hasta que esté hecho por dentro.", "timerSeconds": 1080 }
+    ]
+  },
+  {
+    "title": "Bacalao con tomate",
+    "description": "Lomos de bacalao en una salsa de tomate casera con cebolla y ajo.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 25,
+    "calories": 320,
+    "tags": ["española", "guiso", "tradicional"],
+    "allergens": ["fish"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Bacalao fresco", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Tomate triturado", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Ajo", "quantity": 2, "unit": "diente", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 20, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Pica la cebolla y el ajo finamente.", "timerSeconds": null },
+      { "order": 2, "instruction": "Sofríelos en aceite hasta que la cebolla esté transparente.", "timerSeconds": 600 },
+      { "order": 3, "instruction": "Añade el tomate triturado y cocina a fuego suave.", "timerSeconds": 900 },
+      { "order": 4, "instruction": "Incorpora el bacalao y cocina hasta que esté hecho.", "timerSeconds": 300 }
+    ]
+  },
+  {
+    "title": "Sardinas a la plancha",
+    "description": "Sardinas frescas a la plancha con ajo, perejil y un chorro de limón.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 10,
+    "calories": 280,
+    "tags": ["española", "plancha", "verano"],
+    "allergens": ["fish"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Sardina", "quantity": 400, "unit": "g", "substitutions": [] },
+      { "name": "Ajo", "quantity": 1, "unit": "diente", "substitutions": [] },
+      { "name": "Perejil", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 15, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Limpia las sardinas y sécalas bien.", "timerSeconds": null },
+      { "order": 2, "instruction": "Calienta la plancha con un poco de aceite.", "timerSeconds": null },
+      { "order": 3, "instruction": "Cocina las sardinas por cada lado.", "timerSeconds": 300 },
+      { "order": 4, "instruction": "Pica el ajo y el perejil, espolvorea por encima y riega con limón.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Ensalada de atún",
+    "description": "Ensalada fresca de atún con tomate, cebolla y lechuga, lista en minutos.",
+    "servings": 2,
+    "prep_time_min": 10,
+    "cook_time_min": 0,
+    "calories": 260,
+    "tags": ["española", "ensalada", "rápida"],
+    "allergens": ["fish"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "atún en aceite de oliva", "quantity": 160, "unit": "g", "substitutions": [] },
+      { "name": "Tomate", "quantity": 2, "unit": "ud", "substitutions": [] },
+      { "name": "Cebolla", "quantity": 0.5, "unit": "ud", "substitutions": [] },
+      { "name": "Lechuga romana", "quantity": 1, "unit": "ud", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 1, "unit": "cucharada", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Lava y trocea la lechuga y el tomate.", "timerSeconds": null },
+      { "order": 2, "instruction": "Corta la cebolla en juliana fina.", "timerSeconds": null },
+      { "order": 3, "instruction": "Mezcla las verduras en un bol y añade el atún escurrido.", "timerSeconds": null },
+      { "order": 4, "instruction": "Aliña con aceite y sal antes de servir.", "timerSeconds": null }
+    ]
+  },
+  {
+    "title": "Boquerones fritos",
+    "description": "Boquerones rebozados en harina y fritos, crujientes por fuera y tiernos por dentro.",
+    "servings": 2,
+    "prep_time_min": 15,
+    "cook_time_min": 10,
+    "calories": 380,
+    "tags": ["española", "fritura", "tapa"],
+    "allergens": ["fish", "gluten"],
+    "diet": [],
+    "meal_types": ["almuerzo", "cena"],
+    "ingredients": [
+      { "name": "Boquerón", "quantity": 300, "unit": "g", "substitutions": [] },
+      { "name": "Harina", "quantity": 60, "unit": "g", "substitutions": [] },
+      { "name": "Aceite de oliva", "quantity": 200, "unit": "ml", "substitutions": [] },
+      { "name": "Sal", "quantity": null, "unit": null, "substitutions": [] },
+      { "name": "Limón", "quantity": 1, "unit": "ud", "substitutions": [] }
+    ],
+    "steps": [
+      { "order": 1, "instruction": "Limpia los boquerones y ábrelos en libro, retirando la espina.", "timerSeconds": null },
+      { "order": 2, "instruction": "Sazona y pasa por harina, sacudiendo el exceso.", "timerSeconds": null },
+      { "order": 3, "instruction": "Fríe en aceite bien caliente hasta que estén dorados y crujientes.", "timerSeconds": 240 },
+      { "order": 4, "instruction": "Escurre sobre papel absorbente y sirve con un chorro de limón.", "timerSeconds": null }
+    ]
   }
 ]

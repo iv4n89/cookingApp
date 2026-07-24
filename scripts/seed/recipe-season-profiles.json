@@ -36,6 +36,17 @@
     { "title": "Arroz con pollo sencillo", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
     { "title": "Ternera guisada con guisantes", "seasons": ["autumn", "winter"], "confidence": "medium", "source": "curated" },
     { "title": "Filete de ternera a la plancha", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
-    { "title": "Albóndigas en salsa de tomate", "seasons": ["all_year"], "confidence": "medium", "source": "curated" }
+    { "title": "Albóndigas en salsa de tomate", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Tortilla francesa", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Huevos fritos con patatas", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Huevos rotos con jamón", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Revuelto de setas", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Revuelto de ajetes", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Merluza a la plancha con verduras", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Salmón al horno con limón", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Bacalao con tomate", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Sardinas a la plancha", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Ensalada de atún", "seasons": ["all_year"], "confidence": "medium", "source": "curated" },
+    { "title": "Boquerones fritos", "seasons": ["all_year"], "confidence": "medium", "source": "curated" }
   ]
 }
