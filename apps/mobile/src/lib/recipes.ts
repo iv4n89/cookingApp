@@ -2,6 +2,8 @@ import { getCatalogDefaults } from './ingredients';
 import { createIdempotencyKey } from './idempotency';
 import { supabase } from './supabase';
 
+import type { TodayDecision } from '@recetas/shared';
+
 export interface RecipeIngredient {
   name: string;
   quantity: number | null;
@@ -101,6 +103,17 @@ export async function recommendedRecipes(
   });
   if (error) throw error;
   return (data as RecommendedRecipe[]) ?? [];
+}
+
+// Decisión de hoy compuesta en backend: productos prioritarios, receta destacada,
+// alternativas y faltantes de compra. `mealType` es la franja horaria actual.
+export async function todayDecision(mealType: MealType): Promise<TodayDecision | null> {
+  const { data, error } = await supabase.rpc('household_today_decision', {
+    p_meal_type: mealType,
+    p_alternative_limit: 5,
+  });
+  if (error) throw error;
+  return (data as TodayDecision) ?? null;
 }
 
 export async function getRecipe(id: string): Promise<Recipe | null> {
