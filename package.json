@@ -21,6 +21,10 @@
     "generate:ingredient-allergen-migration": "node scripts/generate-ingredient-allergen-migration.mjs",
     "check:ingredient-allergen-migration": "node scripts/generate-ingredient-allergen-migration.mjs --check",
     "test:ingredient-allergen-migration": "node scripts/test-ingredient-allergen-migration.mjs",
+    "validate:recipe-seasons": "node scripts/validate-recipe-season-profiles.mjs",
+    "test:recipe-seasons": "node scripts/test-recipe-season-profiles-validator.mjs",
+    "test:recipe-season-tools": "node --test scripts/recipe-seasons/profile-contract.test.mjs",
+    "test:recipe-season-concurrency": "node scripts/test-recipe-season-profile-concurrency.mjs",
     "test:db": "supabase test db --local supabase/tests"
   },
   "devDependencies": {
