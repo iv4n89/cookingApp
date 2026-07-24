@@ -6,13 +6,18 @@ Este documento es la memoria operativa del roadmap. Al retomar el trabajo en
 otro chat o editor, debe leerse antes del plan maestro:
 `docs/superpowers/plans/2026-07-23-vision-producto-arquitectura.md`.
 
+La visión de producto vigente está en `docs/vision_producto_app_cocina.md`.
+El plan maestro ya está organizado alrededor de esa visión: motores de
+inventario, recomendación, conversación y planificación, y el ciclo diario
+comprar → despensa → prioritarios → recomendar → cocinar → actualizar.
+
 ## Estado resumido
 
 | Fase del plan maestro | Estado | Entrega |
 | --- | --- | --- |
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
-| Fase 2 — Caducidad y decisión reproducible | En curso | Caducidad #90/#91; seguridad #93; estación #94; decisión en desarrollo |
+| Fase 2 — Caducidad y decisión reproducible | Backend completado; falta Home "decisión de hoy" | Caducidad #90/#91; seguridad #93; estación #94; decisión #95 (`7fca4bd`) |
 | Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Aplazada | Solo con infraestructura remota |
@@ -28,11 +33,10 @@ La PR #92, fusionada como `078540e`, fijó el diseño y el plan del motor
 `RecommendationDecision`. La implementación se divide en tres PR secuenciales:
 seguridad por ingrediente, afinidad estacional y decisión reproducible.
 
-## Trabajo actual — motor `RecommendationDecision`
+## Motor `RecommendationDecision` — fusionado
 
-Rama: `feat/recommendation-decision`. PR aún no abierta.
-
-El slice en curso:
+La PR #95 se revisó de forma independiente y se fusionó como `7fca4bd` el
+24 de julio. El motor entregado:
 
 - define los DTO compartidos de `RecommendationDecision`;
 - deriva estación meteorológica, restricciones híbridas y básicos asumidos en
@@ -42,16 +46,14 @@ El slice en curso:
 - evalúa disponibilidad, FEFO simulado y ranking sin IA ni escrituras;
 - expone la RPC autenticada `household_recommendation_decision(...)`.
 
-Validaciones implementadas hasta ahora:
+Validaciones: `pnpm test:db` con 8 archivos y 159 pruebas (41 contratos pgTAP
+de RecommendationDecision en `supabase/tests/0008`); cobertura de hogar
+compartido, restricciones, estación, seguridad, RPC, selección `cook_now` y no
+mutación del inventario.
 
-- 30 contratos pgTAP en el nuevo archivo `0008`;
-- `pnpm test:db`: 8 archivos y 159 pruebas (41 en RecommendationDecision);
-- cobertura de hogar compartido, restricciones, estación, seguridad, RPC,
-  selección `cook_now` y no mutación del inventario.
-
-Las PR #93 y #94 están fusionadas como `6dbda5e` y `d9d08be`. Este slice debe
-completar la validación cruzada, abrir PR y superar una revisión independiente
-antes de poder fusionarse.
+Con esto el backend de la Fase 2 está completo: caducidad (#90/#91),
+seguridad por ingrediente (#93), afinidad estacional (#94) y decisión
+reproducible (#95). Ningún cliente consume aún el motor.
 
 ## Decisiones vigentes
 
@@ -109,19 +111,29 @@ se corrige primero en una rama `fix/*`, con PR y revisión.
 
 ## Siguiente trabajo
 
-La Fase 2 continúa con la decisión reproducible de recomendaciones. El diseño
-aprobado se documenta en
-`docs/superpowers/specs/2026-07-24-recommendation-decision-design.md`.
-El plan ejecutable de las tres PR se documenta en
+Orden acordado el 24 de julio, alineado con el ciclo diario de la visión:
+
+1. **Validaciones operativas pendientes** (sección anterior): db reset desde
+   cero, dos sesiones del mismo hogar, `deno check` y flujo móvil completo.
+   Home se apoyará en todo ese stack.
+2. **Cerrar la Fase 2: Home "decisión de hoy"**. Un único DTO desde
+   `household_recommendation_decision`: productos prioritarios con estado de
+   caducidad, explicación y confianza; recetas para aprovecharlos; acciones de
+   compra. Es la primera superficie que consume el motor.
+3. **Fase 3: motor conversacional delgado**. El chat ejecuta primero el motor
+   y el LLM solo explica el top-N. Orden: receta existente → adaptación →
+   generación. Corrige la prioridad heredada del 21 de julio (generación LLM
+   como vía principal).
+4. **Fase 4: ciclo compartido**: Realtime de lista/despensa, plan semanal como
+   propuesta editable, contrato de tickets con confirmación manual.
+
+El diseño del motor está en
+`docs/superpowers/specs/2026-07-24-recommendation-decision-design.md` y el
+plan de sus tres PR en
 `docs/superpowers/plans/2026-07-24-recommendation-decision.md`.
 
-1. Completar, revisar y fusionar la PR de `RecommendationDecision`.
-2. Integrar restricciones híbridas, disponibilidad, caducidad, estación y
-   franja en una política reproducible.
-3. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
-
-No se debe abordar todavía el rediseño de Home/chat, Realtime, tickets ni
-infraestructura cloud.
+No se debe abordar todavía Realtime, tickets con OCR ni infraestructura
+cloud (Fases 5 y 6 siguen aplazadas).
 
 ## Flujo obligatorio
 
