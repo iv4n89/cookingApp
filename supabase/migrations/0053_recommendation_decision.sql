@@ -43,6 +43,9 @@ declare
   v_batch jsonb;
   v_missing jsonb;
   v_used jsonb;
+  v_consumed jsonb;
+  v_groups jsonb;
+  v_group jsonb;
   v_reasons jsonb;
   v_recipe_id text;
   v_canonical_id text;
@@ -70,9 +73,18 @@ declare
   v_recipe_safe boolean;
   v_basic boolean;
   v_supported_unit boolean;
+  v_matching_batch boolean;
   v_batch_status text;
   v_ord bigint;
   v_value jsonb;
+  v_group_unit text;
+  v_required_group numeric;
+  v_covered_line numeric;
+  v_already_consumed numeric;
+  v_take_batch numeric;
+  v_group_key text;
+  v_group_priority numeric;
+  v_group_consume_soon numeric;
 begin
   if p_snapshot is null or jsonb_typeof(p_snapshot) <> 'object' then
     raise exception 'recommendation snapshot must be an object'
@@ -111,6 +123,8 @@ begin
 
     v_missing := '[]'::jsonb;
     v_used := '[]'::jsonb;
+    v_consumed := '{}'::jsonb;
+    v_groups := '{}'::jsonb;
     v_reasons := '[]'::jsonb;
     v_missing_count := 0;
     v_ingredient_count := 0;
@@ -119,7 +133,6 @@ begin
     v_consume_soon := 0;
 
     for v_ingredient in select value from jsonb_array_elements(coalesce(v_recipe->'ingredients', '[]'::jsonb)) loop
-      v_ingredient_count := v_ingredient_count + 1;
       v_name := coalesce(v_ingredient->>'name', 'Ingrediente sin nombre');
       v_canonical_id := v_ingredient->>'canonicalIngredientId';
       v_required := nullif(v_ingredient->>'requiredQuantity', '')::numeric;
@@ -147,11 +160,11 @@ begin
       end if;
 
       if v_basic then
-        v_ready_count := v_ready_count + 1;
         continue;
       end if;
 
       if v_canonical_id is null then
+        v_ingredient_count := v_ingredient_count + 1;
         v_missing_count := v_missing_count + 1;
         v_missing := v_missing || jsonb_build_array(jsonb_build_object(
           'ingredientId', v_ingredient->'ingredientId', 'name', v_name,
@@ -162,6 +175,7 @@ begin
       end if;
 
       if v_required is null or v_required < 0 or v_unit is null then
+        v_ingredient_count := v_ingredient_count + 1;
         v_missing_count := v_missing_count + 1;
         v_missing := v_missing || jsonb_build_array(jsonb_build_object(
           'ingredientId', v_ingredient->'ingredientId', 'name', v_name,
@@ -171,15 +185,39 @@ begin
         continue;
       end if;
 
+      v_group_key := v_canonical_id;
+      v_group := v_groups -> v_group_key;
+      if v_group is null then
+        v_group := jsonb_build_object('unit', v_unit, 'required', 0, 'covered', 0, 'priority', 0, 'consumeSoon', 0);
+        v_ingredient_count := v_ingredient_count + 1;
+      end if;
+      v_group_unit := v_group->>'unit';
+      v_required_group := public.convert_inventory_quantity(v_required, v_unit, v_group_unit);
+      if v_required_group is null then
+        v_missing_count := v_missing_count + 1;
+        v_missing := v_missing || jsonb_build_array(jsonb_build_object(
+          'ingredientId', v_ingredient->'ingredientId', 'name', v_name,
+          'requiredQuantity', v_ingredient->'requiredQuantity', 'unit', v_ingredient->'unit',
+          'reason', 'unsupported_unit'
+        ));
+        continue;
+      end if;
+
       v_need := v_required;
       v_supported_unit := false;
+      v_matching_batch := false;
+      v_covered_line := 0;
+      v_group_priority := 0;
+      v_group_consume_soon := 0;
       for v_batch in
         select value from jsonb_array_elements(coalesce(p_snapshot->'inventoryBatches', '[]'::jsonb))
         order by value->>'acquiredAt', value->>'batchId'
       loop
         if v_batch->>'canonicalIngredientId' <> v_canonical_id then continue; end if;
+        v_matching_batch := true;
+        v_already_consumed := coalesce((v_consumed->>(v_batch->>'batchId'))::numeric, 0);
         v_available := public.convert_inventory_quantity(
-          coalesce((v_batch->>'remainingQuantity')::numeric, 0),
+          greatest(coalesce((v_batch->>'remainingQuantity')::numeric, 0) - v_already_consumed, 0),
           v_batch->>'unit', v_unit
         );
         if v_available is null then continue; end if;
@@ -187,27 +225,51 @@ begin
         if v_need <= 0 then exit; end if;
         v_take := least(v_need, greatest(v_available, 0));
         if v_take > 0 then
-          v_used := v_used || jsonb_build_array(v_batch->>'batchId');
+          v_take_batch := public.convert_inventory_quantity(v_take, v_unit, v_batch->>'unit');
+          v_consumed := jsonb_set(v_consumed, array[v_batch->>'batchId'], to_jsonb(v_already_consumed + v_take_batch), true);
+          if not (v_used ? (v_batch->>'batchId')) then
+            v_used := v_used || jsonb_build_array(v_batch->>'batchId');
+          end if;
           v_batch_status := v_batch->>'expirationStatus';
-          if v_batch_status = 'priority' then v_priority := v_priority + v_take / v_required; end if;
-          if v_batch_status = 'consume_soon' then v_consume_soon := v_consume_soon + v_take / v_required; end if;
+          v_covered_line := v_covered_line + v_take;
+          if v_batch_status = 'priority' then v_group_priority := v_group_priority + v_take; end if;
+          if v_batch_status = 'consume_soon' then v_group_consume_soon := v_group_consume_soon + v_take; end if;
           v_need := v_need - v_take;
         end if;
       end loop;
 
       if v_need <= 0 then
-        v_ready_count := v_ready_count + 1;
+        v_group := jsonb_set(v_group, '{covered}', to_jsonb((v_group->>'covered')::numeric + v_covered_line));
       else
         v_missing_count := v_missing_count + 1;
-        v_reason := case when not v_supported_unit then 'unsupported_unit' else 'insufficient_quantity' end;
+        v_reason := case when not v_matching_batch then 'missing' when not v_supported_unit then 'unsupported_unit' else 'insufficient_quantity' end;
         v_missing := v_missing || jsonb_build_array(jsonb_build_object(
           'ingredientId', v_ingredient->'ingredientId', 'name', v_name,
           'requiredQuantity', v_ingredient->'requiredQuantity', 'unit', v_ingredient->'unit',
           'reason', v_reason
         ));
       end if;
+      v_group := jsonb_set(v_group, '{required}', to_jsonb((v_group->>'required')::numeric + v_required_group));
+      v_group := jsonb_set(v_group, '{priority}', to_jsonb((v_group->>'priority')::numeric + v_group_priority));
+      v_group := jsonb_set(v_group, '{consumeSoon}', to_jsonb((v_group->>'consumeSoon')::numeric + v_group_consume_soon));
+      v_groups := jsonb_set(v_groups, array[v_group_key], v_group, true);
     end loop;
     if not v_recipe_safe then continue; end if;
+
+    v_ready_count := 0;
+    v_priority := 0;
+    v_consume_soon := 0;
+    for v_group in select value from jsonb_each(v_groups) loop
+      if (v_group->>'covered')::numeric >= (v_group->>'required')::numeric then v_ready_count := v_ready_count + 1; end if;
+      if (v_group->>'required')::numeric > 0 then
+        v_priority := v_priority + least((v_group->>'priority')::numeric / (v_group->>'required')::numeric, 1);
+        v_consume_soon := v_consume_soon + least((v_group->>'consumeSoon')::numeric / (v_group->>'required')::numeric, 1);
+      end if;
+    end loop;
+    if v_ingredient_count > 0 then
+      v_priority := v_priority / v_ingredient_count;
+      v_consume_soon := v_consume_soon / v_ingredient_count;
+    end if;
 
     v_mode := case when v_missing_count = 0 then 'cook_now' else 'shop_then_cook' end;
     v_availability := case when v_ingredient_count = 0 then 0 else v_ready_count::numeric / v_ingredient_count end;

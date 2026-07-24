@@ -45,7 +45,7 @@ El slice en curso:
 Validaciones implementadas hasta ahora:
 
 - 30 contratos pgTAP en el nuevo archivo `0008`;
-- `pnpm test:db`: 8 archivos y 148 pruebas;
+- `pnpm test:db`: 8 archivos y 155 pruebas (37 en RecommendationDecision);
 - cobertura de hogar compartido, restricciones, estación, seguridad, RPC,
   selección `cook_now` y no mutación del inventario.
 

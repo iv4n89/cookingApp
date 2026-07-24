@@ -1,6 +1,6 @@
 begin;
 
-select plan(31);
+select plan(37);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -121,6 +121,82 @@ select is(
   )->>'decisionReason',
   'no_safe_candidate',
   'Una receta sin ingredientes no demuestra seguridad bajo una exclusión activa'
+);
+
+select is(
+  public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', jsonb_build_array(jsonb_build_object(
+      'batchId', 'duplicate-stock', 'canonicalIngredientId', 'ingredient-duplicate',
+      'remainingQuantity', 1, 'unit', 'g', 'acquiredAt', '2026-07-01T00:00:00Z', 'expirationStatus', 'fresh'
+    )),
+    'recipeInputs', jsonb_build_array(jsonb_build_object(
+      'recipeId', 'duplicate-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+      'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high',
+      'ingredients', jsonb_build_array(
+        jsonb_build_object('ingredientId', 'duplicate-a', 'canonicalIngredientId', 'ingredient-duplicate', 'name', 'Ingrediente duplicado', 'requiredQuantity', 1, 'unit', 'g', 'safetyCompositionStatus', 'exact_reviewed', 'safetyAllergens', '[]'::jsonb, 'safetyIncompatibleDiets', '[]'::jsonb),
+        jsonb_build_object('ingredientId', 'duplicate-b', 'canonicalIngredientId', 'ingredient-duplicate', 'name', 'Ingrediente duplicado', 'requiredQuantity', 1, 'unit', 'g', 'safetyCompositionStatus', 'exact_reviewed', 'safetyAllergens', '[]'::jsonb, 'safetyIncompatibleDiets', '[]'::jsonb)
+      )
+    ))
+  ), 0)->'candidates'->0->>'mode',
+  'shop_then_cook', 'Las líneas duplicadas comparten stock canónico'
+);
+
+select is(
+  jsonb_array_length(public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', jsonb_build_array(jsonb_build_object('batchId', 'duplicate-stock-2', 'canonicalIngredientId', 'ingredient-duplicate-2', 'remainingQuantity', 1, 'unit', 'g', 'acquiredAt', '2026-07-01T00:00:00Z', 'expirationStatus', 'fresh')),
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'duplicate-recipe-2', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'duplicate-c', 'canonicalIngredientId', 'ingredient-duplicate-2', 'name', 'Duplicado', 'requiredQuantity', 1, 'unit', 'g'), jsonb_build_object('ingredientId', 'duplicate-d', 'canonicalIngredientId', 'ingredient-duplicate-2', 'name', 'Duplicado', 'requiredQuantity', 1, 'unit', 'g'))))
+  ), 0)->'candidates'->0->'usedBatchIds'), 1,
+  'Los lotes usados no se duplican entre líneas canónicas'
+);
+
+select is(
+  (public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', jsonb_build_array(jsonb_build_object('batchId', 'priority-mean', 'canonicalIngredientId', 'ingredient-priority-mean', 'remainingQuantity', 1, 'unit', 'g', 'acquiredAt', '2026-07-01T00:00:00Z', 'expirationStatus', 'priority')),
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'mean-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'mean-a', 'canonicalIngredientId', 'ingredient-priority-mean', 'name', 'Prioritario', 'requiredQuantity', 1, 'unit', 'g'), jsonb_build_object('ingredientId', 'mean-b', 'canonicalIngredientId', 'ingredient-missing-mean', 'name', 'Ausente', 'requiredQuantity', 1, 'unit', 'g'))))
+  ), 0)->'candidates'->0->'score'->>'priorityUsage')::numeric, 0.5,
+  'priorityUsage es la media por ingrediente'
+);
+
+select is(
+  (public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', '[]'::jsonb,
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'basic-missing', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'salt', 'canonicalIngredientId', null, 'name', 'Sal marina', 'requiredQuantity', 1, 'unit', 'g'), jsonb_build_object('ingredientId', 'missing', 'canonicalIngredientId', 'missing-canonical', 'name', 'Faltante', 'requiredQuantity', 1, 'unit', 'g'))))
+  ), 0)->'candidates'->0->'score'->>'availabilityRatio')::numeric, 0::numeric,
+  'Los básicos no cuentan en availabilityRatio'
+);
+
+select is(
+  public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', '[]'::jsonb,
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'known-missing', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'known-missing', 'canonicalIngredientId', 'known-missing', 'name', 'Faltante conocido', 'requiredQuantity', 1, 'unit', 'g'))))
+  ), 0)->'candidates'->0->'missingIngredients'->0->>'reason',
+  'missing', 'Un ingrediente conocido sin lote se marca como missing'
+);
+
+select is(
+  public.evaluate_recommendation_snapshot(jsonb_build_object(
+    'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+    'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+    'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+    'inventoryBatches', jsonb_build_array(jsonb_build_object('batchId', 'wrong-unit', 'canonicalIngredientId', 'wrong-unit-canonical', 'remainingQuantity', 1, 'unit', 'l', 'acquiredAt', '2026-07-01T00:00:00Z', 'expirationStatus', 'fresh')),
+    'recipeInputs', jsonb_build_array(jsonb_build_object('recipeId', 'wrong-unit-recipe', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', jsonb_build_array(jsonb_build_object('ingredientId', 'wrong-unit', 'canonicalIngredientId', 'wrong-unit-canonical', 'name', 'Unidad incompatible', 'requiredQuantity', 1, 'unit', 'g'))))
+  ), 0)->'candidates'->0->'missingIngredients'->0->>'reason',
+  'unsupported_unit', 'Una unidad incompatible se marca como unsupported_unit'
 );
 
 select ok(
