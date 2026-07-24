@@ -2,7 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
-import { KeyboardStickyView } from 'react-native-keyboard-controller';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { sendChat, type ChatMessage } from '@/lib/chat';
@@ -65,14 +65,13 @@ export function RecipeAiModal({
   }
 
   return (
-    <Modal visible={visible} transparent animationType="none" onRequestClose={close}>
+    <Modal visible={visible} transparent animationType="none" onRequestClose={close} statusBarTranslucent>
       <BlurView intensity={28} tint="dark" style={{ flex: 1 }}>
-        {/* Tocar fuera cierra. La hoja se ancla arriba para dejar sitio al teclado. */}
-        <Pressable className="flex-1" onPress={close}>
-          <SafeAreaView edges={['top']} className="px-container-padding">
-            <Pressable
-              onPress={() => {}}
-              className="mt-stack-lg gap-stack-lg rounded-xl bg-surface-container-lowest p-container-padding">
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          {/* Tocar fuera cierra. La hoja se ancla abajo y sube con el teclado. */}
+          <Pressable className="flex-1" onPress={close} />
+          <SafeAreaView edges={['bottom']} className="px-container-padding pb-stack-lg">
+            <View className="gap-stack-lg rounded-xl bg-surface-container-lowest p-container-padding">
               <View className="flex-row items-center justify-between">
                 <Text className="font-sans-bold text-headline-sm text-primary">Modificar receta</Text>
                 <Pressable
@@ -86,7 +85,7 @@ export function RecipeAiModal({
 
               <ScrollView
                 ref={scrollRef}
-                className="max-h-96"
+                className="max-h-80"
                 onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}>
                 <View className="gap-stack-lg">
                   {messages.map((message, i) => (
@@ -102,31 +101,29 @@ export function RecipeAiModal({
                 </Text>
               ) : null}
 
-              <KeyboardStickyView>
-                <View className="flex-row items-end gap-stack-md">
-                  <TextInput
-                    multiline
-                    value={text}
-                    onChangeText={setText}
-                    placeholder="p. ej. no tengo nata, ¿la puedo sustituir?"
-                    placeholderTextColor={colors['outline-variant']}
-                    className="max-h-28 flex-1 rounded-lg border border-outline-variant px-stack-lg py-gutter font-sans text-body-lg text-on-surface"
-                  />
-                  <Pressable
-                    onPress={send}
-                    disabled={!text.trim() || sending}
-                    accessibilityRole="button"
-                    accessibilityLabel="Enviar petición"
-                    className={`items-center justify-center rounded-lg bg-primary p-gutter ${
-                      !text.trim() || sending ? 'opacity-50' : ''
-                    }`}>
-                    <MaterialIcons name="arrow-upward" size={22} color={colors['on-primary']} />
-                  </Pressable>
-                </View>
-              </KeyboardStickyView>
-            </Pressable>
+              <View className="flex-row items-end gap-stack-md">
+                <TextInput
+                  multiline
+                  value={text}
+                  onChangeText={setText}
+                  placeholder="p. ej. no tengo nata, ¿la puedo sustituir?"
+                  placeholderTextColor={colors['outline-variant']}
+                  className="max-h-28 flex-1 rounded-lg border border-outline-variant px-stack-lg py-gutter font-sans text-body-lg text-on-surface"
+                />
+                <Pressable
+                  onPress={send}
+                  disabled={!text.trim() || sending}
+                  accessibilityRole="button"
+                  accessibilityLabel="Enviar petición"
+                  className={`items-center justify-center rounded-lg bg-primary p-gutter ${
+                    !text.trim() || sending ? 'opacity-50' : ''
+                  }`}>
+                  <MaterialIcons name="arrow-upward" size={22} color={colors['on-primary']} />
+                </Pressable>
+              </View>
+            </View>
           </SafeAreaView>
-        </Pressable>
+        </KeyboardAvoidingView>
       </BlurView>
     </Modal>
   );
