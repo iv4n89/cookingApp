@@ -12,7 +12,7 @@ otro chat o editor, debe leerse antes del plan maestro:
 | --- | --- | --- |
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
-| Fase 2 — Caducidad y decisión reproducible | En curso | Caducidad #90/#91; diseño #92; seguridad #93; estación en desarrollo |
+| Fase 2 — Caducidad y decisión reproducible | En curso | Caducidad #90/#91; seguridad #93; estación #94; decisión en desarrollo |
 | Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Aplazada | Solo con infraestructura remota |
@@ -28,36 +28,30 @@ La PR #92, fusionada como `078540e`, fijó el diseño y el plan del motor
 `RecommendationDecision`. La implementación se divide en tres PR secuenciales:
 seguridad por ingrediente, afinidad estacional y decisión reproducible.
 
-## Trabajo actual — afinidad culinaria estacional
+## Trabajo actual — motor `RecommendationDecision`
 
-Rama: `feat/recipe-season-profiles`. PR: #94.
+Rama: `feat/recommendation-decision`. PR aún no abierta.
 
 El slice en curso:
 
-- clasifica la experiencia culinaria de la receta para primavera, verano,
-  otoño, invierno o todo el año en el contexto de España;
-- mantiene la clasificación fuera de `recipes`, con procedencia, confianza y
-  versión del clasificador;
-- fija la precedencia atómica `curated > generated > backfill`;
-- cubre las 24 recetas del seed con perfiles curados y validados;
-- integra perfiles generados en inserciones y deduplicaciones sin impedir que
-  la receta se guarde si la clasificación falla;
-- separa el backfill en construcción local revisable y aplicación explícita.
+- define los DTO compartidos de `RecommendationDecision`;
+- deriva estación meteorológica, restricciones híbridas y básicos asumidos en
+  una política versionada;
+- construye snapshots privados del hogar con inventario, caducidad, seguridad
+  exacta por ingrediente y afinidad estacional;
+- evalúa disponibilidad, FEFO simulado y ranking sin IA ni escrituras;
+- expone la RPC autenticada `household_recommendation_decision(...)`.
 
 Validaciones implementadas hasta ahora:
 
-- 12 pruebas Deno del sanitizador y persistencia blanda;
-- dataset válido con 24 perfiles y 7 escenarios negativos;
-- 5 pruebas del contrato de artefactos de backfill;
-- migración local `0052` aplicada;
-- `pnpm test:db`: 7 archivos y 118 pruebas;
-- 12 carreras reales entre dos conexiones, en ambos órdenes y contra
-  `generated` y `backfill`, con bloqueo
-  comprobado y resultado final siempre `curated`.
+- 30 contratos pgTAP en el nuevo archivo `0008`;
+- `pnpm test:db`: 8 archivos y 159 pruebas (41 en RecommendationDecision);
+- cobertura de hogar compartido, restricciones, estación, seguridad, RPC,
+  selección `cook_now` y no mutación del inventario.
 
-La PR #93 de seguridad por ingrediente fue fusionada como `6dbda5e`. Este
-slice estacional debe completar la validación cruzada, abrir PR y superar una
-revisión independiente antes de poder fusionarse.
+Las PR #93 y #94 están fusionadas como `6dbda5e` y `d9d08be`. Este slice debe
+completar la validación cruzada, abrir PR y superar una revisión independiente
+antes de poder fusionarse.
 
 ## Decisiones vigentes
 
@@ -121,11 +115,10 @@ aprobado se documenta en
 El plan ejecutable de las tres PR se documenta en
 `docs/superpowers/plans/2026-07-24-recommendation-decision.md`.
 
-1. Completar, revisar y fusionar la PR de afinidad culinaria estacional.
-2. Solo después, crear una tercera rama para `RecommendationDecision`.
-3. Integrar restricciones híbridas, disponibilidad, caducidad, estación y
+1. Completar, revisar y fusionar la PR de `RecommendationDecision`.
+2. Integrar restricciones híbridas, disponibilidad, caducidad, estación y
    franja en una política reproducible.
-4. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
+3. Abrir PR y obtener una revisión sin bloqueantes antes de cambiar Home.
 
 No se debe abordar todavía el rediseño de Home/chat, Realtime, tickets ni
 infraestructura cloud.
