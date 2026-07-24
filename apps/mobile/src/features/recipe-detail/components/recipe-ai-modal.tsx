@@ -10,6 +10,11 @@ import type { Recipe } from '@/lib/recipes';
 
 import { colors } from '@recetas/theme/tokens';
 
+// Time the applied reply stays on screen (spinner + message) before the modal closes.
+const READ_REPLY_MS = 2500;
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // Mini-chat over the recipe detail to request AI modifications. The history is seeded with an
 // assistant turn carrying the current recipe (the backend builds its adaptation context from
 // assistant messages with `recipe`). Every reply that returns a recipe is applied to the detail
@@ -51,8 +56,10 @@ export function RecipeAiModal({
     try {
       const reply = await sendChat(history);
       setMessages([...history, { role: 'assistant', content: reply.message, recipe: reply.recipe }]);
-      // A reply that carries a recipe closes the modal to reveal the updated detail.
+      // Show the reply with the working spinner for a moment so the user can read it, then
+      // close the modal to reveal the updated detail.
       if (reply.recipe) {
+        await wait(READ_REPLY_MS);
         onRecipeUpdate(reply.recipe);
         setSending(false);
         onClose();
