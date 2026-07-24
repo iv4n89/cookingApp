@@ -1,6 +1,6 @@
 begin;
 
-select plan(42);
+select plan(46);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -271,6 +271,185 @@ select is(
   )->'candidates'->0->>'recipeId'),
   'recipe-ready',
   'La receta cocinable con básicos (0 faltantes) se ordena antes que la que exige comprar'
+);
+
+select is(
+  public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', jsonb_build_array(jsonb_build_object(
+        'batchId', 'batch-pollo', 'canonicalIngredientId', 'canon-pollo',
+        'remainingQuantity', 1, 'unit', 'kg', 'acquiredAt', '2026-07-01T00:00:00Z',
+        'expirationStatus', 'priority'
+      )),
+      'recipeInputs', jsonb_build_array(
+        jsonb_build_object(
+          'recipeId', 'recipe-menos-faltantes', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-arroz','canonicalIngredientId','canon-arroz','canonicalName','arroz','name','Arroz','requiredQuantity',200,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        ),
+        jsonb_build_object(
+          'recipeId', 'recipe-mas-prioritario', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-pollo','canonicalIngredientId','canon-pollo','canonicalName','pollo','name','Pollo','requiredQuantity',500,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+            jsonb_build_object('ingredientId','ing-cebolla','canonicalIngredientId','canon-cebolla','canonicalName','cebolla','name','Cebolla','requiredQuantity',1,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+            jsonb_build_object('ingredientId','ing-ajo','canonicalIngredientId','canon-ajo','canonicalName','ajo','name','Ajo','requiredQuantity',2,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        )
+      )
+    ), 5
+  )->'candidates'->0->>'recipeId',
+  'recipe-menos-faltantes',
+  'Entre dos recetas shop_then_cook gana la de menos faltantes aunque la otra use más ingredientes prioritarios'
+);
+
+select is(
+  ((public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', jsonb_build_array(jsonb_build_object(
+        'batchId', 'batch-pollo', 'canonicalIngredientId', 'canon-pollo',
+        'remainingQuantity', 1, 'unit', 'kg', 'acquiredAt', '2026-07-01T00:00:00Z',
+        'expirationStatus', 'priority'
+      )),
+      'recipeInputs', jsonb_build_array(
+        jsonb_build_object(
+          'recipeId', 'recipe-menos-faltantes', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-arroz','canonicalIngredientId','canon-arroz','canonicalName','arroz','name','Arroz','requiredQuantity',200,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        ),
+        jsonb_build_object(
+          'recipeId', 'recipe-mas-prioritario', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-pollo','canonicalIngredientId','canon-pollo','canonicalName','pollo','name','Pollo','requiredQuantity',500,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+            jsonb_build_object('ingredientId','ing-cebolla','canonicalIngredientId','canon-cebolla','canonicalName','cebolla','name','Cebolla','requiredQuantity',1,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+            jsonb_build_object('ingredientId','ing-ajo','canonicalIngredientId','canon-ajo','canonicalName','ajo','name','Ajo','requiredQuantity',2,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        )
+      )
+    ), 5
+  )->'candidates') @> jsonb_build_array(jsonb_build_object('recipeId', 'recipe-menos-faltantes', 'mode', 'shop_then_cook'))
+    and (public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', jsonb_build_array(jsonb_build_object(
+        'batchId', 'batch-pollo', 'canonicalIngredientId', 'canon-pollo',
+        'remainingQuantity', 1, 'unit', 'kg', 'acquiredAt', '2026-07-01T00:00:00Z',
+        'expirationStatus', 'priority'
+      )),
+      'recipeInputs', jsonb_build_array(
+        jsonb_build_object(
+          'recipeId', 'recipe-menos-faltantes', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-arroz','canonicalIngredientId','canon-arroz','canonicalName','arroz','name','Arroz','requiredQuantity',200,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        ),
+        jsonb_build_object(
+          'recipeId', 'recipe-mas-prioritario', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+          'ingredients', jsonb_build_array(
+            jsonb_build_object('ingredientId','ing-pollo','canonicalIngredientId','canon-pollo','canonicalName','pollo','name','Pollo','requiredQuantity',500,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+            jsonb_build_object('ingredientId','ing-cebolla','canonicalIngredientId','canon-cebolla','canonicalName','cebolla','name','Cebolla','requiredQuantity',1,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+            jsonb_build_object('ingredientId','ing-ajo','canonicalIngredientId','canon-ajo','canonicalName','ajo','name','Ajo','requiredQuantity',2,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+          )
+        )
+      )
+    ), 5
+  )->'candidates') @> jsonb_build_array(jsonb_build_object('recipeId', 'recipe-mas-prioritario', 'mode', 'shop_then_cook'))),
+  true,
+  'Ambas recetas comparadas son shop_then_cook: la victoria de la menos faltante no depende de un cook_now espurio'
+);
+
+select ok(
+  (select
+    (c -> 'score' ->> 'priorityUsage')::numeric > 0
+    and (c -> 'score' ->> 'missingIngredientCount')::int = 2
+  from jsonb_array_elements(
+    public.evaluate_recommendation_snapshot(
+      jsonb_build_object(
+        'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+        'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+        'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+        'inventoryBatches', jsonb_build_array(jsonb_build_object(
+          'batchId', 'batch-pollo', 'canonicalIngredientId', 'canon-pollo',
+          'remainingQuantity', 1, 'unit', 'kg', 'acquiredAt', '2026-07-01T00:00:00Z',
+          'expirationStatus', 'priority'
+        )),
+        'recipeInputs', jsonb_build_array(
+          jsonb_build_object(
+            'recipeId', 'recipe-menos-faltantes', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+            'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+            'ingredients', jsonb_build_array(
+              jsonb_build_object('ingredientId','ing-arroz','canonicalIngredientId','canon-arroz','canonicalName','arroz','name','Arroz','requiredQuantity',200,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+            )
+          ),
+          jsonb_build_object(
+            'recipeId', 'recipe-mas-prioritario', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+            'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+            'ingredients', jsonb_build_array(
+              jsonb_build_object('ingredientId','ing-pollo','canonicalIngredientId','canon-pollo','canonicalName','pollo','name','Pollo','requiredQuantity',500,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+              jsonb_build_object('ingredientId','ing-cebolla','canonicalIngredientId','canon-cebolla','canonicalName','cebolla','name','Cebolla','requiredQuantity',1,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+              jsonb_build_object('ingredientId','ing-ajo','canonicalIngredientId','canon-ajo','canonicalName','ajo','name','Ajo','requiredQuantity',2,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+            )
+          )
+        )
+      ), 5
+    )->'candidates'
+  ) as c
+  where c ->> 'recipeId' = 'recipe-mas-prioritario'),
+  'La receta con más priorityUsage y más faltantes queda por detrás: priorityUsage > 0 y missingIngredientCount = 2'
+);
+
+select is(
+  ((select c -> 'score' ->> 'missingIngredientCount'
+  from jsonb_array_elements(
+    public.evaluate_recommendation_snapshot(
+      jsonb_build_object(
+        'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+        'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+        'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+        'inventoryBatches', jsonb_build_array(jsonb_build_object(
+          'batchId', 'batch-pollo', 'canonicalIngredientId', 'canon-pollo',
+          'remainingQuantity', 1, 'unit', 'kg', 'acquiredAt', '2026-07-01T00:00:00Z',
+          'expirationStatus', 'priority'
+        )),
+        'recipeInputs', jsonb_build_array(
+          jsonb_build_object(
+            'recipeId', 'recipe-menos-faltantes', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+            'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+            'ingredients', jsonb_build_array(
+              jsonb_build_object('ingredientId','ing-arroz','canonicalIngredientId','canon-arroz','canonicalName','arroz','name','Arroz','requiredQuantity',200,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+            )
+          ),
+          jsonb_build_object(
+            'recipeId', 'recipe-mas-prioritario', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+            'seasons', '[]'::jsonb, 'seasonConfidence', 'low',
+            'ingredients', jsonb_build_array(
+              jsonb_build_object('ingredientId','ing-pollo','canonicalIngredientId','canon-pollo','canonicalName','pollo','name','Pollo','requiredQuantity',500,'unit','g','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+              jsonb_build_object('ingredientId','ing-cebolla','canonicalIngredientId','canon-cebolla','canonicalName','cebolla','name','Cebolla','requiredQuantity',1,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb),
+              jsonb_build_object('ingredientId','ing-ajo','canonicalIngredientId','canon-ajo','canonicalName','ajo','name','Ajo','requiredQuantity',2,'unit','ud','safetyCompositionStatus','exact_reviewed','safetyAllergens','[]'::jsonb,'safetyIncompatibleDiets','[]'::jsonb)
+            )
+          )
+        )
+      ), 5
+    )->'candidates'
+  ) as c
+  where c ->> 'recipeId' = 'recipe-menos-faltantes')::int),
+  1,
+  'La receta ganadora tiene exactamente 1 faltante frente a los 2 de la alternativa descartada'
 );
 
 select ok(
