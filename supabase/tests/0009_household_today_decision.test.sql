@@ -236,10 +236,11 @@ select is(
   'Con el ingrediente en despensa la destacada es cook_now'
 );
 select ok(
-  public.household_today_decision('cena', 5)->'pantry'->'alternatives' @> jsonb_build_array(jsonb_build_object(
-    'recipeId', '00000000-0000-0000-0000-000000009302', 'mode', 'shop_then_cook'
-  )),
-  'La receta cuyo ingrediente no está en despensa aparece como alternativa shop_then_cook'
+  exists (
+    select 1 from jsonb_array_elements(public.household_today_decision('cena', 5)->'pantry'->'alternatives') a
+    where a->>'mode' = 'shop_then_cook'
+  ),
+  'Entre las alternativas de pantry hay recetas shop_then_cook (variedad aleatoria)'
 );
 select ok(
   jsonb_array_length(public.household_today_decision('cena', 5)->'pantry'->'alternatives') >= 1,
@@ -263,10 +264,15 @@ select ok(
   'Con más de 5 candidatas seguras, discover deja de estar vacío'
 );
 select ok(
-  public.household_today_decision('cena', 5)->'discover' @> jsonb_build_array(jsonb_build_object(
-    'recipeId', '00000000-0000-0000-0000-000000009306'
-  )),
-  'La candidata de rango > 5 con cocina propia (griega) entra en discover'
+  (with d as (select public.household_today_decision('cena', 5) as r)
+   select not exists (
+     select 1 from d,
+       jsonb_array_elements(d.r->'discover') disc,
+       jsonb_array_elements(coalesce(d.r->'pantry'->'alternatives', '[]'::jsonb)
+         || jsonb_build_array(d.r->'pantry'->'featured')) pan
+     where disc->>'recipeId' = pan->>'recipeId'
+   )),
+  'discover no solapa con la pista pantry en una misma decisión (variedad aleatoria)'
 );
 select ok(
   not (
