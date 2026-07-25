@@ -252,12 +252,12 @@ select is(
   'discover es siempre un array'
 );
 select ok(
-  not exists (
-    select 1
-    from jsonb_array_elements(public.household_today_decision('cena', 5)->'discover') d
-    where d->>'recipeId' = public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId'
-  ),
-  'discover no repite la receta destacada de pantry'
+  (with dec as (select public.household_today_decision('cena', 5) as r)
+   select not exists (
+     select 1 from dec, jsonb_array_elements(dec.r->'discover') d
+     where d->>'recipeId' = dec.r->'pantry'->'featured'->>'recipeId'
+   )),
+  'discover no repite la receta destacada de pantry (misma decisión)'
 );
 select ok(
   jsonb_array_length(public.household_today_decision('cena', 5)->'discover') >= 1,
