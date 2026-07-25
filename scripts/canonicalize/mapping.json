@@ -1299,7 +1299,7 @@
     "id": "f18418d3-fcf8-45ca-9b37-0b3ad9df4498",
     "name": "Leche desnatada",
     "category": "Lácteos y huevos",
-    "canonical_name": "leche desnatada"
+    "canonical_name": "leche entera"
   },
   {
     "id": "1925d4ab-168f-4ec2-b7f0-a690208e6719",
@@ -1317,7 +1317,7 @@
     "id": "d6137573-3b88-4e6b-bc55-c32a90d26ed6",
     "name": "Leche semidesnatada",
     "category": "Lácteos y huevos",
-    "canonical_name": "leche semidesnatada"
+    "canonical_name": "leche entera"
   },
   {
     "id": "19165ac8-b7b2-4f91-83fe-daada7fee387",
