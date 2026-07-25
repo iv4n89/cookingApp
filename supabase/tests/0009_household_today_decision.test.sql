@@ -275,12 +275,15 @@ select ok(
   'discover no solapa con la pista pantry en una misma decisión (variedad aleatoria)'
 );
 select ok(
-  not (
-    public.household_today_decision('cena', 5)->'discover' @> jsonb_build_array(jsonb_build_object('recipeId', '00000000-0000-0000-0000-000000009307'))
-    and
-    public.household_today_decision('cena', 5)->'discover' @> jsonb_build_array(jsonb_build_object('recipeId', '00000000-0000-0000-0000-000000009308'))
-  ),
-  'Dos candidatas con el mismo tags[1] (italiana) no aparecen ambas en discover'
+  (with dec as (select public.household_today_decision('cena', 5) as r)
+   select not (
+     exists (select 1 from dec, jsonb_array_elements(dec.r->'discover') d
+       where d->>'recipeId' = '00000000-0000-0000-0000-000000009307')
+     and
+     exists (select 1 from dec, jsonb_array_elements(dec.r->'discover') d
+       where d->>'recipeId' = '00000000-0000-0000-0000-000000009308')
+   )),
+  'Dos candidatas con el mismo tags[1] (italiana) no aparecen ambas en discover (misma decisión)'
 );
 
 -- Filtro de la pista pantry por franja horaria (migración 0058).
