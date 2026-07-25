@@ -191,6 +191,7 @@ export async function resolveRecipeForChat(
   supabase: SupabaseClient,
   query: string,
   userId: string | null,
+  householdId: string | null,
   prefs: UserPrefs | null,
   constraints: Constraints = {},
 ): Promise<{ recipe: Record<string, unknown> | null; origin: RecipeOrigin; missing: string[] }> {
@@ -203,35 +204,48 @@ export async function resolveRecipeForChat(
   const exclude_allergens = unique([...prefAllergens, ...(constraints.excludeAllergens ?? [])]);
   const require_diet = unique([...prefDiet, ...(constraints.requireDiet ?? [])]);
 
-  const embedding = await embedText(query, 'RETRIEVAL_QUERY');
-  const { data: matches, error } = await supabase.rpc('match_recipes', {
-    query_embedding: embedding,
-    match_threshold: MATCH_THRESHOLD,
-    match_count: 12,
-    exclude_allergens,
-    require_diet,
-  });
-  if (error) throw error;
-
-  if (matches?.length) {
-    const ids = matches.map((m: { id?: string }) => m.id).filter(Boolean);
-    const { data: ranking, error: rankError } = await supabase.rpc('household_recipe_ranking', {
-      p_recipe_ids: ids,
-      p_limit: 12,
+  // Catálogo-primero: solo tiene sentido con un hogar del que leer la despensa.
+  if (householdId) {
+    const embedding = await embedText(query, 'RETRIEVAL_QUERY');
+    const { data: matches, error } = await supabase.rpc('match_recipes', {
+      query_embedding: embedding,
+      match_threshold: MATCH_THRESHOLD,
+      match_count: 12,
+      exclude_allergens,
+      require_diet,
     });
-    if (rankError) throw rankError;
-    const candidates = (ranking?.candidates ?? []) as {
-      recipeId: string;
-      missingIngredients?: { name?: string }[];
-    }[];
-    if (candidates.length) {
-      const best = candidates[0];
-      const recipe = matches.find((m: { id?: string }) => m.id === best.recipeId) ?? null;
-      if (recipe) {
-        const missing = (best.missingIngredients ?? [])
-          .map((mi) => mi?.name)
-          .filter((n): n is string => Boolean(n));
-        return { recipe, origin: 'db', missing };
+    if (error) throw error;
+
+    if (matches?.length) {
+      const ids = matches.map((m: { id?: string }) => m.id).filter(Boolean);
+      const { data: ranking, error: rankError } = await supabase.rpc('household_recipe_ranking', {
+        p_household_id: householdId,
+        p_user_id: userId,
+        p_recipe_ids: ids,
+        p_limit: 12,
+      });
+      // Si el ranking falla, degradar a generación en vez de romper la respuesta.
+      if (!rankError) {
+        const candidates = (ranking?.candidates ?? []) as {
+          recipeId: string;
+          score?: { missingIngredientCount?: number };
+          missingIngredients?: { name?: string }[];
+        }[];
+        // "Solo con lo que tengo": exige una candidata sin faltantes; si no, se genera.
+        const best = constraints.pantryOnly
+          ? candidates.find((c) => (c.score?.missingIngredientCount ?? 1) === 0)
+          : candidates[0];
+        if (best) {
+          const recipe = matches.find((m: { id?: string }) => m.id === best.recipeId) ?? null;
+          if (recipe) {
+            const missing = (best.missingIngredients ?? [])
+              .map((mi) => mi?.name)
+              .filter((n): n is string => Boolean(n));
+            return { recipe, origin: 'db', missing };
+          }
+        }
+      } else {
+        console.error('household_recipe_ranking falló, se degrada a generación:', rankError);
       }
     }
   }

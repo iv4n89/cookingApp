@@ -97,19 +97,25 @@ function recipeContext(recipe: HistoryRecipe): string {
   );
 }
 
-async function fetchPantryNames(supabase: SupabaseClient, userId: string): Promise<string[]> {
+async function fetchPantry(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<{ householdId: string | null; names: string[] }> {
   const { data: membership } = await supabase
     .from('household_members')
     .select('household_id')
     .eq('user_id', userId)
     .maybeSingle();
-  if (!membership) return [];
+  if (!membership) return { householdId: null, names: [] };
   const { data } = await supabase
     .from('pantry_items')
     .select('name')
     .eq('household_id', membership.household_id)
     .limit(100);
-  return (data ?? []).map((p) => p.name as string).filter(Boolean);
+  return {
+    householdId: membership.household_id as string,
+    names: (data ?? []).map((p) => p.name as string).filter(Boolean),
+  };
 }
 
 // Contexto siempre activo del usuario: necesidades (a respetar), preferencias y despensa.
@@ -162,7 +168,8 @@ Deno.serve(async (req) => {
     const supabase = serviceClient();
     const userId = getUserId(req);
     const prefs = userId ? await getUserPrefs(supabase, userId) : null;
-    const pantryNames = userId ? await fetchPantryNames(supabase, userId) : [];
+    const pantry = userId ? await fetchPantry(supabase, userId) : { householdId: null, names: [] };
+    const pantryNames = pantry.names;
     const system = buildSystemInstruction(prefs, pantryNames);
 
     const {
@@ -189,20 +196,21 @@ Deno.serve(async (req) => {
       if (pantry_only === true && !pantryNames.length) {
         return json({ message: EMPTY_PANTRY_NOTE, recipe: null });
       }
-      const constraints = {
+      const base = {
         excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
         requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
         pantryOnly: pantry_only === true,
-        pantry: pantryNames.length ? pantryNames : undefined,
       };
       try {
         if (is_modification === true) {
+          // Modificación: se genera fresca para reflejar lo pedido. La despensa solo entra como
+          // restricción dura si el usuario pidió "solo con lo que tengo".
           const resolved = await resolveRecipe(
             supabase,
             query.slice(0, MAX_QUERY_LENGTH),
             userId,
             prefs,
-            constraints,
+            { ...base, pantry: pantry_only === true ? pantryNames : undefined },
             { skipCache: true },
           );
           if (resolved.origin === 'rate_limited') {
@@ -214,8 +222,9 @@ Deno.serve(async (req) => {
             supabase,
             query.slice(0, MAX_QUERY_LENGTH),
             userId,
+            pantry.householdId,
             prefs,
-            constraints,
+            { ...base, pantry: pantryNames.length ? pantryNames : undefined },
           );
           if (resolved.origin === 'rate_limited') {
             return json({ message: RATE_LIMIT_MESSAGE, recipe: null });

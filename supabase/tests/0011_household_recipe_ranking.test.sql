@@ -2,11 +2,12 @@ begin;
 
 select plan(8);
 
-select has_function('public', 'household_recipe_ranking', array['uuid[]', 'text', 'integer'], 'Existe la RPC household_recipe_ranking');
+select has_function('public', 'household_recipe_ranking', array['uuid', 'uuid', 'uuid[]', 'text', 'integer'], 'Existe la RPC household_recipe_ranking');
 select ok(
-  has_function_privilege('authenticated', 'public.household_recipe_ranking(uuid[],text,integer)', 'EXECUTE')
-  and not has_function_privilege('anon', 'public.household_recipe_ranking(uuid[],text,integer)', 'EXECUTE'),
-  'Solo authenticated puede ejecutarla'
+  has_function_privilege('service_role', 'public.household_recipe_ranking(uuid,uuid,uuid[],text,integer)', 'EXECUTE')
+  and not has_function_privilege('anon', 'public.household_recipe_ranking(uuid,uuid,uuid[],text,integer)', 'EXECUTE')
+  and not has_function_privilege('authenticated', 'public.household_recipe_ranking(uuid,uuid,uuid[],text,integer)', 'EXECUTE'),
+  'Solo service_role puede ejecutarla (la llama la Edge Function del chat)'
 );
 
 insert into auth.users (
@@ -87,12 +88,12 @@ begin
 end;
 $$;
 
-select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000902', true);
-select set_config('request.jwt.claim.role', 'authenticated', true);
-
+-- La RPC recibe household_id y user_id explícitos (la Edge Function los pasa desde service_role).
 -- (b) Rankeando A (cook_now) y B (shop_then_cook), gana A y no tiene faltantes.
 select is(
   public.household_recipe_ranking(
+    current_setting('test.ranking_household')::uuid,
+    '00000000-0000-0000-0000-000000000902'::uuid,
     array['00000000-0000-0000-0000-000000009701'::uuid, '00000000-0000-0000-0000-000000009702'::uuid]
   )->'candidates'->0->>'recipeId',
   '00000000-0000-0000-0000-000000009701',
@@ -100,6 +101,8 @@ select is(
 );
 select is(
   (public.household_recipe_ranking(
+    current_setting('test.ranking_household')::uuid,
+    '00000000-0000-0000-0000-000000000902'::uuid,
     array['00000000-0000-0000-0000-000000009701'::uuid, '00000000-0000-0000-0000-000000009702'::uuid]
   )->'candidates'->0->'score'->>'missingIngredientCount')::integer,
   0,
@@ -109,6 +112,8 @@ select is(
 -- (c) Pedir solo la shop_then_cook filtra a esa única candidata, con faltantes.
 select is(
   jsonb_array_length(public.household_recipe_ranking(
+    current_setting('test.ranking_household')::uuid,
+    '00000000-0000-0000-0000-000000000902'::uuid,
     array['00000000-0000-0000-0000-000000009702'::uuid]
   )->'candidates'),
   1,
@@ -116,6 +121,8 @@ select is(
 );
 select ok(
   (public.household_recipe_ranking(
+    current_setting('test.ranking_household')::uuid,
+    '00000000-0000-0000-0000-000000000902'::uuid,
     array['00000000-0000-0000-0000-000000009702'::uuid]
   )->'candidates'->0->'score'->>'missingIngredientCount')::integer > 0,
   'La única candidata pedida tiene faltantes'
@@ -123,12 +130,20 @@ select ok(
 
 -- (d) Lista vacía o NULL siempre devuelven candidates: []
 select is(
-  public.household_recipe_ranking(array[]::uuid[])->'candidates',
+  public.household_recipe_ranking(
+    current_setting('test.ranking_household')::uuid,
+    '00000000-0000-0000-0000-000000000902'::uuid,
+    array[]::uuid[]
+  )->'candidates',
   '[]'::jsonb,
   'Lista de ids vacía devuelve candidates: []'
 );
 select is(
-  public.household_recipe_ranking(null::uuid[])->'candidates',
+  public.household_recipe_ranking(
+    current_setting('test.ranking_household')::uuid,
+    '00000000-0000-0000-0000-000000000902'::uuid,
+    null::uuid[]
+  )->'candidates',
   '[]'::jsonb,
   'NULL como lista de ids devuelve candidates: []'
 );
