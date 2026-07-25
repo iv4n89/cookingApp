@@ -76,6 +76,66 @@ function unique(values: string[]): string[] {
   return [...new Set(values)];
 }
 
+// Genera una receta con IA a partir de la petición y las restricciones, la guarda y (si es
+// reutilizable) le encola imagen. Compartido por la búsqueda del Home y el fallback del chat.
+async function generateAndSave(
+  supabase: SupabaseClient,
+  query: string,
+  userId: string | null,
+  prefs: UserPrefs | null,
+  constraints: Constraints,
+  reusable: boolean,
+): Promise<{ recipe: Record<string, unknown> | null; origin: RecipeOrigin }> {
+  if (userId && (await generationsInWindow(supabase, userId)) >= MAX_GENERATIONS_PER_WINDOW) {
+    return { recipe: null, origin: 'rate_limited' };
+  }
+
+  const guidance = [prefs ? buildPrefText(prefs) : undefined];
+  if (constraints.excludeAllergens?.length) {
+    guidance.push(
+      `Evita por completo estos ingredientes y sus derivados: ${constraints.excludeAllergens.join(', ')}.`,
+    );
+  }
+  if (constraints.requireDiet?.length) {
+    guidance.push(`La receta debe cumplir esta dieta: ${constraints.requireDiet.join(', ')}.`);
+  }
+  if (constraints.pantryOnly && constraints.pantry?.length) {
+    guidance.push(
+      `IMPRESCINDIBLE: el usuario no puede comprar nada, cocina SOLO con lo que ya tiene. Usa ` +
+        `únicamente ingredientes de esta lista (más básicos siempre disponibles: sal, pimienta, ` +
+        `aceite, agua): ${constraints.pantry.join(', ')}. No incluyas ningún otro ingrediente.`,
+    );
+  } else if (constraints.pantry?.length) {
+    // Guía blanda: aprovechar la despensa para minimizar lo que hay que comprar.
+    guidance.push(
+      `El usuario tiene en casa: ${constraints.pantry.join(', ')}. Prioriza usar estos ` +
+        `ingredientes y minimiza los que habría que comprar.`,
+    );
+  }
+  const guidanceText = guidance.filter(Boolean).join(' ') || undefined;
+
+  const generated = await generateRecipe(query, guidanceText);
+  const saved = await saveRecipe(supabase, {
+    ...recipeFromGenerated(generated),
+    reusable,
+  });
+
+  // Imagen de la receta en segundo plano SOLO para reutilizables (las del chat, reusable=false,
+  // van con placeholder para no gastar en fal). No bloquea la respuesta.
+  if (reusable) queueRecipeImage(supabase, saved?.id, saved?.title);
+
+  if (userId) {
+    try {
+      const { error: eventError } = await supabase.from('generation_events').insert({ user_id: userId });
+      if (eventError) console.error('generation_events insert falló:', eventError);
+    } catch (e) {
+      console.error('generation_events insert falló:', e);
+    }
+  }
+
+  return { recipe: saved, origin: 'generated' };
+}
+
 // Flujo único de recetas: caché (filtrada por preferencias) -> web + IA -> guardar.
 // Lo usan tanto la búsqueda directa como el chat, para que ninguna receta sea "inventada"
 // suelta: siempre queda guardada, atribuida y etiquetada.
@@ -118,46 +178,64 @@ export async function resolveRecipe(
     if (match) return { recipe: match, origin: 'db' };
   }
 
-  if (userId && (await generationsInWindow(supabase, userId)) >= MAX_GENERATIONS_PER_WINDOW) {
-    return { recipe: null, origin: 'rate_limited' };
-  }
+  return generateAndSave(supabase, query, userId, prefs, constraints, !options.skipCache);
+}
 
-  const guidance = [prefs ? buildPrefText(prefs) : undefined];
-  if (constraints.excludeAllergens?.length) {
-    guidance.push(
-      `Evita por completo estos ingredientes y sus derivados: ${constraints.excludeAllergens.join(', ')}.`,
-    );
-  }
-  if (constraints.requireDiet?.length) {
-    guidance.push(`La receta debe cumplir esta dieta: ${constraints.requireDiet.join(', ')}.`);
-  }
-  if (constraints.pantryOnly && constraints.pantry?.length) {
-    guidance.push(
-      `IMPRESCINDIBLE: el usuario no puede comprar nada, cocina SOLO con lo que ya tiene. Usa ` +
-        `únicamente ingredientes de esta lista (más básicos siempre disponibles: sal, pimienta, ` +
-        `aceite, agua): ${constraints.pantry.join(', ')}. No incluyas ningún otro ingrediente.`,
-    );
-  }
-  const guidanceText = guidance.filter(Boolean).join(' ') || undefined;
+// Resolución de receta para el CHAT: catálogo-primero con ranking por despensa. Busca en el
+// catálogo (match_recipes) las recetas más afines a la petición, las rankea contra la despensa del
+// hogar (RPC household_recipe_ranking, mismo motor pantry-first que la Home) y devuelve la más
+// cocinable, con la lista de ingredientes que faltan. Si no hay ninguna afín, genera con IA
+// pasando la despensa como guía. Las modificaciones ("sin huevo", "más picante") NO usan esto: el
+// chat las manda por resolveRecipe con skipCache para que reflejen lo pedido.
+export async function resolveRecipeForChat(
+  supabase: SupabaseClient,
+  query: string,
+  userId: string | null,
+  prefs: UserPrefs | null,
+  constraints: Constraints = {},
+): Promise<{ recipe: Record<string, unknown> | null; origin: RecipeOrigin; missing: string[] }> {
+  const [prefAllergens, prefDiet] = prefs
+    ? await Promise.all([
+        excludedAllergens(supabase, prefs.special_needs),
+        requiredDiet(supabase, prefs.food_prefs),
+      ])
+    : [[], []];
+  const exclude_allergens = unique([...prefAllergens, ...(constraints.excludeAllergens ?? [])]);
+  const require_diet = unique([...prefDiet, ...(constraints.requireDiet ?? [])]);
 
-  const generated = await generateRecipe(query, guidanceText);
-  const saved = await saveRecipe(supabase, {
-    ...recipeFromGenerated(generated),
-    reusable: !options.skipCache,
+  const embedding = await embedText(query, 'RETRIEVAL_QUERY');
+  const { data: matches, error } = await supabase.rpc('match_recipes', {
+    query_embedding: embedding,
+    match_threshold: MATCH_THRESHOLD,
+    match_count: 12,
+    exclude_allergens,
+    require_diet,
   });
+  if (error) throw error;
 
-  // Imagen de la receta en segundo plano SOLO para reutilizables (las del chat, reusable=false,
-  // van con placeholder para no gastar en fal). No bloquea la respuesta.
-  if (!options.skipCache) queueRecipeImage(supabase, saved?.id, saved?.title);
-
-  if (userId) {
-    try {
-      const { error: eventError } = await supabase.from('generation_events').insert({ user_id: userId });
-      if (eventError) console.error('generation_events insert falló:', eventError);
-    } catch (e) {
-      console.error('generation_events insert falló:', e);
+  if (matches?.length) {
+    const ids = matches.map((m: { id?: string }) => m.id).filter(Boolean);
+    const { data: ranking, error: rankError } = await supabase.rpc('household_recipe_ranking', {
+      p_recipe_ids: ids,
+      p_limit: 12,
+    });
+    if (rankError) throw rankError;
+    const candidates = (ranking?.candidates ?? []) as {
+      recipeId: string;
+      missingIngredients?: { name?: string }[];
+    }[];
+    if (candidates.length) {
+      const best = candidates[0];
+      const recipe = matches.find((m: { id?: string }) => m.id === best.recipeId) ?? null;
+      if (recipe) {
+        const missing = (best.missingIngredients ?? [])
+          .map((mi) => mi?.name)
+          .filter((n): n is string => Boolean(n));
+        return { recipe, origin: 'db', missing };
+      }
     }
   }
 
-  return { recipe: saved, origin: 'generated' };
+  const generated = await generateAndSave(supabase, query, userId, prefs, constraints, false);
+  return { ...generated, missing: [] };
 }
