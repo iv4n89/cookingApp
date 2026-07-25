@@ -69,20 +69,24 @@ export async function listIngredients(): Promise<CatalogIngredient[]> {
 
 export type CanonicalMap = Map<string, string>; // varianteId -> canónicoId
 
-let canonicalCache: CanonicalMap | null = null;
+// TTL del caché: un cambio de agrupación (canonical_id) en el servidor se refleja en, como mucho,
+// este tiempo sin reiniciar la app. Antes se cacheaba para siempre por sesión y un reagrupamiento
+// exigía cerrar y reabrir la app.
+const CANONICAL_TTL_MS = 5 * 60 * 1000;
+let canonicalCache: { map: CanonicalMap; at: number } | null = null;
 
-// Mapa id->canónico de las variantes (canonical_id not null), cacheado por sesión. Si el fetch
-// falla devuelve un mapa vacío y no cachea (para reintentar en la siguiente llamada).
+// Mapa id->canónico de las variantes (canonical_id not null), cacheado con TTL. Si el fetch falla,
+// conserva el mapa anterior (si lo hay) en vez de vaciarlo.
 export async function getCanonicalMap(): Promise<CanonicalMap> {
-  if (canonicalCache) return canonicalCache;
+  if (canonicalCache && Date.now() - canonicalCache.at < CANONICAL_TTL_MS) return canonicalCache.map;
   const { data, error } = await supabase
     .from('ingredients')
     .select('id, canonical_id')
     .not('canonical_id', 'is', null);
-  if (error) return new Map();
+  if (error) return canonicalCache?.map ?? new Map();
   const map = new Map<string, string>();
   for (const row of data ?? []) map.set(row.id as string, row.canonical_id as string);
-  canonicalCache = map;
+  canonicalCache = { map, at: Date.now() };
   return map;
 }
 

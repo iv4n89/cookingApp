@@ -79,6 +79,22 @@ export async function todayDecision(mealType: MealType): Promise<TodayDecision |
   return (data as TodayDecision) ?? null;
 }
 
+// Card del carrusel "Para ti": la RPC devuelve el mismo shape que las cards de la Home, pero aquí
+// solo usamos lo que se pinta (no hay faltantes ni modo: es descubrimiento por estilo).
+export interface TasteRecipeCard {
+  recipeId: string;
+  title: string;
+  imageUrl: string | null;
+  imageStatus: ImageStatus;
+}
+
+// Recetas del catálogo más afines al estilo del hogar (favoritas/valoradas ≥4). Vacío en cold start.
+export async function tasteRecommendations(): Promise<TasteRecipeCard[]> {
+  const { data, error } = await supabase.rpc('household_taste_recommendations', { p_limit: 12 });
+  if (error) throw error;
+  return (data as TasteRecipeCard[]) ?? [];
+}
+
 export async function getRecipe(id: string): Promise<Recipe | null> {
   const { data, error } = await supabase.from('recipes').select(COLUMNS).eq('id', id).maybeSingle();
   if (error) throw error;
