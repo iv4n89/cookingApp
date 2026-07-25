@@ -122,8 +122,11 @@ async function seed(recipe) {
 }
 
 const limit = Number(process.env.CATEGORY_LIMIT ?? '0'); // para pruebas: cap por categoría
+// CATEGORIES="Asia,Norteamérica" para reejecutar solo esas (retomar tras cuota).
+const only = (process.env.CATEGORIES ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+const RUN = only.length ? CATEGORIES.filter((c) => only.includes(c.key)) : CATEGORIES;
 let totalOk = 0, totalDup = 0, totalFailed = 0;
-for (const category of CATEGORIES) {
+for (const category of RUN) {
   if (limit > 0) category.count = Math.min(category.count, limit);
   const seen = [];
   let ok = 0, attempts = 0;
