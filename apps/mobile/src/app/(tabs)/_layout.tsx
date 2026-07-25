@@ -43,6 +43,10 @@ export default function TabsLayout() {
         options={{ title: 'Lista', tabBarIcon: tabIcon('shopping-basket') }}
       />
       <Tabs.Screen
+        name="recetas"
+        options={{ title: 'Recetas', tabBarIcon: tabIcon('menu-book') }}
+      />
+      <Tabs.Screen
         name="chat"
         options={{ title: 'Chat', tabBarIcon: tabIcon('chat-bubble-outline') }}
       />

@@ -95,6 +95,39 @@ export async function tasteRecommendations(): Promise<TasteRecipeCard[]> {
   return (data as TasteRecipeCard[]) ?? [];
 }
 
+export interface RecipeListFilters {
+  search?: string;
+  mealType?: MealType | null;
+  diet?: 'vegetarian' | 'vegan' | null;
+}
+
+export const RECIPE_PAGE_SIZE = 20;
+
+// Catálogo navegable del recetario: solo recetas reutilizables (las del chat son efímeras),
+// ordenadas por título para que la paginación sea estable entre páginas.
+export async function listCatalogRecipes(
+  filters: RecipeListFilters,
+  page: number,
+): Promise<Recipe[]> {
+  const from = page * RECIPE_PAGE_SIZE;
+  let query = supabase
+    .from('recipes')
+    .select(COLUMNS)
+    .eq('reusable', true)
+    .order('title')
+    .range(from, from + RECIPE_PAGE_SIZE - 1);
+
+  // Escapa los comodines de LIKE para que un % o _ escrito por el usuario se busque literal.
+  const search = filters.search?.trim().replace(/[%_\\]/g, (char) => `\\${char}`);
+  if (search) query = query.ilike('title', `%${search}%`);
+  if (filters.mealType) query = query.contains('meal_types', [filters.mealType]);
+  if (filters.diet) query = query.contains('diet', [filters.diet]);
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data as Recipe[]) ?? [];
+}
+
 export async function getRecipe(id: string): Promise<Recipe | null> {
   const { data, error } = await supabase.from('recipes').select(COLUMNS).eq('id', id).maybeSingle();
   if (error) throw error;
