@@ -70,9 +70,12 @@ ahora para no meter migración en una feature de cliente.
 - `features/recipe-book/hooks/use-recipe-book.ts`: estado de filtros, lista acumulada, `page`,
   `loading`, `loadingMore`, `hasMore`; expone `loadMore()` y resetea la lista al cambiar filtros.
 - La lista usa `FlatList` con `onEndReached` (scroll infinito) y reutiliza `RecipeCard`
-  (`components/recipe-card.tsx`) con el toggle de guardar, como hace la Home.
-- Las cards del recetario no tienen badge de faltantes (no se cruza la despensa aquí): se muestran
-  sin badge o con la etiqueta de dieta si la tiene. Decisión concreta en el plan.
+  (`components/recipe-card.tsx`).
+- Las cards del recetario **no** llevan toggle de guardar: mantenerlo sincronizado con la pestaña
+  Guardadas exigiría cargar y reconciliar el set de favoritos en ambas listas, y se guarda igual
+  desde el detalle de la receta (a un toque). Se revisará si en uso real resulta incómodo.
+- Tampoco llevan badge de faltantes (aquí no se cruza la despensa): usan una etiqueta neutra
+  "RECETA".
 
 ## Errores y casos borde
 
