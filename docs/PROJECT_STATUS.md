@@ -1,6 +1,6 @@
 # Estado del proyecto y punto de reanudación
 
-Última actualización: 25 de julio de 2026.
+Última actualización: 25 de julio de 2026 (tarde).
 
 Este documento es la memoria operativa del roadmap. Al retomar el trabajo en
 otro chat o editor, debe leerse antes del plan maestro:
@@ -18,7 +18,7 @@ comprar → despensa → prioritarios → recomendar → cocinar → actualizar.
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
 | Fase 2 — Caducidad y decisión reproducible | Completada (Home + rework de recomendación) | Backend #90/#91/#93/#94/#95; Home #99/#100; rework #101-#106 |
-| Fase 3 — Motor conversacional delgado | En curso (primer slice: chat catálogo-primero) | Chat #114; falta el resto |
+| Fase 3 — Motor conversacional delgado | En curso (chat catálogo-primero + personalización) | Chat #114; personalización #116/#117; falta top-N y adaptación |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Demo entregada (alcance reducido) | Cloud + APK live; ops completa aplazada |
 | Fase 6 — Integraciones y escala | Aplazada | Solo con evidencia de necesidad |
@@ -155,9 +155,24 @@ Claude `recetasapp-demo-fixes.md`:
   generar; las modificaciones (`is_modification`) se generan frescas. Spec en
   `docs/superpowers/specs/2026-07-25-chat-pantry-first-design.md`.
 
-Pendiente menor (requiere rebuild de APK): endurecer el caché en memoria del
-`CanonicalMap` en `apps/mobile/src/lib/ingredients.ts` (TTL o refresco), para que
-un cambio de agrupación no exija reiniciar la app.
+### Hecho (personalización por gustos + APK nueva, 25 de julio tarde)
+
+Recomendación por estilo del hogar (favoritas o valoradas ≥4), agregado del
+hogar. Afinidad = máx similitud coseno de una receta contra las semillas del
+hogar; cold start (sin semillas) = afinidad 0, sin efecto.
+
+- **PR A #116 (backend, desplegada)**: `tasteAffinity` en el motor (migr 0065:
+  `build`/`evaluate`, desempate bajo) → el chat personaliza; RPC
+  `household_taste_recommendations` (migr 0066) para el carrusel; descubrimiento
+  de la Home con azar ponderado por gusto (migr 0067). Test pgTAP 0012.
+- **PR B #117 (cliente)**: carrusel "Para ti" en la Home + TTL del caché de
+  canónicos en `apps/mobile/src/lib/ingredients.ts` (resuelve el pendiente de que
+  un reagrupamiento exigía reiniciar la app).
+- **APK nueva** (EAS preview, build `1bbfb755-d65f-4c75-b8e5-ead2a10f3077`) con el
+  carrusel y el arreglo del caché. Pendiente: verificación en dispositivo por el
+  usuario (marcar favoritos y comprobar carrusel + lean en chat/descubrimiento).
+
+Spec/plan: `docs/superpowers/{specs,plans}/2026-07-25-taste-personalization*`.
 
 ### Después (fondo de la visión)
 
@@ -166,10 +181,13 @@ un cambio de agrupación no exija reiniciar la app.
    Primer slice HECHO (#114): el chat busca en el catálogo y rankea por
    despensa antes de generar. Falta: que el LLM explique un top-N (no una sola)
    y la capa de adaptación conversacional intermedia entre existente y generar.
-4. **Personalización por gustos**: seguir favoritos/valoraciones y recomendar
-   del mismo estilo (base: `user_recipes` + embeddings).
+4. **Personalización por gustos**: HECHO backend + carrusel (#116/#117). Posible
+   evolución futura: señal implícita (recetas cocinadas), un bloque "Para ti"
+   también en el chat, ajustar el peso del lean.
 5. **Fase 4: ciclo compartido**: Realtime de lista/despensa, plan semanal como
    propuesta editable, contrato de tickets con confirmación manual.
+6. **Validación pendiente**: probar dos sesiones del mismo hogar + una tercera
+   ajena (RLS multi-usuario) — la validación operativa que sigue sin hacer.
 
 La infraestructura cloud se adelanta ahora, pero solo con alcance de demo
 (migrar backend + APK). Realtime, tickets con OCR y la operación completa de
