@@ -1,10 +1,10 @@
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 
-import type { TodayDecision, TodayRecipeCard } from '@recetas/shared';
+import type { TodayDecision } from '@recetas/shared';
 import { useSession } from '@/lib/auth';
 import { ensureRecipeImage } from '@/lib/recipe-image';
-import { todayDecision } from '@/lib/recipes';
+import { tasteRecommendations, todayDecision, type ImageStatus, type TasteRecipeCard } from '@/lib/recipes';
 import { currentMealType, greeting } from '@/features/home/meal-time';
 import { listFavorites, setFavorite } from '@/lib/user-recipes';
 
@@ -13,6 +13,7 @@ import { listFavorites, setFavorite } from '@/lib/user-recipes';
 export function useHome() {
   const { session } = useSession();
   const [decision, setDecision] = useState<TodayDecision | null>(null);
+  const [forYou, setForYou] = useState<TasteRecipeCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [meal, setMeal] = useState(() => currentMealType(new Date()));
@@ -20,32 +21,43 @@ export function useHome() {
   const savingIds = useRef<Set<string>>(new Set());
   const imageRequested = useRef<Set<string>>(new Set());
 
-  // Kicks off lazy image generation for recipes shown without one and marks them 'pending' so
-  // their card polls the DB (via useRecipeImage) until the image is ready.
-  const queueImages = useCallback((data: TodayDecision): TodayDecision => {
-    const mark = (card: TodayRecipeCard | null): TodayRecipeCard | null => {
-      if (!card || card.imageUrl || card.imageStatus === 'pending') return card;
+  // Kicks off lazy image generation for a card shown without one and marks it 'pending' so its
+  // card polls the DB (via useRecipeImage) until the image is ready. Works on any card carrying the
+  // shared image fields (today decision cards and taste cards).
+  const markCard = useCallback(
+    <T extends { recipeId: string; imageUrl: string | null; imageStatus: ImageStatus }>(card: T): T => {
+      if (card.imageUrl || card.imageStatus === 'pending') return card;
       if (!imageRequested.current.has(card.recipeId)) {
         imageRequested.current.add(card.recipeId);
         ensureRecipeImage(card.recipeId).catch(() => {});
       }
       return { ...card, imageStatus: 'pending' };
-    };
-    return {
+    },
+    [],
+  );
+
+  const queueImages = useCallback(
+    (data: TodayDecision): TodayDecision => ({
       ...data,
       pantry: {
-        featured: mark(data.pantry.featured),
-        alternatives: data.pantry.alternatives.map((card) => mark(card) as TodayRecipeCard),
+        featured: data.pantry.featured ? markCard(data.pantry.featured) : null,
+        alternatives: data.pantry.alternatives.map((card) => markCard(card)),
       },
-      discover: data.discover.map((card) => mark(card) as TodayRecipeCard),
-    };
-  }, []);
+      discover: data.discover.map((card) => markCard(card)),
+    }),
+    [markCard],
+  );
 
   const fetchDecision = useCallback(
     (mealType: ReturnType<typeof currentMealType>) => {
       return todayDecision(mealType).then((data) => (data ? queueImages(data) : data));
     },
     [queueImages],
+  );
+
+  const fetchForYou = useCallback(
+    () => tasteRecommendations().then((cards) => cards.map((card) => markCard(card))),
+    [markCard],
   );
 
   const load = useCallback(() => {
@@ -61,6 +73,11 @@ export function useHome() {
       .finally(() => {
         if (active) setLoading(false);
       });
+    fetchForYou()
+      .then((cards) => {
+        if (active) setForYou(cards);
+      })
+      .catch(() => {});
     listFavorites()
       .then((favorites) => {
         if (active) setSaved(new Set(favorites.map((favorite) => favorite.id)));
@@ -69,7 +86,7 @@ export function useHome() {
     return () => {
       active = false;
     };
-  }, [fetchDecision]);
+  }, [fetchDecision, fetchForYou]);
 
   useFocusEffect(load);
 
@@ -79,8 +96,9 @@ export function useHome() {
     const mealType = currentMealType(new Date());
     setMeal(mealType);
     try {
-      const data = await fetchDecision(mealType);
+      const [data, taste] = await Promise.all([fetchDecision(mealType), fetchForYou().catch(() => [])]);
       if (data) setDecision(data);
+      setForYou(taste);
     } catch {
       // ignored; the user can retry
     } finally {
@@ -114,6 +132,7 @@ export function useHome() {
 
   return {
     decision,
+    forYou,
     loading,
     refreshing,
     refresh,

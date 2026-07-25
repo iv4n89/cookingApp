@@ -7,6 +7,7 @@ import type { TodayDecision, TodayRecipeCard } from '@recetas/shared';
 import { AppHeader } from '@/components/app-header';
 import { AskAiModal } from '@/components/ask-ai-modal';
 import { RecipeCard, type RecipeCardData } from '@/components/recipe-card';
+import type { TasteRecipeCard } from '@/lib/recipes';
 import { FeaturedRecipeCard } from '@/features/home/components/featured-recipe-card';
 import { HomeAskInput } from '@/features/home/components/home-ask-input';
 import { HomeSectionHeader } from '@/features/home/components/home-section-header';
@@ -35,6 +36,21 @@ function toCardData(card: TodayRecipeCard): RecipeCardData {
   };
 }
 
+// Maps a taste recommendation to the RecipeCard shape. No pantry badge here: the "Para ti" carousel
+// is discovery by style, so it carries a fixed "PARA TI" badge instead of a missing-count badge.
+function toTasteCardData(card: TasteRecipeCard): RecipeCardData {
+  return {
+    id: card.recipeId,
+    image: card.imageUrl,
+    imageStatus: card.imageStatus,
+    badge: 'PARA TI',
+    badgeIcon: 'favorite',
+    title: card.title,
+    description: '',
+    tags: [],
+  };
+}
+
 // Message shown when there is no recipe to feature, tailored to why the engine could not pick one.
 function emptyMessage(reason: TodayDecision['decisionReason'] | undefined): string {
   if (reason === 'unsupported_household_restriction') {
@@ -48,7 +64,7 @@ function emptyMessage(reason: TodayDecision['decisionReason'] | undefined): stri
 
 export default function InicioScreen() {
   const [askVisible, setAskVisible] = useState(false);
-  const { decision, loading, refreshing, refresh, meal, greetingText, saved, toggleSave } = useHome();
+  const { decision, forYou, loading, refreshing, refresh, meal, greetingText, saved, toggleSave } = useHome();
 
   const openRecipe = (id: string) => router.push({ pathname: '/receta/[id]', params: { id } });
   const priority = decision?.priorityProducts ?? [];
@@ -127,6 +143,27 @@ export default function InicioScreen() {
                 />
               ))}
             </View>
+          </View>
+        ) : null}
+
+        {forYou.length > 0 ? (
+          <View>
+            <HomeSectionHeader title="Para ti" />
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerClassName="gap-gutter pr-container-padding">
+              {forYou.map((card) => (
+                <View key={card.recipeId} className="w-72">
+                  <RecipeCard
+                    recipe={toTasteCardData(card)}
+                    saved={saved.has(card.recipeId)}
+                    onToggleSave={() => toggleSave(card.recipeId)}
+                    onPress={() => openRecipe(card.recipeId)}
+                  />
+                </View>
+              ))}
+            </ScrollView>
           </View>
         ) : null}
       </ScrollView>
