@@ -151,6 +151,10 @@ export interface ChatResponse {
   // true cuando el usuario pide cocinar SOLO con lo que tiene en casa / sin comprar. El sistema
   // pasa entonces la despensa como restricción dura a la generación.
   pantry_only?: boolean | null;
+  // true cuando el usuario pide ADAPTAR o CAMBIAR una receta (quitar/añadir/sustituir un
+  // ingrediente, cambiar raciones, picante, "hazla vegana"…): el sistema genera fresco en vez de
+  // buscar en el catálogo. false/omitido cuando pide un plato "de catálogo" sin modificar.
+  is_modification?: boolean | null;
 }
 
 const CHAT_SCHEMA = {
@@ -173,6 +177,7 @@ const CHAT_SCHEMA = {
     exclude_allergens: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     require_diet: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     pantry_only: { type: 'BOOLEAN' },
+    is_modification: { type: 'BOOLEAN', nullable: true },
   },
   // pantry_only obligatorio: el modelo debe decidir siempre (true/false), no omitirlo.
   required: ['message', 'pantry_only'],

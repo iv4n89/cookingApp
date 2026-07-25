@@ -3,7 +3,12 @@ import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
 import { generateChat, type ChatTurn } from '../_shared/gemini.ts';
 import { ALLERGEN_KEYS, DIET_KEYS, sanitizeKeys } from '../_shared/preferences.ts';
-import { getUserPrefs, resolveRecipe, type UserPrefs } from '../_shared/recipe-pipeline.ts';
+import {
+  getUserPrefs,
+  resolveRecipe,
+  resolveRecipeForChat,
+  type UserPrefs,
+} from '../_shared/recipe-pipeline.ts';
 import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 // Acota coste y contexto: solo los últimos mensajes y un tope por mensaje.
@@ -67,6 +72,11 @@ const BASE_PROMPT =
   '(por ejemplo "con lo que tenga", "no puedo salir a comprar", "sin ir a la tienda", "con lo que ' +
   'haya por casa"), pon "pantry_only" en true; si no, déjalo false. Cuando sea true, elige un plato ' +
   'realista con los ingredientes de su despensa.\n' +
+  'Pon "is_modification" en true SOLO cuando el usuario pida ADAPTAR o CAMBIAR una receta: quitar, ' +
+  'añadir o sustituir un ingrediente ("sin huevo", "reemplaza la nata"), cambiar las raciones, el ' +
+  'nivel de picante, "hazla vegana", "más ligera", "adáptala". Ponlo en false cuando pida un plato ' +
+  'normal sin modificaciones ("una receta de lasaña", "algo con pollo", "un guiso"): en ese caso el ' +
+  'sistema busca en el recetario la más adecuada a su despensa.\n' +
   'No des consejo médico ni nutricional profesional.';
 
 // Texto de la receta para que el modelo recuerde lo propuesto en turnos anteriores.
@@ -87,19 +97,25 @@ function recipeContext(recipe: HistoryRecipe): string {
   );
 }
 
-async function fetchPantryNames(supabase: SupabaseClient, userId: string): Promise<string[]> {
+async function fetchPantry(
+  supabase: SupabaseClient,
+  userId: string,
+): Promise<{ householdId: string | null; names: string[] }> {
   const { data: membership } = await supabase
     .from('household_members')
     .select('household_id')
     .eq('user_id', userId)
     .maybeSingle();
-  if (!membership) return [];
+  if (!membership) return { householdId: null, names: [] };
   const { data } = await supabase
     .from('pantry_items')
     .select('name')
     .eq('household_id', membership.household_id)
     .limit(100);
-  return (data ?? []).map((p) => p.name as string).filter(Boolean);
+  return {
+    householdId: membership.household_id as string,
+    names: (data ?? []).map((p) => p.name as string).filter(Boolean),
+  };
 }
 
 // Contexto siempre activo del usuario: necesidades (a respetar), preferencias y despensa.
@@ -152,15 +168,27 @@ Deno.serve(async (req) => {
     const supabase = serviceClient();
     const userId = getUserId(req);
     const prefs = userId ? await getUserPrefs(supabase, userId) : null;
-    const pantryNames = userId ? await fetchPantryNames(supabase, userId) : [];
+    const pantry = userId ? await fetchPantry(supabase, userId) : { householdId: null, names: [] };
+    const pantryNames = pantry.names;
     const system = buildSystemInstruction(prefs, pantryNames);
 
-    const { message, recipe_query, suggestions, exclude_allergens, require_diet, pantry_only } =
-      await generateChat(turns, system);
+    const {
+      message,
+      recipe_query,
+      suggestions,
+      exclude_allergens,
+      require_diet,
+      pantry_only,
+      is_modification,
+    } = await generateChat(turns, system);
 
-    // La receta no la inventa el chat: se resuelve por el pipeline real (caché/web/IA),
-    // aplicando también las restricciones que el usuario pide en la conversación.
+    // La receta no la inventa el chat: se resuelve por el pipeline real.
+    // - Petición normal ("una receta de X"): catálogo-primero, se devuelve la más cocinable con la
+    //   despensa (resolveRecipeForChat).
+    // - Modificación ("sin huevo", "más picante"): se genera fresca para reflejar lo pedido, porque
+    //   esa variante no está en el catálogo (resolveRecipe con skipCache).
     let recipe: Record<string, unknown> | null = null;
+    let extraNote = '';
     const query = typeof recipe_query === 'string' ? recipe_query.trim() : '';
     if (query) {
       // "Solo con lo que tengo" sin nada en la despensa: sé honesto en vez de generar una receta
@@ -168,24 +196,47 @@ Deno.serve(async (req) => {
       if (pantry_only === true && !pantryNames.length) {
         return json({ message: EMPTY_PANTRY_NOTE, recipe: null });
       }
+      const base = {
+        excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
+        requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
+        pantryOnly: pantry_only === true,
+      };
       try {
-        const resolved = await resolveRecipe(
-          supabase,
-          query.slice(0, MAX_QUERY_LENGTH),
-          userId,
-          prefs,
-          {
-            excludeAllergens: sanitizeKeys(exclude_allergens ?? undefined, ALLERGEN_KEYS),
-            requireDiet: sanitizeKeys(require_diet ?? undefined, DIET_KEYS),
-            pantryOnly: pantry_only === true,
-            pantry: pantry_only === true ? pantryNames : undefined,
-          },
-          { skipCache: true },
-        );
-        if (resolved.origin === 'rate_limited') {
-          return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+        if (is_modification === true) {
+          // Modificación: se genera fresca para reflejar lo pedido. La despensa solo entra como
+          // restricción dura si el usuario pidió "solo con lo que tengo".
+          const resolved = await resolveRecipe(
+            supabase,
+            query.slice(0, MAX_QUERY_LENGTH),
+            userId,
+            prefs,
+            { ...base, pantry: pantry_only === true ? pantryNames : undefined },
+            { skipCache: true },
+          );
+          if (resolved.origin === 'rate_limited') {
+            return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+          }
+          recipe = resolved.recipe;
+        } else {
+          const resolved = await resolveRecipeForChat(
+            supabase,
+            query.slice(0, MAX_QUERY_LENGTH),
+            userId,
+            pantry.householdId,
+            prefs,
+            { ...base, pantry: pantryNames.length ? pantryNames : undefined },
+          );
+          if (resolved.origin === 'rate_limited') {
+            return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+          }
+          recipe = resolved.recipe;
+          // Decir qué falta (o que ya es cocinable) cuando la receta viene del catálogo.
+          if (recipe && resolved.origin === 'db') {
+            extraNote = resolved.missing.length
+              ? `\n\nTe faltarían: ${resolved.missing.slice(0, 6).join(', ')}.`
+              : '\n\nPuedes cocinarla ya con lo que tienes.';
+          }
         }
-        recipe = resolved.recipe;
       } catch (e) {
         // El mensaje conversacional es válido aunque falle la resolución de la receta:
         // lo devolvemos con un aviso en vez de perder toda la respuesta con un 500.
@@ -205,7 +256,7 @@ Deno.serve(async (req) => {
           }))
       : [];
 
-    return json({ message, recipe, suggestions: options });
+    return json({ message: message + extraNote, recipe, suggestions: options });
   } catch (e) {
     console.error('chat:', e);
     return json({ error: 'No se pudo responder.' }, 500);
