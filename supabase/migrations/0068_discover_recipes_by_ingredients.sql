@@ -83,7 +83,11 @@ begin
       cross join lateral (
         select
           count(*) filter (where ing.canon = any(v_selected)) as uses,
-          count(*) filter (where not ing.basic and not (ing.canon = any(v_selected))) as extras,
+          -- Un ingrediente sin canónico (no catalogado) también es un extra: sin el coalesce, la
+          -- comparación con NULL lo dejaría fuera de la cuenta y saltaría el tope.
+          count(*) filter (
+            where not ing.basic and not coalesce(ing.canon = any(v_selected), false)
+          ) as extras,
           coalesce(jsonb_agg(ing.name order by ing.ord), '[]'::jsonb) as names
         from (
           select
@@ -110,7 +114,9 @@ begin
       where r.reusable
     ) x
     where x.uses >= 1
-      and (cardinality(v_selected) < 2 or x.extras <= p_max_extra)
+      -- El tope depende de cuántos ingredientes eligió el usuario, no de cuántos canónicos
+      -- distintos resultan: dos variantes del mismo canónico siguen siendo dos elecciones.
+      and (cardinality(p_ingredient_ids) < 2 or x.extras <= p_max_extra)
     order by x.uses desc, x.extras asc, x.has_image desc, x.rnd
     limit p_limit
   ) ranked;

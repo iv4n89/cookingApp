@@ -8,7 +8,7 @@ import { IngredientMultiSelect } from '@/features/discoverer/components/ingredie
 import { RecipeReel } from '@/features/discoverer/components/recipe-reel';
 import { useSession } from '@/lib/auth';
 import { discoverByIngredients, type DiscoverCard } from '@/lib/recipes';
-import { setFavorite } from '@/lib/user-recipes';
+import { listFavoriteIds, setFavorite } from '@/lib/user-recipes';
 
 import { colors } from '@recetas/theme/tokens';
 
@@ -37,7 +37,12 @@ export default function DescubrirScreen() {
     if (selected.size === 0 || loading) return;
     setLoading(true);
     try {
-      setCards(await discoverByIngredients([...selected]));
+      const found = await discoverByIngredients([...selected]);
+      // Las que el usuario ya tenía guardadas deben salir con el marcador puesto.
+      if (found.length > 0) {
+        setSaved(new Set(await listFavoriteIds(found.map((card) => card.recipeId))));
+      }
+      setCards(found);
     } catch {
       setCards([]);
     } finally {

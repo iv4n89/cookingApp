@@ -1,6 +1,6 @@
 begin;
 
-select plan(10);
+select plan(13);
 
 select has_function(
   'public', 'discover_recipes_by_ingredients', array['uuid[]', 'integer', 'integer'],
@@ -29,67 +29,108 @@ insert into auth.users (
 insert into public.user_preferences (user_id, food_prefs, special_needs, notes)
 values ('00000000-0000-0000-0000-000000000904', '{}', '{}', '');
 
--- Ingredientes reales del catálogo local:
---   A = arroz bomba (d77ecb60...), B = manzana golden (b36fb066...).
---   sal fina (6949a962...) y aceite de oliva virgen extra (12b92ef3...) son "básicos" asumidos.
---   cebolla morada (aa7746d8...) es variante canónica de cebolla blanca (30f61048...).
---   aburaage y los aceites de ajo/argán/coco/sésamo/trufa son ingredientes sin canónico propio,
---   usados como "extras" no básicos.
+-- Ingredientes propios: los ids del catálogo sembrado cambian en cada `db reset`, así que el test
+-- crea los suyos. A y B son los elegibles; VAR es variante canónica de HEAD; X1..X5 son extras sin
+-- canónico; SALT y OIL cuelgan de un básico asumido para comprobar que no cuentan como extra.
+insert into public.ingredients (id, name, normalized_name, category, canonical_id) values
+  ('9d15c0e0-0000-4000-8000-000000000001', 'Test A', 'test descubridor a', 'otros', null),
+  ('9d15c0e0-0000-4000-8000-000000000002', 'Test B', 'test descubridor b', 'otros', null),
+  ('9d15c0e0-0000-4000-8000-000000000003', 'Test canónico', 'test descubridor canonico', 'otros', null),
+  ('9d15c0e0-0000-4000-8000-000000000004', 'Test variante', 'test descubridor variante', 'otros',
+   '9d15c0e0-0000-4000-8000-000000000003'),
+  ('9d15c0e0-0000-4000-8000-000000000011', 'Test extra 1', 'test descubridor extra 1', 'otros', null),
+  ('9d15c0e0-0000-4000-8000-000000000012', 'Test extra 2', 'test descubridor extra 2', 'otros', null),
+  ('9d15c0e0-0000-4000-8000-000000000013', 'Test extra 3', 'test descubridor extra 3', 'otros', null),
+  ('9d15c0e0-0000-4000-8000-000000000014', 'Test extra 4', 'test descubridor extra 4', 'otros', null),
+  ('9d15c0e0-0000-4000-8000-000000000015', 'Test extra 5', 'test descubridor extra 5', 'otros', null);
 
--- R1: A + B + 1 extra (aburaage) -> 1 extra.
+insert into public.ingredients (id, name, normalized_name, category, canonical_id) values
+  ('9d15c0e0-0000-4000-8000-000000000021', 'Test sal', 'test descubridor sal', 'otros',
+   (select id from public.ingredients where normalized_name = 'sal fina')),
+  ('9d15c0e0-0000-4000-8000-000000000022', 'Test aceite', 'test descubridor aceite', 'otros',
+   (select id from public.ingredients where normalized_name = 'aceite de oliva virgen extra'));
+
+-- R1: A + B + 1 extra.
 insert into public.recipes (id, title, source, reusable, image_status, ingredients)
 values (
-  '00000000-0000-0000-0000-000000009911', 'Arroz con manzana y aburaage', 'generated', true, 'none',
+  '00000000-0000-0000-0000-000000009911', 'R1 un extra', 'generated', true, 'none',
   '[
-    {"name":"Arroz bomba","unit":"g","quantity":200,"ingredient_id":"d77ecb60-f121-4478-8ade-ac6f36d4090b","substitutions":[]},
-    {"name":"Manzana golden","unit":"g","quantity":100,"ingredient_id":"b36fb066-08bf-498a-ad86-00b06406919a","substitutions":[]},
-    {"name":"Aburaage","unit":"g","quantity":50,"ingredient_id":"7fe6389c-2d27-4911-988a-2e32e85e03a1","substitutions":[]}
+    {"name":"Test A","unit":"g","quantity":200,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000001","substitutions":[]},
+    {"name":"Test B","unit":"g","quantity":100,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000002","substitutions":[]},
+    {"name":"Test extra 1","unit":"g","quantity":50,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000011","substitutions":[]}
   ]'::jsonb
 );
 
--- R2: A + B + 5 extras (aceites de ajo/argán/coco/sésamo/trufa) -> 5 extras.
+-- R2: A + B + 5 extras.
 insert into public.recipes (id, title, source, reusable, image_status, ingredients)
 values (
-  '00000000-0000-0000-0000-000000009912', 'Arroz con manzana y cinco aceites', 'generated', true, 'none',
+  '00000000-0000-0000-0000-000000009912', 'R2 cinco extras', 'generated', true, 'none',
   '[
-    {"name":"Arroz bomba","unit":"g","quantity":200,"ingredient_id":"d77ecb60-f121-4478-8ade-ac6f36d4090b","substitutions":[]},
-    {"name":"Manzana golden","unit":"g","quantity":100,"ingredient_id":"b36fb066-08bf-498a-ad86-00b06406919a","substitutions":[]},
-    {"name":"Aceite de ajo","unit":"ml","quantity":10,"ingredient_id":"59737168-f436-4151-8d23-1827b731f52c","substitutions":[]},
-    {"name":"Aceite de argán","unit":"ml","quantity":10,"ingredient_id":"54f1a9b3-45c6-4ed7-8876-fa95e3236e73","substitutions":[]},
-    {"name":"Aceite de coco","unit":"ml","quantity":10,"ingredient_id":"1f3695c6-f396-4b0b-9a78-db954a4597b3","substitutions":[]},
-    {"name":"Aceite de sésamo","unit":"ml","quantity":10,"ingredient_id":"bb871f90-1292-400a-bcc6-4538c6bd5067","substitutions":[]},
-    {"name":"Aceite de trufa","unit":"ml","quantity":10,"ingredient_id":"35c6f08b-2e8a-43ad-a493-5a8719b4b177","substitutions":[]}
+    {"name":"Test A","unit":"g","quantity":200,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000001","substitutions":[]},
+    {"name":"Test B","unit":"g","quantity":100,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000002","substitutions":[]},
+    {"name":"Test extra 1","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000011","substitutions":[]},
+    {"name":"Test extra 2","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000012","substitutions":[]},
+    {"name":"Test extra 3","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000013","substitutions":[]},
+    {"name":"Test extra 4","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000014","substitutions":[]},
+    {"name":"Test extra 5","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000015","substitutions":[]}
   ]'::jsonb
 );
 
--- R3: A + sal fina + aceite de oliva virgen extra -> 0 extras (los básicos no cuentan).
+-- R3: A + sal + aceite -> 0 extras (los básicos no cuentan).
 insert into public.recipes (id, title, source, reusable, image_status, ingredients)
 values (
-  '00000000-0000-0000-0000-000000009913', 'Arroz con sal y aceite', 'generated', true, 'none',
+  '00000000-0000-0000-0000-000000009913', 'R3 solo básicos', 'generated', true, 'none',
   '[
-    {"name":"Arroz bomba","unit":"g","quantity":200,"ingredient_id":"d77ecb60-f121-4478-8ade-ac6f36d4090b","substitutions":[]},
-    {"name":"Sal fina","unit":"pizca","quantity":1,"ingredient_id":"6949a962-3a79-4d2c-bc1b-a6af151ad515","substitutions":[]},
-    {"name":"Aceite de oliva virgen extra","unit":"ml","quantity":20,"ingredient_id":"12b92ef3-b7d3-49c3-b0f5-ecfe85cb77ec","substitutions":[]}
+    {"name":"Test A","unit":"g","quantity":200,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000001","substitutions":[]},
+    {"name":"Test sal","unit":"pizca","quantity":1,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000021","substitutions":[]},
+    {"name":"Test aceite","unit":"ml","quantity":20,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000022","substitutions":[]}
   ]'::jsonb
 );
 
--- R4: usa la variante (cebolla morada) de un canónico (cebolla blanca) -> prueba el match canónico.
+-- R4: usa la variante de un canónico -> prueba el match canónico.
 insert into public.recipes (id, title, source, reusable, image_status, ingredients)
 values (
-  '00000000-0000-0000-0000-000000009914', 'Cebolla morada al horno', 'generated', true, 'none',
+  '00000000-0000-0000-0000-000000009914', 'R4 variante canónica', 'generated', true, 'none',
   '[
-    {"name":"Cebolla morada","unit":"g","quantity":150,"ingredient_id":"aa7746d8-22eb-43af-b9eb-b77dc9d84bb6","substitutions":[]}
+    {"name":"Test variante","unit":"g","quantity":150,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000004","substitutions":[]}
   ]'::jsonb
 );
 
 -- R5: usa A y contiene gluten -> debe seguir apareciendo, marcada en warnAllergens.
 insert into public.recipes (id, title, source, reusable, image_status, ingredients, allergens)
 values (
-  '00000000-0000-0000-0000-000000009915', 'Arroz con seitan', 'generated', true, 'none',
+  '00000000-0000-0000-0000-000000009915', 'R5 con gluten', 'generated', true, 'none',
   '[
-    {"name":"Arroz bomba","unit":"g","quantity":200,"ingredient_id":"d77ecb60-f121-4478-8ade-ac6f36d4090b","substitutions":[]}
+    {"name":"Test A","unit":"g","quantity":200,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000001","substitutions":[]}
   ]'::jsonb,
   array['gluten']
+);
+
+-- R6: A + B + 3 ingredientes sin ingredient_id (no catalogados).
+insert into public.recipes (id, title, source, reusable, image_status, ingredients)
+values (
+  '00000000-0000-0000-0000-000000009916', 'R6 con desconocidos', 'generated', true, 'none',
+  '[
+    {"name":"Test A","unit":"g","quantity":200,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000001","substitutions":[]},
+    {"name":"Test B","unit":"g","quantity":100,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000002","substitutions":[]},
+    {"name":"Alga misteriosa","unit":"g","quantity":10,"ingredient_id":null,"substitutions":[]},
+    {"name":"Raíz sin catalogar","unit":"g","quantity":10,"ingredient_id":null,"substitutions":[]},
+    {"name":"Especia inventada","unit":"g","quantity":5,"ingredient_id":null,"substitutions":[]}
+  ]'::jsonb
+);
+
+-- R7: la variante + 5 extras -> comprueba el tope al elegir dos variantes del mismo canónico.
+insert into public.recipes (id, title, source, reusable, image_status, ingredients)
+values (
+  '00000000-0000-0000-0000-000000009917', 'R7 variante con cinco extras', 'generated', true, 'none',
+  '[
+    {"name":"Test variante","unit":"g","quantity":150,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000004","substitutions":[]},
+    {"name":"Test extra 1","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000011","substitutions":[]},
+    {"name":"Test extra 2","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000012","substitutions":[]},
+    {"name":"Test extra 3","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000013","substitutions":[]},
+    {"name":"Test extra 4","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000014","substitutions":[]},
+    {"name":"Test extra 5","unit":"g","quantity":10,"ingredient_id":"9d15c0e0-0000-4000-8000-000000000015","substitutions":[]}
+  ]'::jsonb
 );
 
 -- Con [A, B] y p_max_extra=2 (por defecto): R1 (1 extra) entra, R2 (5 extras) no.
@@ -98,7 +139,7 @@ select ok(
     select 1
     from jsonb_array_elements(
       public.discover_recipes_by_ingredients(
-        array['d77ecb60-f121-4478-8ade-ac6f36d4090b', 'b36fb066-08bf-498a-ad86-00b06406919a']::uuid[], 2, 100
+        array['9d15c0e0-0000-4000-8000-000000000001', '9d15c0e0-0000-4000-8000-000000000002']::uuid[], 2, 100
       )
     ) as e(val)
     where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009911'
@@ -110,7 +151,7 @@ select ok(
     select 1
     from jsonb_array_elements(
       public.discover_recipes_by_ingredients(
-        array['d77ecb60-f121-4478-8ade-ac6f36d4090b', 'b36fb066-08bf-498a-ad86-00b06406919a']::uuid[], 2, 100
+        array['9d15c0e0-0000-4000-8000-000000000001', '9d15c0e0-0000-4000-8000-000000000002']::uuid[], 2, 100
       )
     ) as e(val)
     where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009912'
@@ -124,7 +165,7 @@ select ok(
     select 1
     from jsonb_array_elements(
       public.discover_recipes_by_ingredients(
-        array['d77ecb60-f121-4478-8ade-ac6f36d4090b']::uuid[], 2, 100
+        array['9d15c0e0-0000-4000-8000-000000000001']::uuid[], 2, 100
       )
     ) as e(val)
     where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009912'
@@ -138,7 +179,7 @@ select is(
     select (e.val->>'extras')::int
     from jsonb_array_elements(
       public.discover_recipes_by_ingredients(
-        array['d77ecb60-f121-4478-8ade-ac6f36d4090b']::uuid[], 2, 100
+        array['9d15c0e0-0000-4000-8000-000000000001']::uuid[], 2, 100
       )
     ) as e(val)
     where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009913'
@@ -147,18 +188,59 @@ select is(
   'R3 aparece con extras=0 (los básicos no cuentan)'
 );
 
--- Con el id del canónico (cebolla blanca) elegido: R4 (que usa la variante cebolla morada) aparece.
+-- Con el id del canónico elegido: R4 (que usa la variante) aparece.
 select ok(
   exists (
     select 1
     from jsonb_array_elements(
       public.discover_recipes_by_ingredients(
-        array['30f61048-7900-4403-b0da-a8f7766a0472']::uuid[], 2, 100
+        array['9d15c0e0-0000-4000-8000-000000000003']::uuid[], 2, 100
       )
     ) as e(val)
     where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009914'
   ),
   'Con el canónico elegido, la receta que usa la variante aparece (match por canónico)'
+);
+
+-- Los ingredientes no catalogados cuentan como extras: con [A,B] y tope 2, R6 (3 extras) no entra.
+select ok(
+  not exists (
+    select 1
+    from jsonb_array_elements(
+      public.discover_recipes_by_ingredients(
+        array['9d15c0e0-0000-4000-8000-000000000001', '9d15c0e0-0000-4000-8000-000000000002']::uuid[], 2, 100
+      )
+    ) as e(val)
+    where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009916'
+  ),
+  'Con [A,B] y tope 2: R6 NO aparece (sus ingredientes no catalogados cuentan como extras)'
+);
+select is(
+  (
+    select (e.val->>'extras')::int
+    from jsonb_array_elements(
+      public.discover_recipes_by_ingredients(
+        array['9d15c0e0-0000-4000-8000-000000000001']::uuid[], 2, 100
+      )
+    ) as e(val)
+    where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009916'
+  ),
+  4,
+  'R6 cuenta los 3 ingredientes sin catalogar y B como extras'
+);
+
+-- Elegir dos variantes del mismo canónico son dos elecciones: el tope de extras sigue aplicando.
+select ok(
+  not exists (
+    select 1
+    from jsonb_array_elements(
+      public.discover_recipes_by_ingredients(
+        array['9d15c0e0-0000-4000-8000-000000000004', '9d15c0e0-0000-4000-8000-000000000003']::uuid[], 2, 100
+      )
+    ) as e(val)
+    where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009917'
+  ),
+  'Con dos variantes del mismo canónico elegidas, R7 (5 extras) NO aparece'
 );
 
 -- Array vacío -> '[]'.
@@ -169,11 +251,6 @@ select is(
 );
 
 -- Con una necesidad del hogar que mapea a gluten: R5 sigue apareciendo (no filtra), pero avisa.
-select set_config(
-  'test.discover_household',
-  (select household_id::text from public.household_members where user_id = '00000000-0000-0000-0000-000000000904'),
-  true
-);
 update public.user_preferences
 set special_needs = array['Gluten / celiaquía']
 where user_id = '00000000-0000-0000-0000-000000000904';
@@ -186,7 +263,7 @@ select ok(
     select 1
     from jsonb_array_elements(
       public.discover_recipes_by_ingredients(
-        array['d77ecb60-f121-4478-8ade-ac6f36d4090b']::uuid[], 2, 100
+        array['9d15c0e0-0000-4000-8000-000000000001']::uuid[], 2, 100
       )
     ) as e(val)
     where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009915'
@@ -198,7 +275,7 @@ select ok(
     select 1
     from jsonb_array_elements(
       public.discover_recipes_by_ingredients(
-        array['d77ecb60-f121-4478-8ade-ac6f36d4090b']::uuid[], 2, 100
+        array['9d15c0e0-0000-4000-8000-000000000001']::uuid[], 2, 100
       )
     ) as e(val)
     where e.val->>'recipeId' = '00000000-0000-0000-0000-000000009915'
