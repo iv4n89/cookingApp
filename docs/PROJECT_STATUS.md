@@ -1,6 +1,6 @@
 # Estado del proyecto y punto de reanudación
 
-Última actualización: 24 de julio de 2026.
+Última actualización: 25 de julio de 2026.
 
 Este documento es la memoria operativa del roadmap. Al retomar el trabajo en
 otro chat o editor, debe leerse antes del plan maestro:
@@ -18,9 +18,9 @@ comprar → despensa → prioritarios → recomendar → cocinar → actualizar.
 | Fase 0 — Contrato de dominio y red de seguridad | Completada | PR #87, commit `15a50d9` |
 | Fase 1 — Motor de inventario fiable | Completada y revisada | PR #88, commit de merge `10ebde9` |
 | Fase 2 — Caducidad y decisión reproducible | Completada (Home + rework de recomendación) | Backend #90/#91/#93/#94/#95; Home #99/#100; rework #101-#106 |
-| Fase 3 — Motor conversacional delgado | Pendiente | Depende de Fase 2 |
+| Fase 3 — Motor conversacional delgado | En curso (primer slice: chat catálogo-primero) | Chat #114; falta el resto |
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
-| Fase 5 — Preparación cloud y operación | Siguiente (adelantada con alcance de demo) | Migración a Supabase hospedado + APK |
+| Fase 5 — Preparación cloud y operación | Demo entregada (alcance reducido) | Cloud + APK live; ops completa aplazada |
 | Fase 6 — Integraciones y escala | Aplazada | Solo con evidencia de necesidad |
 
 El primer slice de la Fase 2 construyó el dataset trazable de perfiles
@@ -125,19 +125,47 @@ La Home "decisión de hoy" consume el motor y se refinó por completo:
 
 Especificaciones y planes en `docs/superpowers/{specs,plans}/2026-07-24-*`.
 
-### Siguiente prioridad: migración a Supabase cloud + APK de demo
+### Hecho (demo cloud + APK, 25 de julio)
 
-Antes de más features, llevar el backend a un proyecto Supabase hospedado y
-generar una APK instalable, para presentar una demo fuera de la red local.
-Es la Fase 5 (preparación cloud) adelantada con alcance de demo. Requiere
-credenciales y decisiones del usuario (proyecto Supabase, OAuth, EAS). Se
-diseñará y planificará antes de ejecutar.
+Migración a Supabase hospedado y APK de demo entregada y funcionando fuera de
+la red local:
+
+- Backend en proyecto Supabase cloud (`gnxqmlihdipgtkvaitvq`): migraciones
+  aplicadas (`db push`), Edge Functions desplegadas, secrets configurados.
+- APK `preview` por EAS apuntando a la nube, con Google OAuth real. Login en
+  dispositivo verificado. Los cambios de backend entran con `db push` /
+  `functions deploy` sin reinstalar la APK.
+- Catálogo ampliado a ~470 recetas caseras (100 España por comunidades incl.
+  serranito, 100 Europa, 100 Latinoamérica, 100 Asia, 20 Norteamérica) vía
+  `scripts/seed/generate-home-recipes.mjs` (PRs #110/#111).
+
+### Hecho (arreglos de la demo, 25 de julio)
+
+Cuatro bugs reportados al probar la demo, todos resueltos y desplegados
+(backend/data-only, sin reinstalar). Detalle y decisiones en la memoria de
+Claude `recetasapp-demo-fixes.md`:
+
+- #1 leche: variantes de beber (desnatada/semidesnatada) agrupadas bajo el
+  canónico de leche entera (migr 0063, PR #113).
+- #2/#3 variedad: rotación aleatoria en `household_today_decision` (migr 0062,
+  volatile, PR #112) — el pull-to-refresh y las visitas ya no repiten.
+- #4 chat: catálogo-primero con ranking por despensa (RPC
+  `household_recipe_ranking` + `resolveRecipeForChat`, PR #114). Primer slice de
+  la Fase 3: el chat busca en el recetario y devuelve la más cocinable antes de
+  generar; las modificaciones (`is_modification`) se generan frescas. Spec en
+  `docs/superpowers/specs/2026-07-25-chat-pantry-first-design.md`.
+
+Pendiente menor (requiere rebuild de APK): endurecer el caché en memoria del
+`CanonicalMap` en `apps/mobile/src/lib/ingredients.ts` (TTL o refresco), para que
+un cambio de agrupación no exija reiniciar la app.
 
 ### Después (fondo de la visión)
 
-3. **Fase 3: motor conversacional delgado**. El chat ejecuta primero el motor
-   y el LLM solo explica el top-N. Orden: receta existente → adaptación →
-   generación. Corrige la prioridad heredada del 21 de julio.
+3. **Fase 3: motor conversacional delgado**. Orden: receta existente →
+   adaptación → generación (corrige la prioridad heredada del 21 de julio).
+   Primer slice HECHO (#114): el chat busca en el catálogo y rankea por
+   despensa antes de generar. Falta: que el LLM explique un top-N (no una sola)
+   y la capa de adaptación conversacional intermedia entre existente y generar.
 4. **Personalización por gustos**: seguir favoritos/valoraciones y recomendar
    del mismo estilo (base: `user_recipes` + embeddings).
 5. **Fase 4: ciclo compartido**: Realtime de lista/despensa, plan semanal como
