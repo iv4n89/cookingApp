@@ -36,6 +36,7 @@ function RootNavigator() {
         <Stack.Screen name="historial" />
         <Stack.Screen name="historial/[id]" />
         <Stack.Screen name="favoritos" />
+        <Stack.Screen name="descubrir" />
         <Stack.Screen name="preferencias" />
         <Stack.Screen name="suscripcion" />
         <Stack.Screen name="premium" />

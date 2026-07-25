@@ -128,6 +128,28 @@ export async function listCatalogRecipes(
   return (data as Recipe[]) ?? [];
 }
 
+export interface DiscoverCard {
+  recipeId: string;
+  title: string;
+  description: string;
+  imageUrl: string | null;
+  imageStatus: ImageStatus;
+  extras: number;
+  ingredientNames: string[];
+  warnAllergens: string[];
+}
+
+// Recetas que encajan con los ingredientes elegidos en el descubridor.
+export async function discoverByIngredients(ingredientIds: string[]): Promise<DiscoverCard[]> {
+  const { data, error } = await supabase.rpc('discover_recipes_by_ingredients', {
+    p_ingredient_ids: ingredientIds,
+    p_max_extra: 2,
+    p_limit: 40,
+  });
+  if (error) throw error;
+  return (data as DiscoverCard[]) ?? [];
+}
+
 export async function getRecipe(id: string): Promise<Recipe | null> {
   const { data, error } = await supabase.from('recipes').select(COLUMNS).eq('id', id).maybeSingle();
   if (error) throw error;

@@ -2,6 +2,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, Text, View } from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppHeader } from '@/components/app-header';
@@ -65,7 +66,15 @@ export default function RecetasScreen() {
           className="flex-1"
           contentContainerClassName="px-container-padding pt-stack-lg pb-section-gap gap-gutter"
           ListHeaderComponent={
-            <View className="mb-gutter">
+            <View className="mb-gutter gap-stack-md">
+              <Pressable
+                onPress={() => router.push('/descubrir')}
+                className="flex-row items-center justify-center gap-stack-md rounded-xl bg-primary py-stack-lg">
+                <MaterialIcons name="explore" size={20} color={colors['on-primary']} />
+                <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
+                  Descubrir con ingredientes
+                </Text>
+              </Pressable>
               <RecipeFilters filters={filters} onChange={setFilters} />
             </View>
           }
