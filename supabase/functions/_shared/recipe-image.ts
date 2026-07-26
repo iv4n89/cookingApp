@@ -7,11 +7,36 @@ declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefi
 const BUCKET = 'recipe-images';
 const MAX_ATTEMPTS = 2;
 
-function imagePrompt(title: string): string {
+// Los ingredientes van en el prompt porque con el título a secas el modelo se inventa el plato:
+// "Ensalada rápida de palitos de cangrejo" salía con pasta, tomate y lechuga, sin maíz ni mayonesa.
+const PROMPT_INGREDIENTS = 8;
+
+function imagePrompt(subject: string): string {
   return (
-    `${title}, plato de comida terminado y bien emplatado, fotografía cenital apetecible, ` +
-    `fondo neutro claro, luz natural suave, sin texto, sin marca de agua`
+    `${subject}. Finished plated dish, appetising overhead food photography, plain light background, ` +
+    `soft natural light, no text, no watermark`
   );
+}
+
+// El sujeto de la foto. Se prefiere la descripción en inglés que dejó el LLM al crear la receta;
+// las recetas anteriores a esa columna caen al título más sus ingredientes, en español.
+async function imageSubject(supabase: SupabaseClient, recipeId: string, title: string): Promise<string> {
+  const { data } = await supabase
+    .from('recipes')
+    .select('image_prompt, ingredients')
+    .eq('id', recipeId)
+    .maybeSingle();
+  const described = typeof data?.image_prompt === 'string' ? data.image_prompt.trim() : '';
+  if (described) return described;
+
+  const items = Array.isArray(data?.ingredients) ? data.ingredients : [];
+  const names = items
+    .map((item) => String((item as { name?: unknown })?.name ?? '').trim())
+    .filter(Boolean)
+    .slice(0, PROMPT_INGREDIENTS);
+  return names.length
+    ? `${title}. Lleva exactamente estos ingredientes y ningún otro: ${names.join(', ')}`
+    : title;
 }
 
 // Genera la imagen de una receta reutilizable, la sube al bucket y fija image_status.
@@ -27,10 +52,12 @@ export async function generateRecipeImage(
     return;
   }
 
+  const subject = await imageSubject(supabase, recipeId, title);
+
   let lastError: unknown;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
-      const bytes = await downloadImage(await falImageUrl(imagePrompt(title), 'landscape_4_3'));
+      const bytes = await downloadImage(await falImageUrl(imagePrompt(subject), 'landscape_4_3'));
       const path = `${recipeId}.jpg`;
       const upload = await supabase.storage
         .from(BUCKET)

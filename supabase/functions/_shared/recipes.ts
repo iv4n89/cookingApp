@@ -22,6 +22,8 @@ export interface RecipeData {
   allergens?: string[] | null;
   diet?: string[] | null;
   meal_types?: string[] | null;
+  // Descripción en inglés del plato para generar su foto (la escribe el LLM al crear la receta).
+  image_prompt?: string | null;
   seasonProfile?: RecipeSeasonProfileInput | null;
   ingredients?: { name: string }[];
   steps?: unknown[];
@@ -63,6 +65,7 @@ export function recipeFromGenerated(g: GeneratedRecipe): RecipeData {
     allergens: sanitizeKeys(g.allergens, ALLERGEN_KEYS),
     diet: sanitizeKeys(g.diet, DIET_KEYS),
     meal_types: sanitizeKeys(g.meal_types, MEAL_TYPE_KEYS),
+    image_prompt: g.image_prompt?.trim() || null,
     seasonProfile: sanitizeGeneratedSeasonProfile({ seasons: g.seasons }),
     ingredients: g.ingredients.map((i) => ({
       name: i.name,
@@ -283,6 +286,7 @@ export async function saveRecipe(
       allergens: recipe.allergens ? sanitizeKeys(recipe.allergens, ALLERGEN_KEYS) : recipe.allergens ?? null,
       diet: recipe.diet ? sanitizeKeys(recipe.diet, DIET_KEYS) : recipe.diet ?? null,
       meal_types: recipe.meal_types ? sanitizeKeys(recipe.meal_types, MEAL_TYPE_KEYS) : [],
+      image_prompt: recipe.image_prompt ?? null,
       ingredients,
       steps: recipe.steps ?? [],
       reusable,
