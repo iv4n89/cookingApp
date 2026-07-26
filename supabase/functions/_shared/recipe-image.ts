@@ -52,7 +52,14 @@ export async function generateRecipeImage(
     return;
   }
 
-  const subject = await imageSubject(supabase, recipeId, title);
+  // Con el título basta para pintar algo: si esta consulta fallara y dejara escapar el error, la
+  // receta se quedaría en 'pending' y ensure-recipe-image ya no la reencolaría nunca.
+  let subject = title;
+  try {
+    subject = await imageSubject(supabase, recipeId, title);
+  } catch (e) {
+    console.error('recipe image subject:', e);
+  }
 
   let lastError: unknown;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
