@@ -29,10 +29,15 @@ async function generateBatch() {
 
 let total = 0;
 for (let round = 1; ; round++) {
-  const { processed, failed, remaining } = await generateBatch();
+  const { processed, failed, withoutDescription, remaining } = await generateBatch();
   total += processed;
   console.log(`Lote ${round}: ${processed} generadas, ${failed.length} fallidas, ${remaining} pendientes.`);
   if (failed.length > 0) console.log(`  fallidas: ${failed.join(', ')}`);
+  // Sin descripción se genera desde el nombre en español, que da imágenes malas: no seguir gastando.
+  if (withoutDescription === processed + failed.length && processed + failed.length > 0) {
+    console.error('El lote entero se generó sin descripción visual: corto para no gastar en vano.');
+    break;
+  }
   if (remaining === 0) break;
   if (processed === 0) {
     console.error('Ningún ingrediente generado en este lote: corto para no repetir en vacío.');

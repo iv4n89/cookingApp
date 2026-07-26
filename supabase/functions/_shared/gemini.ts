@@ -278,10 +278,10 @@ const VISUAL_SCHEMA = {
       items: {
         type: 'OBJECT',
         properties: {
-          input: { type: 'STRING' },
+          number: { type: 'INTEGER' },
           visual: { type: 'STRING' },
         },
-        required: ['input', 'visual'],
+        required: ['number', 'visual'],
       },
     },
   },
@@ -291,9 +291,11 @@ const VISUAL_SCHEMA = {
 // Describe en inglés el aspecto de cada ingrediente para el generador de imágenes. Los nombres en
 // español lo despistan ("pimienta negra" acaba dibujando pimientos, "harina" acaba en fideos), así
 // que el LLM traduce y concreta forma, color y recipiente antes de pedir la imagen.
+// Devuelve la descripción de cada ingrediente en la misma posición que la entrada, o undefined si
+// el LLM se saltó ese número.
 export async function describeIngredientsVisually(
   items: { name: string; category: string }[],
-): Promise<Map<string, string>> {
+): Promise<(string | undefined)[]> {
   const prompt =
     `Eres director de fotografía de producto para un catálogo de cocina.\n` +
     `Para cada ingrediente devuelve "visual": cómo se ve tal y como se vende en un supermercado ` +
@@ -303,8 +305,9 @@ export async function describeIngredientsVisually(
     `Si es sólido, muéstralo sin recipiente.\n` +
     `En carnes y pescados usa el término inglés del corte exacto que se vende en España y di si ` +
     `lleva hueso y piel: "muslo de pollo" es un drumstick con hueso, no un "thigh" deshuesado.\n` +
-    `Nunca inventes marcas, etiquetas ni texto. Devuelve "input" igual que la entrada.\n\n` +
-    `Ingredientes:\n${items.map((i) => `- ${i.name} (${i.category})`).join('\n')}`;
+    `Nunca inventes marcas, etiquetas ni texto.\n` +
+    `Devuelve "number" con el número del ingrediente en la lista.\n\n` +
+    `Ingredientes:\n${items.map((i, index) => `${index + 1}. ${i.name} (${i.category})`).join('\n')}`;
 
   const res = await fetchWithTimeout(
     `${BASE}/models/${GEN_MODEL}:generateContent`,
@@ -322,8 +325,12 @@ export async function describeIngredientsVisually(
   const data = await res.json();
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (typeof text !== 'string') throw new Error('Respuesta visual inesperada de Gemini');
-  const parsed = (JSON.parse(text).items ?? []) as { input: string; visual: string }[];
-  return new Map(parsed.map((item) => [item.input, item.visual]));
+  const parsed = (JSON.parse(text).items ?? []) as { number: number; visual: string }[];
+  const visuals = new Array<string | undefined>(items.length);
+  for (const item of parsed) {
+    if (item.number >= 1 && item.number <= items.length) visuals[item.number - 1] = item.visual;
+  }
+  return visuals;
 }
 
 const RESOLVE_SCHEMA = {

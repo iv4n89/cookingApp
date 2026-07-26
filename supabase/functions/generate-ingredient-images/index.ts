@@ -43,17 +43,24 @@ Deno.serve(async (req) => {
     .limit(batch);
   if (error) return json({ error: 'No se pudieron leer los ingredientes.' }, 500);
 
-  // Una sola llamada para todo el lote. Si falla, el nombre en español sirve de reserva.
-  const visuals = await describeIngredientsVisually(pending ?? []).catch((e) => {
-    console.error('generate-ingredient-images: descripción visual', e);
-    return new Map<string, string>();
-  });
+  const items = pending ?? [];
+  // Una sola llamada para todo el lote. Si falla, el nombre en español sirve de reserva, pero da
+  // imágenes peores: el contador de reservas viaja en la respuesta para poder pararlo a tiempo.
+  const visuals = items.length
+    ? await describeIngredientsVisually(items).catch((e) => {
+        console.error('generate-ingredient-images: descripción visual', e);
+        return [] as (string | undefined)[];
+      })
+    : [];
 
   let processed = 0;
+  let withoutDescription = 0;
   const failed: string[] = [];
-  for (const ingredient of pending ?? []) {
+  for (const [index, ingredient] of items.entries()) {
     try {
-      const visual = visuals.get(ingredient.name) ?? `${ingredient.name} (${ingredient.category})`;
+      const described = visuals[index];
+      if (!described) withoutDescription++;
+      const visual = described ?? `${ingredient.name} (${ingredient.category})`;
       const bytes = await downloadImage(await falImageUrl(imagePrompt(visual), 'square'));
       const path = `${ingredient.id}.jpg`;
       const upload = await supabase.storage
@@ -77,5 +84,5 @@ Deno.serve(async (req) => {
     .select('*', { count: 'exact', head: true })
     .is('image_url', null);
 
-  return json({ processed, failed, remaining: remaining ?? 0 });
+  return json({ processed, failed, withoutDescription, remaining: remaining ?? 0 });
 });
