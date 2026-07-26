@@ -41,6 +41,16 @@ export async function setRating(userId: string, recipeId: string, rating: number
   await upsertUserRecipe(userId, recipeId, { rating });
 }
 
+export async function listFavoriteIds(recipeIds: string[]): Promise<string[]> {
+  const { data, error } = await supabase
+    .from('user_recipes')
+    .select('recipe_id')
+    .eq('is_favorite', true)
+    .in('recipe_id', recipeIds);
+  if (error) throw error;
+  return (data ?? []).map((row) => row.recipe_id as string);
+}
+
 export async function listFavorites(): Promise<FavoriteRecipe[]> {
   const { data, error } = await supabase
     .from('user_recipes')

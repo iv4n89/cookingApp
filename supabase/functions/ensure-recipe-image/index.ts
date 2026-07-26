@@ -1,4 +1,4 @@
-import { isAuthenticatedUser } from '../_shared/auth.ts';
+import { hasInternalSecret, isAuthenticatedUser } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
 import { queueRecipeImage } from '../_shared/recipe-image.ts';
@@ -8,7 +8,10 @@ import { queueRecipeImage } from '../_shared/recipe-image.ts';
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
-  if (!isAuthenticatedUser(req)) return json({ error: 'No autorizado.' }, 401);
+  // La app llama con el JWT del usuario; los scripts de backfill, con el secreto interno.
+  if (!isAuthenticatedUser(req) && !hasInternalSecret(req)) {
+    return json({ error: 'No autorizado.' }, 401);
+  }
 
   const { recipeId } = (await req.json().catch(() => ({}))) as { recipeId?: string };
   if (!recipeId) return json({ error: 'Falta recipeId.' }, 400);
