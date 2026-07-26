@@ -1,28 +1,21 @@
 import { hasInternalSecret } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
-import { fetchWithTimeout } from '../_shared/http.ts';
+import { downloadImage, falImageUrl } from '../_shared/fal-image.ts';
 
-// Endpoint interno: genera con IA (Pollinations) la imagen de los ingredientes
-// que aún no tienen y la sube al bucket. Idempotente: solo rellena los que faltan,
-// por lotes, para poder llamarlo repetidamente hasta agotar el catálogo.
+// Endpoint interno: genera con IA la imagen de los ingredientes que aún no tienen y la sube al
+// bucket. Idempotente: solo rellena los que faltan, por lotes, para poder llamarlo repetidamente
+// hasta agotar el catálogo.
 const BUCKET = 'ingredient-images';
-// Pollinations tarda ~30-40s por imagen; con el límite de 150s de la función,
-// un lote pequeño evita que se corte a media ejecución. El timeout por imagen se
-// mantiene dentro del presupuesto del lote (3 x 45s = 135s < 150s). Es idempotente:
-// cada imagen se persiste al momento, así que basta con reinvocar hasta agotar.
-const DEFAULT_BATCH = 3;
-const IMAGE_TIMEOUT_MS = 45000;
+// Flux schnell tarda ~2s por imagen, así que un lote de 10 entra de sobra en los 150s de la
+// función. Cada imagen se persiste al momento: basta reinvocar hasta que no quede ninguna.
+const DEFAULT_BATCH = 10;
 
 function imagePrompt(name: string): string {
   return (
     `${name}, single fresh ingredient, clean product photography, plain light neutral background, ` +
     `soft studio lighting, centered, no text, no watermark, photorealistic`
   );
-}
-
-function pollinationsUrl(prompt: string): string {
-  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&nologo=true&model=flux`;
 }
 
 Deno.serve(async (req) => {
@@ -46,9 +39,7 @@ Deno.serve(async (req) => {
   const failed: string[] = [];
   for (const ingredient of pending ?? []) {
     try {
-      const res = await fetchWithTimeout(pollinationsUrl(imagePrompt(ingredient.name)), {}, IMAGE_TIMEOUT_MS);
-      if (!res.ok) throw new Error(`pollinations ${res.status}`);
-      const bytes = new Uint8Array(await res.arrayBuffer());
+      const bytes = await downloadImage(await falImageUrl(imagePrompt(ingredient.name), 'square'));
       const path = `${ingredient.id}.jpg`;
       const upload = await supabase.storage
         .from(BUCKET)
