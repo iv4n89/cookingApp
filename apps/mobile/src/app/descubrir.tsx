@@ -33,13 +33,19 @@ export default function DescubrirScreen() {
     });
   }
 
+  // Going back to the selector starts fresh: ingredients from the previous search only get in the way.
+  function restart() {
+    setCards(null);
+    setSelected(new Set());
+    setSaved(new Set());
+  }
+
   async function discover() {
     if (selected.size === 0 || loading) return;
     setLoading(true);
     try {
       const found = await discoverByIngredients([...selected]);
-      // Las que el usuario ya tenía guardadas salen con el marcador puesto. Es secundario: si la
-      // consulta falla, las cards se muestran igual.
+      // Already saved recipes show their bookmark. Secondary: if the lookup fails, cards still show.
       if (found.length > 0) {
         const ids = await listFavoriteIds(found.map((card) => card.recipeId)).catch(() => []);
         setSaved(new Set(ids));
@@ -107,7 +113,7 @@ export default function DescubrirScreen() {
           <Text className="text-center font-sans text-body-md text-on-surface-variant">
             Ninguna receta encaja con esos ingredientes.
           </Text>
-          <Pressable onPress={() => setCards(null)} className="rounded-xl bg-primary px-stack-lg py-stack-md">
+          <Pressable onPress={restart} className="rounded-xl bg-primary px-stack-lg py-stack-md">
             <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
               Cambiar ingredientes
             </Text>
@@ -143,7 +149,7 @@ export default function DescubrirScreen() {
               No hay más recetas con esos ingredientes.
             </Text>
             <Pressable
-              onPress={() => setCards(null)}
+              onPress={restart}
               className="rounded-xl bg-primary px-stack-lg py-stack-md">
               <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
                 Cambiar ingredientes
