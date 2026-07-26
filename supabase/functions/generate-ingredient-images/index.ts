@@ -2,6 +2,7 @@ import { hasInternalSecret } from '../_shared/auth.ts';
 import { corsHeaders, json } from '../_shared/cors.ts';
 import { serviceClient } from '../_shared/db.ts';
 import { downloadImage, falImageUrl } from '../_shared/fal-image.ts';
+import { describeIngredientsVisually } from '../_shared/gemini.ts';
 
 // Endpoint interno: genera con IA la imagen de los ingredientes que aún no tienen y la sube al
 // bucket. Idempotente: solo rellena los que faltan, por lotes, para poder llamarlo repetidamente
@@ -11,10 +12,17 @@ const BUCKET = 'ingredient-images';
 // función. Cada imagen se persiste al momento: basta reinvocar hasta que no quede ninguna.
 const DEFAULT_BATCH = 10;
 
-function imagePrompt(name: string): string {
+// El sujeto llega ya descrito en inglés; aquí solo se fija el encuadre y lo que no debe aparecer.
+// Nada de condicionales ("los líquidos, en un vaso"): el modelo los aplica a todo y acaba metiendo
+// tarros y polvo en ingredientes que no los llevan.
+function imagePrompt(visual: string): string {
   return (
-    `${name}, single fresh ingredient, clean product photography, plain light neutral background, ` +
-    `soft studio lighting, centered, no text, no watermark, photorealistic`
+    `${visual}. Supermarket online catalogue photo of this single food ingredient as it is sold, ` +
+    `the ingredient itself and not a prepared dish. Centered, filling most of the frame, ` +
+    `pure white background, bright even flat lighting, no harsh shadows, sharp focus, ` +
+    `true-to-life colours, slightly appetising but plain and honest, like a grocery shop listing. ` +
+    `No text, no labels, no logos, no branded packaging, no hands, no people, no collage, ` +
+    `no split frame`
   );
 }
 
@@ -29,17 +37,31 @@ Deno.serve(async (req) => {
   const supabase = serviceClient();
   const { data: pending, error } = await supabase
     .from('ingredients')
-    .select('id, name')
+    .select('id, name, category')
     .is('image_url', null)
     .order('name')
     .limit(batch);
   if (error) return json({ error: 'No se pudieron leer los ingredientes.' }, 500);
 
+  const items = pending ?? [];
+  // Una sola llamada para todo el lote. Si falla, el nombre en español sirve de reserva, pero da
+  // imágenes peores: el contador de reservas viaja en la respuesta para poder pararlo a tiempo.
+  const visuals = items.length
+    ? await describeIngredientsVisually(items).catch((e) => {
+        console.error('generate-ingredient-images: descripción visual', e);
+        return [] as (string | undefined)[];
+      })
+    : [];
+
   let processed = 0;
+  let withoutDescription = 0;
   const failed: string[] = [];
-  for (const ingredient of pending ?? []) {
+  for (const [index, ingredient] of items.entries()) {
     try {
-      const bytes = await downloadImage(await falImageUrl(imagePrompt(ingredient.name), 'square'));
+      const described = visuals[index];
+      if (!described) withoutDescription++;
+      const visual = described ?? `${ingredient.name} (${ingredient.category})`;
+      const bytes = await downloadImage(await falImageUrl(imagePrompt(visual), 'square'));
       const path = `${ingredient.id}.jpg`;
       const upload = await supabase.storage
         .from(BUCKET)
@@ -62,5 +84,5 @@ Deno.serve(async (req) => {
     .select('*', { count: 'exact', head: true })
     .is('image_url', null);
 
-  return json({ processed, failed, remaining: remaining ?? 0 });
+  return json({ processed, failed, withoutDescription, remaining: remaining ?? 0 });
 });
