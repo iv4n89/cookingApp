@@ -33,7 +33,7 @@ export default function DescubrirScreen() {
     });
   }
 
-  // Volver al selector empieza de cero: los ingredientes de la búsqueda anterior estorban.
+  // Going back to the selector starts fresh: ingredients from the previous search only get in the way.
   function restart() {
     setCards(null);
     setSelected(new Set());
@@ -45,8 +45,7 @@ export default function DescubrirScreen() {
     setLoading(true);
     try {
       const found = await discoverByIngredients([...selected]);
-      // Las que el usuario ya tenía guardadas salen con el marcador puesto. Es secundario: si la
-      // consulta falla, las cards se muestran igual.
+      // Already saved recipes show their bookmark. Secondary: if the lookup fails, cards still show.
       if (found.length > 0) {
         const ids = await listFavoriteIds(found.map((card) => card.recipeId)).catch(() => []);
         setSaved(new Set(ids));
