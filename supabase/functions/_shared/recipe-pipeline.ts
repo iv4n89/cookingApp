@@ -70,6 +70,49 @@ export interface Constraints {
   // a esos ingredientes (más básicos).
   pantryOnly?: boolean;
   pantry?: string[];
+  // Ingredientes que el usuario ha pedido expresamente. Una receta del catálogo que no los lleve
+  // no vale, por muy bien que encaje con su despensa.
+  requiredIngredients?: string[];
+}
+
+interface RankedCandidate {
+  recipeId: string;
+  score?: { missingIngredientCount?: number };
+  missingIngredients?: { name?: string }[];
+}
+
+// Palabras que no distinguen un ingrediente de otro, para que "palitos de cangrejo" case con
+// "cangrejo" sin que "de" cuente.
+const FILLER_WORDS = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'al', 'con', 'en', 'y']);
+
+function significantWords(value: string): string[] {
+  return value
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((word) => word.length > 1 && !FILLER_WORDS.has(word));
+}
+
+function covers(words: string[], other: string[]): boolean {
+  return other.length > 0 && other.every((word) => words.includes(word));
+}
+
+// Una receta sirve si cada ingrediente pedido aparece en su lista. Se comparan palabras completas
+// y en ambos sentidos: "cangrejo" casa con "palitos de cangrejo" y al revés, pero "pan" no casa
+// con "panceta", que es lo que pasaría comparando subcadenas.
+export function hasRequestedIngredients(
+  recipe: Record<string, unknown>,
+  required: string[],
+): boolean {
+  const names = (Array.isArray(recipe.ingredients) ? recipe.ingredients : []).map((item) =>
+    significantWords(String((item as { name?: unknown })?.name ?? '')),
+  );
+  return required.every((wanted) => {
+    const target = significantWords(wanted);
+    if (!target.length) return true;
+    return names.some((name) => covers(name, target) || covers(target, name));
+  });
 }
 
 function unique(values: string[]): string[] {
@@ -216,8 +259,15 @@ export async function resolveRecipeForChat(
     });
     if (error) throw error;
 
-    if (matches?.length) {
-      const ids = matches.map((m: { id?: string }) => m.id).filter(Boolean);
+    // Lo que el usuario pidió manda sobre lo que tiene en casa: si ninguna receta del catálogo
+    // lleva esos ingredientes, se genera una en vez de ofrecerle otra cosa.
+    const required = constraints.requiredIngredients ?? [];
+    const eligible = required.length
+      ? (matches ?? []).filter((m: Record<string, unknown>) => hasRequestedIngredients(m, required))
+      : (matches ?? []);
+
+    if (eligible.length) {
+      const ids = eligible.map((m: { id?: string }) => m.id).filter(Boolean);
       const { data: ranking, error: rankError } = await supabase.rpc('household_recipe_ranking', {
         p_household_id: householdId,
         p_user_id: userId,
@@ -226,17 +276,21 @@ export async function resolveRecipeForChat(
       });
       // Si el ranking falla, degradar a generación en vez de romper la respuesta.
       if (!rankError) {
-        const candidates = (ranking?.candidates ?? []) as {
-          recipeId: string;
-          score?: { missingIngredientCount?: number };
-          missingIngredients?: { name?: string }[];
-        }[];
+        const candidates = (ranking?.candidates ?? []) as RankedCandidate[];
+        // El ranking ordena por despensa, que es lo que se quiere cuando el usuario pide ideas
+        // sin concretar. Si pidió ingredientes, manda el parecido con su petición y la despensa
+        // solo sirve para saber qué le falta.
+        const byRequest: RankedCandidate[] = required.length
+          ? eligible
+              .map((m: { id?: string }) => candidates.find((c) => c.recipeId === m.id))
+              .filter((c: RankedCandidate | undefined): c is RankedCandidate => Boolean(c))
+          : candidates;
         // "Solo con lo que tengo": exige una candidata sin faltantes; si no, se genera.
         const best = constraints.pantryOnly
-          ? candidates.find((c) => (c.score?.missingIngredientCount ?? 1) === 0)
-          : candidates[0];
+          ? byRequest.find((c) => (c.score?.missingIngredientCount ?? 1) === 0)
+          : byRequest[0];
         if (best) {
-          const recipe = matches.find((m: { id?: string }) => m.id === best.recipeId) ?? null;
+          const recipe = eligible.find((m: { id?: string }) => m.id === best.recipeId) ?? null;
           if (recipe) {
             const missing = (best.missingIngredients ?? [])
               .map((mi) => mi?.name)

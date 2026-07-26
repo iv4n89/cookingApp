@@ -25,7 +25,8 @@
     "test:recipe-seasons": "node scripts/test-recipe-season-profiles-validator.mjs",
     "test:recipe-season-tools": "node --test scripts/recipe-seasons/profile-contract.test.mjs",
     "test:recipe-season-concurrency": "node scripts/test-recipe-season-profile-concurrency.mjs",
-    "test:db": "supabase test db --local supabase/tests"
+    "test:db": "supabase test db --local supabase/tests",
+    "test:functions": "deno test --allow-env --allow-net supabase/functions/_shared"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

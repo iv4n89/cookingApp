@@ -144,6 +144,9 @@ export interface ChatResponse {
   recipe_query?: string | null;
   // Ideas de platos cuando el usuario pide opciones (p.ej. "qué puedo cocinar"): título + pista.
   suggestions?: ChatSuggestion[] | null;
+  // Ingredientes que el usuario nombra expresamente y quiere en el plato. El sistema descarta
+  // las recetas del catálogo que no los lleven, en vez de servir la mejor para su despensa.
+  required_ingredients?: string[] | null;
   // Restricciones que el usuario pide en la conversación (además de sus preferencias
   // guardadas): alérgenos a evitar y dieta requerida. El sistema filtra la caché con ellas.
   exclude_allergens?: string[] | null;
@@ -174,6 +177,7 @@ const CHAT_SCHEMA = {
         required: ['title', 'hint'],
       },
     },
+    required_ingredients: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     exclude_allergens: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     require_diet: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     pantry_only: { type: 'BOOLEAN' },
