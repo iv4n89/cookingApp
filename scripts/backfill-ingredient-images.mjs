@@ -5,22 +5,28 @@
 // mientras siga bajando. Si un lote entero falla, corta para no girar en vacío.
 //
 // Uso (nube):
-//   SUPABASE_URL=https://<ref>.supabase.co INTERNAL_FUNCTION_SECRET=<secreto> \
-//   [BATCH=10] node scripts/backfill-ingredient-images.mjs
+//   SUPABASE_URL=https://<ref>.supabase.co SUPABASE_ANON_KEY=<anon> \
+//   INTERNAL_FUNCTION_SECRET=<secreto> [BATCH=10] node scripts/backfill-ingredient-images.mjs
 
 const url = process.env.SUPABASE_URL;
+const anonKey = process.env.SUPABASE_ANON_KEY;
 const secret = process.env.INTERNAL_FUNCTION_SECRET;
 const batch = Number(process.env.BATCH ?? '10');
 
-if (!url || !secret) {
-  console.error('Faltan SUPABASE_URL y/o INTERNAL_FUNCTION_SECRET.');
+if (!url || !anonKey || !secret) {
+  console.error('Faltan SUPABASE_URL, SUPABASE_ANON_KEY y/o INTERNAL_FUNCTION_SECRET.');
   process.exit(1);
 }
 
 async function generateBatch() {
   const res = await fetch(`${url}/functions/v1/generate-ingredient-images`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-internal-secret': secret },
+    headers: {
+      'Content-Type': 'application/json',
+      // La pasarela de funciones exige Authorization aunque quien autoriza de verdad sea el secreto.
+      Authorization: `Bearer ${anonKey}`,
+      'x-internal-secret': secret,
+    },
     body: JSON.stringify({ batch }),
   });
   if (!res.ok) throw new Error(`${res.status} ${(await res.text()).slice(0, 200)}`);
