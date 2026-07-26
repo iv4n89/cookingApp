@@ -33,6 +33,13 @@ export default function DescubrirScreen() {
     });
   }
 
+  // Volver al selector empieza de cero: los ingredientes de la búsqueda anterior estorban.
+  function restart() {
+    setCards(null);
+    setSelected(new Set());
+    setSaved(new Set());
+  }
+
   async function discover() {
     if (selected.size === 0 || loading) return;
     setLoading(true);
@@ -107,7 +114,7 @@ export default function DescubrirScreen() {
           <Text className="text-center font-sans text-body-md text-on-surface-variant">
             Ninguna receta encaja con esos ingredientes.
           </Text>
-          <Pressable onPress={() => setCards(null)} className="rounded-xl bg-primary px-stack-lg py-stack-md">
+          <Pressable onPress={restart} className="rounded-xl bg-primary px-stack-lg py-stack-md">
             <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
               Cambiar ingredientes
             </Text>
@@ -143,7 +150,7 @@ export default function DescubrirScreen() {
               No hay más recetas con esos ingredientes.
             </Text>
             <Pressable
-              onPress={() => setCards(null)}
+              onPress={restart}
               className="rounded-xl bg-primary px-stack-lg py-stack-md">
               <Text className="font-mono-medium text-label-md uppercase tracking-widest text-on-primary">
                 Cambiar ingredientes
