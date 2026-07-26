@@ -48,6 +48,31 @@ Deno.test('el plural del usuario casa con el singular del catálogo', () => {
   );
 });
 
+Deno.test('los plurales de palabras acabadas en e o en z también casan', () => {
+  assert(
+    hasRequestedIngredients(recipe('Tomate pera'), ['tomates']),
+    'tomates debería casar con Tomate pera',
+  );
+  assert(
+    hasRequestedIngredients(recipe('Aceite de oliva virgen extra'), ['aceites']),
+    'aceites debería casar con Aceite de oliva',
+  );
+  assert(
+    hasRequestedIngredients(recipe('Arroz bomba'), ['arroces']),
+    'arroces debería casar con Arroz bomba',
+  );
+  assert(
+    hasRequestedIngredients(recipe('Nuez'), ['nueces']),
+    'nueces debería casar con Nuez',
+  );
+});
+
+Deno.test('acortar el plural no confunde ingredientes distintos', () => {
+  assert(!hasRequestedIngredients(recipe('Panceta'), ['panes']), 'panes no es panceta');
+  assert(!hasRequestedIngredients(recipe('Tomatillo'), ['tomates']), 'tomates no es tomatillo');
+  assert(!hasRequestedIngredients(recipe('Paté de cerdo'), ['patatas']), 'patatas no es paté');
+});
+
 Deno.test('con varios ingredientes pedidos hacen falta todos', () => {
   assert(
     hasRequestedIngredients(recipe('Bacalao', 'Garbanzos', 'Espinacas'), ['bacalao', 'garbanzos']),

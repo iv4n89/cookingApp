@@ -87,12 +87,14 @@ interface RankedCandidate {
 const FILLER_WORDS = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'al', 'con', 'en', 'y']);
 
 // El catálogo nombra los ingredientes en singular ("Garbanzo castellano") y el usuario los pide en
-// plural ("algo con garbanzos"). Basta con acercar ambas formas: no importa que el resultado no sea
-// la palabra real mientras los dos lados se recorten igual.
-function singular(word: string): string {
-  if (word.length > 4 && word.endsWith('es')) return word.slice(0, -2);
-  if (word.length > 3 && word.endsWith('s')) return word.slice(0, -1);
-  return word;
+// plural ("algo con garbanzos"). No importa que el resultado no sea la palabra real mientras los dos
+// lados acaben igual: "tomates" y "tomate" -> "tomat"; "arroces" y "arroz" -> "arroc".
+function stem(word: string): string {
+  let root = word;
+  if (root.length > 3 && root.endsWith('s')) root = root.slice(0, -1);
+  if (root.length > 4 && root.endsWith('e')) root = root.slice(0, -1);
+  if (root.endsWith('z')) root = `${root.slice(0, -1)}c`;
+  return root;
 }
 
 function significantWords(value: string): string[] {
@@ -102,7 +104,7 @@ function significantWords(value: string): string[] {
     .toLowerCase()
     .split(/[^a-z0-9]+/)
     .filter((word) => word.length > 1 && !FILLER_WORDS.has(word))
-    .map(singular);
+    .map(stem);
 }
 
 function covers(words: string[], other: string[]): boolean {
@@ -281,8 +283,9 @@ export async function resolveRecipeForChat(
     // cumplir: generar acabaría inventando un plato sin ese ingrediente o saltándose la despensa.
     if (constraints.pantryOnly && required.length) {
       const pantry = { ingredients: (constraints.pantry ?? []).map((name) => ({ name })) };
-      if (!hasRequestedIngredients(pantry, required)) {
-        return { recipe: null, origin: 'unavailable', missing: required };
+      const absent = required.filter((wanted) => !hasRequestedIngredients(pantry, [wanted]));
+      if (absent.length) {
+        return { recipe: null, origin: 'unavailable', missing: absent };
       }
     }
 
