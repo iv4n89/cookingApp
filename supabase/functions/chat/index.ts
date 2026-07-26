@@ -28,6 +28,13 @@ const EMPTY_PANTRY_NOTE =
   'No tienes ingredientes guardados en tu despensa, así que no puedo proponerte una receta solo con lo que ' +
   'tienes en casa. Añade lo que tengas y te busco algo al momento.';
 
+function missingForPantryOnly(names: string[]): string {
+  return (
+    `Para cocinar solo con lo que tienes en casa te faltaría ${names.join(', ')}. ` +
+    `Dime si lo compras y te busco la receta, o te propongo algo con lo que ya tienes.`
+  );
+}
+
 interface HistoryRecipe {
   title?: string;
   ingredients?: { name?: string; quantity?: unknown; unit?: string }[];
@@ -68,6 +75,10 @@ const BASE_PROMPT =
   'soy (soja), sesame (sésamo), mustard (mostaza), celery (apio), fructose, histamine, sorbitol, ' +
   'pork (cerdo), alcohol. Ejemplo: "sin huevo" -> ["egg"]. Si pide vegano o vegetariano, ponlo en ' +
   '"require_diet" (vegan o vegetarian). Deja ambos vacíos si no aplica.\n' +
+  'Cuando el usuario nombre ingredientes concretos que quiere en el plato ("algo con palitos de ' +
+  'cangrejo", "una receta de bacalao"), ponlos en "required_ingredients" con el nombre tal cual lo ' +
+  'diría en la cocina ("palitos de cangrejo", "bacalao"). Déjalo vacío si no nombra ninguno o si ' +
+  'solo pide ideas generales. No metas ahí lo que quiere evitar ni lo que tiene en la despensa.\n' +
   'Si el usuario pide cocinar SOLO con lo que tiene en casa o dice que no puede/quiere comprar ' +
   '(por ejemplo "con lo que tenga", "no puedo salir a comprar", "sin ir a la tienda", "con lo que ' +
   'haya por casa"), pon "pantry_only" en true; si no, déjalo false. Cuando sea true, elige un plato ' +
@@ -78,6 +89,18 @@ const BASE_PROMPT =
   'normal sin modificaciones ("una receta de lasaña", "algo con pollo", "un guiso"): en ese caso el ' +
   'sistema busca en el recetario la más adecuada a su despensa.\n' +
   'No des consejo médico ni nutricional profesional.';
+
+// Los ingredientes pedidos descartan recetas del catálogo, así que se acotan: una lista larga o
+// con ruido dejaría fuera todo el recetario y mandaría siempre a generar.
+const MAX_REQUESTED_INGREDIENTS = 4;
+function sanitizeRequestedIngredients(values: unknown): string[] {
+  if (!Array.isArray(values)) return [];
+  return values
+    .filter((value): value is string => typeof value === 'string')
+    .map((value) => value.trim().slice(0, 40))
+    .filter(Boolean)
+    .slice(0, MAX_REQUESTED_INGREDIENTS);
+}
 
 // Texto de la receta para que el modelo recuerde lo propuesto en turnos anteriores.
 // Defensivo y acotado: el recipe viene del body del cliente (puede venir malformado o enorme).
@@ -134,7 +157,8 @@ function buildSystemInstruction(prefs: UserPrefs | null, pantryNames: string[]):
   if (pantryNames.length) {
     parts.push(
       `Ingredientes que el usuario tiene en su despensa: ${pantryNames.join(', ')}. ` +
-        `Prioriza recetas que aprovechen lo que ya tiene.`,
+        `Aprovéchalos cuando pida ideas sin concretar, pero si pide un plato o un ingrediente ` +
+        `determinado, dale eso aunque no lo tenga: no le ofrezcas otra cosa por no tenerlo.`,
     );
   }
   return parts.join('\n');
@@ -180,6 +204,7 @@ Deno.serve(async (req) => {
       require_diet,
       pantry_only,
       is_modification,
+      required_ingredients,
     } = await generateChat(turns, system);
 
     // La receta no la inventa el chat: se resuelve por el pipeline real.
@@ -224,10 +249,17 @@ Deno.serve(async (req) => {
             userId,
             pantry.householdId,
             prefs,
-            { ...base, pantry: pantryNames.length ? pantryNames : undefined },
+            {
+              ...base,
+              pantry: pantryNames.length ? pantryNames : undefined,
+              requiredIngredients: sanitizeRequestedIngredients(required_ingredients),
+            },
           );
           if (resolved.origin === 'rate_limited') {
             return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+          }
+          if (resolved.origin === 'unavailable') {
+            return json({ message: missingForPantryOnly(resolved.missing), recipe: null });
           }
           recipe = resolved.recipe;
           // Decir qué falta (o que ya es cocinable) cuando la receta viene del catálogo.
