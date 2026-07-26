@@ -37,6 +37,17 @@ Deno.test('se comparan palabras completas, no trozos', () => {
   );
 });
 
+Deno.test('el plural del usuario casa con el singular del catálogo', () => {
+  assert(
+    hasRequestedIngredients(recipe('Garbanzo castellano', 'Espinacas'), ['garbanzos']),
+    'garbanzos debería casar con Garbanzo castellano',
+  );
+  assert(
+    hasRequestedIngredients(recipe('Lenteja roja'), ['lentejas']),
+    'lentejas debería casar con Lenteja roja',
+  );
+});
+
 Deno.test('con varios ingredientes pedidos hacen falta todos', () => {
   assert(
     hasRequestedIngredients(recipe('Bacalao', 'Garbanzos', 'Espinacas'), ['bacalao', 'garbanzos']),

@@ -28,6 +28,13 @@ const EMPTY_PANTRY_NOTE =
   'No tienes ingredientes guardados en tu despensa, así que no puedo proponerte una receta solo con lo que ' +
   'tienes en casa. Añade lo que tengas y te busco algo al momento.';
 
+function missingForPantryOnly(names: string[]): string {
+  return (
+    `Para cocinar solo con lo que tienes en casa te faltaría ${names.join(', ')}. ` +
+    `Dime si lo compras y te busco la receta, o te propongo algo con lo que ya tienes.`
+  );
+}
+
 interface HistoryRecipe {
   title?: string;
   ingredients?: { name?: string; quantity?: unknown; unit?: string }[];
@@ -250,6 +257,9 @@ Deno.serve(async (req) => {
           );
           if (resolved.origin === 'rate_limited') {
             return json({ message: RATE_LIMIT_MESSAGE, recipe: null });
+          }
+          if (resolved.origin === 'unavailable') {
+            return json({ message: missingForPantryOnly(resolved.missing), recipe: null });
           }
           recipe = resolved.recipe;
           // Decir qué falta (o que ya es cocinable) cuando la receta viene del catálogo.

@@ -60,7 +60,8 @@ async function generationsInWindow(supabase: SupabaseClient, userId: string): Pr
   return count ?? 0;
 }
 
-export type RecipeOrigin = 'db' | 'generated' | 'rate_limited';
+// 'unavailable': pidió un ingrediente que no tiene y a la vez cocinar solo con lo que hay en casa.
+export type RecipeOrigin = 'db' | 'generated' | 'rate_limited' | 'unavailable';
 
 // Restricciones ad-hoc de la conversación (además de las preferencias guardadas).
 export interface Constraints {
@@ -85,13 +86,23 @@ interface RankedCandidate {
 // "cangrejo" sin que "de" cuente.
 const FILLER_WORDS = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'al', 'con', 'en', 'y']);
 
+// El catálogo nombra los ingredientes en singular ("Garbanzo castellano") y el usuario los pide en
+// plural ("algo con garbanzos"). Basta con acercar ambas formas: no importa que el resultado no sea
+// la palabra real mientras los dos lados se recorten igual.
+function singular(word: string): string {
+  if (word.length > 4 && word.endsWith('es')) return word.slice(0, -2);
+  if (word.length > 3 && word.endsWith('s')) return word.slice(0, -1);
+  return word;
+}
+
 function significantWords(value: string): string[] {
   return value
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
     .toLowerCase()
     .split(/[^a-z0-9]+/)
-    .filter((word) => word.length > 1 && !FILLER_WORDS.has(word));
+    .filter((word) => word.length > 1 && !FILLER_WORDS.has(word))
+    .map(singular);
 }
 
 function covers(words: string[], other: string[]): boolean {
@@ -265,6 +276,15 @@ export async function resolveRecipeForChat(
     const eligible = required.length
       ? (matches ?? []).filter((m: Record<string, unknown>) => hasRequestedIngredients(m, required))
       : (matches ?? []);
+
+    // Pedir un ingrediente que no se tiene y a la vez cocinar solo con lo de casa no se puede
+    // cumplir: generar acabaría inventando un plato sin ese ingrediente o saltándose la despensa.
+    if (constraints.pantryOnly && required.length) {
+      const pantry = { ingredients: (constraints.pantry ?? []).map((name) => ({ name })) };
+      if (!hasRequestedIngredients(pantry, required)) {
+        return { recipe: null, origin: 'unavailable', missing: required };
+      }
+    }
 
     if (eligible.length) {
       const ids = eligible.map((m: { id?: string }) => m.id).filter(Boolean);

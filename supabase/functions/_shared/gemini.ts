@@ -177,14 +177,16 @@ const CHAT_SCHEMA = {
         required: ['title', 'hint'],
       },
     },
-    required_ingredients: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
+    required_ingredients: { type: 'ARRAY', items: { type: 'STRING' } },
     exclude_allergens: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     require_diet: { type: 'ARRAY', nullable: true, items: { type: 'STRING' } },
     pantry_only: { type: 'BOOLEAN' },
     is_modification: { type: 'BOOLEAN', nullable: true },
   },
-  // pantry_only obligatorio: el modelo debe decidir siempre (true/false), no omitirlo.
-  required: ['message', 'pantry_only'],
+  // pantry_only y required_ingredients obligatorios: el modelo debe pronunciarse siempre. Si
+  // required_ingredients pudiera omitirse, olvidarlo devolvería el chat a recomendar por despensa
+  // ignorando lo que se ha pedido.
+  required: ['message', 'pantry_only', 'required_ingredients'],
 };
 
 // Conversación multi-turno con contexto de sistema (preferencias, despensa…) y salida
