@@ -38,9 +38,11 @@ export default function DescubrirScreen() {
     setLoading(true);
     try {
       const found = await discoverByIngredients([...selected]);
-      // Las que el usuario ya tenía guardadas deben salir con el marcador puesto.
+      // Las que el usuario ya tenía guardadas salen con el marcador puesto. Es secundario: si la
+      // consulta falla, las cards se muestran igual.
       if (found.length > 0) {
-        setSaved(new Set(await listFavoriteIds(found.map((card) => card.recipeId))));
+        const ids = await listFavoriteIds(found.map((card) => card.recipeId)).catch(() => []);
+        setSaved(new Set(ids));
       }
       setCards(found);
     } catch {
