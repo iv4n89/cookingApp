@@ -14,8 +14,24 @@ Deno.test('el ingrediente pedido casa aunque el catálogo lo nombre con más pal
     'cangrejo debería casar con palitos de cangrejo',
   );
   assert(
-    hasRequestedIngredients(recipe('Cangrejo'), ['palitos de cangrejo']),
-    'palitos de cangrejo debería casar con cangrejo',
+    hasRequestedIngredients(recipe('Ajo morado'), ['ajo']),
+    'ajo debería casar con ajo morado',
+  );
+});
+
+// Al revés no: pedir algo concreto y aceptar el genérico llenaba de disparates el catálogo real.
+Deno.test('la receta puede concretar más lo pedido, pero no menos', () => {
+  assert(
+    !hasRequestedIngredients(recipe('Cebolla', 'Arroz'), ['morcilla de cebolla']),
+    'morcilla de cebolla no se cumple solo con cebolla',
+  );
+  assert(
+    !hasRequestedIngredients(recipe('Codorniz'), ['huevo de codorniz']),
+    'huevo de codorniz no se cumple con codorniz',
+  );
+  assert(
+    !hasRequestedIngredients(recipe('Mantequilla con sal'), ['mantequilla sin sal']),
+    'mantequilla sin sal no se cumple con mantequilla con sal',
   );
 });
 
@@ -64,6 +80,26 @@ Deno.test('los plurales de palabras acabadas en e o en z también casan', () => 
   assert(
     hasRequestedIngredients(recipe('Nuez'), ['nueces']),
     'nueces debería casar con Nuez',
+  );
+});
+
+Deno.test('concretar no es transformar el ingrediente', () => {
+  assert(!hasRequestedIngredients(recipe('Nuez moscada'), ['nueces']), 'nuez moscada no es nuez');
+  assert(
+    !hasRequestedIngredients(recipe('Semilla de calabaza'), ['calabaza']),
+    'semilla de calabaza no es calabaza',
+  );
+  assert(
+    !hasRequestedIngredients(recipe('Vinagre de vino tinto'), ['vino tinto']),
+    'vinagre de vino tinto no es vino tinto',
+  );
+  assert(
+    hasRequestedIngredients(recipe('Nuez moscada'), ['nuez moscada']),
+    'quien pide nuez moscada sí la quiere',
+  );
+  assert(
+    hasRequestedIngredients(recipe('Harina de trigo'), ['harina']),
+    'quien pide harina acepta harina de trigo',
   );
 });
 

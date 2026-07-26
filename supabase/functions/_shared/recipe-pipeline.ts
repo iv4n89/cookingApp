@@ -111,9 +111,26 @@ function covers(words: string[], other: string[]): boolean {
   return other.length > 0 && other.every((word) => words.includes(word));
 }
 
-// Una receta sirve si cada ingrediente pedido aparece en su lista. Se comparan palabras completas
-// y en ambos sentidos: "cangrejo" casa con "palitos de cangrejo" y al revés, pero "pan" no casa
-// con "panceta", que es lo que pasaría comparando subcadenas.
+// Palabras que convierten un ingrediente en otro distinto. Salieron de cruzar el catálogo entero
+// contra sí mismo: sin ellas, pedir nueces aceptaba nuez moscada, calabaza aceptaba semillas de
+// calabaza y vino tinto aceptaba vinagre de vino tinto.
+const TRANSFORMING_WORDS = new Set(
+  ['vinagre', 'semilla', 'pipa', 'crema', 'sopa', 'harina', 'aceite', 'caldo', 'moscada',
+    'esencia', 'extracto', 'zumo', 'sirope', 'polvo', 'pasta'].map(stem),
+);
+
+// El nombre de la receta puede concretar lo pedido, pero no transformarlo: "ajo morado" sirve para
+// quien pide ajo, "nuez moscada" no sirve para quien pide nueces.
+function concretesWithoutTransforming(name: string[], target: string[]): boolean {
+  if (!covers(name, target)) return false;
+  return name.every((word) => target.includes(word) || !TRANSFORMING_WORDS.has(word));
+}
+
+// Una receta sirve si cada ingrediente pedido aparece en su lista: la receta puede concretar más
+// ("ajo" vale con "ajo morado"), pero no menos. Pedir algo específico y aceptar el genérico daba
+// disparates sobre el catálogo real: "morcilla de cebolla" valía con cebolla, "huevo de codorniz"
+// con codorniz y "mantequilla sin sal" con mantequilla con sal.
+// Se comparan palabras completas, así que "pan" no casa con "panceta".
 export function hasRequestedIngredients(
   recipe: Record<string, unknown>,
   required: string[],
@@ -124,7 +141,7 @@ export function hasRequestedIngredients(
   return required.every((wanted) => {
     const target = significantWords(wanted);
     if (!target.length) return true;
-    return names.some((name) => covers(name, target) || covers(target, name));
+    return names.some((name) => concretesWithoutTransforming(name, target));
   });
 }
 
