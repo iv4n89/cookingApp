@@ -13,7 +13,12 @@ Deno.serve(async (req) => {
     return json({ error: 'No autorizado.' }, 401);
   }
 
-  const { recipeId } = (await req.json().catch(() => ({}))) as { recipeId?: string };
+  // force: regenera aunque ya tenga imagen, para rehacer las que se hicieron con un prompt peor.
+  // Sube al mismo objeto, así que la receta nunca se queda sin foto mientras se rehace.
+  const { recipeId, force } = (await req.json().catch(() => ({}))) as {
+    recipeId?: string;
+    force?: boolean;
+  };
   if (!recipeId) return json({ error: 'Falta recipeId.' }, 400);
 
   try {
@@ -25,8 +30,10 @@ Deno.serve(async (req) => {
       .maybeSingle();
     if (!recipe) return json({ error: 'Receta no encontrada.' }, 404);
 
-    if (recipe.image_url) return json({ image_status: 'ready' });
-    if (recipe.image_status === 'pending') return json({ image_status: 'pending' });
+    if (!force) {
+      if (recipe.image_url) return json({ image_status: 'ready' });
+      if (recipe.image_status === 'pending') return json({ image_status: 'pending' });
+    }
 
     await supabase.from('recipes').update({ image_status: 'pending' }).eq('id', recipeId);
     queueRecipeImage(supabase, recipe.id, recipe.title);
