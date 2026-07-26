@@ -11,14 +11,18 @@
 //
 // Uso (nube):
 //   SUPABASE_URL=https://<ref>.supabase.co SUPABASE_SERVICE_ROLE_KEY=<service_role> \
-//   INTERNAL_FUNCTION_SECRET=<secreto> [THROTTLE_MS=2000] [LIMIT=0] \
+//   INTERNAL_FUNCTION_SECRET=<secreto> [THROTTLE_MS=2000] [LIMIT=0] [FORCE=1] \
 //   node scripts/backfill-recipe-images.mjs
+//
+// Con FORCE=1 rehace también las que ya tienen imagen, para aprovechar una descripción mejor. La
+// foto nueva sustituye a la vieja en el mismo objeto, así que ninguna receta se queda sin imagen.
 
 const url = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const secret = process.env.INTERNAL_FUNCTION_SECRET;
 const throttleMs = Number(process.env.THROTTLE_MS ?? '2000');
 const limit = Number(process.env.LIMIT ?? '0'); // 0 = todas; >0 para probar
+const force = process.env.FORCE === '1';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 if (!url || !serviceKey) {
@@ -36,9 +40,9 @@ async function pendingRecipes() {
   const params = new URLSearchParams({
     select: 'id,title',
     reusable: 'eq.true',
-    image_url: 'is.null',
     order: 'title',
   });
+  if (!force) params.set('image_url', 'is.null');
   const res = await fetch(`${url}/rest/v1/recipes?${params}`, { headers: restHeaders });
   if (!res.ok) throw new Error(`listar recetas: ${res.status} ${(await res.text()).slice(0, 200)}`);
   return res.json();
@@ -61,16 +65,46 @@ async function ensureImage(recipeId) {
       Authorization: `Bearer ${serviceKey}`,
       'x-internal-secret': secret,
     },
-    body: JSON.stringify({ recipeId }),
+    body: JSON.stringify({ recipeId, force }),
   });
   if (!res.ok) throw new Error(`${res.status} ${(await res.text()).slice(0, 160)}`);
   return res.json();
 }
 
+// Rehacer las fotos antes de tener las descripciones gastaría el dinero para nada: sin
+// image_prompt, la imagen se genera con el título y los ingredientes en español.
+async function withoutPromptCount() {
+  const params = new URLSearchParams({
+    select: 'id',
+    reusable: 'eq.true',
+    image_prompt: 'is.null',
+  });
+  const res = await fetch(`${url}/rest/v1/recipes?${params}`, {
+    headers: { ...restHeaders, Prefer: 'count=exact', Range: '0-0' },
+  });
+  const range = res.headers.get('content-range') ?? '';
+  return Number(range.split('/')[1] ?? '0');
+}
+
+if (force) {
+  const withoutPrompt = await withoutPromptCount();
+  if (withoutPrompt > 0) {
+    console.error(
+      `${withoutPrompt} recetas no tienen descripción del plato. Ejecuta primero ` +
+        `scripts/backfill-recipe-prompts.mjs o rehará las fotos con el título.`,
+    );
+    process.exit(1);
+  }
+}
+
 const before = await readyCount();
 const all = await pendingRecipes();
 const targets = limit > 0 ? all.slice(0, limit) : all;
-console.log(`Con imagen: ${before}. Sin imagen: ${all.length}. A procesar: ${targets.length}.`);
+console.log(
+  force
+    ? `Con imagen: ${before}. Rehaciendo todas: ${targets.length}.`
+    : `Con imagen: ${before}. Sin imagen: ${all.length}. A procesar: ${targets.length}.`,
+);
 
 let queued = 0;
 let failed = 0;

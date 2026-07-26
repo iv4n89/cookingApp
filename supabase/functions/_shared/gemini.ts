@@ -308,6 +308,46 @@ const VISUAL_SCHEMA = {
 // que el LLM traduce y concreta forma, color y recipiente antes de pedir la imagen.
 // Devuelve la descripción de cada ingrediente en la misma posición que la entrada, o undefined si
 // el LLM se saltó ese número.
+// Igual que la descripción de ingredientes, pero para platos ya guardados: las recetas creadas
+// antes de recipes.image_prompt no la traen, y su foto se generó solo con el título.
+export async function describeDishesVisually(
+  dishes: { title: string; ingredients: string[] }[],
+): Promise<(string | undefined)[]> {
+  const prompt =
+    `Eres director de fotografía para un catálogo de recetas.\n` +
+    `Para cada plato devuelve "visual": cómo se ve ya emplatado, EN INGLÉS y en menos de 30 palabras.\n` +
+    `Empieza por el nombre del plato en inglés y añade los ingredientes que se ven, con su forma y ` +
+    `color reales ("surimi crab sticks cut in rounds, canned sweet corn, mayonnaise").\n` +
+    `Nombra solo lo que aparece en el plato y nada más. Sin marcas, sin texto y sin utensilios.\n` +
+    `Devuelve "number" con el número del plato en la lista.\n\n` +
+    dishes
+      .map((d, index) => `${index + 1}. ${d.title} — ingredientes: ${d.ingredients.join(', ')}`)
+      .join('\n');
+
+  const res = await fetchWithTimeout(
+    `${BASE}/models/${GEN_MODEL}:generateContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey() },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseMimeType: 'application/json', responseSchema: VISUAL_SCHEMA },
+      }),
+    },
+    GEN_TIMEOUT_MS,
+  );
+  if (!res.ok) throw new Error(`Gemini dish visual ${res.status}: ${await res.text()}`);
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (typeof text !== 'string') throw new Error('Respuesta visual de platos inesperada de Gemini');
+  const parsed = (JSON.parse(text).items ?? []) as { number: number; visual: string }[];
+  const visuals = new Array<string | undefined>(dishes.length);
+  for (const item of parsed) {
+    if (item.number >= 1 && item.number <= dishes.length) visuals[item.number - 1] = item.visual;
+  }
+  return visuals;
+}
+
 export async function describeIngredientsVisually(
   items: { name: string; category: string }[],
 ): Promise<(string | undefined)[]> {

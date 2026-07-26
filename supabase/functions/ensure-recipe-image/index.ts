@@ -13,8 +13,18 @@ Deno.serve(async (req) => {
     return json({ error: 'No autorizado.' }, 401);
   }
 
-  const { recipeId } = (await req.json().catch(() => ({}))) as { recipeId?: string };
+  // force: regenera aunque ya tenga imagen, para rehacer las que se hicieron con un prompt peor.
+  // Sube al mismo objeto, así que la receta nunca se queda sin foto mientras se rehace.
+  const { recipeId, force } = (await req.json().catch(() => ({}))) as {
+    recipeId?: string;
+    force?: boolean;
+  };
   if (!recipeId) return json({ error: 'Falta recipeId.' }, 400);
+  // Solo los scripts pueden forzar: sin esto, cualquier usuario con sesión podría encadenar
+  // regeneraciones del catálogo y gastar fal sin límite, porque el resto de la función es idempotente.
+  if (force && !hasInternalSecret(req)) {
+    return json({ error: 'No autorizado a regenerar.' }, 403);
+  }
 
   try {
     const supabase = serviceClient();
@@ -25,8 +35,10 @@ Deno.serve(async (req) => {
       .maybeSingle();
     if (!recipe) return json({ error: 'Receta no encontrada.' }, 404);
 
-    if (recipe.image_url) return json({ image_status: 'ready' });
-    if (recipe.image_status === 'pending') return json({ image_status: 'pending' });
+    if (!force) {
+      if (recipe.image_url) return json({ image_status: 'ready' });
+      if (recipe.image_status === 'pending') return json({ image_status: 'pending' });
+    }
 
     await supabase.from('recipes').update({ image_status: 'pending' }).eq('id', recipeId);
     queueRecipeImage(supabase, recipe.id, recipe.title);
