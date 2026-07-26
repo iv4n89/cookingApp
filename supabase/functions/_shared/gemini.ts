@@ -66,6 +66,9 @@ export interface GeneratedRecipe {
   diet?: string[];
   meal_types?: string[];
   seasons: string[];
+  // Descripción en inglés del plato emplatado, para el generador de imágenes: con el título en
+  // español dibujaba otro plato.
+  image_prompt?: string;
   ingredients: { name: string; quantity?: string; unit?: string }[];
   steps: { instruction: string; timer_seconds?: number }[];
 }
@@ -87,6 +90,7 @@ const RECIPE_SCHEMA = {
       type: 'ARRAY',
       items: { type: 'STRING', enum: [...SEASON_KEYS] },
     },
+    image_prompt: { type: 'STRING' },
     ingredients: {
       type: 'ARRAY',
       items: {
@@ -122,6 +126,7 @@ const RECIPE_SCHEMA = {
     'diet',
     'meal_types',
     'seasons',
+    'image_prompt',
     'ingredients',
     'steps',
   ],
@@ -242,7 +247,11 @@ export async function generateRecipe(
     ` (una receta puede valer para varias): desayuno, almuerzo, merienda, cena.` +
     ` En "seasons" clasifica la afinidad culinaria del plato para el clima y hábitos de España,` +
     ` no la temporada de sus ingredientes. Usa SOLO spring, summer, autumn, winter o all_year.` +
-    ` Usa all_year únicamente si no tiene una afinidad estacional clara y nunca la mezcles con otras claves.`;
+    ` Usa all_year únicamente si no tiene una afinidad estacional clara y nunca la mezcles con otras claves.` +
+    ` En "image_prompt" describe EN INGLÉS el plato ya emplatado para fotografiarlo, en menos de 30` +
+    ` palabras: nombre del plato en inglés y los ingredientes que se ven, con su forma y color reales` +
+    ` ("surimi crab sticks cut in rounds, canned sweet corn, mayonnaise"). Nombra solo lo que aparece` +
+    ` en el plato y nada más; sin marcas, sin texto y sin utensilios.`;
 
   const res = await fetchWithTimeout(
     `${BASE}/models/${GEN_MODEL}:generateContent`,
