@@ -71,6 +71,32 @@ async function ensureImage(recipeId) {
   return res.json();
 }
 
+// Rehacer las fotos antes de tener las descripciones gastaría el dinero para nada: sin
+// image_prompt, la imagen se genera con el título y los ingredientes en español.
+async function withoutPromptCount() {
+  const params = new URLSearchParams({
+    select: 'id',
+    reusable: 'eq.true',
+    image_prompt: 'is.null',
+  });
+  const res = await fetch(`${url}/rest/v1/recipes?${params}`, {
+    headers: { ...restHeaders, Prefer: 'count=exact', Range: '0-0' },
+  });
+  const range = res.headers.get('content-range') ?? '';
+  return Number(range.split('/')[1] ?? '0');
+}
+
+if (force) {
+  const withoutPrompt = await withoutPromptCount();
+  if (withoutPrompt > 0) {
+    console.error(
+      `${withoutPrompt} recetas no tienen descripción del plato. Ejecuta primero ` +
+        `scripts/backfill-recipe-prompts.mjs o rehará las fotos con el título.`,
+    );
+    process.exit(1);
+  }
+}
+
 const before = await readyCount();
 const all = await pendingRecipes();
 const targets = limit > 0 ? all.slice(0, limit) : all;

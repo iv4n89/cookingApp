@@ -20,6 +20,11 @@ Deno.serve(async (req) => {
     force?: boolean;
   };
   if (!recipeId) return json({ error: 'Falta recipeId.' }, 400);
+  // Solo los scripts pueden forzar: sin esto, cualquier usuario con sesión podría encadenar
+  // regeneraciones del catálogo y gastar fal sin límite, porque el resto de la función es idempotente.
+  if (force && !hasInternalSecret(req)) {
+    return json({ error: 'No autorizado a regenerar.' }, 403);
+  }
 
   try {
     const supabase = serviceClient();
