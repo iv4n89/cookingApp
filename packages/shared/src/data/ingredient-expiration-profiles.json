@@ -324,6 +324,14 @@
       "sourceRef": "FoodSafety.gov Cold Food Storage Chart: bacon, 1 week refrigerated",
       "priorityEligible": true
     },
+    "meat-cured-sausage": {
+      "minDays": 14,
+      "maxDays": 21,
+      "confidence": "medium",
+      "sourceId": "foodsafety-cold-storage",
+      "sourceRef": "FoodSafety.gov Cold Food Storage Chart: hard sausage such as pepperoni, opened package 2-3 weeks refrigerated",
+      "priorityEligible": true
+    },
     "meat-cured-ham": {
       "minDays": 60,
       "maxDays": 90,
@@ -2151,7 +2159,7 @@
       "match": "direct"
     },
     "chorizo curado": {
-      "profileId": "meat-cured-ham",
+      "profileId": "meat-cured-sausage",
       "match": "family"
     },
     "higadito de pollo": {
@@ -2271,7 +2279,7 @@
       "match": "family"
     },
     "queso mascarpone": {
-      "profileId": "cheese-cream",
+      "profileId": "cheese-fresh",
       "match": "family"
     },
     "kefir": {

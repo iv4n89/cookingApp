@@ -1,5 +1,5 @@
 -- Generado por scripts/generate-ingredient-allergen-migration.mjs.
--- dataset-sha256: 0cf4b9a4a02122d1dca2c73c9f8941735ba0510a47b13798e45c90ef7af374e4
+-- dataset-sha256: fd12ed6a088bea6128265bd2d727274e0607296f90a86f6e199a7e08609eba3e
 -- profile-count: 399
 
 create table public.ingredient_allergen_datasets (
@@ -63,7 +63,7 @@ insert into public.ingredient_allergen_datasets (
   supported_diets
 ) values (
   'ingredient-allergens-es-v1',
-  '0cf4b9a4a02122d1dca2c73c9f8941735ba0510a47b13798e45c90ef7af374e4',
+  'fd12ed6a088bea6128265bd2d727274e0607296f90a86f6e199a7e08609eba3e',
   array['gluten', 'crustaceans', 'molluscs', 'egg', 'fish', 'peanut', 'soy', 'milk', 'nuts', 'celery', 'mustard', 'sesame', 'pork', 'alcohol']::text[],
   array['vegan', 'vegetarian']::text[]
 );
@@ -412,7 +412,7 @@ with profile_data (
     ('contramuslo de pollo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: contramuslo de pollo', 'intrinsic_named_ingredient', 'exact_reviewed'),
     ('pechuga de pavo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: pechuga de pavo', 'intrinsic_named_ingredient', 'exact_reviewed'),
     ('carne picada de pavo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: carne picada de pavo', 'intrinsic_named_ingredient', 'exact_reviewed'),
-    ('jamon cocido', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: jamon cocido', 'compound_formula_unknown', 'variable_unknown'),
+    ('jamon cocido', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: jamon cocido', 'compound_formula_unknown', 'variable_unknown'),
     ('bacon', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: bacon', 'compound_formula_unknown', 'variable_unknown'),
     ('chorizo curado', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: chorizo curado', 'compound_formula_unknown', 'variable_unknown'),
     ('higadito de pollo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: higadito de pollo', 'intrinsic_named_ingredient', 'exact_reviewed'),
@@ -635,6 +635,7 @@ with allergen_data (normalized_name, allergen) as (
     ('caldo de pescado', 'fish'),
     ('carne picada mixta', 'pork'),
     ('jamon cocido', 'pork'),
+    ('jamon cocido', 'milk'),
     ('bacon', 'pork'),
     ('chorizo curado', 'pork'),
     ('salmon', 'fish'),

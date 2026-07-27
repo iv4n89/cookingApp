@@ -1,5 +1,5 @@
 -- Generado por scripts/generate-expiration-state-migration.mjs.
--- dataset-sha256: b372f6e070542fc7d38223d577ad9ec15ff2786c21619c0047a522c65194c899
+-- dataset-sha256: a6a4091c88cbe851c17d0b491d968f3e03c62be247bb48a474fa8aa8649e5662
 
 create table public.expiration_profiles (
   id text primary key,
@@ -67,6 +67,7 @@ insert into public.expiration_profiles (
   ('meat-sausage-fresh', 1, 2, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: raw sausage, 1-2 days refrigerated'),
   ('meat-offal', 1, 2, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: variety meats, 1-2 days refrigerated'),
   ('meat-bacon', 7, 7, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: bacon, 1 week refrigerated'),
+  ('meat-cured-sausage', 14, 21, 'medium', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: hard sausage such as pepperoni, opened package 2-3 weeks refrigerated'),
   ('meat-cured-ham', 60, 90, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: prosciutto or Serrano ham cut, 2-3 months refrigerated'),
   ('meat-cured-short', 5, 7, 'medium', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: refrigerated cured meat; conservative family range'),
   ('fish-lean', 1, 2, 'high', true, 'foodkeeper-es', 'FoodKeeper ES v128 Products 144-145: Pescado magro'),
@@ -467,7 +468,7 @@ with mappings (normalized_name, profile_id, match_type) as (
     ('carne picada de pavo', 'meat-poultry-fresh', 'family'),
     ('jamon cocido', 'meat-cured-short', 'family'),
     ('bacon', 'meat-bacon', 'direct'),
-    ('chorizo curado', 'meat-cured-ham', 'family'),
+    ('chorizo curado', 'meat-cured-sausage', 'family'),
     ('higadito de pollo', 'meat-offal', 'family'),
     ('salmon', 'fish-fatty', 'direct'),
     ('salmon ahumado', 'fish-desalted', 'fallback'),
@@ -497,7 +498,7 @@ with mappings (normalized_name, profile_id, match_type) as (
     ('ciruela pasa', 'grain-dry', 'fallback'),
     ('queso rallado', 'cheese-fresh', 'fallback'),
     ('queso feta', 'cheese-fresh', 'family'),
-    ('queso mascarpone', 'cheese-cream', 'family'),
+    ('queso mascarpone', 'cheese-fresh', 'family'),
     ('kefir', 'dairy-yogurt', 'family'),
     ('leche sin lactosa', 'dairy-milk', 'family'),
     ('bebida de avena', 'dairy-milk', 'fallback'),
@@ -536,8 +537,8 @@ join public.ingredients i on i.normalized_name = m.normalized_name;
 
 do $$
 begin
-  if (select count(*) from public.expiration_profiles) <> 96 then
-    raise exception 'se esperaban 96 perfiles de caducidad';
+  if (select count(*) from public.expiration_profiles) <> 97 then
+    raise exception 'se esperaban 97 perfiles de caducidad';
   end if;
   if (select count(*) from public.ingredient_expiration_profiles) <> 399 then
     raise exception 'se esperaban 399 ingredientes con perfil';

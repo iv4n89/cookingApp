@@ -4305,7 +4305,8 @@
     },
     "jamon cocido": {
       "allergens": [
-        "pork"
+        "pork",
+        "milk"
       ],
       "incompatibleDiets": [
         "vegan",
@@ -4314,6 +4315,8 @@
       "compositionStatus": "variable_unknown",
       "sourceIds": [
         "catalog-name-review",
+        "eu-1169-annex-ii",
+        "aesan-allergen-guide",
         "variable-composition-policy"
       ],
       "sourceRef": "Nombre genérico sin formulación verificable: jamon cocido",
