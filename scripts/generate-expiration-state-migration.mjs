@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findDuplicateJsonKeys } from './lib/find-duplicate-json-keys.mjs';
 
-const EXPECTED_INGREDIENT_COUNT = 331;
+const EXPECTED_INGREDIENT_COUNT = 399;
 const TUPLE_PATTERN =
   /^\s*\('(?:[^']|'')*',\s*'((?:[^']|'')*)',\s*'(?:[^']|'')*'\)[,;]?\s*$/;
 
@@ -45,10 +45,10 @@ function validateInputs(dataset, seedNames) {
   const seedSet = new Set(seedNames);
 
   if (seedNames.length !== EXPECTED_INGREDIENT_COUNT || seedSet.size !== seedNames.length) {
-    throw new Error('El seed debe contener 331 normalized_name únicos.');
+    throw new Error('El seed debe contener 399 normalized_name únicos.');
   }
   if (ingredientNames.length !== EXPECTED_INGREDIENT_COUNT) {
-    throw new Error('El dataset debe contener 331 ingredientes.');
+    throw new Error('El dataset debe contener 399 ingredientes.');
   }
   for (const name of ingredientNames) {
     if (!seedSet.has(name)) throw new Error(`Ingrediente del dataset fuera del seed: ${name}`);

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "catalog": {
     "source": "supabase/migrations/0007_ingredients_seed.sql",
-    "canonicalCount": 331
+    "canonicalCount": 399
   },
   "sources": {
     "foodkeeper-es": {
@@ -2120,6 +2120,278 @@
     },
     "sal de mesa": {
       "profileId": "salt-indefinite",
+      "match": "family"
+    },
+    "carne picada de pollo": {
+      "profileId": "meat-poultry-fresh",
+      "match": "family"
+    },
+    "carne picada mixta": {
+      "profileId": "meat-sausage-fresh",
+      "match": "family"
+    },
+    "contramuslo de pollo": {
+      "profileId": "meat-poultry-fresh",
+      "match": "direct"
+    },
+    "pechuga de pavo": {
+      "profileId": "meat-poultry-fresh",
+      "match": "family"
+    },
+    "carne picada de pavo": {
+      "profileId": "meat-poultry-fresh",
+      "match": "family"
+    },
+    "jamon cocido": {
+      "profileId": "meat-cured-short",
+      "match": "family"
+    },
+    "bacon": {
+      "profileId": "meat-bacon",
+      "match": "direct"
+    },
+    "chorizo curado": {
+      "profileId": "meat-cured-ham",
+      "match": "family"
+    },
+    "higadito de pollo": {
+      "profileId": "meat-offal",
+      "match": "family"
+    },
+    "salmon": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "salmon ahumado": {
+      "profileId": "meat-cured-short",
+      "match": "fallback"
+    },
+    "trucha": {
+      "profileId": "fish-fatty",
+      "match": "direct"
+    },
+    "pez espada": {
+      "profileId": "fish-lean",
+      "match": "family"
+    },
+    "chipiron": {
+      "profileId": "seafood-cephalopod",
+      "match": "family"
+    },
+    "gulas": {
+      "profileId": "meat-cured-short",
+      "match": "fallback"
+    },
+    "langostino cocido": {
+      "profileId": "shellfish-crustacean",
+      "match": "family"
+    },
+    "tomate cherry": {
+      "profileId": "vegetable-tomato",
+      "match": "family"
+    },
+    "rucula": {
+      "profileId": "vegetable-leafy",
+      "match": "family"
+    },
+    "canonigos": {
+      "profileId": "vegetable-leafy",
+      "match": "family"
+    },
+    "escarola": {
+      "profileId": "vegetable-lettuce",
+      "match": "family"
+    },
+    "endivia": {
+      "profileId": "vegetable-lettuce",
+      "match": "family"
+    },
+    "col lombarda": {
+      "profileId": "vegetable-lettuce",
+      "match": "fallback"
+    },
+    "coles de bruselas": {
+      "profileId": "vegetable-crucifer",
+      "match": "family"
+    },
+    "boniato": {
+      "profileId": "vegetable-potato",
+      "match": "family"
+    },
+    "pimiento amarillo": {
+      "profileId": "vegetable-pepper",
+      "match": "direct"
+    },
+    "seta shiitake": {
+      "profileId": "vegetable-mushroom",
+      "match": "family"
+    },
+    "champinon portobello": {
+      "profileId": "vegetable-mushroom",
+      "match": "family"
+    },
+    "kiwi": {
+      "profileId": "fruit-firm",
+      "match": "family"
+    },
+    "mango": {
+      "profileId": "fruit-delicate",
+      "match": "family"
+    },
+    "arandano": {
+      "profileId": "fruit-berries",
+      "match": "family"
+    },
+    "frambuesa": {
+      "profileId": "fruit-berries",
+      "match": "family"
+    },
+    "mora": {
+      "profileId": "fruit-berries",
+      "match": "family"
+    },
+    "pomelo": {
+      "profileId": "fruit-citrus",
+      "match": "family"
+    },
+    "datil": {
+      "profileId": "grain-dry",
+      "match": "fallback"
+    },
+    "ciruela pasa": {
+      "profileId": "grain-dry",
+      "match": "fallback"
+    },
+    "queso rallado": {
+      "profileId": "cheese-hard",
+      "match": "fallback"
+    },
+    "queso feta": {
+      "profileId": "cheese-fresh",
+      "match": "family"
+    },
+    "queso mascarpone": {
+      "profileId": "cheese-cream",
+      "match": "family"
+    },
+    "kefir": {
+      "profileId": "dairy-yogurt",
+      "match": "family"
+    },
+    "leche sin lactosa": {
+      "profileId": "dairy-milk",
+      "match": "family"
+    },
+    "bebida de avena": {
+      "profileId": "dairy-milk",
+      "match": "fallback"
+    },
+    "bebida de soja": {
+      "profileId": "dairy-milk",
+      "match": "fallback"
+    },
+    "bebida de almendra": {
+      "profileId": "dairy-milk",
+      "match": "fallback"
+    },
+    "maicena": {
+      "profileId": "flour-corn",
+      "match": "family"
+    },
+    "pasta fresca": {
+      "profileId": "bread-fresh",
+      "match": "fallback"
+    },
+    "noquis": {
+      "profileId": "bread-fresh",
+      "match": "fallback"
+    },
+    "pan de pita": {
+      "profileId": "bread-packaged",
+      "match": "family"
+    },
+    "tortilla de trigo": {
+      "profileId": "bread-packaged",
+      "match": "family"
+    },
+    "harina integral": {
+      "profileId": "flour-white",
+      "match": "family"
+    },
+    "galleta maria": {
+      "profileId": "bread-dry",
+      "match": "family"
+    },
+    "pepinillo en vinagre": {
+      "profileId": "canned-high-acid",
+      "match": "family"
+    },
+    "alcaparra": {
+      "profileId": "canned-high-acid",
+      "match": "family"
+    },
+    "maiz dulce en conserva": {
+      "profileId": "canned-low-acid",
+      "match": "family"
+    },
+    "pimiento asado": {
+      "profileId": "canned-low-acid",
+      "match": "family"
+    },
+    "alcachofa en conserva": {
+      "profileId": "canned-low-acid",
+      "match": "family"
+    },
+    "guisante en conserva": {
+      "profileId": "canned-low-acid",
+      "match": "family"
+    },
+    "aceite de coco": {
+      "profileId": "oil-general",
+      "match": "family"
+    },
+    "salsa sriracha": {
+      "profileId": "sauce-shelf",
+      "match": "family"
+    },
+    "salsa teriyaki": {
+      "profileId": "sauce-shelf",
+      "match": "family"
+    },
+    "salsa cesar": {
+      "profileId": "sauce-refrigerated",
+      "match": "family"
+    },
+    "ajo en polvo": {
+      "profileId": "spice-ground",
+      "match": "family"
+    },
+    "jengibre en polvo": {
+      "profileId": "spice-ground",
+      "match": "family"
+    },
+    "eneldo": {
+      "profileId": "herb-dry",
+      "match": "family"
+    },
+    "salvia": {
+      "profileId": "herb-dry",
+      "match": "family"
+    },
+    "estragon": {
+      "profileId": "herb-dry",
+      "match": "family"
+    },
+    "cacao en polvo": {
+      "profileId": "spice-ground",
+      "match": "fallback"
+    },
+    "azucar glas": {
+      "profileId": "sugar-long",
+      "match": "family"
+    },
+    "sirope de arce": {
+      "profileId": "honey-long",
       "match": "family"
     }
   }

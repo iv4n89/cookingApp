@@ -63,7 +63,7 @@ try {
   const generatedSql = await readFile(fixtureMigration, 'utf8');
   if (
     !generatedSql.includes('se esperaban 96 perfiles') ||
-    !generatedSql.includes('se esperaban 331 ingredientes') ||
+    !generatedSql.includes('se esperaban 399 ingredientes') ||
     !generatedSql.includes('min_days is not null') ||
     !generatedSql.includes('max_days is not null') ||
     /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i.test(

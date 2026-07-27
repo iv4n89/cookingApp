@@ -3,7 +3,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findDuplicateJsonKeys } from './lib/find-duplicate-json-keys.mjs';
 
-const EXPECTED_CANONICAL_COUNT = 331;
+const EXPECTED_CANONICAL_COUNT = 399;
 const MATCH_TYPES = new Set(['direct', 'family', 'fallback']);
 const CONFIDENCE_LEVELS = new Set(['high', 'medium', 'low']);
 const ROOT_FIELDS = new Set(['schemaVersion', 'catalog', 'sources', 'profiles', 'ingredients']);

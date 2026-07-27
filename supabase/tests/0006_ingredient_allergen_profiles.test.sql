@@ -29,8 +29,8 @@ select is(
     from public.ingredient_allergen_profiles
     where dataset_version = 'ingredient-allergens-es-v1'
   ),
-  331::bigint,
-  'El dataset v1 cubre exactamente los 331 ingredientes canónicos'
+  399::bigint,
+  'El dataset v1 cubre exactamente los 399 ingredientes canónicos'
 );
 
 select ok(
