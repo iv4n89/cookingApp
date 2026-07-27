@@ -107,7 +107,7 @@ from (
     ('masa de pizza', 'bread-fresh', 'fallback'),
     ('mote cocido', 'legume-fresh', 'fallback'),
     ('oblea para gyoza', 'bread-fresh', 'fallback'),
-    ('pastel de arroz', 'grain-dry', 'fallback'),
+    ('pastel de arroz', 'bread-fresh', 'fallback'),
     ('semola de trigo', 'flour-white', 'family'),
     ('tortilla de maiz', 'bread-packaged', 'family'),
 
