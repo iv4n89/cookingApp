@@ -2163,7 +2163,7 @@
       "match": "direct"
     },
     "salmon ahumado": {
-      "profileId": "meat-cured-short",
+      "profileId": "fish-desalted",
       "match": "fallback"
     },
     "trucha": {
@@ -2179,7 +2179,7 @@
       "match": "family"
     },
     "gulas": {
-      "profileId": "meat-cured-short",
+      "profileId": "fish-desalted",
       "match": "fallback"
     },
     "langostino cocido": {
@@ -2263,7 +2263,7 @@
       "match": "fallback"
     },
     "queso rallado": {
-      "profileId": "cheese-hard",
+      "profileId": "cheese-fresh",
       "match": "fallback"
     },
     "queso feta": {

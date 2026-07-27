@@ -1,5 +1,5 @@
 -- Generado por scripts/generate-ingredient-allergen-migration.mjs.
--- dataset-sha256: 3e69722e1726661e727cdd0807e2ab39ab4f1cd4bfe21b7dc5c29ba70a8b369c
+-- dataset-sha256: 0cf4b9a4a02122d1dca2c73c9f8941735ba0510a47b13798e45c90ef7af374e4
 -- profile-count: 399
 
 create table public.ingredient_allergen_datasets (
@@ -63,7 +63,7 @@ insert into public.ingredient_allergen_datasets (
   supported_diets
 ) values (
   'ingredient-allergens-es-v1',
-  '3e69722e1726661e727cdd0807e2ab39ab4f1cd4bfe21b7dc5c29ba70a8b369c',
+  '0cf4b9a4a02122d1dca2c73c9f8941735ba0510a47b13798e45c90ef7af374e4',
   array['gluten', 'crustaceans', 'molluscs', 'egg', 'fish', 'peanut', 'soy', 'milk', 'nuts', 'celery', 'mustard', 'sesame', 'pork', 'alcohol']::text[],
   array['vegan', 'vegetarian']::text[]
 );
@@ -644,6 +644,10 @@ with allergen_data (normalized_name, allergen) as (
     ('chipiron', 'molluscs'),
     ('gulas', 'fish'),
     ('gulas', 'gluten'),
+    ('gulas', 'egg'),
+    ('gulas', 'milk'),
+    ('gulas', 'soy'),
+    ('gulas', 'molluscs'),
     ('langostino cocido', 'crustaceans'),
     ('queso rallado', 'milk'),
     ('queso feta', 'milk'),
@@ -660,11 +664,14 @@ with allergen_data (normalized_name, allergen) as (
     ('tortilla de trigo', 'gluten'),
     ('harina integral', 'gluten'),
     ('galleta maria', 'gluten'),
+    ('galleta maria', 'milk'),
+    ('galleta maria', 'soy'),
     ('salsa teriyaki', 'soy'),
     ('salsa teriyaki', 'gluten'),
     ('salsa cesar', 'egg'),
     ('salsa cesar', 'milk'),
-    ('salsa cesar', 'fish')
+    ('salsa cesar', 'fish'),
+    ('salsa cesar', 'mustard')
 )
 insert into public.ingredient_allergen_entries (ingredient_id, allergen)
 select i.id, a.allergen

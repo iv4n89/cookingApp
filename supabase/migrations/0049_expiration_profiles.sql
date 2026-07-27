@@ -1,5 +1,5 @@
 -- Generado por scripts/generate-expiration-state-migration.mjs.
--- dataset-sha256: fdbfb376dcc3306a896d080290f1421ac0b530873db17da5ceb8886c5514df40
+-- dataset-sha256: b372f6e070542fc7d38223d577ad9ec15ff2786c21619c0047a522c65194c899
 
 create table public.expiration_profiles (
   id text primary key,
@@ -470,11 +470,11 @@ with mappings (normalized_name, profile_id, match_type) as (
     ('chorizo curado', 'meat-cured-ham', 'family'),
     ('higadito de pollo', 'meat-offal', 'family'),
     ('salmon', 'fish-fatty', 'direct'),
-    ('salmon ahumado', 'meat-cured-short', 'fallback'),
+    ('salmon ahumado', 'fish-desalted', 'fallback'),
     ('trucha', 'fish-fatty', 'direct'),
     ('pez espada', 'fish-lean', 'family'),
     ('chipiron', 'seafood-cephalopod', 'family'),
-    ('gulas', 'meat-cured-short', 'fallback'),
+    ('gulas', 'fish-desalted', 'fallback'),
     ('langostino cocido', 'shellfish-crustacean', 'family'),
     ('tomate cherry', 'vegetable-tomato', 'family'),
     ('rucula', 'vegetable-leafy', 'family'),
@@ -495,7 +495,7 @@ with mappings (normalized_name, profile_id, match_type) as (
     ('pomelo', 'fruit-citrus', 'family'),
     ('datil', 'grain-dry', 'fallback'),
     ('ciruela pasa', 'grain-dry', 'fallback'),
-    ('queso rallado', 'cheese-hard', 'fallback'),
+    ('queso rallado', 'cheese-fresh', 'fallback'),
     ('queso feta', 'cheese-fresh', 'family'),
     ('queso mascarpone', 'cheese-cream', 'family'),
     ('kefir', 'dairy-yogurt', 'family'),

@@ -4453,7 +4453,11 @@
     "gulas": {
       "allergens": [
         "fish",
-        "gluten"
+        "gluten",
+        "egg",
+        "milk",
+        "soy",
+        "molluscs"
       ],
       "incompatibleDiets": [
         "vegan",
@@ -4895,7 +4899,9 @@
     },
     "galleta maria": {
       "allergens": [
-        "gluten"
+        "gluten",
+        "milk",
+        "soy"
       ],
       "incompatibleDiets": [],
       "compositionStatus": "variable_unknown",
@@ -5015,7 +5021,8 @@
       "allergens": [
         "egg",
         "milk",
-        "fish"
+        "fish",
+        "mustard"
       ],
       "incompatibleDiets": [
         "vegan",
