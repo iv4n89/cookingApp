@@ -12,6 +12,11 @@
 -- Se mapea contra perfiles ya existentes en 0049, sin ampliar ningún límite de seguridad. Los
 -- productos sin caducidad práctica (agua, bicarbonato, alcoholes, azúcares) van a perfiles con
 -- priority_eligible = false para que nunca avisen como críticos.
+--
+-- Criterio ante la duda: la ventana corta. `min_days` es lo que dispara el aviso y `max_days` solo
+-- marca cuándo el lote deja de evaluarse, así que pasarse de largo no retrasa el aviso: lo calla.
+-- Por eso los cocidos y las masas refrigeradas van a perfiles de días, no de conserva, aunque
+-- algunos se vendan envasados.
 
 insert into public.ingredient_expiration_profiles (ingredient_id, profile_id, match_type)
 select i.id, m.profile_id, m.match_type
@@ -28,7 +33,7 @@ from (
     ('cochinillo', 'meat-red-fresh', 'family'),
     ('corazon de res', 'meat-offal', 'family'),
     ('hueso para caldo', 'meat-red-fresh', 'fallback'),
-    ('manteca de cerdo', 'dairy-butter', 'fallback'),
+    ('manteca de cerdo', 'oil-general', 'fallback'),
     ('pate de cerdo', 'meat-cured-short', 'family'),
     ('ternera', 'meat-red-fresh', 'family'),
     ('tripas de cordero', 'meat-offal', 'fallback'),
@@ -36,7 +41,7 @@ from (
     -- Pescados y mariscos
     ('anguila', 'fish-fatty', 'family'),
     ('congrio', 'fish-lean', 'family'),
-    ('palito de cangrejo', 'meat-cured-short', 'fallback'),
+    ('palito de cangrejo', 'shellfish-crustacean', 'fallback'),
     ('pescado para caldo', 'fish-lean', 'fallback'),
 
     -- Verduras y hortalizas
@@ -52,10 +57,10 @@ from (
     ('chalota', 'vegetable-onion', 'family'),
     ('chayote', 'vegetable-summer-squash', 'family'),
     ('chucrut', 'canned-high-acid', 'family'),
-    ('col', 'vegetable-crucifer', 'family'),
+    ('col', 'vegetable-lettuce', 'fallback'),
     ('ensalada mixta', 'vegetable-leafy', 'family'),
     ('espinaca de agua', 'vegetable-leafy', 'family'),
-    ('grelos', 'vegetable-leafy', 'family'),
+    ('grelos', 'vegetable-crucifer', 'direct'),
     ('hoja de platano', 'vegetable-leafy', 'fallback'),
     ('jengibre', 'vegetable-root', 'family'),
     ('loroco', 'vegetable-leafy', 'fallback'),
@@ -64,7 +69,7 @@ from (
     ('remolacha', 'vegetable-root', 'family'),
     ('reollo', 'vegetable-leafy', 'fallback'),
     ('tomatillo verde', 'vegetable-tomato', 'family'),
-    ('yuca', 'vegetable-potato', 'family'),
+    ('yuca', 'vegetable-root', 'family'),
 
     -- Frutas
     ('pasa sultana', 'grain-dry', 'fallback'),
@@ -98,10 +103,10 @@ from (
     ('harina de almortas', 'flour-white', 'family'),
     ('harina de arroz', 'flour-white', 'family'),
     ('harina de garbanzo', 'flour-white', 'family'),
-    ('masa de hojaldre', 'bread-packaged', 'fallback'),
-    ('masa de pizza', 'bread-packaged', 'fallback'),
-    ('mote cocido', 'canned-low-acid', 'family'),
-    ('oblea para gyoza', 'bread-packaged', 'fallback'),
+    ('masa de hojaldre', 'bread-fresh', 'fallback'),
+    ('masa de pizza', 'bread-fresh', 'fallback'),
+    ('mote cocido', 'legume-fresh', 'fallback'),
+    ('oblea para gyoza', 'bread-fresh', 'fallback'),
     ('pastel de arroz', 'grain-dry', 'fallback'),
     ('semola de trigo', 'flour-white', 'family'),
     ('tortilla de maiz', 'bread-packaged', 'family'),
@@ -157,7 +162,7 @@ from (
     ('caldo de verduras', 'broth-shelf', 'direct'),
     ('cerveza', 'vinegar-long', 'fallback'),
     ('ensalada rusa', 'sauce-aioli', 'fallback'),
-    ('frijol cargamanto cocido', 'canned-low-acid', 'family'),
+    ('frijol cargamanto cocido', 'legume-fresh', 'family'),
     ('gelatina', 'sugar-long', 'fallback'),
     ('leche de coco', 'canned-low-acid', 'family'),
     ('levadura fresca', 'dairy-yogurt', 'fallback'),
@@ -170,7 +175,7 @@ from (
     ('sake', 'vinegar-long', 'fallback'),
     ('sopa de crema de champinones en lata', 'canned-low-acid', 'family'),
     ('tamarindo en pasta', 'sauce-shelf', 'family'),
-    ('tofu', 'cheese-fresh', 'family'),
+    ('tofu', 'legume-fresh', 'fallback'),
     ('vino blanco', 'vinegar-long', 'fallback'),
     ('vino de arroz shaoxing', 'vinegar-long', 'fallback'),
     ('vino tinto', 'vinegar-long', 'fallback')
