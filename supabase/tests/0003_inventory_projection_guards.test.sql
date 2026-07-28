@@ -1,6 +1,6 @@
 begin;
 
-select plan(12);
+select plan(15);
 
 insert into auth.users (
   instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -81,6 +81,22 @@ select results_eq(
   $$ select count(*) from public.pantry_items where lower(name) = 'leche' $$,
   $$ values (2::bigint) $$,
   'En otra unidad sigue siendo otro producto: litros y unidades no se pueden sumar'
+);
+
+select lives_ok(
+  $$ select public.add_pantry_item('Sal', null, 'g', 'Otros', null, 100, '00000000-0000-0000-0000-000000004007') $$,
+  'Se puede añadir un producto sin cantidad'
+);
+
+select lives_ok(
+  $$ select public.add_pantry_item('Sal', null, 'g', 'Otros', null, 100, '00000000-0000-0000-0000-000000004008') $$,
+  'Se puede volver a añadir sin cantidad'
+);
+
+select results_eq(
+  $$ select quantity from public.pantry_items where name = 'Sal' $$,
+  $$ values (null::numeric) $$,
+  'Dos altas sin cantidad la dejan sin medir, no en cero: si no, contaría como bajo stock'
 );
 
 reset role;

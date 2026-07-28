@@ -25,7 +25,12 @@ begin
     insert into public.pantry_items (user_id, household_id, ingredient_id, name, quantity, unit, category, min_stock)
     values (v_user, v_household, p_ingredient_id, p_name, p_quantity, p_unit, p_category, p_min_stock) returning id into v_item;
   else
-    update public.pantry_items set quantity = coalesce(quantity, 0) + coalesce(p_quantity, 0), updated_at = now()
+    -- Una cantidad nula significa "no la llevo", no cero: sumar dos altas sin cantidad tiene que
+    -- dejarla nula, o el producto empezaría a contar como bajo stock sin haberlo medido nunca.
+    update public.pantry_items
+    set quantity = case when quantity is null and p_quantity is null then null
+                        else coalesce(quantity, 0) + coalesce(p_quantity, 0) end,
+        updated_at = now()
     where id = v_item;
   end if;
   insert into public.pantry_batches (household_id, pantry_item_id, ingredient_id, name, category, unit, initial_quantity, remaining_quantity, source)
