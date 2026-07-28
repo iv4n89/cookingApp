@@ -1,5 +1,5 @@
 -- Generado por scripts/generate-expiration-state-migration.mjs.
--- dataset-sha256: a53d5c12fe38b6b76abd878ffa641c5b370546889cdfdf3bcf88cf1a862946d5
+-- dataset-sha256: a6a4091c88cbe851c17d0b491d968f3e03c62be247bb48a474fa8aa8649e5662
 
 create table public.expiration_profiles (
   id text primary key,
@@ -67,6 +67,7 @@ insert into public.expiration_profiles (
   ('meat-sausage-fresh', 1, 2, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: raw sausage, 1-2 days refrigerated'),
   ('meat-offal', 1, 2, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: variety meats, 1-2 days refrigerated'),
   ('meat-bacon', 7, 7, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: bacon, 1 week refrigerated'),
+  ('meat-cured-sausage', 14, 21, 'medium', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: hard sausage such as pepperoni, opened package 2-3 weeks refrigerated'),
   ('meat-cured-ham', 60, 90, 'high', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: prosciutto or Serrano ham cut, 2-3 months refrigerated'),
   ('meat-cured-short', 5, 7, 'medium', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: refrigerated cured meat; conservative family range'),
   ('fish-lean', 1, 2, 'high', true, 'foodkeeper-es', 'FoodKeeper ES v128 Products 144-145: Pescado magro'),
@@ -459,7 +460,75 @@ with mappings (normalized_name, profile_id, match_type) as (
     ('caldo de pollo', 'broth-shelf', 'fallback'),
     ('caldo de pescado', 'broth-shelf', 'fallback'),
     ('fondo de carne', 'broth-shelf', 'fallback'),
-    ('sal de mesa', 'salt-indefinite', 'family')
+    ('sal de mesa', 'salt-indefinite', 'family'),
+    ('carne picada de pollo', 'meat-poultry-fresh', 'family'),
+    ('carne picada mixta', 'meat-sausage-fresh', 'family'),
+    ('contramuslo de pollo', 'meat-poultry-fresh', 'direct'),
+    ('pechuga de pavo', 'meat-poultry-fresh', 'family'),
+    ('carne picada de pavo', 'meat-poultry-fresh', 'family'),
+    ('jamon cocido', 'meat-cured-short', 'family'),
+    ('bacon', 'meat-bacon', 'direct'),
+    ('chorizo curado', 'meat-cured-sausage', 'family'),
+    ('higadito de pollo', 'meat-offal', 'family'),
+    ('salmon', 'fish-fatty', 'direct'),
+    ('salmon ahumado', 'fish-desalted', 'fallback'),
+    ('trucha', 'fish-fatty', 'direct'),
+    ('pez espada', 'fish-lean', 'family'),
+    ('chipiron', 'seafood-cephalopod', 'family'),
+    ('gulas', 'fish-desalted', 'fallback'),
+    ('langostino cocido', 'shellfish-crustacean', 'family'),
+    ('tomate cherry', 'vegetable-tomato', 'family'),
+    ('rucula', 'vegetable-leafy', 'family'),
+    ('canonigos', 'vegetable-leafy', 'family'),
+    ('escarola', 'vegetable-lettuce', 'family'),
+    ('endivia', 'vegetable-lettuce', 'family'),
+    ('col lombarda', 'vegetable-lettuce', 'fallback'),
+    ('coles de bruselas', 'vegetable-crucifer', 'family'),
+    ('boniato', 'vegetable-potato', 'family'),
+    ('pimiento amarillo', 'vegetable-pepper', 'direct'),
+    ('seta shiitake', 'vegetable-mushroom', 'family'),
+    ('champinon portobello', 'vegetable-mushroom', 'family'),
+    ('kiwi', 'fruit-firm', 'family'),
+    ('mango', 'fruit-delicate', 'family'),
+    ('arandano', 'fruit-berries', 'family'),
+    ('frambuesa', 'fruit-berries', 'family'),
+    ('mora', 'fruit-berries', 'family'),
+    ('pomelo', 'fruit-citrus', 'family'),
+    ('datil', 'grain-dry', 'fallback'),
+    ('ciruela pasa', 'grain-dry', 'fallback'),
+    ('queso rallado', 'cheese-fresh', 'fallback'),
+    ('queso feta', 'cheese-fresh', 'family'),
+    ('queso mascarpone', 'cheese-fresh', 'family'),
+    ('kefir', 'dairy-yogurt', 'family'),
+    ('leche sin lactosa', 'dairy-milk', 'family'),
+    ('bebida de avena', 'dairy-milk', 'fallback'),
+    ('bebida de soja', 'dairy-milk', 'fallback'),
+    ('bebida de almendra', 'dairy-milk', 'fallback'),
+    ('maicena', 'flour-corn', 'family'),
+    ('pasta fresca', 'bread-fresh', 'fallback'),
+    ('noquis', 'bread-fresh', 'fallback'),
+    ('pan de pita', 'bread-packaged', 'family'),
+    ('tortilla de trigo', 'bread-packaged', 'family'),
+    ('harina integral', 'flour-white', 'family'),
+    ('galleta maria', 'bread-dry', 'family'),
+    ('pepinillo en vinagre', 'canned-high-acid', 'family'),
+    ('alcaparra', 'canned-high-acid', 'family'),
+    ('maiz dulce en conserva', 'canned-low-acid', 'family'),
+    ('pimiento asado', 'canned-low-acid', 'family'),
+    ('alcachofa en conserva', 'canned-low-acid', 'family'),
+    ('guisante en conserva', 'canned-low-acid', 'family'),
+    ('aceite de coco', 'oil-general', 'family'),
+    ('salsa sriracha', 'sauce-shelf', 'family'),
+    ('salsa teriyaki', 'sauce-shelf', 'family'),
+    ('salsa cesar', 'sauce-refrigerated', 'family'),
+    ('ajo en polvo', 'spice-ground', 'family'),
+    ('jengibre en polvo', 'spice-ground', 'family'),
+    ('eneldo', 'herb-dry', 'family'),
+    ('salvia', 'herb-dry', 'family'),
+    ('estragon', 'herb-dry', 'family'),
+    ('cacao en polvo', 'spice-ground', 'fallback'),
+    ('azucar glas', 'sugar-long', 'family'),
+    ('sirope de arce', 'honey-long', 'family')
 )
 insert into public.ingredient_expiration_profiles (ingredient_id, profile_id, match_type)
 select i.id, m.profile_id, m.match_type
@@ -468,11 +537,11 @@ join public.ingredients i on i.normalized_name = m.normalized_name;
 
 do $$
 begin
-  if (select count(*) from public.expiration_profiles) <> 96 then
-    raise exception 'se esperaban 96 perfiles de caducidad';
+  if (select count(*) from public.expiration_profiles) <> 97 then
+    raise exception 'se esperaban 97 perfiles de caducidad';
   end if;
-  if (select count(*) from public.ingredient_expiration_profiles) <> 331 then
-    raise exception 'se esperaban 331 ingredientes con perfil';
+  if (select count(*) from public.ingredient_expiration_profiles) <> 399 then
+    raise exception 'se esperaban 399 ingredientes con perfil';
   end if;
 end;
 $$;

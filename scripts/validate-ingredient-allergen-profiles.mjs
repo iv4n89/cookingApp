@@ -7,7 +7,7 @@ import {
   VARIABLE_INGREDIENTS,
 } from './lib/ingredient-safety-policy.mjs';
 
-const EXPECTED_INGREDIENT_COUNT = 331;
+const EXPECTED_INGREDIENT_COUNT = 399;
 const EXPECTED_EXCLUSIONS = [
   'gluten',
   'crustaceans',
@@ -242,12 +242,12 @@ const policySet = new Set(policyNames);
 addError(
   errors,
   seedNames.length === EXPECTED_INGREDIENT_COUNT && seedSet.size === seedNames.length,
-  'El seed debe contener 331 normalized_name únicos',
+  'El seed debe contener 399 normalized_name únicos',
 );
 addError(
   errors,
   policyNames.length === EXPECTED_INGREDIENT_COUNT && policySet.size === policyNames.length,
-  'Las allowlists deben clasificar 331 ingredientes únicos y sin solapamientos',
+  'Las allowlists deben clasificar 399 ingredientes únicos y sin solapamientos',
 );
 for (const name of seedNames) {
   addError(errors, policySet.has(name), `Ingrediente sin política de seguridad: ${name}`);
@@ -283,7 +283,7 @@ addError(errors, isRecord(root.ingredients), 'ingredients debe ser un objeto');
 addError(
   errors,
   Object.keys(ingredients).length === EXPECTED_INGREDIENT_COUNT,
-  'ingredients debe contener 331 entradas',
+  'ingredients debe contener 399 entradas',
 );
 
 validateSources(errors, sources);

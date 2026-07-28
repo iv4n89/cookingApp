@@ -5,7 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { findDuplicateJsonKeys } from './lib/find-duplicate-json-keys.mjs';
 
-const EXPECTED_INGREDIENT_COUNT = 331;
+const EXPECTED_INGREDIENT_COUNT = 399;
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, '..');
 const validatorPath = join(here, 'validate-ingredient-allergen-profiles.mjs');

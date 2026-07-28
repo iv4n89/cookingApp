@@ -1,6 +1,6 @@
 -- Generado por scripts/generate-ingredient-allergen-migration.mjs.
--- dataset-sha256: 448f57d0355c8d57e3c380a01e01c44593993dcbdc757abd29f1933f176d5487
--- profile-count: 331
+-- dataset-sha256: fd12ed6a088bea6128265bd2d727274e0607296f90a86f6e199a7e08609eba3e
+-- profile-count: 399
 
 create table public.ingredient_allergen_datasets (
   version text primary key,
@@ -63,7 +63,7 @@ insert into public.ingredient_allergen_datasets (
   supported_diets
 ) values (
   'ingredient-allergens-es-v1',
-  '448f57d0355c8d57e3c380a01e01c44593993dcbdc757abd29f1933f176d5487',
+  'fd12ed6a088bea6128265bd2d727274e0607296f90a86f6e199a7e08609eba3e',
   array['gluten', 'crustaceans', 'molluscs', 'egg', 'fish', 'peanut', 'soy', 'milk', 'nuts', 'celery', 'mustard', 'sesame', 'pork', 'alcohol']::text[],
   array['vegan', 'vegetarian']::text[]
 );
@@ -406,7 +406,75 @@ with profile_data (
     ('caldo de pollo', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: caldo de pollo', 'compound_formula_unknown', 'variable_unknown'),
     ('caldo de pescado', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: caldo de pescado', 'compound_formula_unknown', 'variable_unknown'),
     ('fondo de carne', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: fondo de carne', 'compound_formula_unknown', 'variable_unknown'),
-    ('sal de mesa', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: sal de mesa', 'intrinsic_named_ingredient', 'exact_reviewed')
+    ('sal de mesa', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: sal de mesa', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('carne picada de pollo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: carne picada de pollo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('carne picada mixta', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: carne picada mixta', 'compound_formula_unknown', 'variable_unknown'),
+    ('contramuslo de pollo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: contramuslo de pollo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('pechuga de pavo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: pechuga de pavo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('carne picada de pavo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: carne picada de pavo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('jamon cocido', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: jamon cocido', 'compound_formula_unknown', 'variable_unknown'),
+    ('bacon', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: bacon', 'compound_formula_unknown', 'variable_unknown'),
+    ('chorizo curado', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: chorizo curado', 'compound_formula_unknown', 'variable_unknown'),
+    ('higadito de pollo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: higadito de pollo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('salmon', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide']::text[], 'Composición intrínseca revisada desde el nombre catalogado: salmon', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('salmon ahumado', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: salmon ahumado', 'compound_formula_unknown', 'variable_unknown'),
+    ('trucha', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide']::text[], 'Composición intrínseca revisada desde el nombre catalogado: trucha', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('pez espada', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide']::text[], 'Composición intrínseca revisada desde el nombre catalogado: pez espada', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('chipiron', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide']::text[], 'Composición intrínseca revisada desde el nombre catalogado: chipiron', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('gulas', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: gulas', 'compound_formula_unknown', 'variable_unknown'),
+    ('langostino cocido', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide']::text[], 'Composición intrínseca revisada desde el nombre catalogado: langostino cocido', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('tomate cherry', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: tomate cherry', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('rucula', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: rucula', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('canonigos', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: canonigos', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('escarola', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: escarola', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('endivia', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: endivia', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('col lombarda', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: col lombarda', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('coles de bruselas', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: coles de bruselas', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('boniato', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: boniato', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('pimiento amarillo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: pimiento amarillo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('seta shiitake', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: seta shiitake', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('champinon portobello', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: champinon portobello', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('kiwi', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: kiwi', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('mango', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: mango', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('arandano', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: arandano', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('frambuesa', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: frambuesa', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('mora', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: mora', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('pomelo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: pomelo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('datil', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: datil', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('ciruela pasa', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: ciruela pasa', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('queso rallado', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: queso rallado', 'compound_formula_unknown', 'variable_unknown'),
+    ('queso feta', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: queso feta', 'compound_formula_unknown', 'variable_unknown'),
+    ('queso mascarpone', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: queso mascarpone', 'compound_formula_unknown', 'variable_unknown'),
+    ('kefir', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: kefir', 'compound_formula_unknown', 'variable_unknown'),
+    ('leche sin lactosa', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: leche sin lactosa', 'compound_formula_unknown', 'variable_unknown'),
+    ('bebida de avena', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: bebida de avena', 'compound_formula_unknown', 'variable_unknown'),
+    ('bebida de soja', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: bebida de soja', 'compound_formula_unknown', 'variable_unknown'),
+    ('bebida de almendra', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: bebida de almendra', 'compound_formula_unknown', 'variable_unknown'),
+    ('maicena', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: maicena', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('pasta fresca', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: pasta fresca', 'compound_formula_unknown', 'variable_unknown'),
+    ('noquis', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: noquis', 'compound_formula_unknown', 'variable_unknown'),
+    ('pan de pita', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: pan de pita', 'compound_formula_unknown', 'variable_unknown'),
+    ('tortilla de trigo', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: tortilla de trigo', 'compound_formula_unknown', 'variable_unknown'),
+    ('harina integral', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide']::text[], 'Composición intrínseca revisada desde el nombre catalogado: harina integral', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('galleta maria', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: galleta maria', 'compound_formula_unknown', 'variable_unknown'),
+    ('pepinillo en vinagre', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: pepinillo en vinagre', 'compound_formula_unknown', 'variable_unknown'),
+    ('alcaparra', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: alcaparra', 'compound_formula_unknown', 'variable_unknown'),
+    ('maiz dulce en conserva', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: maiz dulce en conserva', 'compound_formula_unknown', 'variable_unknown'),
+    ('pimiento asado', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: pimiento asado', 'compound_formula_unknown', 'variable_unknown'),
+    ('alcachofa en conserva', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: alcachofa en conserva', 'compound_formula_unknown', 'variable_unknown'),
+    ('guisante en conserva', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: guisante en conserva', 'compound_formula_unknown', 'variable_unknown'),
+    ('aceite de coco', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: aceite de coco', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('salsa sriracha', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: salsa sriracha', 'compound_formula_unknown', 'variable_unknown'),
+    ('salsa teriyaki', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: salsa teriyaki', 'compound_formula_unknown', 'variable_unknown'),
+    ('salsa cesar', array['catalog-name-review', 'eu-1169-annex-ii', 'aesan-allergen-guide', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: salsa cesar', 'compound_formula_unknown', 'variable_unknown'),
+    ('ajo en polvo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: ajo en polvo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('jengibre en polvo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: jengibre en polvo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('eneldo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: eneldo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('salvia', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: salvia', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('estragon', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: estragon', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('cacao en polvo', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: cacao en polvo', 'intrinsic_named_ingredient', 'exact_reviewed'),
+    ('azucar glas', array['catalog-name-review', 'variable-composition-policy']::text[], 'Nombre genérico sin formulación verificable: azucar glas', 'compound_formula_unknown', 'variable_unknown'),
+    ('sirope de arce', array['catalog-name-review']::text[], 'Composición intrínseca revisada desde el nombre catalogado: sirope de arce', 'intrinsic_named_ingredient', 'exact_reviewed')
 )
 insert into public.ingredient_allergen_profiles (
   ingredient_id,
@@ -564,7 +632,47 @@ with allergen_data (normalized_name, allergen) as (
     ('sardina en conserva', 'fish'),
     ('mejillon en escabeche', 'molluscs'),
     ('berberecho al natural', 'molluscs'),
-    ('caldo de pescado', 'fish')
+    ('caldo de pescado', 'fish'),
+    ('carne picada mixta', 'pork'),
+    ('jamon cocido', 'pork'),
+    ('jamon cocido', 'milk'),
+    ('bacon', 'pork'),
+    ('chorizo curado', 'pork'),
+    ('salmon', 'fish'),
+    ('salmon ahumado', 'fish'),
+    ('trucha', 'fish'),
+    ('pez espada', 'fish'),
+    ('chipiron', 'molluscs'),
+    ('gulas', 'fish'),
+    ('gulas', 'gluten'),
+    ('gulas', 'egg'),
+    ('gulas', 'milk'),
+    ('gulas', 'soy'),
+    ('gulas', 'molluscs'),
+    ('langostino cocido', 'crustaceans'),
+    ('queso rallado', 'milk'),
+    ('queso feta', 'milk'),
+    ('queso mascarpone', 'milk'),
+    ('kefir', 'milk'),
+    ('leche sin lactosa', 'milk'),
+    ('bebida de avena', 'gluten'),
+    ('bebida de soja', 'soy'),
+    ('bebida de almendra', 'nuts'),
+    ('pasta fresca', 'gluten'),
+    ('pasta fresca', 'egg'),
+    ('noquis', 'gluten'),
+    ('pan de pita', 'gluten'),
+    ('tortilla de trigo', 'gluten'),
+    ('harina integral', 'gluten'),
+    ('galleta maria', 'gluten'),
+    ('galleta maria', 'milk'),
+    ('galleta maria', 'soy'),
+    ('salsa teriyaki', 'soy'),
+    ('salsa teriyaki', 'gluten'),
+    ('salsa cesar', 'egg'),
+    ('salsa cesar', 'milk'),
+    ('salsa cesar', 'fish'),
+    ('salsa cesar', 'mustard')
 )
 insert into public.ingredient_allergen_entries (ingredient_id, allergen)
 select i.id, a.allergen
@@ -743,7 +851,47 @@ with diet_data (normalized_name, incompatible_diet) as (
     ('caldo de pescado', 'vegan'),
     ('caldo de pescado', 'vegetarian'),
     ('fondo de carne', 'vegan'),
-    ('fondo de carne', 'vegetarian')
+    ('fondo de carne', 'vegetarian'),
+    ('carne picada de pollo', 'vegan'),
+    ('carne picada de pollo', 'vegetarian'),
+    ('carne picada mixta', 'vegan'),
+    ('carne picada mixta', 'vegetarian'),
+    ('contramuslo de pollo', 'vegan'),
+    ('contramuslo de pollo', 'vegetarian'),
+    ('pechuga de pavo', 'vegan'),
+    ('pechuga de pavo', 'vegetarian'),
+    ('carne picada de pavo', 'vegan'),
+    ('carne picada de pavo', 'vegetarian'),
+    ('jamon cocido', 'vegan'),
+    ('jamon cocido', 'vegetarian'),
+    ('bacon', 'vegan'),
+    ('bacon', 'vegetarian'),
+    ('chorizo curado', 'vegan'),
+    ('chorizo curado', 'vegetarian'),
+    ('higadito de pollo', 'vegan'),
+    ('higadito de pollo', 'vegetarian'),
+    ('salmon', 'vegan'),
+    ('salmon', 'vegetarian'),
+    ('salmon ahumado', 'vegan'),
+    ('salmon ahumado', 'vegetarian'),
+    ('trucha', 'vegan'),
+    ('trucha', 'vegetarian'),
+    ('pez espada', 'vegan'),
+    ('pez espada', 'vegetarian'),
+    ('chipiron', 'vegan'),
+    ('chipiron', 'vegetarian'),
+    ('gulas', 'vegan'),
+    ('gulas', 'vegetarian'),
+    ('langostino cocido', 'vegan'),
+    ('langostino cocido', 'vegetarian'),
+    ('queso rallado', 'vegan'),
+    ('queso feta', 'vegan'),
+    ('queso mascarpone', 'vegan'),
+    ('kefir', 'vegan'),
+    ('leche sin lactosa', 'vegan'),
+    ('pasta fresca', 'vegan'),
+    ('salsa cesar', 'vegan'),
+    ('salsa cesar', 'vegetarian')
 )
 insert into public.ingredient_diet_entries (ingredient_id, incompatible_diet)
 select i.id, d.incompatible_diet
@@ -756,8 +904,8 @@ begin
     select count(*)
     from public.ingredient_allergen_profiles
     where dataset_version = 'ingredient-allergens-es-v1'
-  ) <> 331 then
-    raise exception 'se esperaban 331 ingredientes con perfil de seguridad';
+  ) <> 399 then
+    raise exception 'se esperaban 399 ingredientes con perfil de seguridad';
   end if;
 end;
 $$;

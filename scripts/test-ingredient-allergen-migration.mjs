@@ -58,8 +58,8 @@ try {
   );
 
   const generatedSql = await readFile(fixtureMigration, 'utf8');
-  if (!generatedSql.includes('-- profile-count: 331')) {
-    throw new Error('La migración no declara los 331 perfiles.');
+  if (!generatedSql.includes('-- profile-count: 399')) {
+    throw new Error('La migración no declara los 399 perfiles.');
   }
   if (/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i.test(generatedSql)) {
     throw new Error('La migración contiene un UUID hardcodeado.');
