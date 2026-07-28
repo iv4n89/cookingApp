@@ -160,6 +160,15 @@ from (
 where i.normalized_name = v.normalized_name
   and i.default_unit is null;
 
+-- El embutido curado necesita un perfil propio: ninguno de los existentes cubre las tres semanas
+-- de una pieza seca ya abierta. 0049 lo trae, pero solo corre en bases nuevas, así que aquí hay
+-- que darlo de alta igual que los ingredientes.
+insert into public.expiration_profiles (
+  id, min_days, max_days, confidence, priority_eligible, source_id, source_ref
+) values
+  ('meat-cured-sausage', 14, 21, 'medium', true, 'foodsafety-cold-storage', 'FoodSafety.gov Cold Food Storage Chart: hard sausage such as pepperoni, opened package 2-3 weeks refrigerated')
+on conflict (id) do nothing;
+
 insert into public.ingredient_expiration_profiles (ingredient_id, profile_id, match_type)
 select i.id, m.profile_id, m.match_type
 from (
