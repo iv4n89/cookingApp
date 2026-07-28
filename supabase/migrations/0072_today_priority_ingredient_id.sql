@@ -1,7 +1,7 @@
--- household_today_decision v7: cada producto prioritario viaja con su ingrediente canónico para
--- que el Home pueda abrir el descubridor con ese ingrediente ya elegido. Es el mismo id que espera
--- discover_recipes_by_ingredients, que también resuelve al canónico. El resto de la decisión
--- (pantry y discover con lean por gusto) es igual que en v6.
+-- household_today_decision v7: los productos prioritarios pasan a ser por ingrediente, no por lote,
+-- y cada uno viaja con su ingrediente canónico para que el Home pueda abrir el descubridor con ese
+-- ingrediente ya elegido. Es el mismo id que espera discover_recipes_by_ingredients, que también
+-- resuelve al canónico. El resto de la decisión (pantry y discover con lean por gusto) no cambia.
 
 create or replace function public.household_today_decision(
   p_meal_type text default null,
@@ -26,11 +26,14 @@ declare
 begin
   v_decision := public.household_recommendation_decision(p_meal_type, 30);
 
-  -- Productos prioritarios: priority antes que consume_soon, luego más antiguos primero.
+  -- Productos prioritarios: uno por ingrediente. El aviso es "consume el tomate", no "consume el
+  -- lote 3 de tomate", así que de varios lotes del mismo canónico se queda el más urgente y el
+  -- resto no se repite en la tira. Entre ingredientes, priority antes que consume_soon y luego
+  -- más antiguos primero.
   select coalesce(jsonb_agg(product order by rank_key, age_days desc), '[]'::jsonb)
   into v_priority
   from (
-    select
+    select distinct on (s.canonical_ingredient_id)
       jsonb_build_object(
         'name', s.ingredient_name, 'status', s.status,
         'canonicalIngredientId', s.canonical_ingredient_id,
@@ -42,6 +45,10 @@ begin
       s.age_days
     from public.household_expiration_snapshot() s
     where s.status in ('priority', 'consume_soon')
+    order by
+      s.canonical_ingredient_id,
+      case s.status when 'priority' then 0 when 'consume_soon' then 1 else 2 end,
+      s.age_days desc
   ) ranked;
 
   -- Candidatas de la franja, barajadas dentro de cada nivel de faltantes (menos faltantes primero).

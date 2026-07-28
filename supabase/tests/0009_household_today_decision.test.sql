@@ -1,6 +1,6 @@
 begin;
 
-select plan(25);
+select plan(27);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -63,6 +63,19 @@ insert into public.pantry_batches (
   '00000000-0000-0000-0000-000000009101',
   (select id from public.ingredients where normalized_name = 'manzana golden'),
   'Manzana golden', 'Frutas', 'ud', 2, 2, 'manual', current_timestamp - interval '30 days'
+);
+
+-- Segundo lote del mismo ingrediente, más antiguo: el Home avisa por ingrediente, así que los dos
+-- lotes tienen que salir como una sola entrada, la del lote más urgente.
+insert into public.pantry_batches (
+  id, household_id, pantry_item_id, ingredient_id, name, category, unit,
+  initial_quantity, remaining_quantity, source, purchased_at
+) values (
+  '00000000-0000-0000-0000-000000009210',
+  current_setting('test.today_household')::uuid,
+  '00000000-0000-0000-0000-000000009101',
+  (select id from public.ingredients where normalized_name = 'manzana golden'),
+  'Manzana golden', 'Frutas', 'ud', 1, 1, 'manual', current_timestamp - interval '40 days'
 );
 
 insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
@@ -225,6 +238,16 @@ select is(
   (select coalesce(i.canonical_id, i.id)::text from public.ingredients i
    where i.normalized_name = 'manzana golden'),
   'El producto prioritario trae el canónico que espera el descubridor'
+);
+select is(
+  jsonb_array_length(public.household_today_decision('cena', 5)->'priorityProducts'),
+  1,
+  'Dos lotes del mismo ingrediente son una sola entrada'
+);
+select is(
+  (public.household_today_decision('cena', 5)->'priorityProducts'->0->>'estimatedDate')::timestamptz,
+  current_timestamp - interval '35 days',
+  'De los dos lotes se queda el más antiguo'
 );
 select is(
   public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
