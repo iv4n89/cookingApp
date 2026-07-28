@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 import type { DiscoverCard } from '@/lib/recipes';
@@ -10,8 +10,9 @@ import { colors } from '@recetas/theme/tokens';
 const VISIBLE_INGREDIENTS = 6;
 const DOUBLE_TAP_MS = 300;
 
-// One full-screen recipe page of the discoverer. Double tapping anywhere saves it (Instagram-like);
-// tapping the text block opens the full recipe.
+// One full-screen recipe page of the discoverer. Tapping anywhere opens the full recipe and double
+// tapping saves it (Instagram-like). Opening waits out the double-tap window: without that pause
+// there is no way to tell the first tap of a save from a tap meant to open.
 export function RecipeReel({
   card,
   height,
@@ -25,16 +26,26 @@ export function RecipeReel({
   onSave: () => void;
   onOpen: () => void;
 }) {
-  const lastTap = useRef(0);
+  const pendingOpen = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (pendingOpen.current) clearTimeout(pendingOpen.current);
+    },
+    [],
+  );
 
   function handleTap() {
-    const now = Date.now();
-    if (now - lastTap.current < DOUBLE_TAP_MS) {
-      lastTap.current = 0;
+    if (pendingOpen.current) {
+      clearTimeout(pendingOpen.current);
+      pendingOpen.current = null;
       onSave();
       return;
     }
-    lastTap.current = now;
+    pendingOpen.current = setTimeout(() => {
+      pendingOpen.current = null;
+      onOpen();
+    }, DOUBLE_TAP_MS);
   }
 
   const shown = card.ingredientNames.slice(0, VISIBLE_INGREDIENTS);
@@ -76,9 +87,7 @@ export function RecipeReel({
         </View>
       ) : null}
 
-      <Pressable
-        onPress={onOpen}
-        className="absolute bottom-0 left-0 right-0 gap-stack-md bg-black/60 p-container-padding pb-section-gap">
+      <View className="absolute bottom-0 left-0 right-0 gap-stack-md bg-black/60 p-container-padding pb-section-gap">
         <Text className="font-sans-bold text-display-lg text-white">{card.title}</Text>
         {card.description ? (
           <Text className="font-sans text-body-md text-white/90" numberOfLines={3}>
@@ -97,7 +106,7 @@ export function RecipeReel({
             </View>
           ) : null}
         </View>
-      </Pressable>
+      </View>
     </Pressable>
   );
 }
