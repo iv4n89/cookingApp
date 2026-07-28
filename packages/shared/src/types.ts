@@ -310,6 +310,7 @@ export type TodayPriorityStatus = "priority" | "consume_soon";
 
 export interface TodayPriorityProduct {
   name: string;
+  canonicalIngredientId: string;
   status: TodayPriorityStatus;
   estimatedDate: string | null;
   confidence: "high" | "medium" | "low";

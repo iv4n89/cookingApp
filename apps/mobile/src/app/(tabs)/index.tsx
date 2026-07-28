@@ -93,7 +93,12 @@ export default function InicioScreen() {
         {priority.length > 0 ? (
           <View>
             <HomeSectionHeader title="Productos a consumir" action="VER TODO" onAction={() => router.push('/alacena')} />
-            <PriorityProductsStrip products={priority} />
+            <PriorityProductsStrip
+              products={priority}
+              onPressProduct={(ingredientId) =>
+                router.push({ pathname: '/descubrir', params: { ingredientId } })
+              }
+            />
           </View>
         ) : null}
 

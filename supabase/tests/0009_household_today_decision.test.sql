@@ -1,6 +1,6 @@
 begin;
 
-select plan(24);
+select plan(28);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -64,6 +64,66 @@ insert into public.pantry_batches (
   (select id from public.ingredients where normalized_name = 'manzana golden'),
   'Manzana golden', 'Frutas', 'ud', 2, 2, 'manual', current_timestamp - interval '30 days'
 );
+
+-- Segundo lote del mismo ingrediente, más antiguo: el Home avisa por ingrediente, así que los dos
+-- lotes tienen que salir como una sola entrada, la del lote más urgente.
+insert into public.pantry_batches (
+  id, household_id, pantry_item_id, ingredient_id, name, category, unit,
+  initial_quantity, remaining_quantity, source, purchased_at
+) values (
+  '00000000-0000-0000-0000-000000009210',
+  current_setting('test.today_household')::uuid,
+  '00000000-0000-0000-0000-000000009101',
+  (select id from public.ingredients where normalized_name = 'manzana golden'),
+  'Manzana golden', 'Frutas', 'ud', 1, 1, 'manual', current_timestamp - interval '40 days'
+);
+
+-- Dos productos distintos que comparten canónico ('leche entera'): tienen que seguir siendo dos
+-- avisos. Agruparlos dejaría uno de los dos sin avisar. El perfil se fuerza también en el canónico
+-- porque el snapshot resuelve la caducidad por él antes que por el ingrediente concreto.
+insert into public.ingredient_expiration_profiles (ingredient_id, profile_id, match_type)
+select i.id, 'today-fresh', 'direct'
+from public.ingredients i
+where i.normalized_name in ('leche entera', 'leche desnatada', 'leche semidesnatada')
+on conflict (ingredient_id) do update set
+  profile_id = excluded.profile_id,
+  match_type = excluded.match_type;
+
+insert into public.pantry_items (id, user_id, household_id, ingredient_id, name, quantity, unit, category)
+values
+  (
+    '00000000-0000-0000-0000-000000009103',
+    '00000000-0000-0000-0000-000000000901',
+    current_setting('test.today_household')::uuid,
+    (select id from public.ingredients where normalized_name = 'leche desnatada'),
+    'Leche desnatada', 1, 'l', 'Lácteos y huevos'
+  ),
+  (
+    '00000000-0000-0000-0000-000000009104',
+    '00000000-0000-0000-0000-000000000901',
+    current_setting('test.today_household')::uuid,
+    (select id from public.ingredients where normalized_name = 'leche semidesnatada'),
+    'Leche semidesnatada', 1, 'l', 'Lácteos y huevos'
+  );
+
+insert into public.pantry_batches (
+  id, household_id, pantry_item_id, ingredient_id, name, category, unit,
+  initial_quantity, remaining_quantity, source, purchased_at
+) values
+  (
+    '00000000-0000-0000-0000-000000009211',
+    current_setting('test.today_household')::uuid,
+    '00000000-0000-0000-0000-000000009103',
+    (select id from public.ingredients where normalized_name = 'leche desnatada'),
+    'Leche desnatada', 'Lácteos y huevos', 'l', 1, 1, 'manual', current_timestamp - interval '30 days'
+  ),
+  (
+    '00000000-0000-0000-0000-000000009212',
+    current_setting('test.today_household')::uuid,
+    '00000000-0000-0000-0000-000000009104',
+    (select id from public.ingredients where normalized_name = 'leche semidesnatada'),
+    'Leche semidesnatada', 'Lácteos y huevos', 'l', 1, 1, 'manual', current_timestamp - interval '30 days'
+  );
 
 insert into public.recipes (id, title, source, reusable, image_status, ingredients, meal_types)
 values (
@@ -219,6 +279,28 @@ select is(
   jsonb_typeof(public.household_today_decision('cena', 5)->'priorityProducts'),
   'array',
   'priorityProducts es siempre un array'
+);
+select is(
+  public.household_today_decision('cena', 5)->'priorityProducts'->0->>'canonicalIngredientId',
+  (select coalesce(i.canonical_id, i.id)::text from public.ingredients i
+   where i.normalized_name = 'manzana golden'),
+  'El producto prioritario trae el canónico que espera el descubridor'
+);
+select is(
+  jsonb_array_length(public.household_today_decision('cena', 5)->'priorityProducts'),
+  3,
+  'Cuatro lotes de tres productos dan tres entradas: los del mismo producto se funden'
+);
+select ok(
+  public.household_today_decision('cena', 5)->'priorityProducts' @> jsonb_build_array(
+    jsonb_build_object('name', 'Leche desnatada'), jsonb_build_object('name', 'Leche semidesnatada')
+  ),
+  'Dos productos que comparten canónico siguen avisando por separado'
+);
+select is(
+  (public.household_today_decision('cena', 5)->'priorityProducts'->0->>'estimatedDate')::timestamptz,
+  current_timestamp - interval '35 days',
+  'De los dos lotes se queda el más antiguo'
 );
 select is(
   public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
