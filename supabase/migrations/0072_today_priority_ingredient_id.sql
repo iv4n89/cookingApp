@@ -26,14 +26,15 @@ declare
 begin
   v_decision := public.household_recommendation_decision(p_meal_type, 30);
 
-  -- Productos prioritarios: uno por ingrediente. El aviso es "consume el tomate", no "consume el
-  -- lote 3 de tomate", así que de varios lotes del mismo canónico se queda el más urgente y el
-  -- resto no se repite en la tira. Entre ingredientes, priority antes que consume_soon y luego
-  -- más antiguos primero.
+  -- Productos prioritarios: uno por producto de la despensa. El aviso es "consume el tomate", no
+  -- "consume el lote 3 de tomate", así que de varios lotes del mismo producto se queda el más
+  -- urgente. Se agrupa por pantry_item_id y no por canónico a propósito: la cebolla blanca y la
+  -- morada comparten canónico, y fundirlas dejaría sin avisar de una de las dos. Entre productos,
+  -- priority antes que consume_soon y luego más antiguos primero.
   select coalesce(jsonb_agg(product order by rank_key, age_days desc), '[]'::jsonb)
   into v_priority
   from (
-    select distinct on (s.canonical_ingredient_id)
+    select distinct on (s.pantry_item_id)
       jsonb_build_object(
         'name', s.ingredient_name, 'status', s.status,
         'canonicalIngredientId', s.canonical_ingredient_id,
@@ -46,7 +47,7 @@ begin
     from public.household_expiration_snapshot() s
     where s.status in ('priority', 'consume_soon')
     order by
-      s.canonical_ingredient_id,
+      s.pantry_item_id,
       case s.status when 'priority' then 0 when 'consume_soon' then 1 else 2 end,
       s.age_days desc
   ) ranked;
