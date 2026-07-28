@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,7 +16,12 @@ export default function DescubrirScreen() {
   const { session } = useSession();
   const { height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  // Coming from a product about to expire on the Home: it arrives already picked, but only as a
+  // starting point. Once the screen is mounted the selection belongs to the user.
+  const { ingredientId } = useLocalSearchParams<{ ingredientId?: string }>();
+  const [selected, setSelected] = useState<Set<string>>(() =>
+    ingredientId ? new Set([ingredientId]) : new Set(),
+  );
   const [cards, setCards] = useState<DiscoverCard[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState<Set<string>>(new Set());

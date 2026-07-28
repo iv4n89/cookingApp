@@ -1,6 +1,6 @@
 begin;
 
-select plan(24);
+select plan(25);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -219,6 +219,12 @@ select is(
   jsonb_typeof(public.household_today_decision('cena', 5)->'priorityProducts'),
   'array',
   'priorityProducts es siempre un array'
+);
+select is(
+  public.household_today_decision('cena', 5)->'priorityProducts'->0->>'canonicalIngredientId',
+  (select coalesce(i.canonical_id, i.id)::text from public.ingredients i
+   where i.normalized_name = 'manzana golden'),
+  'El producto prioritario trae el canónico que espera el descubridor'
 );
 select is(
   public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
