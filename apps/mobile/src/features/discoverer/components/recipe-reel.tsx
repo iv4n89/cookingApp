@@ -1,6 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useEffect, useRef } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 import type { DiscoverCard } from '@/lib/recipes';
@@ -8,51 +7,27 @@ import type { DiscoverCard } from '@/lib/recipes';
 import { colors } from '@recetas/theme/tokens';
 
 const VISIBLE_INGREDIENTS = 6;
-const DOUBLE_TAP_MS = 300;
 
-// One full-screen recipe page of the discoverer. Tapping anywhere opens the full recipe and double
-// tapping saves it (Instagram-like). Opening waits out the double-tap window: without that pause
-// there is no way to tell the first tap of a save from a tap meant to open.
+// One full-screen recipe page of the discoverer. Tapping anywhere reports the tap; the screen
+// decides whether it opens or saves, because telling one tap from two needs to survive scrolling.
 export function RecipeReel({
   card,
   height,
   saved,
   onSave,
-  onOpen,
+  onTap,
 }: {
   card: DiscoverCard;
   height: number;
   saved: boolean;
   onSave: () => void;
-  onOpen: () => void;
+  onTap: () => void;
 }) {
-  const pendingOpen = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(
-    () => () => {
-      if (pendingOpen.current) clearTimeout(pendingOpen.current);
-    },
-    [],
-  );
-
-  function handleTap() {
-    if (pendingOpen.current) {
-      clearTimeout(pendingOpen.current);
-      pendingOpen.current = null;
-      onSave();
-      return;
-    }
-    pendingOpen.current = setTimeout(() => {
-      pendingOpen.current = null;
-      onOpen();
-    }, DOUBLE_TAP_MS);
-  }
-
   const shown = card.ingredientNames.slice(0, VISIBLE_INGREDIENTS);
   const rest = card.ingredientNames.length - shown.length;
 
   return (
-    <Pressable onPress={handleTap} style={{ height }} className="w-full bg-surface-container">
+    <Pressable onPress={onTap} style={{ height }} className="w-full bg-surface-container">
       {card.imageUrl ? (
         <Image
           source={card.imageUrl}

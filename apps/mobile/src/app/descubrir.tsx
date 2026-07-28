@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, Text, useWindowDimensions, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,6 +11,8 @@ import { discoverByIngredients, type DiscoverCard } from '@/lib/recipes';
 import { listFavoriteIds, setFavorite } from '@/lib/user-recipes';
 
 import { colors } from '@recetas/theme/tokens';
+
+const DOUBLE_TAP_MS = 300;
 
 export default function DescubrirScreen() {
   const { session } = useSession();
@@ -26,8 +28,38 @@ export default function DescubrirScreen() {
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const savingIds = useRef<Set<string>>(new Set());
+  const pendingOpen = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const pageHeight = height - insets.top - insets.bottom;
+
+  useEffect(
+    () => () => {
+      if (pendingOpen.current) clearTimeout(pendingOpen.current);
+    },
+    [],
+  );
+
+  function cancelPendingOpen() {
+    if (!pendingOpen.current) return false;
+    clearTimeout(pendingOpen.current);
+    pendingOpen.current = null;
+    return true;
+  }
+
+  // A tap opens the recipe and a double tap saves it. Opening waits out the double-tap window,
+  // since the first tap of a save looks exactly like a tap meant to open. Scrolling cancels the
+  // wait: the timing lives here and not in the card so that swiping away does not land you on the
+  // recipe you just left behind.
+  function handleTap(recipeId: string) {
+    if (cancelPendingOpen()) {
+      save(recipeId);
+      return;
+    }
+    pendingOpen.current = setTimeout(() => {
+      pendingOpen.current = null;
+      router.push({ pathname: '/receta/[id]', params: { id: recipeId } });
+    }, DOUBLE_TAP_MS);
+  }
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -137,13 +169,14 @@ export default function DescubrirScreen() {
         snapToInterval={pageHeight}
         decelerationRate="fast"
         showsVerticalScrollIndicator={false}
+        onScrollBeginDrag={cancelPendingOpen}
         renderItem={({ item }) => (
           <RecipeReel
             card={item}
             height={pageHeight}
             saved={saved.has(item.recipeId)}
             onSave={() => save(item.recipeId)}
-            onOpen={() => router.push({ pathname: '/receta/[id]', params: { id: item.recipeId } })}
+            onTap={() => handleTap(item.recipeId)}
           />
         )}
         ListFooterComponent={
