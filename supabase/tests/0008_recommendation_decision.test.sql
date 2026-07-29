@@ -1,6 +1,6 @@
 begin;
 
-select plan(51);
+select plan(56);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
@@ -661,6 +661,28 @@ select is(
   'El snapshot conserva la versión del perfil de seguridad exacto'
 );
 
+select is(
+  (select count(*) from jsonb_array_elements(
+    public.build_household_recommendation_snapshot(
+      current_setting('test.recommend_household')::uuid,
+      '00000000-0000-0000-0000-000000000701',
+      '2026-07-24T10:00:00Z', 'desayuno'
+    )->'recipeInputs') ri
+   where ri->'mealTypes' @> '["cena"]'::jsonb),
+  0::bigint,
+  'Pedir desayuno deja fuera del snapshot las recetas solo de cena'
+);
+
+select isnt(
+  public.build_household_recommendation_snapshot(
+    current_setting('test.recommend_household')::uuid,
+    '00000000-0000-0000-0000-000000000701',
+    '2026-07-24T10:00:00Z', 'desayuno'
+  )->>'rotationSeed',
+  null,
+  'El snapshot lleva semilla de rotación'
+);
+
 update public.user_preferences
 set notes = ''
 where user_id = '00000000-0000-0000-0000-000000000702';
@@ -692,6 +714,65 @@ select is(
   public.household_recommendation_decision('cena', 5)->>'selectedRecipeId',
   '00000000-0000-0000-0000-000000007301',
   'Otro miembro comparte la decisión del inventario del hogar'
+);
+
+-- La semilla viaja del snapshot a la respuesta: household_today_decision la reutiliza.
+select is(
+  public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'rotationSeed', 'semilla-fija',
+      'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', '[]'::jsonb, 'recipeInputs', '[]'::jsonb
+    ), 5
+  )->>'rotationSeed',
+  'semilla-fija',
+  'La semilla de rotación sale en la respuesta del evaluador'
+);
+
+-- Entre candidatas empatadas en todos los criterios, manda la semilla.
+select is(
+  (public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'rotationSeed', 'semilla-fija',
+      'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', '[]'::jsonb,
+      'recipeInputs', jsonb_build_array(
+        jsonb_build_object('recipeId', 'a', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', '[]'::jsonb),
+        jsonb_build_object('recipeId', 'b', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', '[]'::jsonb),
+        jsonb_build_object('recipeId', 'c', 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb, 'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high', 'ingredients', '[]'::jsonb)
+      )
+    ), 5
+  ))->>'selectedRecipeId',
+  (select id from (values ('a'), ('b'), ('c')) t(id)
+   order by public.rotation_fraction('semilla-fija', id) limit 1),
+  'Entre empatadas, la principal es la que ordena la semilla'
+);
+
+-- El tope viejo (40 alternativas) dejaba fuera el 94% del catálogo.
+select is(
+  jsonb_array_length((public.evaluate_recommendation_snapshot(
+    jsonb_build_object(
+      'evaluatedAt', '2026-07-24T10:00:00Z', 'season', 'summer', 'mealType', null,
+      'rotationSeed', 'semilla-fija',
+      'effectiveAllergens', '[]'::jsonb, 'requiredDiet', '[]'::jsonb,
+      'unsupportedHouseholdNeeds', '[]'::jsonb, 'hasUnsupportedHouseholdNotes', false,
+      'inventoryBatches', '[]'::jsonb,
+      'recipeInputs', (
+        select jsonb_agg(jsonb_build_object(
+          'recipeId', 'r' || g, 'allergens', '[]'::jsonb, 'mealTypes', '[]'::jsonb,
+          'seasons', jsonb_build_array('all_year'), 'seasonConfidence', 'high',
+          'ingredients', '[]'::jsonb
+        ))
+        from generate_series(1, 80) g
+      )
+    ), 60
+  ))->'candidates'),
+  61,
+  'Con 80 candidatas y límite 60 devuelve 61: el tope ya no se queda en 41'
 );
 
 select * from finish();
