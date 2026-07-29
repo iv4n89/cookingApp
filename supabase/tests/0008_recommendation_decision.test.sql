@@ -1,11 +1,29 @@
 begin;
 
-select plan(47);
+select plan(51);
 
 select has_function('public', 'recommendation_season', array['date'], 'Existe el helper de estación');
 select has_function('public', 'evaluate_recommendation_snapshot', array['jsonb', 'integer'], 'Existe el evaluador puro');
 select has_function('public', 'build_household_recommendation_snapshot', array['uuid', 'uuid', 'timestamp with time zone', 'text'], 'Existe el constructor privado de snapshot');
 select has_function('public', 'household_recommendation_decision', array['text', 'integer'], 'Existe la RPC pública de decisión');
+select has_function('public', 'rotation_fraction', array['text', 'text'], 'Existe el helper de rotación');
+
+select ok(
+  public.rotation_fraction('semilla-a', 'receta-1') between 0 and 1,
+  'La rotación devuelve una fracción entre 0 y 1'
+);
+
+select is(
+  public.rotation_fraction('semilla-a', 'receta-1'),
+  public.rotation_fraction('semilla-a', 'receta-1'),
+  'La misma semilla y la misma receta dan siempre el mismo valor'
+);
+
+select isnt(
+  public.rotation_fraction('semilla-a', 'receta-1'),
+  public.rotation_fraction('semilla-b', 'receta-1'),
+  'Cambiar de semilla cambia el valor de la misma receta'
+);
 
 select is(public.recommendation_season('2026-03-01'::date), 'spring', 'Marzo inicia primavera');
 select is(public.recommendation_season('2026-05-31'::date), 'spring', 'Mayo permanece en primavera');
