@@ -327,12 +327,16 @@ por:
       -- obligaba a caer en el fallback sin franja. Las recetas sin franja valen para todas.
       where r.reusable
         and (
-          p_meal_type is null
+          v_meal_type is null
           or r.meal_types is null
           or cardinality(r.meal_types) = 0
-          or r.meal_types @> array[p_meal_type]
+          or r.meal_types @> array[v_meal_type]
         )
 ```
+
+Es `v_meal_type`, no `p_meal_type`: la función ya normaliza el parámetro con
+`nullif(btrim(p_meal_type), '')` y lo valida contra el vocabulario, así que una cadena
+vacía debe comportarse como "sin franja" en vez de filtrar contra basura.
 
 Mantener el `revoke execute ... from public, anon, authenticated;` que acompaña a la
 función.
@@ -416,7 +420,7 @@ pocos faltantes y comprobar que se va al final. Insertar antes de los asertos:
 insert into public.cooked_recipes (user_id, household_id, recipe_id, title, servings, cooked_at)
 values (
   '00000000-0000-0000-0000-000000000901',
-  '00000000-0000-0000-0000-000000000900',
+  current_setting('test.today_household')::uuid,
   '00000000-0000-0000-0000-000000009302',
   'Receta cocinada ayer', 2, now() - interval '1 day'
 );
@@ -432,10 +436,13 @@ select ok(
 );
 ```
 
-Ajustar los uuid de usuario, hogar y receta a los que use realmente el archivo (los del
-bloque de fixtures que empieza sobre la línea 270). La receta elegida debe ser una que
-hoy salga entre las alternativas; si no hay ninguna clara, insertar una receta nueva
-cocinable con los mismos faltantes que otra no cocinada.
+Ajustar los uuid de usuario y de receta a los que use realmente el archivo (los del
+bloque de fixtures que empieza sobre la línea 270). El hogar **no** es un literal: lo
+crea el trigger `handle_new_user` con `gen_random_uuid()` y el archivo lo guarda en
+`test.today_household` (0009:22-26), así que va por `current_setting`; un uuid inventado
+viola la clave ajena contra `households` y tumba el fichero entero. La receta elegida
+debe ser una que hoy salga entre las alternativas; si no hay ninguna clara, insertar una
+receta nueva cocinable con los mismos faltantes que otra no cocinada.
 
 Subir `select plan(28);` a `select plan(31);`.
 
