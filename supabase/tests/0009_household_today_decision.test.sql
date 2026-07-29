@@ -1,6 +1,6 @@
 begin;
 
-select plan(28);
+select plan(31);
 
 select has_function('public', 'household_today_decision', array['text', 'integer'], 'Existe la RPC compositora de la decisión de hoy');
 select ok(
@@ -366,6 +366,39 @@ select ok(
        where d->>'recipeId' = '00000000-0000-0000-0000-000000009308')
    )),
   'Dos candidatas con el mismo tags[1] (italiana) no aparecen ambas en discover (misma decisión)'
+);
+
+-- Migración 0075: la semilla del snapshot sustituye a random(), así que la Home deja de
+-- rebarajarse en cada refresco (use-home.ts recarga al enfocar la pestaña).
+select is(
+  public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
+  public.household_today_decision('cena', 5)->'pantry'->'featured'->>'recipeId',
+  'Dos llamadas seguidas dan la misma destacada: la Home no se rebaraja al refrescar'
+);
+
+select is(
+  (public.household_today_decision('cena', 5)->'pantry'->'alternatives')::text,
+  (public.household_today_decision('cena', 5)->'pantry'->'alternatives')::text,
+  'Las alternativas también son estables dentro del día'
+);
+
+-- Lo cocinado hace poco baja al final: penaliza, no excluye.
+insert into public.cooked_recipes (user_id, household_id, recipe_id, title, servings, cooked_at)
+values (
+  '00000000-0000-0000-0000-000000000901',
+  current_setting('test.today_household')::uuid,
+  '00000000-0000-0000-0000-000000009302',
+  'Receta cocinada ayer', 2, now() - interval '1 day'
+);
+
+select ok(
+  (public.household_today_decision('cena', 5)->'pantry'->'alternatives'->-1->>'recipeId')
+    = '00000000-0000-0000-0000-000000009302'
+  or not exists (
+    select 1 from jsonb_array_elements(public.household_today_decision('cena', 5)->'pantry'->'alternatives') a
+    where a->>'recipeId' = '00000000-0000-0000-0000-000000009302'
+  ),
+  'Lo cocinado ayer queda al final de las alternativas o fuera de ellas'
 );
 
 -- Filtro de la pista pantry por franja horaria (migración 0058).
