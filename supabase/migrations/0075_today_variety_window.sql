@@ -2,6 +2,8 @@
 -- ~495 recetas reusables) y el random() de 0062 se sustituye por la semilla del snapshot, que
 -- es la misma durante todo el día para un hogar. Además, lo cocinado en los últimos 14 días
 -- baja al final: penaliza, no excluye, para que la Home no se quede corta.
+-- El filtro de franja y su fallback desaparecen de aquí: el snapshot ya elige solo recetas de
+-- la franja, así que filtrar otra vez no quitaba nada y el fallback no podía recuperar nada.
 
 create or replace function public.household_today_decision(
   p_meal_type text default null,
@@ -82,39 +84,7 @@ begin
       ) as card
     from jsonb_array_elements(v_decision->'candidates') as candidate
     join public.recipes r on r.id = (candidate->>'recipeId')::uuid
-    where p_meal_type is null or r.meal_types is null
-       or cardinality(r.meal_types) = 0 or r.meal_types @> array[p_meal_type]
   ) c;
-
-  -- Fallback: si la franja no deja candidatas, usa todas (sin filtro), con la misma rotación.
-  if jsonb_array_length(v_meal) = 0 then
-    select coalesce(jsonb_agg(
-      jsonb_build_object('recipeId', recipe_id, 'missing', missing, 'prio', prio, 'card', card)
-      order by cooked_recently, missing, public.rotation_fraction(v_seed, recipe_id)
-    ), '[]'::jsonb)
-    into v_meal
-    from (
-      select
-        candidate->>'recipeId' as recipe_id,
-        coalesce((candidate->'score'->>'missingIngredientCount')::int, 0) as missing,
-        coalesce((candidate->'score'->>'priorityUsage')::numeric, 0) as prio,
-        exists (
-          select 1 from public.cooked_recipes cr
-          where cr.household_id = v_household_id
-            and cr.recipe_id = (candidate->>'recipeId')::uuid
-            and cr.restored_at is null
-            and cr.cooked_at > now() - interval '14 days'
-        ) as cooked_recently,
-        jsonb_build_object(
-          'recipeId', candidate->>'recipeId', 'title', r.title,
-          'imageUrl', r.image_url, 'imageStatus', r.image_status, 'mode', candidate->>'mode',
-          'missingIngredientCount', coalesce((candidate->'score'->>'missingIngredientCount')::int, 0),
-          'reasons', candidate->'reasonCodes'
-        ) as card
-      from jsonb_array_elements(v_decision->'candidates') as candidate
-      join public.recipes r on r.id = (candidate->>'recipeId')::uuid
-    ) c;
-  end if;
 
   -- Destacada: si hay candidata que aprovecha lo crítico (prio>0) con <=2 faltantes, gana esa
   -- (menos faltantes, luego más uso crítico, y la semilla entre iguales); si no, la primera del
