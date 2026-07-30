@@ -15,9 +15,6 @@ alter table public.recipes
   add constraint recipes_retired_coherent
     check ((retired_at is null) = (retired_reason is null));
 
--- Las consultas del catálogo filtran por esto en cada llamada.
-create index recipes_published_idx on public.recipes (id) where retired_at is null;
-
 -- Las cuatro funciones que eligen recetas del catálogo pasan a filtrar las retiradas. Se
 -- reemplazan copiando su definición vigente y añadiendo una sola línea al where, sin tocar nada
 -- más: firmas, cuerpos y permisos quedan como estaban.
@@ -574,3 +571,4 @@ end;
 $$;
 
 revoke execute on function public.retire_duplicate_recipes() from public, anon, authenticated;
+grant execute on function public.retire_duplicate_recipes() to service_role;

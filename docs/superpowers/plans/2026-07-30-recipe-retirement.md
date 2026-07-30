@@ -58,7 +58,7 @@ en `supabase/tests/` (`pnpm test:db`, requiere `supabase start` local), cliente 
   funciones, la vista de cobertura y `retire_duplicate_recipes()`.
 - Crear: `supabase/migrations/0078_retire_duplicate_recipes.sql` — la invocación de la
   limpieza sobre los datos existentes.
-- Crear: `supabase/tests/0015_recipe_retirement.test.sql` — 20 asertos.
+- Crear: `supabase/tests/0015_recipe_retirement.test.sql` — 21 asertos.
 - Modificar: `apps/mobile/src/lib/recipes.ts:116` — filtro en el catálogo del recetario.
 
 Esquema y datos van en migraciones separadas, como `0070` (cobertura de caducidad) y `0071`
@@ -143,9 +143,6 @@ alter table public.recipes
   -- Retirar sin decir por qué no vale: en un mes nadie recordará por qué se fueron 61 recetas.
   add constraint recipes_retired_coherent
     check ((retired_at is null) = (retired_reason is null));
-
--- Las consultas del catálogo filtran por esto en cada llamada.
-create index recipes_published_idx on public.recipes (id) where retired_at is null;
 ```
 
 - [ ] **Paso 4: Ejecutar y ver que pasa**
@@ -487,12 +484,19 @@ git commit -m "feat: la cobertura por ingrediente cuenta solo recetas publicadas
 
 - [ ] **Paso 1: Escribir los tests que fallan**
 
-Subir `select plan(14);` a `select plan(20);` y añadir:
+Subir `select plan(14);` a `select plan(21);` y añadir:
 
 ```sql
 select has_function(
   'public', 'retire_duplicate_recipes', array[]::text[],
   'Existe la función de limpieza de duplicados'
+);
+
+select ok(
+  has_function_privilege('service_role', 'public.retire_duplicate_recipes()', 'EXECUTE')
+  and not has_function_privilege('authenticated', 'public.retire_duplicate_recipes()', 'EXECUTE')
+  and not has_function_privilege('anon', 'public.retire_duplicate_recipes()', 'EXECUTE'),
+  'Solo service_role puede retirar recetas: no es algo que haga el móvil'
 );
 
 -- Tres copias del mismo título: DUP_B la tiene guardada el usuario, DUP_C tiene imagen lista,
@@ -605,17 +609,21 @@ end;
 $$;
 
 revoke execute on function public.retire_duplicate_recipes() from public, anon, authenticated;
+grant execute on function public.retire_duplicate_recipes() to service_role;
 ```
 
-`security definer` porque escribe en `recipes`, que tiene RLS y no admite DML del cliente.
-El `revoke` deja la ejecución solo a `service_role`, que es quien aplica migraciones.
+`security definer` porque escribe en `recipes`, que tiene RLS y no admite DML del cliente. El
+`grant` explícito hace falta: `revoke ... from public` retira la concesión que Postgres da por
+defecto a `PUBLIC` al crear la función, así que sin él no la podría ejecutar ningún rol salvo
+el propietario. Es el patrón de `find_similar_recipe` (`0034:19`) y `match_recipes`
+(`0004:48`).
 
 - [ ] **Paso 4: Ejecutar y ver que pasa**
 
 ```bash
 npx supabase migration up --local && pnpm test:db
 ```
-Esperado: `0015` en 20/20.
+Esperado: `0015` en 21/21.
 
 - [ ] **Paso 5: Crear la migración de datos**
 
@@ -686,7 +694,7 @@ git commit -m "feat: el recetario no lista las recetas retiradas"
 ```bash
 pnpm test:db && pnpm typecheck && pnpm lint
 ```
-Esperado: 275 pruebas pgTAP (255 + 20) y el resto en verde.
+Esperado: 276 pruebas pgTAP (255 + 21) y el resto en verde.
 
 - [ ] **Paso 2: Comprobar que la migración es aplicable desde cero**
 
@@ -711,7 +719,7 @@ Lo que **no** se filtra, a propósito: \`find_similar_recipe\`, para que el gene
 
 La limpieza de los duplicados va como función \`retire_duplicate_recipes()\` (invocada por 0078) y no como update suelto, porque así se prueba y porque el slice siguiente generará duplicados nuevos. Criterio de la que se queda: la que alguien tenga guardada, luego la que tenga imagen lista, luego la más antigua, luego el id menor. El 30 de julio eran 50 títulos y 61 sobrantes.
 
-**Validación**: 275 pruebas pgTAP (20 nuevas), \`db reset\` desde cero, typecheck y lint.
+**Validación**: 276 pruebas pgTAP (21 nuevas), \`db reset\` desde cero, typecheck y lint.
 
 Spec: \`docs/superpowers/specs/2026-07-30-recipe-retirement-design.md\`
 Plan: \`docs/superpowers/plans/2026-07-30-recipe-retirement.md\`"

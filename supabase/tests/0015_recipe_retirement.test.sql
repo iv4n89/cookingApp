@@ -1,6 +1,6 @@
 begin;
 
-select plan(20);
+select plan(21);
 
 select has_column('public', 'recipes', 'retired_at', 'recipes tiene retired_at');
 select has_column('public', 'recipes', 'retired_reason', 'recipes tiene retired_reason');
@@ -189,6 +189,13 @@ select is(
 select has_function(
   'public', 'retire_duplicate_recipes', array[]::text[],
   'Existe la función de limpieza de duplicados'
+);
+
+select ok(
+  has_function_privilege('service_role', 'public.retire_duplicate_recipes()', 'EXECUTE')
+  and not has_function_privilege('authenticated', 'public.retire_duplicate_recipes()', 'EXECUTE')
+  and not has_function_privilege('anon', 'public.retire_duplicate_recipes()', 'EXECUTE'),
+  'Solo service_role puede retirar recetas: no es algo que haga el móvil'
 );
 
 -- Tres copias del mismo título: DUP_B la tiene guardada el usuario, DUP_C tiene imagen lista,
