@@ -1,6 +1,6 @@
 begin;
 
-select plan(13);
+select plan(14);
 
 select has_column('public', 'recipes', 'retired_at', 'recipes tiene retired_at');
 select has_column('public', 'recipes', 'retired_reason', 'recipes tiene retired_reason');
@@ -175,6 +175,16 @@ select is(
 );
 
 reset role;
+
+-- Las dos recetas con ingrediente de las fixtures usan el mismo y una está retirada: la cobertura
+-- tiene que ver una, no dos. Si contara las retiradas, retirar los 61 duplicados dejaría la
+-- métrica de la fase B midiendo recetas que ya no existen para el usuario.
+select is(
+  (select recipe_count from public.ingredient_recipe_coverage
+   where ingredient_id = 'facade00-0000-4000-8000-000000000010'),
+  1::bigint,
+  'La cobertura por ingrediente no cuenta las recetas retiradas'
+);
 
 select * from finish();
 rollback;

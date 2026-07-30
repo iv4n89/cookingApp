@@ -494,3 +494,32 @@ revoke execute on function public.discover_recipes_by_ingredients(uuid[], intege
   from public, anon;
 grant execute on function public.discover_recipes_by_ingredients(uuid[], integer, integer)
   to authenticated;
+
+-- La cobertura cuenta solo recetas publicadas: retirar un duplicado no añade cobertura, y si la
+-- vista siguiera contándolo mediríamos el avance de la fase B con una regla falsa.
+create or replace view public.ingredient_recipe_coverage
+with (security_invoker = true) as
+with recipe_canonical_ingredients as (
+  -- distinct: una receta que menciona dos variantes del mismo canónico cuenta una vez, no dos.
+  -- El join descarta las filas sin ingredient_id, que no se pueden atribuir a ningún canónico.
+  select distinct
+    r.id as recipe_id,
+    r.reusable,
+    coalesce(i.canonical_id, i.id) as canonical_ingredient_id
+  from public.recipes r
+  cross join lateral jsonb_array_elements(coalesce(r.ingredients, '[]'::jsonb)) as ing(value)
+  join public.ingredients i on i.id = (ing.value->>'ingredient_id')::uuid
+  where r.retired_at is null
+)
+select
+  canonical.id as ingredient_id,
+  canonical.name,
+  canonical.category,
+  count(usage.recipe_id) as recipe_count,
+  count(usage.recipe_id) filter (where usage.reusable) as reusable_recipe_count
+from public.ingredients canonical
+-- left join: los ingredientes sin ninguna receta son justamente la lista de trabajo.
+left join recipe_canonical_ingredients usage
+  on usage.canonical_ingredient_id = canonical.id
+where canonical.canonical_id is null
+group by canonical.id, canonical.name, canonical.category;
