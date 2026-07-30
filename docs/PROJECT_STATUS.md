@@ -65,7 +65,8 @@ mutación del inventario.
 
 Con esto el backend de la Fase 2 está completo: caducidad (#90/#91),
 seguridad por ingrediente (#93), afinidad estacional (#94) y decisión
-reproducible (#95). Ningún cliente consume aún el motor.
+reproducible (#95). Cuando se escribió esto ningún cliente consumía el motor; la
+Home lo consume desde #99/#100.
 
 ## Decisiones vigentes
 
