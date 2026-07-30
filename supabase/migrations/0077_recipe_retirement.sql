@@ -523,3 +523,54 @@ left join recipe_canonical_ingredients usage
   on usage.canonical_ingredient_id = canonical.id
 where canonical.canonical_id is null
 group by canonical.id, canonical.name, canonical.category;
+
+-- Retira las copias sobrantes de cada título repetido y devuelve cuántas retiró. Va como función
+-- y no como update dentro de la migración por dos razones: un update de una sola ejecución no se
+-- puede probar (la base local no tiene ni una receta), y el slice siguiente genera cientos de
+-- recetas que traerán duplicados nuevos.
+--
+-- El título se compara tal cual, sin normalizar: es como se midieron los 50 títulos repetidos, y
+-- normalizar agruparía platos que solo coinciden al quitarles los acentos.
+create function public.retire_duplicate_recipes()
+returns integer
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_retired integer;
+begin
+  with candidates as (
+    select
+      r.id,
+      r.title,
+      r.image_status,
+      r.created_at,
+      -- Si alguien la tiene guardada o valorada, es la que se queda: retirar la suya la dejaría
+      -- fuera del catálogo sin que él haya hecho nada.
+      exists (select 1 from public.user_recipes ur where ur.recipe_id = r.id) as saved
+    from public.recipes r
+    where r.reusable
+      and r.retired_at is null
+  ),
+  ranked as (
+    select
+      id,
+      row_number() over (
+        partition by title
+        order by saved desc, (image_status = 'ready') desc, created_at, id
+      ) as position
+    from candidates
+  )
+  update public.recipes r
+  set retired_at = now(), retired_reason = 'duplicate'
+  from ranked
+  where r.id = ranked.id
+    and ranked.position > 1;
+
+  get diagnostics v_retired = row_count;
+  return v_retired;
+end;
+$$;
+
+revoke execute on function public.retire_duplicate_recipes() from public, anon, authenticated;

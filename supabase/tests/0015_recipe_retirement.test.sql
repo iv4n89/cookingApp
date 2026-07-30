@@ -1,6 +1,6 @@
 begin;
 
-select plan(14);
+select plan(20);
 
 select has_column('public', 'recipes', 'retired_at', 'recipes tiene retired_at');
 select has_column('public', 'recipes', 'retired_reason', 'recipes tiene retired_reason');
@@ -184,6 +184,58 @@ select is(
    where ingredient_id = 'facade00-0000-4000-8000-000000000010'),
   1::bigint,
   'La cobertura por ingrediente no cuenta las recetas retiradas'
+);
+
+select has_function(
+  'public', 'retire_duplicate_recipes', array[]::text[],
+  'Existe la función de limpieza de duplicados'
+);
+
+-- Tres copias del mismo título: DUP_B la tiene guardada el usuario, DUP_C tiene imagen lista,
+-- DUP_A es la más antigua y no tiene nada. Debe quedarse DUP_B.
+insert into public.recipes (id, title, source, reusable, image_status, created_at) values
+  ('facade00-0000-4000-8000-000000000201', 'Título repetido', 'generated', true, 'none', now() - interval '3 days'),
+  ('facade00-0000-4000-8000-000000000202', 'Título repetido', 'generated', true, 'none', now() - interval '2 days'),
+  ('facade00-0000-4000-8000-000000000203', 'Título repetido', 'generated', true, 'ready', now() - interval '1 day');
+
+insert into public.user_recipes (user_id, recipe_id, is_favorite)
+values ('facade00-0000-4000-8000-000000000901', 'facade00-0000-4000-8000-000000000202', true);
+
+-- Dos recetas no reusables con el mismo título: son de usuarios distintos y no sobra ninguna.
+insert into public.recipes (id, title, source, reusable, image_status) values
+  ('facade00-0000-4000-8000-000000000301', 'Tortilla de alguien', 'generated', false, 'none'),
+  ('facade00-0000-4000-8000-000000000302', 'Tortilla de alguien', 'generated', false, 'none');
+
+select lives_ok(
+  $$select public.retire_duplicate_recipes()$$,
+  'La limpieza se ejecuta sin errores'
+);
+
+select is(
+  (select id from public.recipes
+   where title = 'Título repetido' and retired_at is null),
+  'facade00-0000-4000-8000-000000000202'::uuid,
+  'Entre tres copias se queda la que alguien tiene guardada'
+);
+
+select is(
+  (select count(*) from public.recipes
+   where title = 'Título repetido' and retired_reason = 'duplicate'),
+  2::bigint,
+  'Las otras dos quedan retiradas con motivo duplicate'
+);
+
+select is(
+  (select count(*) from public.recipes
+   where title = 'Tortilla de alguien' and retired_at is null),
+  2::bigint,
+  'La limpieza no toca las recetas no reusables: cada usuario tiene la suya'
+);
+
+select is(
+  public.retire_duplicate_recipes(),
+  0,
+  'Volver a ejecutarla no retira nada más'
 );
 
 select * from finish();
