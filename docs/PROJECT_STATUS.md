@@ -1,6 +1,6 @@
 # Estado del proyecto y punto de reanudación
 
-Última actualización: 25 de julio de 2026 (tarde).
+Última actualización: 30 de julio de 2026.
 
 Este documento es la memoria operativa del roadmap. Al retomar el trabajo en
 otro chat o editor, debe leerse antes del plan maestro:
@@ -22,6 +22,18 @@ comprar → despensa → prioritarios → recomendar → cocinar → actualizar.
 | Fase 4 — Compra compartida y ciclo diario | Pendiente | Depende de Fase 3 |
 | Fase 5 — Preparación cloud y operación | Demo entregada (alcance reducido) | Cloud + APK live; ops completa aplazada |
 | Fase 6 — Integraciones y escala | Aplazada | Solo con evidencia de necesidad |
+
+Desde el 26 de julio el trabajo lo guía un roadmap propio de contenido y
+variedad, que corre en paralelo a las fases del plan maestro:
+
+| Fase de variedad y contenido | Estado | Entrega |
+| --- | --- | --- |
+| A — Variedad en el motor | Completada y desplegada | PR #134, migraciones 0074/0075 |
+| B — Cobertura y calidad del catálogo | Siguiente | Diseñada, sin plan de ejecución |
+| C — Eventos y secciones por fecha | Pendiente | Depende de B |
+| D — Panel web de administración | Pendiente | Depende de B y C; stack sin decidir |
+
+Diseño en `docs/superpowers/specs/2026-07-29-variedad-y-contenido-design.md`.
 
 El primer slice de la Fase 2 construyó el dataset trazable de perfiles
 aproximados de caducidad y su validador offline en la PR #90, fusionada como
@@ -96,8 +108,8 @@ La revisión final de la PR #88 no encontró bloqueantes. Se verificaron:
 
 ## Validaciones operativas aún pendientes
 
-No son una feature nueva, pero deben ejecutarse antes de considerar preparada
-una entrega remota:
+No son una feature nueva. La demo cloud se entregó sin ellas; siguen pendientes y
+hay que ejecutarlas antes de considerar el backend preparado para producción:
 
 - Aplicar todas las migraciones sobre una base local desechable desde cero
   mediante `supabase db reset`.
@@ -174,6 +186,74 @@ hogar; cold start (sin semillas) = afinidad 0, sin efecto.
 
 Spec/plan: `docs/superpowers/{specs,plans}/2026-07-25-taste-personalization*`.
 
+### Hecho (recetario y descubridor, 25-28 de julio)
+
+Dos superficies nuevas para llegar al catálogo sin pasar por la Home:
+
+- **Recetario (#118)**: pestaña Recetas con el catálogo completo y las
+  guardadas. Spec/plan en `docs/superpowers/{specs,plans}/2026-07-25-recipe-book*`.
+- **Descubridor (#119)**: elegir ingredientes y ver qué sale con ellos. Spec/plan
+  en `docs/superpowers/{specs,plans}/2026-07-26-recipe-discoverer*`. Arreglos
+  posteriores: selección visible y reinicio (#120), abrirlo desde un producto a
+  punto de caducar (#130), abrir la receta desde el reel y refrescar las
+  guardadas (#132).
+
+### Hecho (imágenes y catálogo de ingredientes, 26-28 de julio)
+
+- **Imágenes de ingredientes con fal (#121)**, generadas a partir de una
+  descripción previa del ingrediente en vez del nombre suelto (#122); arreglo del
+  `Authorization` que faltaba en el backfill (#123).
+- **Imágenes de receta por plato (#125)**: la foto se pide describiendo el plato,
+  no repitiendo el título. Se rehicieron las fotos del catálogo con ese criterio
+  (#126). Esto cierra parcialmente la deuda "cerdo → pollo asado"; los scripts de
+  semilla todavía no piden `image_prompt` al generar recetas nuevas.
+- **Cobertura de caducidad**: perfil para los 134 ingredientes que no lo tenían
+  (#127) y arreglo del embutido curado (#129).
+- **Alta de los 68 ingredientes canónicos que faltaban** en el catálogo (#128).
+- **Chat**: respeta lo que se le pide antes que la despensa (#124).
+- **Despensa**: añadir un producto a mano ya no duplica la fila (#131).
+
+### Hecho (Fase A de variedad, 29 de julio)
+
+La Home dejaba ver siempre las mismas recetas por tres causas encadenadas,
+medidas contra producción y no supuestas: ventana de 31 candidatas sobre 495
+recetas, corte determinista, y `random()` que solo barajaba dentro de esas 31
+en cada refresco. Además la franja horaria se filtraba después del corte, de ahí
+los platos de comida a la hora del desayuno.
+
+- **PR #133**: diseño de las cuatro fases (variedad, catálogo, eventos, panel) y
+  plan de ejecución de la A.
+- **PR #134**: migraciones `0074_recommendation_rotation_seed` y
+  `0075_today_variety_window`. Ventana de candidatas 31 → 121; filtro de franja
+  movido al constructor del snapshot; semilla determinista por hogar y día
+  natural en `Europe/Madrid` en lugar de `random()`; penalización (no exclusión)
+  de lo cocinado en los últimos 14 días. `evaluate_recommendation_snapshot` sigue
+  siendo `immutable`: la semilla viaja como dato del snapshot.
+- 244 pruebas pgTAP en verde. Migraciones aplicadas en la nube (verificado con
+  `supabase migration list --linked`).
+- **Pendiente**: verificación en dispositivo. Con la despensa sin tocar, las
+  recetas de hoy y las de ayer deben diferir; refrescar la Home varias veces el
+  mismo día debe devolver siempre lo mismo; a primera hora deben salir desayunos.
+
+### Siguiente prioridad: Fase B — cobertura y calidad del catálogo
+
+Diseñada en la spec del 29 de julio, sin plan de ejecución todavía. Objetivo: que
+cualquier cosa de la despensa dé al menos tres recetas y que las que haya tengan
+sentido culinario. Medición vigente sobre producción: 504 recetas (495
+reutilizables), 52 títulos duplicados, 217 ingredientes canónicos sin ninguna
+receta y 343 con menos de tres. El brócoli no aparece en ninguna receta.
+
+1. Vista de cobertura por ingrediente canónico, que es a la vez la lista de
+   trabajo y la forma de medir el avance.
+2. Generación dirigida a los huecos (orden de magnitud 350-450 recetas, ~1,5 $ de
+   imágenes), priorizando lo que el usuario tiene de verdad en la despensa.
+3. Coherencia culinaria en el prompt: tipo de plato explícito y guarniciones que
+   pegan.
+4. Columna `cuisine` con vocabulario cerrado en lugar de `tags[1]`, que hoy es
+   texto libre (`argentina`/`argentino`, `italiana`/`italia`).
+5. Estado de publicación para retirar una receta sin borrarla — es lo que permite
+   cerrar por fin los 52 títulos duplicados.
+
 ### Después (fondo de la visión)
 
 3. **Fase 3: motor conversacional delgado**. Orden: receta existente →
@@ -184,15 +264,36 @@ Spec/plan: `docs/superpowers/{specs,plans}/2026-07-25-taste-personalization*`.
 4. **Personalización por gustos**: HECHO backend + carrusel (#116/#117). Posible
    evolución futura: señal implícita (recetas cocinadas), un bloque "Para ti"
    también en el chat, ajustar el peso del lean.
-5. **Fase 4: ciclo compartido**: Realtime de lista/despensa, plan semanal como
+5. **Fase C de variedad: eventos y secciones por fecha**. Tabla de eventos con
+   rango de fechas y criterio de selección; el backend devuelve las secciones ya
+   resueltas y el móvil solo las pinta, así que no hace falta build nuevo por
+   evento. Depende de la Fase B: un evento de San Valentín necesita que existan
+   recetas que encajen.
+6. **Fase D de variedad: panel web de administración**. Va el último porque
+   administra lo que crean B y C. Hoy no existe ni rol de administrador ni app
+   web en el monorepo, y el stack sigue sin decidir.
+7. **Fase 4: ciclo compartido**: Realtime de lista/despensa, plan semanal como
    propuesta editable, contrato de tickets con confirmación manual.
-6. **Validación pendiente**: probar dos sesiones del mismo hogar + una tercera
+8. **Validación pendiente**: probar dos sesiones del mismo hogar + una tercera
    ajena (RLS multi-usuario) — la validación operativa que sigue sin hacer.
 
-La infraestructura cloud se adelanta ahora, pero solo con alcance de demo
-(migrar backend + APK). Realtime, tickets con OCR y la operación completa de
-producción (backups, alertas, colas durables) siguen fuera de alcance hasta la
-Fase 5 completa.
+La infraestructura cloud ya está entregada, pero con alcance de demo (backend
+migrado + APK). Realtime, tickets con OCR y la operación completa de producción
+(backups, alertas, colas durables) siguen fuera de alcance hasta la Fase 5
+completa.
+
+## Deuda conocida
+
+- Los scripts de semilla (`generate-recipes.mjs`, `generate-home-recipes.mjs`) no
+  piden `image_prompt`, así que una receta nueva sigue generando su foto a partir
+  del título. La Fase B es el momento de arreglarlo, porque va a generar cientos
+  de recetas.
+- Los ingredientes que crea el resolver nacen sin perfil de caducidad; hasta ahora
+  se han ido cubriendo a mano por tandas (#127, #129).
+- 52 títulos duplicados en el catálogo, aplazados hasta tener estado de
+  publicación (Fase B).
+- El tipo de cocina que muestra el descubridor sale de `tags[1]`, texto libre sin
+  vocabulario controlado.
 
 ## Flujo obligatorio
 
