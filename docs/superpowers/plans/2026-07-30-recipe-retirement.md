@@ -58,7 +58,7 @@ en `supabase/tests/` (`pnpm test:db`, requiere `supabase start` local), cliente 
   funciones, la vista de cobertura y `retire_duplicate_recipes()`.
 - Crear: `supabase/migrations/0078_retire_duplicate_recipes.sql` — la invocación de la
   limpieza sobre los datos existentes.
-- Crear: `supabase/tests/0015_recipe_retirement.test.sql` — 19 asertos.
+- Crear: `supabase/tests/0015_recipe_retirement.test.sql` — 20 asertos.
 - Modificar: `apps/mobile/src/lib/recipes.ts:116` — filtro en el catálogo del recetario.
 
 Esquema y datos van en migraciones separadas, como `0070` (cobertura de caducidad) y `0071`
@@ -172,7 +172,7 @@ git commit -m "feat: columnas para retirar una receta del catálogo"
 
 - [ ] **Paso 1: Escribir los tests que fallan**
 
-Subir `select plan(5);` a `select plan(12);` y añadir antes de `select * from finish();`:
+Subir `select plan(5);` a `select plan(13);` y añadir antes de `select * from finish();`:
 
 ```sql
 -- Usuario y hogar: el trigger handle_new_user crea el hogar al insertar en auth.users.
@@ -214,9 +214,20 @@ values
     '[{"name":"Retirada ingrediente","unit":"g","quantity":100,"ingredient_id":"facade00-0000-4000-8000-000000000010","substitutions":[]}]'::jsonb
   );
 
+-- Tercera receta, también retirada, con un embedding que no comparte con nadie: la necesita el
+-- aserto de find_similar_recipe, que es top-1.
+insert into public.recipes (id, title, source, reusable, image_status, embedding)
+values (
+  'facade00-0000-4000-8000-000000000103', 'Retirada única en su vector', 'generated', true, 'none',
+  ('[0,1,' || repeat('0,', 765) || '0]')::vector
+);
+
 update public.recipes
 set retired_at = now(), retired_reason = 'incoherent'
-where id = 'facade00-0000-4000-8000-000000000102';
+where id in (
+  'facade00-0000-4000-8000-000000000102',
+  'facade00-0000-4000-8000-000000000103'
+);
 
 select is(
   (select count(*) from jsonb_array_elements(
@@ -247,12 +258,26 @@ select is(
 select set_config('request.jwt.claim.sub', 'facade00-0000-4000-8000-000000000901', true);
 select set_config('request.jwt.claim.role', 'authenticated', true);
 
+-- discover_recipes_by_ingredients y household_taste_recommendations devuelven jsonb, no tablas:
+-- se recorren con jsonb_array_elements y la clave del id es 'recipeId'.
 select is(
-  (select count(*) from public.discover_recipes_by_ingredients(
-    array['facade00-0000-4000-8000-000000000010']::uuid[], 50, 0
-  ) d where d.id = 'facade00-0000-4000-8000-000000000102'),
+  (select count(*) from jsonb_array_elements(
+    public.discover_recipes_by_ingredients(
+      array['facade00-0000-4000-8000-000000000010']::uuid[], 2, 50
+    )
+  ) d where d.value->>'recipeId' = 'facade00-0000-4000-8000-000000000102'),
   0::bigint,
   'El descubridor no ofrece recetas retiradas'
+);
+
+select is(
+  (select count(*) from jsonb_array_elements(
+    public.discover_recipes_by_ingredients(
+      array['facade00-0000-4000-8000-000000000010']::uuid[], 2, 50
+    )
+  ) d where d.value->>'recipeId' = 'facade00-0000-4000-8000-000000000101'),
+  1::bigint,
+  'La publicada sí sale en el descubridor'
 );
 
 -- Para el carrusel hace falta una semilla favorita: la publicada hace de semilla y la
@@ -261,8 +286,8 @@ insert into public.user_recipes (user_id, recipe_id, is_favorite)
 values ('facade00-0000-4000-8000-000000000901', 'facade00-0000-4000-8000-000000000101', true);
 
 select is(
-  (select count(*) from public.household_taste_recommendations(1000) t
-   where t.id = 'facade00-0000-4000-8000-000000000102'),
+  (select count(*) from jsonb_array_elements(public.household_taste_recommendations(1000)) t
+   where t.value->>'recipeId' = 'facade00-0000-4000-8000-000000000102'),
   0::bigint,
   'El carrusel Para ti no ofrece recetas retiradas'
 );
@@ -275,12 +300,14 @@ select is(
   'La búsqueda semántica del chat no devuelve recetas retiradas'
 );
 
-select ok(
-  exists (
-    select 1 from public.find_similar_recipe(
-      ('[1,' || repeat('0,', 766) || '0]')::vector, 0.1
-    ) f where f.id = 'facade00-0000-4000-8000-000000000102'
-  ),
+-- find_similar_recipe es top-1, así que para comprobar que ve las retiradas hace falta una
+-- retirada que sea la única candidata de su vector: con dos recetas de embedding idéntico el
+-- desempate no está definido y el aserto sería inestable.
+select is(
+  (select f.id from public.find_similar_recipe(
+    ('[0,1,' || repeat('0,', 765) || '0]')::vector, 0.9
+  ) f),
+  'facade00-0000-4000-8000-000000000103'::uuid,
   'El dedup de la generación SÍ ve las retiradas: si no, volvería a generar el duplicado'
 );
 
@@ -303,7 +330,7 @@ reset role;
 ```bash
 pnpm test:db
 ```
-Esperado: fallan los cuatro asertos de exclusión (la retirada sigue apareciendo en motor,
+Esperado: fallan los asertos de exclusión (la retirada sigue apareciendo en motor,
 descubridor, carrusel y `match_recipes`). El de `find_similar_recipe` y el de la publicada
 pasan ya, porque describen el comportamiento actual que hay que conservar.
 
@@ -354,7 +381,7 @@ Cuidado con dos cosas al copiar:
 ```bash
 npx supabase migration up --local && pnpm test:db
 ```
-Esperado: `0015` en 12/12 y ningún otro archivo roto. Si se rompe `0008`, `0009`, `0011`,
+Esperado: `0015` en 13/13 y ningún otro archivo roto. Si se rompe `0008`, `0009`, `0011`,
 `0012` o `0013`, es señal de que la copia perdió algo: comparar el cuerpo copiado con el
 original línea a línea, no leerlo por encima.
 
@@ -375,7 +402,7 @@ git commit -m "feat: excluir las recetas retiradas del catálogo y las recomenda
 
 - [ ] **Paso 1: Escribir el test que falla**
 
-Subir `select plan(12);` a `select plan(13);` y añadir:
+Subir `select plan(13);` a `select plan(14);` y añadir:
 
 ```sql
 -- Las dos recetas de las fixtures usan el mismo ingrediente y una está retirada: la cobertura
@@ -440,7 +467,7 @@ group by canonical.id, canonical.name, canonical.category;
 ```bash
 npx supabase migration up --local && pnpm test:db
 ```
-Esperado: `0015` en 13/13, y `0014` sigue en verde (sus fixtures no tienen retiradas).
+Esperado: `0015` en 14/14, y `0014` sigue en verde (sus fixtures no tienen retiradas).
 
 - [ ] **Paso 5: Commit**
 
@@ -460,7 +487,7 @@ git commit -m "feat: la cobertura por ingrediente cuenta solo recetas publicadas
 
 - [ ] **Paso 1: Escribir los tests que fallan**
 
-Subir `select plan(13);` a `select plan(19);` y añadir:
+Subir `select plan(14);` a `select plan(20);` y añadir:
 
 ```sql
 select has_function(
@@ -588,7 +615,7 @@ El `revoke` deja la ejecución solo a `service_role`, que es quien aplica migrac
 ```bash
 npx supabase migration up --local && pnpm test:db
 ```
-Esperado: `0015` en 19/19.
+Esperado: `0015` en 20/20.
 
 - [ ] **Paso 5: Crear la migración de datos**
 
@@ -659,7 +686,7 @@ git commit -m "feat: el recetario no lista las recetas retiradas"
 ```bash
 pnpm test:db && pnpm typecheck && pnpm lint
 ```
-Esperado: 274 pruebas pgTAP (255 + 19) y el resto en verde.
+Esperado: 275 pruebas pgTAP (255 + 20) y el resto en verde.
 
 - [ ] **Paso 2: Comprobar que la migración es aplicable desde cero**
 
@@ -684,7 +711,7 @@ Lo que **no** se filtra, a propósito: \`find_similar_recipe\`, para que el gene
 
 La limpieza de los duplicados va como función \`retire_duplicate_recipes()\` (invocada por 0078) y no como update suelto, porque así se prueba y porque el slice siguiente generará duplicados nuevos. Criterio de la que se queda: la que alguien tenga guardada, luego la que tenga imagen lista, luego la más antigua, luego el id menor. El 30 de julio eran 50 títulos y 61 sobrantes.
 
-**Validación**: 274 pruebas pgTAP (19 nuevas), \`db reset\` desde cero, typecheck y lint.
+**Validación**: 275 pruebas pgTAP (20 nuevas), \`db reset\` desde cero, typecheck y lint.
 
 Spec: \`docs/superpowers/specs/2026-07-30-recipe-retirement-design.md\`
 Plan: \`docs/superpowers/plans/2026-07-30-recipe-retirement.md\`"
