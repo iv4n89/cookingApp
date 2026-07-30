@@ -103,7 +103,8 @@ export interface RecipeListFilters {
 
 export const RECIPE_PAGE_SIZE = 20;
 
-// Catálogo navegable del recetario: solo recetas reutilizables (las del chat son efímeras),
+// Catálogo navegable del recetario: solo recetas reutilizables (las del chat son efímeras) y
+// publicadas (las retiradas siguen abriéndose por id, para quien las tenga guardadas),
 // ordenadas por título para que la paginación sea estable entre páginas.
 export async function listCatalogRecipes(
   filters: RecipeListFilters,
@@ -114,6 +115,7 @@ export async function listCatalogRecipes(
     .from('recipes')
     .select(COLUMNS)
     .eq('reusable', true)
+    .is('retired_at', null)
     .order('title')
     .range(from, from + RECIPE_PAGE_SIZE - 1);
 
